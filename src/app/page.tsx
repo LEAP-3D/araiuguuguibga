@@ -3,7 +3,7 @@
 const Home = () => {
   return (
     <>
-      <h1>hello from home araiuguuguibna</h1>
+      <h1>hello from home HI</h1>
     </>
   );
 };
