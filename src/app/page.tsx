@@ -4,7 +4,8 @@ const Home = () => {
   return (
     <>
       <h1>
-        hello from home HI dsvnshbdWHBSaasdasdasoijhgiosfhigsdasdasdasdasdJCSV
+        hello from home HI
+        dsvnshbasdasdasdasdasasdasdaasdasoijhgiosfhigsdasdasdasdasdJCSV
       </h1>
     </>
   );
