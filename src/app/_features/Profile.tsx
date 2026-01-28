@@ -1,6 +1,5 @@
 import ProfileCard from "@/app/_components/ProfileCard";
 import ProfileDetails from "@/app/_components/ProfileDetails";
-import { LightRays } from "@/components/ui/light-rays";
 
 const Profile = () => {
   const morePets = [
@@ -18,29 +17,31 @@ const Profile = () => {
     { vaccine: "Bordetella", date: "Oct 10, 2024", nextDue: "Oct 10, 2025" },
   ];
 
-  const ownerFields = [
-    {
-      label: "Full Name|Email",
-      value: "Sarah Johnson|sarah@example.com",
-      span: 2,
-    },
-    {
-      label: "Location|Phone",
-      value: "San Francisco, CA|+1 (555) 123-4567",
-      span: 2,
-    },
+  type Field = {
+    label: string;
+    value: string;
+    span?: number;
+  };
+
+  const ownerFields: Field[] = [
+    { label: "Full Name", value: "Sarah Johnson" },
+    { label: "Email", value: "sarah@example.com" },
+    { label: "Location", value: "San Francisco, CA" },
+    { label: "Phone", value: "+1 (555) 123-4567" },
     { label: "Bio", value: "Dog lover and animal welfare advocate" },
   ];
 
-  const petFields = [
-    { label: "Name|Breed", value: "Buddy|Golden Retriever", span: 2 },
-    { label: "Age|Weight|Gender", value: "3 years|65 lbs|Male", span: 3 },
+  const petFields: Field[] = [
+    { label: "Name", value: "Buddy" },
+    { label: "Breed", value: "Golden Retriever" },
+    { label: "Age", value: "3 years" },
+    { label: "Weight", value: "65 lbs" },
+    { label: "Gender", value: "Male" },
     { label: "Color", value: "Golden" },
   ];
 
   return (
     <div className="min-h-screen">
-      <LightRays />
       <main className="container mx-auto px-4 py-8 max-w-6xl">
         <button className="mb-6 px-4 py-2 hover:bg-gray-100 rounded-lg transition">
           ← Back to home

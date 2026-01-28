@@ -1,15 +1,15 @@
 import { Edit2 } from "lucide-react";
 
-interface DetailField {
+type DetailField = {
   label: string;
   value: string;
   span?: 1 | 2 | 3;
-}
+};
 
-interface ProfileDetailsProps {
+type ProfileDetailsProps = {
   title: string;
   fields: DetailField[];
-}
+};
 
 const ProfileDetails = ({ title, fields }: ProfileDetailsProps) => {
   return (

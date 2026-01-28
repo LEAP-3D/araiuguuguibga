@@ -1,12 +1,12 @@
 import { Camera } from "lucide-react";
-interface ProfileCardProps {
+type ProfileCardProps = {
   name: string;
   subtitle: string;
   location?: string;
   emoji: string;
   gradientFrom: string;
   gradientTo: string;
-}
+};
 
 const ProfileCard = ({
   name,
