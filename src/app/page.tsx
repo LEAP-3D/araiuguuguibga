@@ -8,6 +8,7 @@ const Home = () => {
     <div className="flex flex-col">
       <Headers />
       <div className="w-screen h-30 bg-amber-50"></div>
+
       <Footer />
     </div>
   );
