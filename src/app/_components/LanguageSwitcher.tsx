@@ -1,10 +1,10 @@
-export function LanguageSwitcher() {
+export default function LanguageSwitcher() {
   return (
-    <div className="flex items-center bg-orange-100 rounded-full p-1 shadow-inner">
-      <button className="px-3 py-1 text-sm font-semibold rounded-full bg-linear-to-r from-orange-400 to-amber-400 text-white shadow">
+    <div className="flex items-center bg-gray-100 rounded-full p-0.5 shadow-sm">
+      <button className="px-2 py-0.5 text-xs font-medium rounded-full bg-[#f06e42] text-white shadow-sm">
         EN
       </button>
-      <button className="px-3 py-1 text-sm font-semibold rounded-full text-orange-700">
+      <button className="px-2 py-0.5 text-xs font-medium rounded-full text-[#f06e42] hover:bg-gray-50 transition-colors">
         MGL
       </button>
     </div>

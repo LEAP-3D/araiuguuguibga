@@ -1,5 +1,5 @@
-import ProfileCard from "@/app/_components/ProfileCard";
-import ProfileDetails from "@/app/_components/ProfileDetails";
+import ProfileCard from "@/app/_components/Account/ProfileCard";
+import ProfileDetails from "@/app/_components/Account/ProfileDetails";
 
 const Profile = () => {
   const morePets = [
@@ -20,7 +20,7 @@ const Profile = () => {
   type Field = {
     label: string;
     value: string;
-    span?: number;
+    span?: 1 | 2 | 3;
   };
 
   const ownerFields: Field[] = [
