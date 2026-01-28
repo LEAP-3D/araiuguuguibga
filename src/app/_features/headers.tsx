@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import {  Heart, MapPin, MessageCircle } from "lucide-react";
+import { Heart, MapPin, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "../_components/Logo";
 import { LanguageSwitcher } from "../_components/LanguageSwitcher";
@@ -14,9 +14,8 @@ export default function Headers() {
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          
           {/* Logo */}
-         <Logo/>
+          <Logo />
 
           {/* Desktop Nav Links */}
           <div className="hidden md:flex items-center gap-8">
@@ -32,7 +31,7 @@ export default function Headers() {
               <MessageCircle className="w-4 h-4" />
               Community
             </a>
-             <a className="flex items-center gap-2 text-orange-700/80 hover:text-orange-600 font-medium transition">
+            <a className="flex items-center gap-2 text-orange-700/80 hover:text-orange-600 font-medium transition">
               <MessageCircle className="w-4 h-4" />
               Пост оруулах
             </a>
@@ -40,8 +39,11 @@ export default function Headers() {
 
           {/* Right Side UI (Static User Look) */}
           <div className="hidden md:flex items-center gap-4">
-             <LanguageSwitcher />
-            <Button variant="ghost" className="text-orange-700 hover:bg-orange-200/50 rounded-xl">
+            <LanguageSwitcher />
+            <Button
+              variant="ghost"
+              className="text-orange-700 hover:bg-orange-200/50 rounded-xl"
+            >
               Нэвтрэх
             </Button>
             <Button className="rounded-xl bg-linear-to-r from-orange-400 to-amber-400 hover:opacity-90 text-white shadow-md">
@@ -57,7 +59,6 @@ export default function Headers() {
               <User className="w-4 h-4 text-orange-600" />
             </div> */}
           </div>
-
         </div>
       </div>
     </motion.nav>
