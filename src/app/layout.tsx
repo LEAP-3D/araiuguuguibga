@@ -34,9 +34,6 @@ export default function RootLayout({
     </html>
   );
 
-  if (!publishableKey) {
-    return content;
-  }
   return (
     <ClerkProvider
       publishableKey={publishableKey}
