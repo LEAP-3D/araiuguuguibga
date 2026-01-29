@@ -117,7 +117,7 @@ const Profile = () => {
                 key={i}
                 className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
               >
-                <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center shrink-0">
                   💉
                 </div>
                 <div className="flex-1">
