@@ -130,8 +130,8 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8 border-t border-background/10">
           <p className="text-background/50 text-sm">
             © 2026 PetCare. Made with{" "}
-            <Heart className="w-4 h-4 inline text-primary fill-primary" /> for
-            pets everywhere.
+            <Heart className="w-4 h-4 inline text-white fill-white" /> for pets
+            everywhere.
           </p>
         </div>
       </div>
