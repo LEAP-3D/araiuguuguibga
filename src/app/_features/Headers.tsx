@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { Heart, MapPin, MessageCircle } from "lucide-react";
+import { Heart, MapPin, MessageCircle, StickyNote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Logo from "../_components/Logo";
 import LanguageSwitcher from "../_components/LanguageSwitcher";
@@ -54,7 +54,7 @@ export default function Headers() {
               <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-[#f06e42] transition-all duration-300 group-hover:w-full" />
             </a>
             <a className="group relative flex items-center gap-2 text-gray-700 font-medium transition-all duration-300 hover:text-[#f06e42] cursor-pointer">
-              <MessageCircle className="w-4 h-4 transition-transform duration-300 group-hover:scale-125 group-hover:text-[#f06e42]" />
+              <StickyNote className="w-4 h-4 transition-transform duration-300 group-hover:scale-125 group-hover:text-[#f06e42]" />
               Пост оруулах
               <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-[#f06e42] transition-all duration-300 group-hover:w-full" />
             </a>

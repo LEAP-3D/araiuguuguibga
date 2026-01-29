@@ -4,7 +4,7 @@ import { HeroSection } from "./_features/heroSection";
 import { RescuePetsSection } from "./_features/rescueSection";
 import { VeterinarySection } from "./_features/veterinarySection";
 import { ParallaxBackground } from "./_components/ParallaxBackground";
-
+import Chat from "././_components/Chat";
 import Footer from "./_features/Footer";
 import Headers from "./_features/Headers";
 
@@ -20,9 +20,7 @@ const Home = () => {
           <VeterinarySection />
         </ParallaxBackground>
       </div>
-
-      <div className="w-screen h-30 bg-amber-50"></div>
-
+      <Chat />
       <Footer />
     </>
   );
