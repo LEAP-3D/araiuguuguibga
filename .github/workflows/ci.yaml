@@ -38,6 +38,7 @@ jobs:
 
   preview:
     needs: lint
+    if: ${{ secrets.VERCEL_TOKEN != '' }}
     runs-on: ubuntu-latest
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -74,6 +75,7 @@ jobs:
  
   build:
     needs: lint
+    if: ${{ secrets.VERCEL_TOKEN != '' }}
     runs-on: ubuntu-latest
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
