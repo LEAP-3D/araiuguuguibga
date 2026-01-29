@@ -4,8 +4,15 @@ import { Heart, MapPin, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Logo from "../_components/Logo";
 import LanguageSwitcher from "../_components/LanguageSwitcher";
+<<<<<<< HEAD
 
 export default function Headers() {
+=======
+import { useRouter } from "next/navigation";
+
+export default function Headers() {
+  const router = useRouter();
+>>>>>>> 293de27 (commit login)
   return (
     <motion.nav
       className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-white/50 border-b border-white/20 shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
@@ -69,7 +76,12 @@ export default function Headers() {
                 variant="ghost"
                 className="relative text-gray-700 hover:bg-orange-100/60 hover:text-[#f06e42] rounded-xl transition-all duration-300 overflow-hidden group"
               >
+<<<<<<< HEAD
                 <span className="relative z-10">Нэвтрэх</span>
+=======
+                <button onClick={() => router.push("/login")}>Нэвтрэх</button>
+
+>>>>>>> 293de27 (commit login)
                 <motion.span
                   className="absolute inset-0 bg-linear-to-r from-orange-100 to-pink-100"
                   initial={{ x: "-100%" }}
@@ -91,9 +103,15 @@ export default function Headers() {
                     repeatDelay: 1,
                   }}
                 />
+<<<<<<< HEAD
                 <span className="relative z-10 flex items-center gap-2">
                   Бүртгүүлэх
                 </span>
+=======
+                <button onClick={() => router.push("/sign-up")}>
+                  Бүртгүүлэх
+                </button>
+>>>>>>> 293de27 (commit login)
               </Button>
             </motion.div>
           </div>
