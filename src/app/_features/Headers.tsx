@@ -1,13 +1,13 @@
 import { motion } from "framer-motion";
 import { Heart, MapPin, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Logo } from "../_components/Logo";
-import { LanguageSwitcher } from "../_components/LanguageSwitcher";
+import Logo from "../_components/Logo";
+import LanguageSwitcher from "../_components/LanguageSwitcher";
 
 export default function Headers() {
   return (
     <motion.nav
-      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-linear-to-r from-amber-100/70 via-orange-100/70 to-yellow-100/70 border-b border-orange-200 shadow-sm"
+      className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-orange-200 shadow-sm"
       initial={{ y: -80 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
@@ -19,20 +19,20 @@ export default function Headers() {
 
           {/* Desktop Nav Links */}
           <div className="hidden md:flex items-center gap-8">
-            <a className="flex items-center gap-2 text-orange-700/80 hover:text-orange-600 font-medium transition">
-              <Heart className="w-4 h-4" />
+            <a className="flex items-center gap-2 text-black hover:text-[#f06e42] font-medium transition-all duration-200 hover:scale-105">
+              <Heart className="w-4 h-4 transition-colors duration-200" />
               Үрчлэх
             </a>
-            <a className="flex items-center gap-2 text-orange-700/80 hover:text-orange-600 font-medium transition">
-              <MapPin className="w-4 h-4" />
+            <a className="flex items-center gap-2 text-black hover:text-[#f06e42] font-medium transition-all duration-200 hover:scale-105">
+              <MapPin className="w-4 h-4 transition-colors duration-200" />
               Байршил
             </a>
-            <a className="flex items-center gap-2 text-orange-700/80 hover:text-orange-600 font-medium transition">
-              <MessageCircle className="w-4 h-4" />
+            <a className="flex items-center gap-2 text-black hover:text-[#f06e42] font-medium transition-all duration-200 hover:scale-105">
+              <MessageCircle className="w-4 h-4 transition-colors duration-200" />
               Community
             </a>
-            <a className="flex items-center gap-2 text-orange-700/80 hover:text-orange-600 font-medium transition">
-              <MessageCircle className="w-4 h-4" />
+            <a className="flex items-center gap-2 text-black hover:text-[#f06e42] font-medium transition-all duration-200 hover:scale-105">
+              <MessageCircle className="w-4 h-4 transition-colors duration-200" />
               Пост оруулах
             </a>
           </div>
@@ -42,11 +42,11 @@ export default function Headers() {
             <LanguageSwitcher />
             <Button
               variant="ghost"
-              className="text-orange-700 hover:bg-orange-200/50 rounded-xl"
+              className="text-black hover:bg-[#f06e42]/10 hover:text-[#f06e42] rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             >
               Нэвтрэх
             </Button>
-            <Button className="rounded-xl bg-linear-to-r from-orange-400 to-amber-400 hover:opacity-90 text-white shadow-md">
+            <Button className="rounded-xl bg-[#f06e42] hover:bg-[#d85a2f] text-white shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95">
               Бүртгүүлэх
             </Button>
 

@@ -37,7 +37,7 @@ export function HeroPetProfile() {
   return (
     <div className="relative flex items-center  justify-center">
       <div
-        className="relative h-[550px] w-full max-w-sm"
+        className="relative h-137 w-full max-w-sm"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
       >
@@ -77,7 +77,7 @@ export function HeroPetProfile() {
             >
               <div className="overflow-hidden rounded-3xl bg-white shadow-2xl ring-1 ring-gray-100">
                 <div
-                  className={`relative aspect-square bg-gradient-to-br ${pet.gradient} ${
+                  className={`relative aspect-square bg-linear-to-br ${pet.gradient} ${
                     isSelected ? "p-12" : "p-8"
                   }`}
                 >
