@@ -1,77 +1,75 @@
-import { Edit2 } from "lucide-react";
+"use client";
 
-type DetailField = {
-  label: string;
-  value: string;
-  span?: 1 | 2 | 3;
-};
+import { UploadImage } from "./UploadImage";
+import { X } from "lucide-react";
 
-type ProfileDetailsProps = {
-  title: string;
-  fields: DetailField[];
-};
-
-const ProfileDetails = ({ title, fields }: ProfileDetailsProps) => {
+export default function ProfileDetails() {
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-bold">{title}</h3>
-        <button className="px-4 py-2 border rounded-xl hover:bg-gray-50 flex items-center">
-          <Edit2 className="w-4 h-4 mr-1" /> Edit
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="w-150 bg-[#FFFDF8] rounded-3xl shadow-2xl border border-[#f1e6d9] p-9 relative">
+        {/* Close Button */}
+        <button className="absolute right-6 top-6 text-neutral-500 hover:text-black transition">
+          <X size={22} />
         </button>
-      </div>
-      <div className="space-y-4">
-        {fields.map((field, idx) => (
-          <div
-            key={idx}
-            className={
-              field.span === 2
-                ? "grid sm:grid-cols-2 gap-4"
-                : field.span === 3
-                  ? "grid sm:grid-cols-3 gap-4"
-                  : ""
-            }
-          >
-            {field.span ? (
-              field.value.split("|").map((val, i) => (
-                <div key={i}>
-                  <label className="block text-sm font-medium mb-2">
-                    {field.label.split("|")[i]}
-                  </label>
-                  <input
-                    type="text"
-                    value={val}
-                    disabled
-                    className="w-full px-4 py-2 border rounded-xl bg-gray-50"
-                  />
-                </div>
-              ))
-            ) : (
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  {field.label}
-                </label>
-                {field.label === "Bio" ? (
-                  <textarea
-                    value={field.value}
-                    disabled
-                    className="w-full px-4 py-2 border rounded-xl bg-gray-50 min-h-[80px]"
-                  />
-                ) : (
-                  <input
-                    type="text"
-                    value={field.value}
-                    disabled
-                    className="w-full px-4 py-2 border rounded-xl bg-gray-50"
-                  />
-                )}
-              </div>
-            )}
+
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-8">
+          <span className="text-3xl">🐾</span>
+          <h2 className="text-3xl font-semibold text-[#3b2f2f]">
+            Owner Details
+          </h2>
+        </div>
+
+        <div className="mb-2">
+          <label className="block text-lg font-medium text-[#3b2f2f] mb-2">
+            User Name *
+          </label>
+          <input
+            placeholder="e.g., Ujin Munkhjargal"
+            className="w-full px-5 py-2 rounded-2xl border-2 border-[#4b8662] outline-none focus:ring-2 focus:ring-[#4b8662]/40 text-lg bg-[#fffaf3]"
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-6 mb-2">
+          <div>
+            <label className="block text-lg font-medium text-[#3b2f2f] mb-2">
+              Email *
+            </label>
+            <input
+              placeholder="e.g., ujinm23@gmail.com"
+              className="w-full px-5 py-2 rounded-2xl border-2 border-[#4b8662] outline-none focus:ring-2 focus:ring-[#4b8662]/40 text-lg bg-[#fffaf3]"
+            />
           </div>
-        ))}
+
+          <div>
+            <label className="block text-lg font-medium text-[#3b2f2f] mb-2">
+              Phone Number *
+            </label>
+            <input
+              placeholder="e.g., 99999999"
+              className="w-full px-5 py-2 rounded-2xl border border-[#eadfd2] bg-[#fffaf3] text-lg outline-none"
+            />
+          </div>
+        </div>
+
+        <div className="mb-2">
+          <label className="block text-lg font-medium text-[#3b2f2f] mb-2">
+            Address *
+          </label>
+          <input
+            placeholder="e.g.,19 khoroo, HUD district, Ulaanbaatar, "
+            className="w-full px-5 py-2 rounded-2xl border border-[#eadfd2] bg-[#fffaf3] text-lg"
+          />
+        </div>
+
+        {/* Photo URL */}
+        <div className="mb-20">
+          <label className="block text-lg font-medium text-[#3b2f2f] mb-2">
+            Photo (optional)
+          </label>
+          <UploadImage />
+        </div>
       </div>
     </div>
   );
-};
-
-export default ProfileDetails;
+}

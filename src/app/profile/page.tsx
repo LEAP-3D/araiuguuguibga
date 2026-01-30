@@ -1,12 +1,24 @@
+"use client";
 import ProfileCard from "@/app/_components/Account/ProfileCard";
-import ProfileDetails from "@/app/_components/Account/ProfileDetails";
+
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { useRouter } from "next/navigation";
+import AddPetModal from "../_components/AddPetDialog";
 
 const Profile = () => {
-  const morePets = [
-    { id: 2, name: "Luna", breed: "Persian Cat", image: "🐱" },
-    { id: 3, name: "Max", breed: "Labrador", image: "🐕" },
-  ];
-
+  const router = useRouter();
+  const handleButtonClick = () => {
+    router.push("/");
+  };
   const vaccineHistory = [
     {
       vaccine: "Rabies Vaccine",
@@ -17,92 +29,73 @@ const Profile = () => {
     { vaccine: "Bordetella", date: "Oct 10, 2024", nextDue: "Oct 10, 2025" },
   ];
 
-  type Field = {
-    label: string;
-    value: string;
-    span?: 1 | 2 | 3;
-  };
-
-  const ownerFields: Field[] = [
-    { label: "Full Name", value: "Sarah Johnson" },
-    { label: "Email", value: "sarah@example.com" },
-    { label: "Location", value: "San Francisco, CA" },
-    { label: "Phone", value: "+1 (555) 123-4567" },
-    { label: "Bio", value: "Dog lover and animal welfare advocate" },
-  ];
-
-  const petFields: Field[] = [
-    { label: "Name", value: "Buddy" },
-    { label: "Breed", value: "Golden Retriever" },
-    { label: "Age", value: "3 years" },
-    { label: "Weight", value: "65 lbs" },
-    { label: "Gender", value: "Male" },
-    { label: "Color", value: "Golden" },
-  ];
-
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen  bg-linear-to-br from-green-50 via-yellow-50 to-green-50">
       <main className="container mx-auto px-4 py-8 max-w-6xl">
-        <button className="mb-6 px-4 py-2 hover:bg-gray-100 rounded-lg transition">
+        <button
+          className="mb-6 px-4 py-2 hover:bg-green-100 rounded-lg transition cursor-pointer  "
+          onClick={handleButtonClick}
+        >
           ← Back to home
         </button>
 
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="flex gap-8">
           {/* USER SECTION */}
-          <div className="space-y-6">
-            <ProfileCard
-              name="Sarah Johnson"
-              subtitle="sarah@example.com"
-              location="📍 San Francisco, CA"
-              emoji="👤"
-              gradientFrom="blue-500"
-              gradientTo="purple-500"
-            />
-            <ProfileDetails title="Owner Details" fields={ownerFields} />
-          </div>
+          <ProfileCard
+            name="Sarah Johnson"
+            subtitle="sarah@example.com"
+            location="📍 San Francisco, CA"
+            emoji="👤"
+            gradientFrom="green-400"
+            gradientTo="pink-500"
+          >
+            {/* Add Edit button inside the ProfileCard */}
+          </ProfileCard>
+        </div>
 
-          {/* PET SECTION */}
-          <div className="space-y-6">
+        {/* PETS SECTION */}
+        <div className="mt-8 bg-white rounded-2xl shadow-lg p-6">
+          <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+            🐾 My Pets
+          </h3>
+          <div className="gap-3 flex">
+            <Dialog>
+              <DialogTrigger asChild>
+                <button className="p-4 rounded-2xl border-2 w-60 border-dashed border-gray-300 text-center hover:border-green-500 hover:bg-green-50 transition-colors">
+                  <div className="text-5xl mb-2">➕</div>
+                  <div className="font-semibold text-gray-700">Add Pet</div>
+                  <div className="text-xs text-gray-500">Register new pet</div>
+                </button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Add a Pet</DialogTitle>
+                </DialogHeader>
+                <AddPetModal />
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button
+                      variant="outline"
+                      className="rounded-2xl px-8 py-5 text-lg border-[#eadfd2]"
+                    >
+                      Cancel
+                    </Button>
+                  </DialogClose>
+                  <Button className="rounded-2xl px-8 py-5 text-lg bg-linear-to-r from-[#4b8662] to-[#4f9769] hover:opacity-90 text-white shadow-md">
+                    Add Pet
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+
             <ProfileCard
               name="Buddy"
               subtitle="Golden Retriever"
               location="🎂 3 years"
               emoji="🐕"
-              gradientFrom="orange-400"
+              gradientFrom="green-400"
               gradientTo="pink-500"
             />
-            <ProfileDetails title="Pet Details" fields={petFields} />
-          </div>
-        </div>
-
-        {/* MORE PETS SECTION */}
-        <div className="mt-8 bg-white rounded-2xl shadow-lg p-6">
-          <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-            🐾 My Pets
-          </h3>
-          <div className="grid sm:grid-cols-4 gap-4">
-            <div className="p-4 rounded-2xl bg-blue-50 border-2 border-blue-500 text-center cursor-pointer">
-              <div className="text-5xl mb-2">🐕</div>
-              <div className="font-semibold">Buddy</div>
-              <div className="text-xs text-gray-600">Golden Retriever</div>
-            </div>
-
-            {morePets.map((pet) => (
-              <div
-                key={pet.id}
-                className="p-4 rounded-2xl bg-gray-50 text-center cursor-pointer hover:bg-gray-100 transition-colors"
-              >
-                <div className="text-5xl mb-2">{pet.image}</div>
-                <div className="font-semibold">{pet.name}</div>
-                <div className="text-xs text-gray-600">{pet.breed}</div>
-              </div>
-            ))}
-
-            <button className="p-4 rounded-2xl border-2 border-dashed border-gray-300 text-center hover:border-blue-500 hover:bg-blue-50 transition-colors">
-              <div className="text-5xl mb-2">➕</div>
-              <div className="font-semibold text-gray-700">Add Pet</div>
-              <div className="text-xs text-gray-500">Register new pet</div>
-            </button>
           </div>
         </div>
 
@@ -128,7 +121,7 @@ const Profile = () => {
                 </div>
                 <div className="text-right">
                   <p className="text-xs text-gray-500">Next due</p>
-                  <p className="text-sm font-medium text-orange-600">
+                  <p className="text-sm font-medium text-green-600">
                     {record.nextDue}
                   </p>
                 </div>
