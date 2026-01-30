@@ -2,21 +2,39 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Heart, MapPin, MessageCircle, StickyNote, User, Settings, LogOut } from "lucide-react";
+import {
+  Heart,
+  MapPin,
+  MessageCircle,
+  StickyNote,
+  User,
+  Settings,
+  LogOut,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Logo from "../_components/Logo";
 import LanguageSwitcher from "../_components/LanguageSwitcher";
 
 const navLinkClass =
   "group relative flex items-center gap-2 text-gray-700 font-medium transition-all duration-300 hover:text-[#f06e42] cursor-pointer";
-const iconClass = "w-4 h-4 transition-transform duration-300 group-hover:scale-125 group-hover:text-[#f06e42]";
-const underlineClass = "absolute -bottom-1 left-0 h-0.5 w-0 bg-[#f06e42] transition-all duration-300 group-hover:w-full";
+const iconClass =
+  "w-4 h-4 transition-transform duration-300 group-hover:scale-125 group-hover:text-[#f06e42]";
+const underlineClass =
+  "absolute -bottom-1 left-0 h-0.5 w-0 bg-[#f06e42] transition-all duration-300 group-hover:w-full";
 
 export function HeaderLogo() {
   return (
-    <motion.div className="relative" whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 300 }}>
+    <motion.div
+      className="relative"
+      whileHover={{ scale: 1.05 }}
+      transition={{ type: "spring", stiffness: 300 }}
+    >
       <motion.div
         className="absolute -inset-2 bg-linear-to-r from-orange-300 via-pink-300 to-orange-300 blur-xl rounded-full opacity-60"
         animate={{ opacity: [0.4, 0.7, 0.4], scale: [1, 1.1, 1] }}
@@ -31,16 +49,20 @@ export function HeaderNavLinks() {
   return (
     <div className="hidden md:flex items-center gap-8">
       <a className={navLinkClass}>
-        <Heart className={iconClass} /> Үрчлэх <span className={underlineClass} />
+        <Heart className={iconClass} /> Үрчлэх{" "}
+        <span className={underlineClass} />
       </a>
       <a className={navLinkClass}>
-        <MapPin className={iconClass} /> Байршил <span className={underlineClass} />
+        <MapPin className={iconClass} /> Байршил{" "}
+        <span className={underlineClass} />
       </a>
       <a className={navLinkClass}>
-        <MessageCircle className={iconClass} /> Community <span className={underlineClass} />
+        <MessageCircle className={iconClass} /> Community{" "}
+        <span className={underlineClass} />
       </a>
       <a className={navLinkClass}>
-        <StickyNote className={iconClass} /> Пост оруулах <span className={underlineClass} />
+        <StickyNote className={iconClass} /> Пост оруулах{" "}
+        <span className={underlineClass} />
       </a>
     </div>
   );
@@ -74,7 +96,9 @@ export function HeaderAuthButtons() {
               animate={{ x: "100%" }}
               transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
             />
-            <span className="relative z-10 flex items-center gap-2">Бүртгүүлэх</span>
+            <span className="relative z-10 flex items-center gap-2">
+              Бүртгүүлэх
+            </span>
           </Button>
         </Link>
       </motion.div>
@@ -89,7 +113,12 @@ type HeaderUserMenuProps = {
   onSignOut: () => void;
 };
 
-export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: HeaderUserMenuProps) {
+export function HeaderUserMenu({
+  displayName,
+  initial,
+  imageUrl,
+  onSignOut,
+}: HeaderUserMenuProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -101,25 +130,41 @@ export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: He
         >
           <Avatar className="size-9 rounded-full bg-[#f06e42] text-white border-2 border-white/80 shadow-md">
             <AvatarImage src={imageUrl} alt={displayName} />
-            <AvatarFallback className="bg-[#f06e42] text-white text-sm font-semibold">{initial}</AvatarFallback>
+            <AvatarFallback className="bg-[#f06e42] text-white text-sm font-semibold">
+              {initial}
+            </AvatarFallback>
           </Avatar>
-          <span className="text-gray-800 font-medium max-w-[120px] truncate">{displayName}</span>
+          <span className="text-gray-800 font-medium max-w-[120px] truncate">
+            {displayName}
+          </span>
         </motion.button>
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-56 rounded-xl shadow-lg border-gray-200/80 p-0">
+      <PopoverContent
+        align="end"
+        className="w-56 rounded-xl shadow-lg border-gray-200/80 p-0"
+      >
         <div className="px-4 py-3 border-b border-gray-100">
           <p className="font-semibold text-gray-900">My Account</p>
         </div>
         <div className="py-2">
-          <Link href="/profile" className="flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 transition-colors">
+          <Link
+            href="/profile"
+            className="flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 transition-colors"
+          >
             <User className="w-4 h-4 text-[#f06e42]" />
             <span>Profile</span>
           </Link>
-          <button type="button" className="w-full flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 transition-colors text-left">
+          <button
+            type="button"
+            className="w-full flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 transition-colors text-left"
+          >
             <Heart className="w-4 h-4 text-[#f06e42]" />
             <span>Saved Pets</span>
           </button>
-          <button type="button" className="w-full flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 transition-colors text-left">
+          <button
+            type="button"
+            className="w-full flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 transition-colors text-left"
+          >
             <Settings className="w-4 h-4 text-[#f06e42]" />
             <span>Settings</span>
           </button>
@@ -139,7 +184,11 @@ export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: He
 
 const navClassName =
   "fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-white/50 border-b border-white/20 shadow-[0_8px_30px_rgba(0,0,0,0.06)]";
-const navMotion = { initial: { y: -80, opacity: 0 }, animate: { y: 0, opacity: 1 }, transition: { duration: 0.6, ease: "easeOut" as const } };
+const navMotion = {
+  initial: { y: -80, opacity: 0 },
+  animate: { y: 0, opacity: 1 },
+  transition: { duration: 0.6, ease: "easeOut" as const },
+};
 
 export function HeaderShell({ children }: { children: React.ReactNode }) {
   return (

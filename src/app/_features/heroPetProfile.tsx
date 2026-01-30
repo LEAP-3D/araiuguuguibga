@@ -1,15 +1,23 @@
 "use client";
 
 import React from "react";
-import type { PetProfile } from "../_components/mockPets";
 
-const pets: PetProfile[] = [
+type Pet = {
+  id: string;
+  name: string;
+  breed: string;
+  emoji: string;
+  Age: number;
+  gradient: string;
+};
+
+const pets: Pet[] = [
   {
     id: "1",
     name: "Buddy",
     breed: "Golden Retriever",
     emoji: "🐕",
-    vetsNearby: 150,
+    Age: 1,
     gradient: "from-orange-100 to-pink-100",
   },
   {
@@ -17,7 +25,7 @@ const pets: PetProfile[] = [
     name: "Luna",
     breed: "Persian Cat",
     emoji: "🐱",
-    vetsNearby: 192,
+    Age: 1,
     gradient: "from-pink-100 to-purple-100",
   },
   {
@@ -25,100 +33,69 @@ const pets: PetProfile[] = [
     name: "Coco",
     breed: "Holland Lop",
     emoji: "🐰",
-    vetsNearby: 128,
+    Age: 2,
     gradient: "from-blue-100 to-cyan-100",
   },
 ];
 
+const SLOTS = {
+  center: { x: 0, rotate: 0, scale: 1.05, z: 30 },
+  backLeft: { x: -120, rotate: -8, scale: 1, z: 20 },
+  backRight: { x: 120, rotate: 8, scale: 1, z: 10 },
+};
+
 export function HeroPetProfile() {
-  const [selectedPet, setSelectedPet] = React.useState<PetProfile>(pets[0]);
-  const [isHovering, setIsHovering] = React.useState(false);
+  const [activeId, setActiveId] = React.useState("2");
+  const [hoveredPet, setHoveredPet] = React.useState<Pet | null>(null);
+
+  const getSlot = (petId: string) => {
+    if (petId === activeId) return SLOTS.center;
+
+    const others = pets.filter((p) => p.id !== activeId);
+    return petId === others[0].id ? SLOTS.backLeft : SLOTS.backRight;
+  };
 
   return (
-    <div className="relative flex items-center  justify-center">
-      <div
-        className="relative h-137 w-full max-w-sm"
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
-      >
-        {[...pets].reverse().map((pet, reverseIndex) => {
-          const actualIndex = pets.length - 1 - reverseIndex;
-          const isSelected = pet.id === selectedPet.id;
-
-          const zIndex = isSelected ? 50 : 40 - actualIndex * 10;
-          const stackOffset = actualIndex * 12;
-
-          const centerIndex = Math.floor((pets.length - 1) / 2);
-          const sideIndex = actualIndex - centerIndex;
-
-          const baseOffsetX = -40; // ← зүүн талаас зай
-          const hoverX = isHovering ? sideIndex * 140 : 0;
+    <div className="relative flex  justify-center py-8 ">
+      <div className="relative h-280 w-full max-w-md">
+        {pets.map((pet) => {
+          const slot = getSlot(pet.id);
 
           return (
             <div
               key={pet.id}
-              onClick={() => setSelectedPet(pet)}
-              className="absolute left-1/2 top-1/2 w-full cursor-pointer transition-all duration-500"
+              onMouseEnter={() => setActiveId(pet.id)}
+              className="absolute left-1/2 top-1/2 w-full cursor-pointer transition-all duration-500 ease-out"
               style={{
-                zIndex,
+                zIndex: slot.z,
                 transform: `
-                  translate(
-                    calc(-50% + ${baseOffsetX}px + ${hoverX}px),
-                    calc(-50% - ${stackOffset}px)
-                  )
-                  scale(${isSelected ? 1 : 0.95 - Math.abs(sideIndex) * 0.05})
+                  translate(-50%, -50%)
+                  translateX(${slot.x}px)
+                  rotate(${slot.rotate}deg)
+                  scale(${slot.scale})
                 `,
-                opacity: isSelected
-                  ? 1
-                  : isHovering
-                    ? 0.9 - actualIndex * 0.1
-                    : 0.7 - actualIndex * 0.15,
               }}
             >
+              {/* CARD */}
               <div className="overflow-hidden rounded-3xl bg-white shadow-2xl ring-1 ring-gray-100">
-                <div
-                  className={`relative aspect-square bg-linear-to-br ${pet.gradient} ${
-                    isSelected ? "p-12" : "p-8"
-                  }`}
-                >
-                  <div className="absolute inset-0 overflow-hidden">
-                    <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/30 blur-3xl" />
-                    <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-white/30 blur-3xl" />
-                  </div>
-
-                  <div className="relative flex h-full items-center justify-center">
-                    <div
-                      className={`leading-none transition-all ${
-                        isSelected ? "text-[160px]" : "text-[120px]"
-                      }`}
-                    >
-                      {pet.emoji}
-                    </div>
+                {/* TOP */}
+                <div className="flex justify-center pt-10 pb-6">
+                  <div
+                    className={`h-60 w-60 rounded-full bg-linear-to-br ${pet.gradient} flex items-center justify-center`}
+                  >
+                    <span className="text-8xl">{pet.emoji}</span>
                   </div>
                 </div>
 
-                <div className={isSelected ? "p-6" : "p-4"}>
-                  <h3
-                    className={`mb-1 font-bold text-gray-900 ${
-                      isSelected ? "text-2xl" : "text-lg"
-                    }`}
-                  >
-                    {pet.name}
-                  </h3>
-                  <p
-                    className={`text-gray-600 ${
-                      isSelected ? "text-base" : "text-sm"
-                    }`}
-                  >
-                    {pet.breed}
+                {/* BOTTOM */}
+                <div className="pb-6 text-center">
+                  <h3 className="text-2xl font-bold">{pet.name}</h3>
+                  <p className="text-sm text-gray-600">
+                    {pet.breed} * {pet.Age} years old
                   </p>
-
-                  {isSelected && (
-                    <div className="mt-3 flex items-center gap-2">
-                      <div className="h-2 w-2 animate-pulse rounded-full bg-orange-500" />
-                      <span className="text-sm font-medium text-orange-600">
-                        Вакцин хийлгэсэн
-                      </span>
+                  {pet.id === activeId && (
+                    <div className="mt-4 text-sm font-medium text-orange-600">
+                      ● Вакцин хийлгэсэн
                     </div>
                   )}
                 </div>
@@ -126,14 +103,6 @@ export function HeroPetProfile() {
             </div>
           );
         })}
-
-        {!isHovering && (
-          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-center">
-            <p className="max-w-xs whitespace-nowrap text-xs text-gray-400">
-              Таны оруулсан тэжээвэр амьтдын profile ингэж харагдана
-            </p>
-          </div>
-        )}
       </div>
     </div>
   );
