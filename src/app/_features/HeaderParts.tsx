@@ -1,26 +1,25 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import Link from "next/link";
-import { Heart, MapPin, MessageCircle, StickyNote, User, Settings, LogOut } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import Logo from "../_components/Logo";
-import LanguageSwitcher from "../_components/LanguageSwitcher";
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { Heart, MapPin, MessageCircle, StickyNote, User, Settings, LogOut } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import Logo from '../_components/Logo';
+import LanguageSwitcher from '../_components/LanguageSwitcher';
 
-const navLinkClass =
-  "group relative flex items-center gap-2 text-gray-700 font-medium transition-all duration-300 hover:text-[#f06e42] cursor-pointer";
-const iconClass = "w-4 h-4 transition-transform duration-300 group-hover:scale-125 group-hover:text-[#f06e42]";
-const underlineClass = "absolute -bottom-1 left-0 h-0.5 w-0 bg-[#f06e42] transition-all duration-300 group-hover:w-full";
+const navLinkClass = 'group relative flex items-center gap-2 text-gray-700 font-medium transition-all duration-300 hover:text-[#f06e42] cursor-pointer';
+const iconClass = 'w-4 h-4 transition-transform duration-300 group-hover:scale-125 group-hover:text-[#f06e42]';
+const underlineClass = 'absolute -bottom-1 left-0 h-0.5 w-0 bg-[#f06e42] transition-all duration-300 group-hover:w-full';
 
 export function HeaderLogo() {
   return (
-    <motion.div className="relative" whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 300 }}>
+    <motion.div className="relative" whileHover={{ scale: 1.05 }} transition={{ type: 'spring', stiffness: 300 }}>
       <motion.div
         className="absolute -inset-2 bg-linear-to-r from-orange-300 via-pink-300 to-orange-300 blur-xl rounded-full opacity-60"
         animate={{ opacity: [0.4, 0.7, 0.4], scale: [1, 1.1, 1] }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
       />
       <Logo />
     </motion.div>
@@ -51,17 +50,9 @@ export function HeaderAuthButtons() {
     <>
       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
         <Link href="/sign-in">
-          <Button
-            variant="ghost"
-            className="relative text-gray-700 hover:bg-orange-100/60 hover:text-[#f06e42] rounded-xl transition-all duration-300 overflow-hidden group"
-          >
+          <Button variant="ghost" className="relative text-gray-700 hover:bg-orange-100/60 hover:text-[#f06e42] rounded-xl transition-all duration-300 overflow-hidden group">
             <span className="relative z-10">Нэвтрэх</span>
-            <motion.span
-              className="absolute inset-0 bg-linear-to-r from-orange-100 to-pink-100"
-              initial={{ x: "-100%" }}
-              whileHover={{ x: 0 }}
-              transition={{ duration: 0.3 }}
-            />
+            <motion.span className="absolute inset-0 bg-linear-to-r from-orange-100 to-pink-100" initial={{ x: '-100%' }} whileHover={{ x: 0 }} transition={{ duration: 0.3 }} />
           </Button>
         </Link>
       </motion.div>
@@ -70,8 +61,8 @@ export function HeaderAuthButtons() {
           <Button className="relative rounded-xl bg-linear-to-r from-[#f06e42] via-orange-500 to-[#f06e42] text-white shadow-lg shadow-orange-300/40 overflow-hidden group bg-[length:200%_100%] hover:bg-right transition-all duration-500">
             <motion.span
               className="absolute inset-0 bg-linear-to-r from-transparent via-white/30 to-transparent"
-              initial={{ x: "-100%" }}
-              animate={{ x: "100%" }}
+              initial={{ x: '-100%' }}
+              animate={{ x: '100%' }}
               transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
             />
             <span className="relative z-10 flex items-center gap-2">Бүртгүүлэх</span>
@@ -123,11 +114,7 @@ export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: He
             <Settings className="w-4 h-4 text-[#f06e42]" />
             <span>Settings</span>
           </button>
-          <button
-            type="button"
-            onClick={onSignOut}
-            className="w-full flex gap-3 px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors text-left"
-          >
+          <button type="button" onClick={onSignOut} className="w-full flex gap-3 px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors text-left">
             <LogOut className="w-4 h-4" />
             <span>Log out</span>
           </button>
@@ -137,9 +124,12 @@ export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: He
   );
 }
 
-const navClassName =
-  "fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-white/50 border-b border-white/20 shadow-[0_8px_30px_rgba(0,0,0,0.06)]";
-const navMotion = { initial: { y: -80, opacity: 0 }, animate: { y: 0, opacity: 1 }, transition: { duration: 0.6, ease: "easeOut" as const } };
+const navClassName = 'fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-white/50 border-b border-white/20 shadow-[0_8px_30px_rgba(0,0,0,0.06)]';
+const navMotion = {
+  initial: { y: -80, opacity: 0 },
+  animate: { y: 0, opacity: 1 },
+  transition: { duration: 0.6, ease: 'easeOut' as const },
+};
 
 export function HeaderShell({ children }: { children: React.ReactNode }) {
   return (
