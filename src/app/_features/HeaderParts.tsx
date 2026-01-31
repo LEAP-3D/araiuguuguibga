@@ -17,7 +17,7 @@ export function HeaderLogo() {
   return (
     <motion.div className="relative" whileHover={{ scale: 1.05 }} transition={{ type: 'spring', stiffness: 300 }}>
       <motion.div
-        className="absolute -inset-2 bg-linear-to-r from-green-300 via-pink-300 to-green-300 blur-xl rounded-full opacity-60"
+        className="absolute -inset-2 bg-linear-to-r from-green-300 via-yellow-200 to-green-400 blur-xl rounded-full opacity-60"
         animate={{ opacity: [0.4, 0.7, 0.4], scale: [1, 1.1, 1] }}
         transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
       />
