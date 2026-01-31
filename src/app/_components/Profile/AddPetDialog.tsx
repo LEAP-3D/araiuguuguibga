@@ -9,14 +9,14 @@ export default function AddPetDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="p-4 h-80 rounded-xl border-2 w-60 border-dashed border-gray-300 text-center hover:border-green-500 hover:bg-green-50 transition-colors">
+        <button className="p-4 h-80 rounded-xl border-2 w-60 border-dashed border-[#76a988] text-center hover:border-[#3f915c] hover:bg-green-50/30 transition-colors">
           <div className="text-5xl mb-2">➕</div>
           <div className="font-semibold text-gray-700">Add Pet</div>
           <div className="text-xs text-gray-500">Register new pet</div>
         </button>
       </DialogTrigger>
  
-      <DialogContent className="max-w-lg bg-[#fbfff8] rounded-3xl border border-[#f1e6d9] p-8">
+      <DialogContent className="max-w-lg bg-[#fefdfc] rounded-3xl border border-[#f1e6d9] p-8">
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold text-[#3b2f2f]">🐾 Тэжээвэр амьтан нэмэх</DialogTitle>
         </DialogHeader>
