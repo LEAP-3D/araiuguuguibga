@@ -1,149 +1,211 @@
 "use client";
 
 import { useState } from "react";
-import { Heart, Info } from "lucide-react";
-import type { FilterCategory } from "../_components/types";
-import { mockPets } from "../_components/mockPets";
+import Link from "next/link";
+import { Heart, MapPin, Calendar, PlusCircle, PawPrint } from "lucide-react";
+import { usePosts } from "@/lib/postsContext";
 
-const categories: FilterCategory[] = [
-  { id: "all", label: "All", value: "all", icon: "🐾" },
-  { id: "dogs", label: "Dogs", value: "dog", icon: "🐕" },
-  { id: "cats", label: "Cats", value: "cat", icon: "🐱" },
-  { id: "others", label: "Others", value: "other", icon: "🦜" },
-];
+const FILTERS = [
+  { id: "all", label: "Бүгд" },
+  { id: "dog", label: "Нохой" },
+  { id: "cat", label: "Муур" },
+  { id: "bunny", label: "Туулай" },
+  { id: "hamster", label: "Хавраа" },
+] as const;
+
+const typeLabels: Record<string, string> = {
+  dog: "Нохой",
+  cat: "Муур",
+  other: "Бусад",
+};
+
+function PetImage({ image }: { image: string }) {
+  const isUrl =
+    image.startsWith("http") ||
+    image.startsWith("/") ||
+    image.startsWith("data:");
+  if (isUrl) {
+    return (
+      <img
+        src={image}
+        alt=""
+        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+      />
+    );
+  }
+  return (
+    <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-amber-50 to-orange-50">
+      <PawPrint className="h-16 w-16 text-amber-400" />
+    </div>
+  );
+}
+
+const FEED_POST_LIMIT = 10;
 
 export function RescuePetsSection() {
-  const [activeCategory, setActiveCategory] =
-    useState<FilterCategory["value"]>("all");
+  const { posts } = usePosts();
+  const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const [activeFilter, setActiveFilter] = useState<string>("all");
 
-  const filteredPets =
-    activeCategory === "all"
-      ? mockPets
-      : mockPets.filter((pet) => pet.type === activeCategory);
+  const filteredPosts = posts.filter((post) => {
+    if (activeFilter === "all") return true;
+    if (activeFilter === "dog" && post.type === "dog") return true;
+    if (activeFilter === "cat" && post.type === "cat") return true;
+    if ((activeFilter === "bunny" || activeFilter === "hamster") && post.type === "other") return true;
+    return false;
+  });
+
+  const displayPosts = filteredPosts.slice(0, FEED_POST_LIMIT);
+
+  const toggleFavorite = (id: string) => {
+    setFavorites((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  if (posts.length === 0) {
+    return (
+      <section id="adopt" className="min-h-[70vh] px-4 py-12">
+        <div className="mb-8 text-center">
+            <p className="mb-1 text-xs font-medium uppercase tracking-widest text-amber-800/60">
+             
+            </p>
+            <h2 className="mb-2 text-3xl font-bold text-gray-800">
+              Хайр хайж буй амьтад
+            </h2>
+            <p className="text-gray-800">
+              Эдгээр эвлүүлэг амьтад мөнхийн гэрийг хүлээж байна.
+            </p>
+        </div>
+        <div className="mx-auto flex h-[600px] max-w-7xl flex-col items-center justify-center rounded-2xl border-2 border-dashed border-amber-200 bg-white/50">
+            <PlusCircle className="mb-4 h-12 w-12 text-amber-400" />
+            <p className="mb-2 text-center text-gray-700">
+              Одоогоор пост байхгүй байна
+            </p>
+            <p className="mb-6 text-center text-sm text-gray-500">
+              Анхны пост оруулаад эхлээрэй
+            </p>
+            <Link
+              href="/dashboard/add-post"
+              className="inline-flex items-center gap-2 rounded-full bg-[#6b9b6e] px-6 py-3 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#5d8a60]"
+            >
+              <PlusCircle className="h-5 w-5" />
+              Пост оруулах
+            </Link>
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <section id="adopt" className="flex justify-center px-6 py-16">
-      <div className="container">
-        <div className="mb-12 text-center">
-          <h2 className="mb-4 text-4xl font-bold">
-            Эзэн хайж байгаа{" "}
-            <span className="text-orange-300">Олдсон амьтад</span>
-          </h2>
-          <p className="mx-auto max-w-2xl text-gray-600">
-            Гаднаас олдсон эзэнгүй амьтдын тухай оруулсан зарууд
+    <section id="adopt" className="min-h-[70vh] px-4 py-12">
+      <div className="mb-8 text-center">
+          <p className="mb-1 text-xs font-medium uppercase tracking-widest text-amber-800/60">
+           
           </p>
-        </div>
-        <div className="mb-8 flex justify-center">
-          <div className="inline-flex gap-2  rounded-full bg-white p-1 shadow-sm">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setActiveCategory(category.value)}
-                className={`flex items-center gap-2 cursor-pointer rounded-full px-6 py-2.5 text-sm font-medium transition-all ${
-                  activeCategory === category.value
-                    ? "bg-orange-500 text-white shadow-md"
-                    : "text-gray-600 hover:bg-gray-30"
-                }`}
-              >
-                <span className="text-base">{category.icon}</span>
-                {category.label}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="grid gap-6 sm:grid-cols-2  lg:grid-cols-4">
-          {filteredPets.map((pet) => (
-            <div
-              key={pet.id}
-              className="group overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all hover:shadow-xl"
-            >
-              <div className="relative aspect-square overflow-hidden  from-orange-50 to-pink-50">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-8xl transition-transform duration-300 group-hover:scale-110">
-                    {pet.image}
-                  </span>
-                </div>
+          <h2 className="mb-2 text-3xl font-bold text-gray-800 md:text-4xl">
+            Хайр хайж буй амьтад
+          </h2>
+          <p className="mx-auto max-w-2xl text-gray-800">
+            Эдгээр эвлүүлэг амьтад мөнхийн гэрийг хүлээж байна. Та тэдний хувьд байж болох уу?
+          </p>
+      </div>
 
-                {pet.featured && (
-                  <div className="absolute left-4 top-4 rounded-full bg-orange-500 px-3 py-1 text-xs font-semibold text-white shadow-md">
-                    Featured
-                  </div>
-                )}
+      <div className="mx-auto flex h-[600px] max-w-7xl flex-col gap-4">
+        {/* Filter bar */}
+        <div className="flex shrink-0 flex-wrap justify-center gap-3">
+          {FILTERS.map((f) => (
+            <button
+              key={f.id}
+              type="button"
+              onClick={() => setActiveFilter(f.id)}
+              className={`rounded-full px-6 py-2.5 text-sm font-medium transition-colors ${
+                activeFilter === f.id
+                  ? "bg-[#6b9b6e] text-white shadow-sm"
+                  : "border-2 border-[#6b9b6e] bg-white text-[#6b9b6e] hover:bg-[#6b9b6e]/5"
+              }`}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Pet cards grid */}
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {displayPosts.map((post) => (
+            <div
+              key={post.id}
+              className="group overflow-hidden rounded-2xl border border-amber-100 bg-white shadow-md transition-all hover:shadow-lg"
+            >
+              <div className="relative aspect-[4/3] overflow-hidden rounded-t-2xl">
+                <PetImage image={post.image} />
+                <button
+                  type="button"
+                  onClick={() => toggleFavorite(post.id)}
+                  className={`absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border-2 transition-colors ${
+                    favorites.has(post.id)
+                      ? "border-transparent bg-white/90 text-red-500"
+                      : "border-white/80 bg-white/60 text-gray-600 hover:bg-white/80"
+                  }`}
+                >
+                  <Heart
+                    className={`h-5 w-5 ${favorites.has(post.id) ? "fill-current" : ""}`}
+                  />
+                </button>
               </div>
 
-              {/* Content */}
-              <div className="space-y-3 p-5">
-                {/* Name & Breed */}
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900 cursor-pointer transition-colors group-hover:text-orange-500">
-                    {pet.name}
+              <div className="p-5">
+                <div className="mb-2 flex items-start justify-between gap-2">
+                  <h3 className="text-lg font-bold text-amber-900">
+                    {post.name || "Нэр тодорхойгүй"}
                   </h3>
-                  <p className="text-sm font-medium text-gray-600">
-                    {pet.breed} · {pet.age}
-                  </p>
+                  <span className="shrink-0 rounded-full bg-[#6b9b6e] px-3 py-1 text-xs font-medium text-white">
+                    {typeLabels[post.type] ?? "Бусад"}
+                  </span>
                 </div>
-
-                {/* Description */}
-                <p className="line-clamp-2 text-sm text-gray-600">
-                  {pet.description}
+                <p className="mb-2 text-sm text-amber-800/70">
+                  {post.breed || "—"}
                 </p>
-
-                {/* Location */}
-                <div className="flex items-center gap-1 text-xs text-gray-500">
-                  <svg
-                    className="h-4 w-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                  </svg>
-                  {pet.location}
-                </div>
-
-                {/* Actions */}
-                <div className="flex gap-2 pt-2">
-                  <button className="flex-1 rounded-lg cursor-pointer bg-orange-500 px-4 py-2.5 font-medium text-white shadow-sm transition-colors hover:bg-orange-600">
-                    <Heart className="mx-auto h-5 w-5" />
-                  </button>
-                  <button className="rounded-lg cursor-pointer border border-gray-200 px-4 py-2.5 transition-colors hover:bg-gray-50">
-                    <Info className="h-5 w-5 text-gray-600" />
-                  </button>
+                <p className="mb-4 line-clamp-2 text-sm text-gray-600">
+                  {post.description || "—"}
+                </p>
+                <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500">
+                  <span className="flex items-center gap-1.5">
+                    <Calendar className="h-4 w-4 text-amber-600" />
+                    {post.age || "—"}
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <MapPin className="h-4 w-4 text-amber-600" />
+                    {post.location}
+                  </span>
                 </div>
               </div>
             </div>
           ))}
+          </div>
         </div>
 
-        {/* View All Button */}
-        <div className="mt-12 text-center">
-          <button className="inline-flex items-center gap-2 cursor-pointer rounded-lg border-2 border-orange-500 bg-white px-8 py-3 font-medium text-orange-500 shadow-sm transition-all hover:bg-orange-500 hover:text-white">
-            View All Pets
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+        {/* Footer actions */}
+        <div className="flex shrink-0 flex-wrap justify-center gap-4 py-2">
+          {posts.length > FEED_POST_LIMIT && (
+            <Link
+              href="/dashboard/feed"
+              className="inline-flex items-center gap-2 rounded-full border-2 border-amber-300 bg-white px-6 py-2.5 text-sm font-medium text-amber-800 transition-colors hover:bg-amber-50"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </button>
+              Бүгдийг харах ({posts.length})
+            </Link>
+          )}
+          <Link
+            href="/dashboard/add-post"
+            className="inline-flex items-center gap-2 rounded-full bg-[#6b9b6e] px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#5d8a60]"
+          >
+            <PlusCircle className="h-5 w-5" />
+            Пост оруулах
+          </Link>
         </div>
       </div>
     </section>

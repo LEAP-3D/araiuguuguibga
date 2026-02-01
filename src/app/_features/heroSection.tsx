@@ -3,55 +3,20 @@
 import { MessageCircle, Heart } from 'lucide-react';
 import type { Stats } from '../_components/types';
 import { motion } from 'framer-motion';
-import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const stats: Stats[] = [
-  { value: '2,500+', label: 'Happy Pets', icon: '🏠' },
-  { value: '1,200+', label: 'Families United', icon: '⚕️' },
-  { value: '98%', label: 'Satisfaction', icon: '🤖' },
+  { value: '2,500+', label: 'Happy Pets', icon: '' },
+  { value: '1,200+', label: 'Families United', icon: '' },
+  { value: '98%', label: 'Satisfaction', icon: '' },
 ];
 
 export function HeroSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const bgRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.to(bgRef.current, {
-        y: 150,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1,
-        },
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <section ref={sectionRef} id="hero" className="relative min-h-screen overflow-hidden flex items-center justify-center">
-      <div
-        ref={bgRef}
-        className="absolute inset-0 -z-10 bg-cover bg-center scale-110"
-        style={{
-          backgroundImage: 'url("/dog.png")',
-          filter: 'blur(3px) brightness(0.85)',
-        }}
-      />
-
-      <div className="absolute inset-0 -z-5 bg-linear-to-b from-white/40 via-white/20 to-transparent pointer-events-none" />
-
-      <div className="absolute bottom-0 left-0 right-0 h-64 -z-5 bg-linear-to-t from-white via-white/80 to-transparent pointer-events-none" />
-
-      <div className="w-full max-w-4xl px-10 relative z-10">
+    <section
+      id="hero"
+      className="relative flex min-h-screen items-center justify-center"
+    >
+      <div className="w-full max-w-4xl px-10">
         <div className="flex flex-col items-center text-center space-y-6">
           {/* Badge */}
           <motion.div

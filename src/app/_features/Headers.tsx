@@ -26,7 +26,7 @@ function HeadersWithClerk() {
   const initial = (displayName as string).charAt(0).toUpperCase();
 
   return (
-    <HeaderShell>
+    <HeaderShell isSignedIn={isSignedIn}>
       {isSignedIn ? (
         <HeaderUserMenu
           displayName={displayName as string}
@@ -43,7 +43,7 @@ function HeadersWithClerk() {
 
 function HeadersWithoutClerk() {
   return (
-    <HeaderShell>
+    <HeaderShell isSignedIn={false}>
       <HeaderAuthButtons />
     </HeaderShell>
   );

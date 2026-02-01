@@ -15,17 +15,18 @@ export type Veterinary = {
   id: string;
   name: string;
   rating: number;
-  reviewCount: number;
-  distance: string;
+  reviewCount?: number;
+  distance?: string;
   address: string;
-  city: string;
-  state: string;
+  city?: string;
+  state?: string;
   services: string[];
   hours?: string;
   isOpen: boolean;
   emergency?: boolean;
   phone: string;
-  coordinates: {
+  category?: "emneleg" | "klinik" | "yaaraltai" | "emiin_san";
+  coordinates?: {
     lat: number;
     lng: number;
   };
