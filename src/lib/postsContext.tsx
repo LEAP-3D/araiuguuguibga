@@ -1,51 +1,18 @@
 "use client";
 
+import { createContext, useCallback, useContext, useState } from "react";
+import type { Post, MyPet } from "./postsStorage";
 import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+  loadPosts,
+  savePosts,
+  loadMyPets,
+  saveMyPets,
+  clearPostsStorage,
+} from "./postsStorage";
 
-const STORAGE_KEY = "user-posts";
-const MYPETS_STORAGE_KEY = "user-my-pets";
-
-export type Post = {
-  id: string;
-  name: string;
-  breed: string;
-  age: string;
-  type: "dog" | "cat" | "other";
-  description: string;
-  location: string;
-  image: string;
-  createdAt: number;
-};
-
-export type VaccineRecord = {
-  vaccine: string;
-  date: string;
-  nextDue: string;
-};
-
-export type HistoryEvent = {
-  event: string;
-  date: string;
-  petId: string;
-};
-
-export type MyPet = {
-  id: string;
-  name: string;
-  breed: string;
-  age: string;
-  type: "dog" | "cat" | "other";
-  image: string;
-  vaccines: VaccineRecord[];
-  history: HistoryEvent[];
-  createdAt: number;
-};
+export type { Post, MyPet } from "./postsStorage";
+export type { VaccineRecord, HistoryEvent } from "./postsContextTypes";
+import type { VaccineRecord, HistoryEvent } from "./postsContextTypes";
 
 type PostsContextType = {
   posts: Post[];
@@ -59,52 +26,8 @@ type PostsContextType = {
 
 const PostsContext = createContext<PostsContextType | null>(null);
 
-function loadPosts(): Post[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-}
-
-function savePosts(posts: Post[]): boolean {
-  if (typeof window === "undefined") return false;
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
-    return true;
-  } catch (e) {
-    console.error("Failed to save posts:", e);
-    return false;
-  }
-}
-
 function generateId() {
   return `post_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
-}
-
-function loadMyPets(): MyPet[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = localStorage.getItem(MYPETS_STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveMyPets(pets: MyPet[]) {
-  if (typeof window === "undefined") return;
-  try {
-    localStorage.setItem(MYPETS_STORAGE_KEY, JSON.stringify(pets));
-  } catch (e) {
-    console.error("Failed to save my pets:", e);
-  }
 }
 
 function generatePetId() {
@@ -112,13 +35,12 @@ function generatePetId() {
 }
 
 export function PostsProvider({ children }: { children: React.ReactNode }) {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [myPets, setMyPets] = useState<MyPet[]>([]);
-
-  useEffect(() => {
-    setPosts(loadPosts());
-    setMyPets(loadMyPets());
-  }, []);
+  const [posts, setPosts] = useState<Post[]>(() =>
+    typeof window !== "undefined" ? loadPosts() : []
+  );
+  const [myPets, setMyPets] = useState<MyPet[]>(() =>
+    typeof window !== "undefined" ? loadMyPets() : []
+  );
 
   const addPost = useCallback((post: Omit<Post, "id" | "createdAt">): boolean => {
     const newPost: Post = {
@@ -137,9 +59,7 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
 
   const clearPosts = useCallback(() => {
     setPosts([]);
-    if (typeof window !== "undefined") {
-      localStorage.removeItem(STORAGE_KEY);
-    }
+    clearPostsStorage();
   }, []);
 
   const addMyPet = useCallback(

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ImagePlus } from "lucide-react";
 import { usePosts } from "@/lib/postsContext";
+import { compressImage } from "@/lib/compressImage";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,38 +14,6 @@ const PET_TYPES = [
   { value: "cat", label: "Муур" },
   { value: "other", label: "Бусад" },
 ] as const;
-
-const MAX_IMAGE_SIZE = 200;
-
-function compressImage(file: File): Promise<string> {
-  return new Promise((resolve) => {
-    const img = new Image();
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-
-    img.onload = () => {
-      let { width, height } = img;
-      if (width > height) {
-        if (width > MAX_IMAGE_SIZE) {
-          height = (height * MAX_IMAGE_SIZE) / width;
-          width = MAX_IMAGE_SIZE;
-        }
-      } else {
-        if (height > MAX_IMAGE_SIZE) {
-          width = (width * MAX_IMAGE_SIZE) / height;
-          height = MAX_IMAGE_SIZE;
-        }
-      }
-      canvas.width = width;
-      canvas.height = height;
-      ctx?.drawImage(img, 0, 0, width, height);
-      resolve(canvas.toDataURL("image/jpeg", 0.7));
-    };
-
-    img.onerror = () => resolve("");
-    img.src = URL.createObjectURL(file);
-  });
-}
 
 export default function AddPetPage() {
   const router = useRouter();
@@ -60,7 +29,7 @@ export default function AddPetPage() {
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const compressed = await compressImage(file);
+      const compressed = await compressImage(file, 200);
       setForm((f) => ({ ...f, imagePreview: compressed || null }));
     }
   };
@@ -97,6 +66,7 @@ export default function AddPetPage() {
             className="flex h-48 w-full cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 transition-colors hover:border-[#4f9669]/50 hover:bg-[#4f9669]/5"
           >
             {form.imagePreview ? (
+              /* eslint-disable-next-line @next/next/no-img-element -- dynamic data URL preview */
               <img
                 src={form.imagePreview}
                 alt="Preview"

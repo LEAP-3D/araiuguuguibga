@@ -4,7 +4,6 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useState,
 } from "react";
 import type { Veterinary } from "@/app/_components/types";
@@ -44,11 +43,9 @@ function generateId() {
 }
 
 export function ClinicsProvider({ children }: { children: React.ReactNode }) {
-  const [clinics, setClinics] = useState<Veterinary[]>([]);
-
-  useEffect(() => {
-    setClinics(loadClinics());
-  }, []);
+  const [clinics, setClinics] = useState<Veterinary[]>(() =>
+    typeof window !== "undefined" ? loadClinics() : []
+  );
 
   const addClinic = useCallback((clinic: Omit<Veterinary, "id">) => {
     const newClinic: Veterinary = {

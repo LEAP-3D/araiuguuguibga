@@ -11,11 +11,8 @@ function PetImage({ image }: { image: string }) {
     image.startsWith("data:");
   if (isUrl) {
     return (
-      <img
-        src={image}
-        alt=""
-        className="h-full w-full object-cover"
-      />
+      /* eslint-disable-next-line @next/next/no-img-element -- dynamic user content */
+      <img src={image} alt="" className="h-full w-full object-cover" />
     );
   }
   return (
