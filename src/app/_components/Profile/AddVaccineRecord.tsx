@@ -16,7 +16,7 @@ export default function AddVaccineRecord() {
         <DialogContent className="w-114 p-6">
           <DialogHeader>
             <DialogTitle className="flex gap-2 items-center text-xl font-semibold">
-              <Syringe className="text-green-700 mb-2" />
+              <Syringe className="text-green-600 mb-2" />
               Add Vaccination Record
             </DialogTitle>
             <DialogDescription></DialogDescription>
