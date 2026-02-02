@@ -3,7 +3,7 @@ export type Pet = {
   name: string;
   breed: string;
   age: string;
-  type: "dog" | "cat" | "other";
+  type: 'dog' | 'cat' | 'other';
   description: string;
   location: string;
   image: string;
@@ -25,17 +25,15 @@ export type Veterinary = {
   isOpen: boolean;
   emergency?: boolean;
   phone: string;
-  category?: "emneleg" | "klinik" | "yaaraltai" | "emiin_san";
-  coordinates?: {
-    lat: number;
-    lng: number;
-  };
+  category?: 'emneleg' | 'klinik' | 'yaaraltai' | 'emiin_san';
+  lat: number;
+  lng: number;
 };
 
 export type FilterCategory = {
   id: string;
   label: string;
-  value: "all" | "dog" | "cat" | "other";
+  value: 'all' | 'dog' | 'cat' | 'other';
   icon: string;
 };
 
