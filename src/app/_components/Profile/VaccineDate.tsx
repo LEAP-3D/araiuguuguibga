@@ -1,5 +1,5 @@
+/* eslint-disable max-lines */
 'use client';
-
 import * as React from 'react';
 import { ChevronDownIcon } from 'lucide-react';
 
