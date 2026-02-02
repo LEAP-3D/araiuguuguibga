@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Heart, MapPin, MessageCircle, StickyNote, User, Settings, LogOut } from 'lucide-react';
+import { Heart, MapPin, MessageCircle, StickyNote, User, Settings, LogOut, LayoutDashboard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -26,10 +26,10 @@ export function HeaderLogo() {
   );
 }
 
-export function HeaderNavLinks() {
+export function HeaderNavLinks({ isSignedIn = false }: { isSignedIn?: boolean }) {
   return (
     <div className="hidden md:flex items-center gap-8">
-      <a className={navLinkClass}>
+      <a href="#adopt" className={navLinkClass}>
         <Heart className={iconClass} /> Үрчлэх <span className={underlineClass} />
       </a>
       <a className={navLinkClass}>
@@ -38,9 +38,9 @@ export function HeaderNavLinks() {
       <a className={navLinkClass}>
         <MessageCircle className={iconClass} /> Community <span className={underlineClass} />
       </a>
-      <a className={navLinkClass}>
-        <StickyNote className={iconClass} /> Пост оруулах <span className={underlineClass} />
-      </a>
+      <Link href={isSignedIn ? "/dashboard" : "/sign-in"} className={navLinkClass}>
+        <StickyNote className={iconClass} /> Dashboard <span className={underlineClass} />
+      </Link>
     </div>
   );
 }
@@ -102,6 +102,10 @@ export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: He
           <p className="font-semibold text-gray-900">My Account</p>
         </div>
         <div className="py-2">
+          <Link href="/dashboard" className="flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-green-50 transition-colors">
+            <LayoutDashboard className="w-4 h-4 text-[#51986a]" />
+            <span>Dashboard</span>
+          </Link>
           <Link href="/profile" className="flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-green-50 transition-colors">
             <User className="w-4 h-4 text-[#51986a]" />
             <span>Profile</span>
@@ -131,13 +135,19 @@ const navMotion = {
   transition: { duration: 0.6, ease: 'easeOut' as const },
 };
 
-export function HeaderShell({ children }: { children: React.ReactNode }) {
+export function HeaderShell({
+  children,
+  isSignedIn = false,
+}: {
+  children: React.ReactNode;
+  isSignedIn?: boolean;
+}) {
   return (
     <motion.nav className={navClassName} {...navMotion}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <HeaderLogo />
-          <HeaderNavLinks />
+          <HeaderNavLinks isSignedIn={isSignedIn} />
           <div className="hidden md:flex items-center gap-4">
             <LanguageSwitcher />
             {children}

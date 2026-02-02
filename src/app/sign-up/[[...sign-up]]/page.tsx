@@ -1,6 +1,6 @@
 import { SignUp } from "@clerk/nextjs";
 import Link from "next/link";
-import { VideoSection } from "@/app/_components/VideoSection";
+import { SignInUpShell } from "@/app/_components/SignInUpShell";
 import { signUpAppearance } from "@/app/_components/clerkAppearance";
 
 export const dynamic = "force-dynamic";
@@ -9,10 +9,7 @@ const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
 export default function SignUpPage() {
   return (
-    <div className="relative min-h-screen w-full overflow-hidden">
-      <VideoSection />
-      <div className="absolute inset-0 bg-black/40" aria-hidden />
-
+    <SignInUpShell>
       <div className="absolute inset-0 flex flex-col items-center justify-center p-4 md:p-8">
         <div className="w-full max-w-[420px] -mt-40">
           <Link
@@ -46,6 +43,6 @@ export default function SignUpPage() {
           )}
         </div>
       </div>
-    </div>
+    </SignInUpShell>
   );
 }

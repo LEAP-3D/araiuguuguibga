@@ -2,8 +2,16 @@
 
 import { useState } from "react";
 
-export function VideoSection() {
+type VideoSectionProps = {
+  onReady?: () => void;
+};
+
+export function VideoSection({ onReady }: VideoSectionProps) {
   const [error, setError] = useState(false);
+
+  const handleReady = () => {
+    onReady?.();
+  };
 
   return (
     <div className="absolute inset-0 min-h-full w-full">
@@ -15,7 +23,11 @@ export function VideoSection() {
           playsInline
           className="absolute inset-0 h-full w-full object-cover"
           src="/home-lifestyle.mp4"
-          onError={() => setError(true)}
+          onCanPlay={handleReady}
+          onError={() => {
+            setError(true);
+            onReady?.();
+          }}
         >
           <source src="/home-lifestyle.mp4" type="video/mp4" />
         </video>

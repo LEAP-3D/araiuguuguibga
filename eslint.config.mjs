@@ -63,7 +63,7 @@ const eslintConfig = defineConfig([
       "@typescript-eslint/no-shadow": "error",
       "no-shadow": "off",
 
-      /* 🔟 Max line length */
+      /* 🔟 Max lines per file */
       "max-lines": ["error", { max: 180 }],
     },
   },
