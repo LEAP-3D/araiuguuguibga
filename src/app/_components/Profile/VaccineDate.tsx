@@ -25,8 +25,8 @@ export function VaccineDate() {
             mode="single"
             selected={date}
             captionLayout="dropdown"
-            onSelect={(date) => {
-              setDate(date);
+            onSelect={(selectedDate: Date | undefined) => {
+              setDate(selectedDate);
               setOpen(false);
             }}
           />
