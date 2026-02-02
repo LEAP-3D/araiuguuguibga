@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+  <g fill="#e8ded6" opacity="0.3">
+    <!-- Paw 1 -->
+    <circle cx="60" cy="80" r="14"/>
+    <circle cx="42" cy="58" r="6"/>
+    <circle cx="60" cy="52" r="7"/>
+    <circle cx="78" cy="58" r="6"/>
+
+    <!-- Paw 2 (offset for pattern feel) -->
+    <g transform="translate(-30,-40)">
+      <circle cx="60" cy="80" r="14"/>
+      <circle cx="42" cy="58" r="6"/>
+      <circle cx="60" cy="52" r="7"/>
+      <circle cx="78" cy="58" r="6"/>
+    </g>
+
+    <!-- Paw 3 -->
+    <g transform="translate(30,-10)">
+      <circle cx="60" cy="80" r="14"/>
+      <circle cx="42" cy="58" r="6"/>
+      <circle cx="60" cy="52" r="7"/>
+      <circle cx="78" cy="58" r="6"/>
+    </g>
+  </g>
+</svg>
