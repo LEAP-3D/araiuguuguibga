@@ -1,13 +1,23 @@
+'use client';
+
 import { MessageCircle, X, Send, Bot, PawPrint } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+const OPEN_CHAT_EVENT = 'open-chat';
 
 export default function Chat() {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    const open = () => setIsOpen(true);
+    window.addEventListener(OPEN_CHAT_EVENT, open);
+    return () => window.removeEventListener(OPEN_CHAT_EVENT, open);
+  }, []);
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
@@ -80,7 +90,7 @@ export default function Chat() {
               <Button
                 size="icon"
                 disabled={!message.trim()}
-                className="w-12 h-12 bg-linear-to-br from-[#51986a] to-[#51986a] hover:from-[#51986a] hover:to-[#51986a] rounded-xl shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group"
+                className="w-12 h-12 cursor-pointer bg-linear-to-br from-[#51986a] to-[#51986a] hover:from-[#51986a] hover:to-[#51986a] rounded-xl shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group"
                 onClick={() => {
                   setMessage('');
                 }}

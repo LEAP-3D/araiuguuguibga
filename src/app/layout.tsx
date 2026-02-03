@@ -26,20 +26,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? '';
-  const content = (
+  return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Providers>{children}</Providers>
+        <ClerkProvider
+          publishableKey={publishableKey}
+          signInFallbackRedirectUrl="/"
+          signUpFallbackRedirectUrl="/"
+        >
+          <Providers>{children}</Providers>
+        </ClerkProvider>
       </body>
     </html>
-  );
-
-  if (!publishableKey) {
-    return content;
-  }
-  return (
-    <ClerkProvider publishableKey={publishableKey} signInFallbackRedirectUrl="/" signUpFallbackRedirectUrl="/">
-      {content}
-    </ClerkProvider>
   );
 }

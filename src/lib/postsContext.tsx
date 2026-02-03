@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useState, useEffect } from "react";
 import type { Post, MyPet } from "./postsStorage";
 import {
   loadPosts,
@@ -35,12 +35,15 @@ function generatePetId() {
 }
 
 export function PostsProvider({ children }: { children: React.ReactNode }) {
-  const [posts, setPosts] = useState<Post[]>(() =>
-    typeof window !== "undefined" ? loadPosts() : []
-  );
-  const [myPets, setMyPets] = useState<MyPet[]>(() =>
-    typeof window !== "undefined" ? loadMyPets() : []
-  );
+  // Initialize with [] so server and first client render match (avoids hydration mismatch).
+  // Load from localStorage only after mount.
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [myPets, setMyPets] = useState<MyPet[]>([]);
+
+  useEffect(() => {
+    setPosts(loadPosts());
+    setMyPets(loadMyPets());
+  }, []);
 
   const addPost = useCallback((post: Omit<Post, "id" | "createdAt">): boolean => {
     const newPost: Post = {

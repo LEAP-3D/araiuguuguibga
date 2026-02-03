@@ -1,13 +1,22 @@
 'use client';
 
+import Link from 'next/link';
 import { MessageCircle, Heart } from 'lucide-react';
 import type { Stats } from '../_components/types';
 import { motion } from 'framer-motion';
 
+const OPEN_CHAT_EVENT = 'open-chat';
+
+function openChat() {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent(OPEN_CHAT_EVENT));
+  }
+}
+
 const stats: Stats[] = [
-  { value: '2,500+', label: 'Happy Pets', icon: '' },
-  { value: '1,200+', label: 'Families United', icon: '' },
-  { value: '98%', label: 'Satisfaction', icon: '' },
+  { value: '0+', label: 'Happy Pets', icon: '' },
+  { value: '0+', label: 'Families United', icon: '' },
+  { value: '0%', label: 'Satisfaction', icon: '' },
 ];
 
 export function HeroSection() {
@@ -51,6 +60,8 @@ export function HeroSection() {
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }} className="flex flex-wrap justify-center gap-4 pt-4">
             <motion.button
+              type="button"
+              onClick={openChat}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="relative flex items-center gap-2 cursor-pointer rounded-xl px-6 py-3 font-medium bg-linear-to-r from-[#51986a] via-green-500 to-[#51986a] text-white shadow-lg shadow-cyan-300/40 overflow-hidden group transition-all duration-500"
@@ -70,17 +81,19 @@ export function HeroSection() {
               </span>
             </motion.button>
 
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="relative flex items-center gap-2 cursor-pointer rounded-xl px-6 py-3 font-medium text-gray-700 bg-white border border-gray-200 overflow-hidden group transition-all duration-300 hover:text-cyan-600"
-            >
-              <motion.span className="absolute inset-0 bg-linear-to-r from-cyan-50 to-teal-50" initial={{ x: '-100%' }} whileHover={{ x: 0 }} transition={{ duration: 0.3 }} />
-              <span className="relative z-10 flex items-center gap-2">
-                <Heart className="h-5 w-5" />
-                Our Services
-              </span>
-            </motion.button>
+            <Link href="/dashboard" className="inline-block">
+              <motion.span
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative flex items-center gap-2 cursor-pointer rounded-xl px-6 py-3 font-medium text-gray-700 bg-white border border-gray-200 overflow-hidden group transition-all duration-300 hover:text-cyan-600"
+              >
+                <motion.span className="absolute inset-0 bg-linear-to-r from-cyan-50 to-teal-50" initial={{ x: '-100%' }} whileHover={{ x: 0 }} transition={{ duration: 0.3 }} />
+                <span className="relative z-10 flex items-center gap-2">
+                  <Heart className="h-5 w-5" />
+                  Our Services
+                </span>
+              </motion.span>
+            </Link>
           </motion.div>
 
           <motion.div

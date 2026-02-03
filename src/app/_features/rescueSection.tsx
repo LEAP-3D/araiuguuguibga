@@ -13,7 +13,7 @@ const FILTERS = [
   { id: "hamster", label: "Хавраа" },
 ] as const;
 
-const FEED_POST_LIMIT = 10;
+const SECTION_DISPLAY_LIMIT = 6;
 
 export function RescuePetsSection() {
   const { posts } = usePosts();
@@ -29,7 +29,7 @@ export function RescuePetsSection() {
     return false;
   });
 
-  const displayPosts = filteredPosts.slice(0, FEED_POST_LIMIT);
+  const displayPosts = filteredPosts.slice(0, SECTION_DISPLAY_LIMIT);
 
   const toggleFavorite = (id: string) => {
     setFavorites((prev) => {
@@ -45,7 +45,7 @@ export function RescuePetsSection() {
   return (
     <section id="adopt" className="min-h-[70vh] px-4 py-12">
       <RescueHeader />
-      <div className="mx-auto flex h-[600px] max-w-7xl flex-col gap-4">
+      <div className="mx-auto flex max-w-7xl flex-col gap-4">
         <div className="flex shrink-0 flex-wrap justify-center gap-3">
           {FILTERS.map((f) => (
             <button
@@ -62,19 +62,17 @@ export function RescuePetsSection() {
             </button>
           ))}
         </div>
-        <div className="min-h-0 flex-1 overflow-y-auto">
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {displayPosts.map((post) => (
-              <RescuePetCard
-                key={post.id}
-                post={post}
-                isFavorite={favorites.has(post.id)}
-                onToggleFavorite={toggleFavorite}
-              />
-            ))}
-          </div>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {displayPosts.map((post) => (
+            <RescuePetCard
+              key={post.id}
+              post={post}
+              isFavorite={favorites.has(post.id)}
+              onToggleFavorite={toggleFavorite}
+            />
+          ))}
         </div>
-        <RescueFooterActions postCount={posts.length} />
+        <RescueFooterActions postCount={posts.length} limit={SECTION_DISPLAY_LIMIT} />
       </div>
     </section>
   );
