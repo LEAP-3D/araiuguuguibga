@@ -1,6 +1,5 @@
 'use client';
-import Image from 'next/image';
-import petBackground from './pet-background.jpg';
+
 import AddPetDialog from '@/app/_components/Profile/AddPetDialog';
 import { useRouter } from 'next/navigation';
 import { Filter, PawPrint, Syringe } from 'lucide-react';
