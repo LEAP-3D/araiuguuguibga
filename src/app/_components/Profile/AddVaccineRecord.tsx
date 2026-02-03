@@ -1,7 +1,9 @@
+'use client';
+
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { VaccineDate } from './VaccineDate';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectLabel, SelectValue } from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Plus, Syringe } from 'lucide-react';
 export default function AddVaccineRecord() {
   return (
@@ -24,18 +26,16 @@ export default function AddVaccineRecord() {
           <div className="flex flex-col gap-2  ">
             <div>
               <label className="block text-sm font-semibold text-foreground mb-2">Pet</label>
+
               <Select>
-                <SelectTrigger className="w-full max-w-48">
+                <SelectTrigger className="px-5 py-2 rounded-xl border bg-[#f7fff3]">
                   <SelectValue placeholder="Select Pet" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>All Pets</SelectLabel>
-                    <SelectItem value="pet">All Pets</SelectItem>
-                    <SelectItem value="pet">Bumble</SelectItem>
-                    <SelectItem value="pet">Kitty</SelectItem>
-                    <SelectItem value="pet">Tommy</SelectItem>
-                  </SelectGroup>
+                  <SelectItem value="all">All</SelectItem>
+                  <SelectItem value="bumble">Bumble</SelectItem>
+                  <SelectItem value="kitty">Kitty</SelectItem>
+                  <SelectItem value="tommy">Tommy</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -75,9 +75,11 @@ export default function AddVaccineRecord() {
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline" className="rounded-xl px-8 py-2">
+                Cancel
+              </Button>
             </DialogClose>
-            <Button type="submit">Add Record</Button>
+            <Button className="rounded-xl px-8 py-2 bg-linear-to-r from-[#09712e] to-[#51986a] text-white shadow-md hover:opacity-90">Add Record</Button>
           </DialogFooter>
         </DialogContent>
       </form>
