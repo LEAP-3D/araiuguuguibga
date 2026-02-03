@@ -39,8 +39,11 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
   const [myPets, setMyPets] = useState<MyPet[]>([]);
 
   useEffect(() => {
-    setPosts(loadPosts());
-    setMyPets(loadMyPets());
+    const id = setTimeout(() => {
+      setPosts(loadPosts());
+      setMyPets(loadMyPets());
+    }, 0);
+    return () => clearTimeout(id);
   }, []);
 
   const addPost = useCallback((post: Omit<Post, "id" | "createdAt">): boolean => {
