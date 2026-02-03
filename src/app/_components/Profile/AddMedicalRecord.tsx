@@ -5,17 +5,17 @@ import { Button } from '@/components/ui/button';
 import { VaccineDate } from './VaccineDate';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Plus, Syringe } from 'lucide-react';
-export default function AddVaccineRecord() {
+export default function AddMedicalRecord() {
   return (
     <Dialog>
       <form>
         <DialogTrigger asChild>
-          <div className="w-fit h-fit bg-green-700 rounded-full py-2 px-4 flex items-center justify-center text-white font-medium hover:bg-green-800 cursor-pointer transition">
+          <div className="w-fit h-fit bg-green-600 rounded-2xl py-3 px-5 flex items-center gap-2 justify-center text-white font-medium hover:bg-green-800 cursor-pointer transition">
             <Plus />
-            Add Vaccination
+            Add Record
           </div>
         </DialogTrigger>
-        <DialogContent className="w-114 p-6">
+        <DialogContent className="w-120 ">
           <DialogHeader>
             <DialogTitle className="flex gap-2 items-center text-xl font-semibold">
               <Syringe className="text-green-600 mb-2" />
@@ -24,22 +24,37 @@ export default function AddVaccineRecord() {
             <DialogDescription></DialogDescription>
           </DialogHeader>
           <div className="flex flex-col gap-2  ">
-            <div>
-              <label className="block text-sm font-semibold text-foreground mb-2">Pet</label>
+            <div className="flex justify-between">
+              <div>
+                <label className="block text-sm font-semibold text-foreground mb-2">Pet</label>
 
-              <Select>
-                <SelectTrigger className="px-5 py-2 rounded-xl border bg-[#f7fff3]">
-                  <SelectValue placeholder="Select Pet" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All</SelectItem>
-                  <SelectItem value="bumble">Bumble</SelectItem>
-                  <SelectItem value="kitty">Kitty</SelectItem>
-                  <SelectItem value="tommy">Tommy</SelectItem>
-                </SelectContent>
-              </Select>
+                <Select>
+                  <SelectTrigger className="px-5 py-2 rounded-xl border bg-[#f7fff3]">
+                    <SelectValue placeholder="Select Pet" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All</SelectItem>
+                    <SelectItem value="bumble">Bumble</SelectItem>
+                    <SelectItem value="kitty">Kitty</SelectItem>
+                    <SelectItem value="tommy">Tommy</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-foreground mb-2">Type</label>
+                <Select>
+                  <SelectTrigger className="px-5 py-2 rounded-xl border bg-[#f7fff3]">
+                    <SelectValue placeholder="Select Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="vaccine">Vaccine</SelectItem>
+                    <SelectItem value="medicine">Medicine</SelectItem>
+                    <SelectItem value="treatment">Treatment</SelectItem>
+                      <SelectItem value="surgery">Surgery</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-
             <div>
               <label className="block text-sm font-semibold text-foreground mb-2">Vaccine Name</label>
               <input
@@ -49,7 +64,7 @@ export default function AddVaccineRecord() {
             </div>
             <div className="flex gap-4">
               <div className="flex gap-1 flex-col">
-                <label className="block text-sm font-semibold text-foreground mb-2">Date Given</label>
+                <label className="block text-sm font-semibold text-foreground mb-2">Date</label>
                 <VaccineDate />
               </div>
               <div className="flex gap-1 flex-col">
@@ -58,10 +73,10 @@ export default function AddVaccineRecord() {
               </div>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-foreground mb-2">Veterinarian</label>
+              <label className="block text-sm font-semibold text-foreground mb-2">Vet / Clinic Name</label>
               <input
                 className="w-full px-4 py-1.5 rounded-xl bg-secondary border-2 border-transparent focus:border-primary focus:outline-none transition-colors text-foreground placeholder:text-muted-foreground"
-                placeholder="Dr. Smith"
+                placeholder="happy Paws hospital"
               />
             </div>
             <div>

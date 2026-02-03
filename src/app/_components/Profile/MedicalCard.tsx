@@ -1,8 +1,8 @@
 import { CircleAlert } from 'lucide-react';
 
-export default function VaccinationCard() {
+export default function MedicalCard() {
   return (
-    <div className="w-full bg-white rounded-lg shadow-md p-4 flex gap-4">
+    <div className="w-140 h-60 bg-white rounded-2xl shadow-md p-4 flex gap-4">
       <div className="flex items-center ">
         <div className="flex items-center justify-center w-11 h-11 rounded-full bg-red-100">
           <CircleAlert className="w-6 h-6 text-red-500" />
