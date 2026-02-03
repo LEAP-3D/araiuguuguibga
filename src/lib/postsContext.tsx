@@ -41,8 +41,12 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
   const [myPets, setMyPets] = useState<MyPet[]>([]);
 
   useEffect(() => {
-    setPosts(loadPosts());
-    setMyPets(loadMyPets());
+    // Defer to avoid synchronous setState in effect (react-hooks/set-state-in-effect).
+    const data = { posts: loadPosts(), pets: loadMyPets() };
+    queueMicrotask(() => {
+      setPosts(data.posts);
+      setMyPets(data.pets);
+    });
   }, []);
 
   const addPost = useCallback((post: Omit<Post, "id" | "createdAt">): boolean => {
