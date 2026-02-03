@@ -37,8 +37,8 @@ export default function AddPetDialog() {
 
         <div className="flex flex-col items-center ">
           {/* Image Upload */}
-          {form.imagePreview && (
-            <div className="relative rounded-lg border border-gray-200 bg-gray-50 mb-8">
+          {form.imagePreview ? (
+            <div className="relative rounded-lg border border-gray-200 bg-gray-50 ">
               <button
                 type="button"
                 onClick={removeImage}
@@ -49,14 +49,15 @@ export default function AddPetDialog() {
               {/* eslint-disable-next-line @next/next/no-img-element -- dynamic data URL preview */}
               <img src={form.imagePreview} alt="Preview" className="rounded-lg object-contain" />
             </div>
+          ) : (
+            <div className="w-25 h-25 pt-3 rounded-xl border-2 border-dashed border-[#48805b] hover:border-[#51986a] hover:bg-[#58b97a2c] outline-none ">
+              <label className="flex flex-col cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-500 transition-colors ">
+                <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+                <Upload className="h-8 w-8 text-[#2b6440]" />
+                <p className="text-[9px]">Зураг оруулах</p>
+              </label>
+            </div>
           )}
-          <div className="w-25 h-25 pt-3 rounded-xl border-2 border-dashed border-[#48805b] hover:border-[#51986a] hover:bg-[#58b97a2c] outline-none ">
-            <label className="flex flex-col cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-500 transition-colors ">
-              <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
-              <Upload className="h-8 w-8 text-[#2b6440]" />
-              <p className="text-[9px]">Зураг оруулах</p>
-            </label>
-          </div>
         </div>
 
         {/* Name */}
