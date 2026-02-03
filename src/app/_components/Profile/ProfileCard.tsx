@@ -1,4 +1,4 @@
-import { Camera, Eye, Pencil } from 'lucide-react';
+import { Camera, Eye } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import ProfileDetails from './ProfileDetails';
