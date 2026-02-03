@@ -5,8 +5,16 @@ import { Input } from '@/components/ui/input';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 
-export default function Chat() {
-  const [isOpen, setIsOpen] = useState(false);
+type ChatProps = {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+};
+
+export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps = {}) {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isControlled = controlledOpen !== undefined && onOpenChange !== undefined;
+  const isOpen = isControlled ? controlledOpen : internalOpen;
+  const setIsOpen = isControlled ? onOpenChange : setInternalOpen;
   const [message, setMessage] = useState('');
 
   return (

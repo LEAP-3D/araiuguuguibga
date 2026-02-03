@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { HeroSection } from "../_features/heroSection";
 import { RescuePetsSection } from "../_features/rescueSection";
 import { VeterinarySection } from "../_features/veterinarySection";
@@ -10,6 +11,8 @@ import Footer from "../_features/Footer";
 import Headers from "../_features/Headers";
 
 export default function HomeClient() {
+  const [chatOpen, setChatOpen] = useState(false);
+
   return (
     <>
       <Headers />
@@ -23,13 +26,13 @@ export default function HomeClient() {
       >
         <div className="">
         <div className="relative ">
-          <HeroSection />
+          <HeroSection onOpenChat={() => setChatOpen(true)} />
           <RescuePetsSection />
           <VeterinarySection />
         </div>
         </div>
       </ParallaxImageBg>
-      <Chat />
+      <Chat open={chatOpen} onOpenChange={setChatOpen} />
       <Footer />
     </>
   );
