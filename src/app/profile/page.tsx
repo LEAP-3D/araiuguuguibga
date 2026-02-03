@@ -4,9 +4,8 @@ import AddPetDialog from '@/app/_components/Profile/AddPetDialog';
 import { useRouter } from 'next/navigation';
 import { PawPrint, Syringe } from 'lucide-react';
 import ProfileCard from '../_components/Profile/ProfileCard';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectLabel, SelectValue } from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import VaccinationCard from '../_components/Profile/VaccinationCard';
-
 import AddVaccineRecord from '../_components/Profile/AddVaccineRecord';
 
 export default function Profile() {
@@ -49,17 +48,14 @@ export default function Profile() {
             </div>
             <div className="flex flex-col gap-4">
               <Select>
-                <SelectTrigger className="w-full max-w-48">
-                  <SelectValue placeholder="All Pets" />
+                <SelectTrigger className="px-5 py-2 rounded-xl border bg-[#f7fff3]">
+                  <SelectValue placeholder="Select Pet" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>All Pets</SelectLabel>
-                    <SelectItem value="pet">All Pets</SelectItem>
-                    <SelectItem value="pet">Bumble</SelectItem>
-                    <SelectItem value="pet">Kitty</SelectItem>
-                    <SelectItem value="pet">Tommy</SelectItem>
-                  </SelectGroup>
+                  <SelectItem value="all">All</SelectItem>
+                  <SelectItem value="bumble">Bumble</SelectItem>
+                  <SelectItem value="kitty">Kitty</SelectItem>
+                  <SelectItem value="tommy">Tommy</SelectItem>
                 </SelectContent>
               </Select>
               <VaccinationCard />

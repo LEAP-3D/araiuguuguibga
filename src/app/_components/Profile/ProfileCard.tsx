@@ -8,7 +8,7 @@ export default function ProfileCard() {
     <div className="bg-[#fefdfc] w-200 h-40 rounded-2xl shadow-lg flex justify-between pr-6 items-center">
       <div className="p-6 flex gap-4 ">
         <div className="relative inline-block">
-          <div className="w-24 h-24 rounded-full bg-pink-500 text-white text-3xl flex items-center justify-center ring-4 ring-white">U</div>
+          <div className="w-24 h-24 rounded-full bg-purple-600 text-white text-3xl flex items-center justify-center ring-4 ring-white">U</div>
           <button className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center shadow-lg hover:bg-gray-300">
             <Camera className="w-4 h-4" />
           </button>
