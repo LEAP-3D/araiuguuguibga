@@ -60,12 +60,12 @@ export function VeterinarySection() {
     <section id="vets" className="min-h-[70vh] px-4 py-12">
       <div className="mb-8 text-center">
         <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-orange-50 px-4 py-1.5">
-          <MapPin className="h-6 w-6 text-orange-500" />
-          <span className="text-xl font-bold text-black">
-            Танд хамгийн ойр байгаа <span className="text-orange-400">мал эмнэлэгүүд</span>
+          <MapPin className="h-6 w-6 text-[#3f8b5c]" />
+          <span className="text-xl font-bold text-[#2a3a32]">
+            Танд хамгийн ойр байгаа <span className="text-[#3f8b5c]">мал эмнэлэгүүд</span>
           </span>
         </div>
-        <p className="text-sm text-gray-600">Яаралтай үед ойр байгаа эмнэлэгүүдийн байршил болон мэдээллийг эндээс харж болно</p>
+        <p className="text-sm text-[#4b5a50]">Яаралтай үед ойр байгаа эмнэлэгүүдийн байршил болон мэдээллийг эндээс харж болно</p>
       </div>
 
       <div className="mx-auto flex h-[600px] max-w-7xl flex-col gap-4 lg:flex-row lg:gap-6">
