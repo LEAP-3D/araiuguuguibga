@@ -1,11 +1,5 @@
-import { DashboardClientShell } from "./DashboardClientShell";
+export const dynamic = 'force-dynamic';
 
-export const dynamic = "force-dynamic";
-
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return <DashboardClientShell>{children}</DashboardClientShell>;
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  return <section className="min-h-screen">{children}</section>;
 }

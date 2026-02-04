@@ -13,30 +13,30 @@ import { usePets } from '@/lib/petsContext';
 export default function Profile() {
   const { pets } = usePets();
   const router = useRouter();
-  const handleButtonClick = () => {
-    router.push('/');
-  };
+
   return (
-    <div className="w-screen relative flex justify-center-safe">
-      <div className=" fixed inset-0 z-0 min-h-screen bg-[url('/pet-background.jpg')] bg-cover bg-center">
-        <div className="absolute inset-0 bg-background/85 backdrop-blur-sm" />
-      </div>
-      <main className="container px-4 py-8 w-6xl relative z-10 flex flex-col items-start ">
-        <button className="mb-6 font-medium px-4 py-2 hover:bg-green-100 rounded-lg transition" onClick={handleButtonClick}>
+    <div className="relative min-h-screen bg-[#fff8eb]">
+      <div className="absolute bottom-0 h-[80%] w-full bg-[url('/paws.svg')] bg-repeat bg-size-[110px] opacity-40 pointer-events-none" />
+
+      <main className="container mx-auto px-4 py-8 max-w-6xl relative z-10">
+        <button className="mb-6 font-medium px-4 py-2 hover:bg-green-100 rounded-lg transition" onClick={() => router.push('/')}>
           ← Back to home
         </button>
-        <div className="flex flex-col gap-10 w-6xl items-center">
-          <div className="w-6xl flex justify-start">
-            <ProfileCard />
-          </div>
 
-          {/* PETS SECTION */}
-          <div className="rounded-2xl w-6xl  flex flex-col overflow-auto ">
+        <div className="flex flex-col gap-5 items-center">
+          <ProfileCard />
+
+          <div className="rounded-2xl w-200 shadow-lg p-6 flex flex-col overflow-auto bg-white">
             <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
               <PawPrint className="text-green-700" /> My Pets
             </h3>
-            <div className="gap-3 flex  overflow-auto ">
-              <AddPetDialog />
+
+            <div className="flex flex-col gap-4">
+              <div className="flex gap-3 overflow-auto">
+                <AddPetDialog />
+              </div>
+
+              {/* Pets list */}
               <div className="flex flex-wrap gap-4">
                 {pets.map((pet) => (
                   <PetCard key={pet.id} pet={pet} />
@@ -45,25 +45,29 @@ export default function Profile() {
             </div>
           </div>
 
-          <div className="w-6xl h-fit rounded-2xl flex flex-col  gap-6">
-            <div className="flex justify-between">
-              <div className="flex gap-3 items-start">
-                <div className="p-3 bg-[#94c1945b] rounded-full">
+          <div className="w-200 h-fit bg-green-100 rounded-2xl p-6 flex flex-col shadow-lg gap-6">
+            <div className="flex justify-between items-start gap-4">
+              <div className="flex gap-2 items-start">
+                <div className="p-3 bg-[#70a3705b] rounded-full">
                   <Syringe className="text-green-700" />
                 </div>
+
                 <div className="flex flex-col">
                   <p className="text-xl font-bold">Medical Record</p>
                   <p className="text-sm text-gray-600">Track vaccinations, treatments & medications</p>
                 </div>
               </div>
+
               <AddMedicalRecord />
             </div>
+
             <div className="flex flex-col gap-4">
-              <div className="flex gap-2 text-gray-500 items-center h-5 mb-4">
+              <div className="flex flex-wrap gap-2 items-center text-gray-600">
                 <Filter className="w-4 h-4" />
-                <p>Filter by pet:</p>
+                <p className="text-sm">Filter by pet:</p>
+
                 <Select>
-                  <SelectTrigger className="px-5 py-2 rounded-xl border">
+                  <SelectTrigger className="w-full max-w-48 rounded-xl border bg-white">
                     <SelectValue placeholder="Select Pet" />
                   </SelectTrigger>
                   <SelectContent>
@@ -74,6 +78,7 @@ export default function Profile() {
                   </SelectContent>
                 </Select>
               </div>
+
               <MedicalCard />
             </div>
           </div>
