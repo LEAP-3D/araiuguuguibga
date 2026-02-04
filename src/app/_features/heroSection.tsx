@@ -46,7 +46,7 @@ export function HeroSection({ onOpenChat }: HeroSectionProps) {
           {/* Headline */}
           <motion.h1 initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2 }} className="leading-tight">
             <span
-              className="block text-5xl md:text-7xl font-bold text-gray-800 drop-shadow-sm"
+              className="block text-5xl md:text-7xl font-bold text-white drop-shadow-sm"
               style={{
                 fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive",
               }}
