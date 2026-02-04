@@ -25,7 +25,7 @@ export default function ProfileCard() {
         <div className="px-5">
           <Dialog>
             <DialogTrigger asChild>
-              <div className="w-90 h-12 bg-[#f3ece3] rounded-2xl p-3 border-2 flex justify-center gap-2 cursor-pointer">
+              <div className="w-90 h-12 bg-[#f6f2e9] text-[#5e493a] font-semibold rounded-2xl p-3 border-2 border-[#eae4dc] flex justify-center gap-2 cursor-pointer">
                 <Eye />
                 <p>View details</p>
               </div>

@@ -1,8 +1,8 @@
 'use client';
-import { Upload, X } from 'lucide-react';
+import { PlusIcon, Upload, X } from 'lucide-react';
 import { PetFormFields } from './PetFormFields';
 import type { PetForm } from './PetFormFields';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { compressImage } from '@/lib/compressImage';
 import { useState } from 'react';
@@ -24,8 +24,12 @@ export default function AddPetDialog() {
   });
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    console.log('File selected:', file); // Debug log
+
     if (file) {
       const compressed = await compressImage(file, 400);
+      console.log('Compressed result:', compressed); // Debug log
+
       setForm((f) => ({ ...f, imagePreview: compressed || null }));
     }
     e.target.value = '';
@@ -65,8 +69,12 @@ export default function AddPetDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="p-4 h-80 rounded-xl border w-60 border-dashed border-[#76a988] text-center hover:border-[#3f915c] hover:bg-green-50/30 ">
-          <div className="text-5xl mb-2">➕</div>
+        <button className="p-4 h-80 rounded-xl border w-60 border-dashed border-[#5e493a] text-center hover:border-[#5e493a] hover:bg-[#8e7f7236] ">
+          <div className="flex justify-center mb-3">
+            <div className="text-5xl font-bold w-13 h-13 rounded-2xl bg-[#5e493a32] flex items-center justify-center ">
+              <PlusIcon className="text-[#5e493a]" />
+            </div>
+          </div>
           <div className="font-semibold text-gray-700">Add Pet</div>
           <div className="text-xs text-gray-500">Register new pet</div>
         </button>
@@ -74,6 +82,7 @@ export default function AddPetDialog() {
       <DialogContent className="max-w-lg bg-[#fefdfc] rounded-3xl border border-[#f1e6d9] p-8">
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold text-[#3b2f2f]">🐾 Тэжээвэр амьтан нэмэх</DialogTitle>
+          <DialogDescription className="text-sm text-gray-500">Fill in the information below to add a new pet to your profile.</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col items-center ">
           {/* Image Upload */}
@@ -99,7 +108,7 @@ export default function AddPetDialog() {
             </div>
           )}
         </div>
-        <PetFormFields form={form} setForm={setForm} handleImageChange={handleImageChange} removeImage={removeImage} />
+        <PetFormFields form={form} setForm={setForm} />
 
         <DialogFooter>
           <DialogClose asChild>
