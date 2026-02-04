@@ -4,7 +4,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { Providers } from './_components/Providers';
 import './globals.css';
 import 'leaflet/dist/leaflet.css';
-import { PetsProvider } from '@/lib/petsContext';
+import { PetsProvider } from '../lib/petsContext';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',

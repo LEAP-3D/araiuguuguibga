@@ -48,7 +48,7 @@ export function HeroSection({ onOpenChat }: HeroSectionProps) {
               Where Every Pet
             </span>
             <span
-              className="block text-5xl md:text-7xl font-bold drop-shadow-sm"
+              className="block text-5xl md:text-7xl font-bold text-gray-800 drop-shadow-sm"
               style={{
                 fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive",
                 color: '#3f8b5c',
