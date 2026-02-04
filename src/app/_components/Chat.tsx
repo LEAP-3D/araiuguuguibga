@@ -1,9 +1,11 @@
+'use client';
+
 import { MessageCircle, X, Send, Bot, PawPrint } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 
 type ChatProps = {
   open?: boolean;
@@ -11,6 +13,7 @@ type ChatProps = {
 };
 
 export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps = {}) {
+  const contentId = useId();
   const [internalOpen, setInternalOpen] = useState(false);
   const isControlled = controlledOpen !== undefined && onOpenChange !== undefined;
   const isOpen = isControlled ? controlledOpen : internalOpen;
@@ -41,7 +44,7 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
             </Button>
           </motion.div>
         </PopoverTrigger>
-        <PopoverContent className="w-95 h-130 flex flex-col p-0 mr-4 mb-2 shadow-2xl border-0 rounded-2xl overflow-hidden bg-white" sideOffset={8}>
+        <PopoverContent id={contentId} className="w-95 h-130 flex flex-col p-0 mr-4 mb-2 shadow-2xl border-0 rounded-2xl overflow-hidden bg-white" sideOffset={8}>
           <div className="relative h-16 flex justify-between items-center px-5 bg-linear-to-r from-[#51986a] to-[#51986a]">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
