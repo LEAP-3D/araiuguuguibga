@@ -16,6 +16,17 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+### Gmail / Google-ээр нэвтрэх
+
+Gmail (Google)-ээр бүртгүүлэх/нэвтрэхийг ажиллуулахын тулд:
+
+1. **Clerk Dashboard** → [dashboard.clerk.com](https://dashboard.clerk.com) → **User & Authentication** → **Social connections** → **Google**-г идэвхжүүл.
+2. **Google Cloud Console** дээр OAuth 2.0 Client ID үүсгээд Client ID болон Secret-ийг Clerk-д оруулна.
+3. Хэрэв OAuth дараа redirect ажиллахгүй бол `.env` дээр нэмээрэй:
+   - `NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL=/`
+   - `NEXT_PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL=/`
+4. Production дээр deploy хийсэн бол `NEXT_PUBLIC_APP_URL=https://your-domain.com` тохируулаад Clerk Dashboard-д ижил domain-ийг нэмнэ.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

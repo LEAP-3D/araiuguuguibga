@@ -6,6 +6,8 @@ import { signInAppearance } from "@/app/_components/clerkAppearance";
 export const dynamic = "force-dynamic";
 
 const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+const appUrl = process.env.NEXT_PUBLIC_APP_URL || "";
+const signInRedirectUrl = appUrl ? `${appUrl}/` : "/";
 
 export default function SignInPage() {
   return (
@@ -27,6 +29,7 @@ export default function SignInPage() {
               <SignIn
                 signUpUrl="/sign-up"
                 afterSignInUrl="/"
+                forceRedirectUrl={signInRedirectUrl}
                 appearance={signInAppearance}
               />
            
