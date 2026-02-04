@@ -7,8 +7,11 @@ import ProfileCard from '../_components/Profile/ProfileCard';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import MedicalCard from '../_components/Profile/MedicalCard';
 import AddMedicalRecord from '../_components/Profile/AddMedicalRecord';
+import { PetCard } from '../_components/Profile/PetCard';
+import { usePets } from '@/lib/petsContext';
 
 export default function Profile() {
+  const { pets } = usePets();
   const router = useRouter();
   const handleButtonClick = () => {
     router.push('/');
@@ -34,6 +37,11 @@ export default function Profile() {
             </h3>
             <div className="gap-3 flex  overflow-auto ">
               <AddPetDialog />
+              <div className="flex flex-wrap gap-4">
+                {pets.map((pet) => (
+                  <PetCard key={pet.id} pet={pet} />
+                ))}
+              </div>
             </div>
           </div>
 
