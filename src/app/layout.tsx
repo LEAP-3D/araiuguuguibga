@@ -4,6 +4,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { Providers } from './_components/Providers';
 import './globals.css';
 import 'leaflet/dist/leaflet.css';
+import { PetsProvider } from '@/lib/petsContext';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -29,7 +30,9 @@ export default function RootLayout({
   const content = (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <PetsProvider>{children} </PetsProvider>
+        </Providers>
       </body>
     </html>
   );
@@ -38,13 +41,7 @@ export default function RootLayout({
     return content;
   }
   return (
-    <ClerkProvider
-      publishableKey={publishableKey}
-      signInUrl="/sign-in"
-      signUpUrl="/sign-up"
-      signInFallbackRedirectUrl="/"
-      signUpFallbackRedirectUrl="/"
-    >
+    <ClerkProvider publishableKey={publishableKey} signInUrl="/sign-in" signUpUrl="/sign-up" signInFallbackRedirectUrl="/" signUpFallbackRedirectUrl="/">
       {content}
     </ClerkProvider>
   );
