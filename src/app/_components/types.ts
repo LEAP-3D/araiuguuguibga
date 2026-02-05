@@ -2,10 +2,15 @@ export type Pet = {
   id: string;
   name: string;
   breed: string;
-  age: string;
-  type: 'dog' | 'cat' | 'other';
-  description: string;
-  location: string;
+  age: string; // keeping string to match your input value
+  weight?: string; // optional, from your form
+  type: 'dog' | 'cat' | 'bird' | 'other';
+  gender?: 'Em' | 'Er'; // optional, from your form
+  note?: string; // optional, from your form
+  allergies?: string; // optional
+  microchip?: string; // optional
+  description?: string; // if you use a description field
+  location?: string; // optional
   image: string;
   featured?: boolean;
   distance?: string;

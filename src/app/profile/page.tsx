@@ -53,17 +53,17 @@ export default function Profile() {
                 </div>
                 <div className="flex flex-col">
                   <p className="text-xl font-bold">Medical Record</p>
-                  <p className="text-sm text-gray-600">Track vaccinations, treatments & medications</p>
+                  <p className="text-sm text-[#988375]">Track vaccinations, treatments & medications</p>
                 </div>
               </div>
               <AddMedicalRecord />
             </div>
             <div className="flex flex-col gap-4">
-              <div className="flex gap-2 text-gray-500 items-center h-5 mb-4">
+              <div className="flex gap-2 text-[#988375] items-center h-5 mb-4">
                 <Filter className="w-4 h-4" />
                 <p>Filter by pet:</p>
                 <Select>
-                  <SelectTrigger className="px-5 py-2 rounded-xl border">
+                  <SelectTrigger className="px-5 py-2 pr-11 text-[#503f34] rounded-xl border bg-[#faf8f6] ">
                     <SelectValue placeholder="Select Pet" />
                   </SelectTrigger>
                   <SelectContent>

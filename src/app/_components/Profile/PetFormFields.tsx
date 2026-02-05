@@ -16,8 +16,6 @@ export type PetForm = {
 type Props = {
   form: PetForm;
   setForm: React.Dispatch<React.SetStateAction<PetForm>>;
-  handleImageChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  removeImage?: () => void;
 };
 
 export function PetFormFields({ form, setForm }: Props) {
