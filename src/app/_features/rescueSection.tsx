@@ -10,7 +10,7 @@ const FILTERS = [
   { id: "dog", label: "Нохой" },
   { id: "cat", label: "Муур" },
   { id: "bunny", label: "Туулай" },
-  { id: "hamster", label: "Хавраа" },
+ 
 ] as const;
 
 const FEED_POST_LIMIT = 10;
