@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import Logo from '../_components/Logo';
-import LanguageSwitcher from '../_components/LanguageSwitcher';
 
 const navLinkClass = 'group relative flex items-center gap-2 text-gray-700 font-medium transition-all duration-300 hover:text-[#51986a] cursor-pointer';
 const iconClass = 'w-4 h-4 transition-transform duration-300 group-hover:scale-125 group-hover:text-[#51986a]';
@@ -38,7 +37,7 @@ export function HeaderNavLinks({ isSignedIn = false }: { isSignedIn?: boolean })
       <a className={navLinkClass}>
         <MessageCircle className={iconClass} /> Community <span className={underlineClass} />
       </a>
-      <Link href={isSignedIn ? "/dashboard" : "/sign-in"} className={navLinkClass}>
+      <Link href={isSignedIn ? '/dashboard' : '/sign-in'} className={navLinkClass}>
         <StickyNote className={iconClass} /> Dashboard <span className={underlineClass} />
       </Link>
     </div>
@@ -135,23 +134,14 @@ const navMotion = {
   transition: { duration: 0.6, ease: 'easeOut' as const },
 };
 
-export function HeaderShell({
-  children,
-  isSignedIn = false,
-}: {
-  children: React.ReactNode;
-  isSignedIn?: boolean;
-}) {
+export function HeaderShell({ children, isSignedIn = false }: { children: React.ReactNode; isSignedIn?: boolean }) {
   return (
     <motion.nav className={navClassName} {...navMotion}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <HeaderLogo />
           <HeaderNavLinks isSignedIn={isSignedIn} />
-          <div className="hidden md:flex items-center gap-4">
-            <LanguageSwitcher />
-            {children}
-          </div>
+          <div className="hidden md:flex items-center gap-4">{children}</div>
         </div>
       </div>
     </motion.nav>

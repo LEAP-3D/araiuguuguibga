@@ -12,7 +12,7 @@ type HeaderUserMenuProps = {
 export default function ProfileCard({ displayName, initial, imageUrl }: HeaderUserMenuProps) {
   return (
     <div className="bg-[#fefdfc] w-100 h-60 rounded-2xl shadow-lg flex justify-between pr-6 items-center">
-      <div className="flex flex-col gap-3 items-center">
+      <div className="flex flex-col gap-7 items-center">
         <div className="flex justify-start w-90 gap-5">
           <Avatar className="size-30 rounded-full bg-[#51986a] text-white border-2 border-white/80 shadow-md">
             <AvatarImage src={imageUrl} alt={displayName} />
@@ -26,13 +26,13 @@ export default function ProfileCard({ displayName, initial, imageUrl }: HeaderUs
             </div>
             <div className="flex flex-col gap-1">
               <div className="flex gap-1 items-center">
-                <MapPin className="w-4 h-4 text-gray-600 mt-1" />
+                <MapPin className="w-4 h-4 text-gray-600" />
                 <div className="text-sm text-gray-600">Ulaanbaatar</div>
               </div>
             </div>
           </div>
         </div>
-        <div className="px-5 mb-5">
+        <div className="px-5 ">
           <Dialog>
             <DialogTrigger asChild>
               <div className="w-90 h-12 bg-[#f6f2e9] text-[#5e493a] font-semibold rounded-2xl p-3 border-2 border-[#eae4dc] flex justify-center gap-2 cursor-pointer">

@@ -62,7 +62,7 @@ export default function AddMedicalRecord({ onAddRecord }: Props) {
       <DialogTrigger asChild>
         <div className="w-fit h-fit bg-[#ef9241] rounded-2xl py-3 px-5 flex items-center gap-2 justify-center text-white font-medium hover:bg-green-800 cursor-pointer transition">
           <Plus />
-          Add Record
+          Add
         </div>
       </DialogTrigger>
       <DialogContent className="w-120 ">
