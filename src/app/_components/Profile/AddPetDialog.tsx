@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { compressImage } from '@/lib/compressImage';
 import { useState } from 'react';
 import { usePets } from '@/lib/petsContext';
+import Image from 'next/image';
 
 export default function AddPetDialog() {
   const { addPet } = usePets();
@@ -96,7 +97,7 @@ export default function AddPetDialog() {
                 <X className="h-4 w-4" />
               </button>
               {/* eslint-disable-next-line @next/next/no-img-element -- dynamic data URL preview */}
-              <img src={form.imagePreview || ''} alt="Preview" className="rounded-lg object-contain" />
+              <Image src={form.imagePreview || ''} alt="Preview" className="rounded-lg object-contain" />
             </div>
           ) : (
             <div className="w-25 h-25 pt-3 rounded-xl border-2 border-dashed border-[#48805b] hover:border-[#51986a] hover:bg-[#58b97a2c] outline-none ">

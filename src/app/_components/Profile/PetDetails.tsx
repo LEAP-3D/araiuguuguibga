@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import type { Pet } from '../types';
+import Image from 'next/image';
 
 type Props = {
   pet: Pet;
@@ -17,7 +18,7 @@ export function PetDetails({ pet, onClose }: Props) {
         <div className="flex flex-col gap-1">
           <div className="max-w-md mx-auto rounded-xl overflow-hidden shadow-md relative">
             {/* Image */}
-            <img src={pet.image} alt={pet.name} className="w-full h-60 object-cover" />
+            <Image src={pet.image} alt={pet.name} className="w-full h-60 object-cover" />
             <div className="absolute bottom-0 left-0 w-full bg-black/50 text-white p-4">
               <h2 className="text-xl font-bold">{pet.name}</h2>
               <p>

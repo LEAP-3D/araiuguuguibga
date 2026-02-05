@@ -1,17 +1,18 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { ImagePlus, MapPin, X, ChevronDown, ChevronUp, ArrowLeft } from "lucide-react";
-import { useUser } from "@clerk/nextjs";
-import { usePosts } from "@/lib/postsContext";
-import { compressImage } from "@/lib/compressImage";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { AddPostExtraFields } from "./AddPostExtraFields";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { ImagePlus, MapPin, X, ChevronDown, ChevronUp, ArrowLeft } from 'lucide-react';
+import { useUser } from '@clerk/nextjs';
+import { usePosts } from '@/lib/postsContext';
+import { compressImage } from '@/lib/compressImage';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { AddPostExtraFields } from './AddPostExtraFields';
+import Image from 'next/image';
 
 export function AddPostForm() {
   const router = useRouter();
@@ -20,20 +21,16 @@ export function AddPostForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showExtra, setShowExtra] = useState(false);
   const [form, setForm] = useState({
-    petName: "",
-    breed: "",
-    age: "",
-    type: "dog" as "dog" | "cat" | "other",
-    description: "",
-    location: "",
-    imagePreview: "" as string | null,
+    petName: '',
+    breed: '',
+    age: '',
+    type: 'dog' as 'dog' | 'cat' | 'other',
+    description: '',
+    location: '',
+    imagePreview: '' as string | null,
   });
 
-  const displayName =
-    user?.fullName ||
-    user?.firstName ||
-    user?.primaryEmailAddress?.emailAddress?.split("@")[0] ||
-    "Хэрэглэгч";
+  const displayName = user?.fullName || user?.firstName || user?.primaryEmailAddress?.emailAddress?.split('@')[0] || 'Хэрэглэгч';
   const userInitial = (displayName as string).charAt(0).toUpperCase();
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +39,7 @@ export function AddPostForm() {
       const compressed = await compressImage(file, 400);
       setForm((f) => ({ ...f, imagePreview: compressed || null }));
     }
-    e.target.value = "";
+    e.target.value = '';
   };
 
   const removeImage = () => setForm((f) => ({ ...f, imagePreview: null }));
@@ -58,27 +55,21 @@ export function AddPostForm() {
       type: form.type,
       description: form.description.trim(),
       location: form.location.trim(),
-      image: form.imagePreview ?? "",
+      image: form.imagePreview ?? '',
     });
     setIsSubmitting(false);
-    router.push("/dashboard/feed");
+    router.push('/dashboard/feed');
   };
 
   const canPost = form.location.trim().length > 0;
 
   return (
     <div className="mx-auto max-w-2xl">
-      <Link
-        href="/dashboard/feed"
-        className="mb-6 inline-flex items-center gap-2 text-gray-600 transition-colors hover:text-gray-900"
-      >
+      <Link href="/dashboard/feed" className="mb-6 inline-flex items-center gap-2 text-gray-600 transition-colors hover:text-gray-900">
         <ArrowLeft className="h-4 w-4" />
         Буцах
       </Link>
-      <form
-        onSubmit={handleSubmit}
-        className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm"
-      >
+      <form onSubmit={handleSubmit} className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
         <div className="border-b border-gray-100 px-4 py-3">
           <h2 className="text-lg font-semibold text-gray-900">Шинэ пост үүсгэх</h2>
         </div>
@@ -109,11 +100,7 @@ export function AddPostForm() {
                 <X className="h-4 w-4" />
               </button>
               {/* eslint-disable-next-line @next/next/no-img-element -- dynamic data URL preview */}
-              <img
-                src={form.imagePreview}
-                alt="Preview"
-                className="max-h-80 w-full rounded-lg object-contain"
-              />
+              <Image src={form.imagePreview} alt="Preview" className="max-h-80 w-full rounded-lg object-contain" />
             </div>
           )}
           <div className="mt-4 rounded-lg border border-gray-200 p-2">
@@ -128,7 +115,7 @@ export function AddPostForm() {
                 role="button"
                 tabIndex={0}
                 onClick={() => setShowExtra(!showExtra)}
-                onKeyDown={(e) => e.key === "Enter" && setShowExtra(!showExtra)}
+                onKeyDown={(e) => e.key === 'Enter' && setShowExtra(!showExtra)}
                 className="flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
               >
                 <MapPin className="h-5 w-5 text-red-500" />
@@ -139,22 +126,12 @@ export function AddPostForm() {
             {showExtra && <AddPostExtraFields form={form} setForm={setForm} />}
           </div>
           <div className="mt-4">
-            <Input
-              placeholder="Олдсон байршил * (заавал бөглөнө)"
-              value={form.location}
-              onChange={(e) => setForm((f) => ({ ...f, location: e.target.value }))}
-              required
-              className="h-10"
-            />
+            <Input placeholder="Олдсон байршил * (заавал бөглөнө)" value={form.location} onChange={(e) => setForm((f) => ({ ...f, location: e.target.value }))} required className="h-10" />
           </div>
         </div>
         <div className="border-t border-gray-100 p-4">
-          <Button
-            type="submit"
-            disabled={isSubmitting || !canPost}
-            className="w-full bg-[#4f9669] py-6 text-base font-semibold hover:bg-[#458559] disabled:opacity-50"
-          >
-            {isSubmitting ? "Боловсруулж байна..." : "Пост"}
+          <Button type="submit" disabled={isSubmitting || !canPost} className="w-full bg-[#4f9669] py-6 text-base font-semibold hover:bg-[#458559] disabled:opacity-50">
+            {isSubmitting ? 'Боловсруулж байна...' : 'Пост'}
           </Button>
         </div>
       </form>

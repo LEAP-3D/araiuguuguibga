@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Sparkles, ImagePlus, Loader2 } from "lucide-react";
-import { compressImage } from "@/lib/compressImage";
-import type { PetAnalysisResult } from "@/app/api/analyze-pet/route";
-import { AiAnalysisResult } from "./AiAnalysisResult";
-
+import { useState } from 'react';
+import { Sparkles, ImagePlus, Loader2 } from 'lucide-react';
+import { compressImage } from '@/lib/compressImage';
+import type { PetAnalysisResult } from '@/app/api/analyze-pet/route';
+import { AiAnalysisResult } from './AiAnalysisResult';
+import Image from 'next/image';
 export default function AiAssistantPage() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [result, setResult] = useState<PetAnalysisResult | null>(null);
@@ -19,30 +19,30 @@ export default function AiAssistantPage() {
     setResult(null);
     const dataUrl = await compressImage(file, 512);
     if (dataUrl) setImagePreview(dataUrl);
-    e.target.value = "";
+    e.target.value = '';
   };
 
   const handleAnalyze = async () => {
     if (!imagePreview) {
-      setError("Эхлээд амьтны зураг оруулна уу");
+      setError('Эхлээд амьтны зураг оруулна уу');
       return;
     }
     setIsLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/analyze-pet", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/analyze-pet', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ imageBase64: imagePreview }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "Алдаа гарлаа");
+        throw new Error(data.error || 'Алдаа гарлаа');
       }
       const data = (await res.json()) as PetAnalysisResult;
       setResult(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Алдаа гарлаа");
+      setError(err instanceof Error ? err.message : 'Алдаа гарлаа');
     } finally {
       setIsLoading(false);
     }
@@ -55,9 +55,7 @@ export default function AiAssistantPage() {
           <Sparkles className="h-7 w-7 text-[#4f9669]" />
           AI Туслах
         </h1>
-        <p className="text-gray-600">
-          Хайртай амьтныхаа зураг оруулаад нас, жин, хоолны зөвлөмж аваарай
-        </p>
+        <p className="text-gray-600">Хайртай амьтныхаа зураг оруулаад нас, жин, хоолны зөвлөмж аваарай</p>
       </div>
       <div className="mx-auto max-w-2xl space-y-6">
         <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
@@ -68,11 +66,7 @@ export default function AiAssistantPage() {
             {imagePreview ? (
               <div className="relative w-full">
                 {/* eslint-disable-next-line @next/next/no-img-element -- dynamic data URL preview */}
-                <img
-                  src={imagePreview}
-                  alt="Амьтан"
-                  className="mx-auto max-h-64 rounded-lg object-contain"
-                />
+                <Image src={imagePreview} alt="Амьтан" className="mx-auto max-h-64 rounded-lg object-contain" />
               </div>
             ) : (
               <>
@@ -81,14 +75,7 @@ export default function AiAssistantPage() {
                 <span className="text-xs text-gray-500">JPG, PNG (max 5MB)</span>
               </>
             )}
-            <input
-              id="pet-image"
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleImageChange}
-              disabled={isLoading}
-            />
+            <input id="pet-image" type="file" accept="image/*" className="hidden" onChange={handleImageChange} disabled={isLoading} />
           </label>
           <div className="mt-4 flex gap-3">
             <button
