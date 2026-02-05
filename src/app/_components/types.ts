@@ -20,7 +20,6 @@ export type Veterinary = {
   id: string;
   name: string;
   rating: number;
-  reviewCount?: number;
   distance?: string;
   address: string;
   city?: string;
@@ -29,8 +28,8 @@ export type Veterinary = {
   hours?: string;
   isOpen: boolean;
   emergency?: boolean;
-  phone: string;
-  category?: 'emneleg' | 'klinik' | 'yaaraltai' | 'emiin_san';
+  phone: string[];
+  category?: ('emneleg' | 'duudlagaar_uzdeg' | 'emiin_san')[];
   lat: number;
   lng: number;
 };

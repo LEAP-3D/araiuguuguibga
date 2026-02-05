@@ -1,7 +1,13 @@
 'use client';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import type { Veterinary } from '../types';
 import L from 'leaflet';
+
+const userIcon = new L.Icon({
+  iconUrl: '/map.png',
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+});
 
 delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: () => string })._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -15,33 +21,25 @@ type Props = {
   selectedVet: Veterinary | null;
   onSelect: (vet: Veterinary | null) => void;
   temporaryVet: Veterinary | null;
+  userLocation: { lat: number; lng: number } | null;
   onMapClick: (lat: number, lng: number) => void;
   onSaveTemp: (vet: Veterinary) => void;
   onCancelTemp: () => void;
 };
 
-function AddMarker({ onMapClick }: { onMapClick: (lat: number, lng: number) => void }) {
-  useMapEvents({
-    click(e) {
-      onMapClick(e.latlng.lat, e.latlng.lng);
-    },
-  });
-  return null;
-}
-
-export default function MapPlaceHolder({ vets, selectedVet: _selectedVet, onSelect, temporaryVet, onMapClick, onSaveTemp, onCancelTemp }: Props) {
+export default function MapPlaceholder({ vets, selectedVet: _selectedVet, userLocation, temporaryVet, onSaveTemp, onCancelTemp }: Props) {
   return (
     <MapContainer center={[47.9212, 106.9057]} zoom={12} className="h-full w-full rounded-xl">
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-      <AddMarker onMapClick={onMapClick} />
-
-      {vets.map((vet) => (
-        <Marker key={vet.id} position={[vet.lat, vet.lng]} eventHandlers={{ click: () => onSelect(vet) }}>
-          <Popup>{vet.name}</Popup>
+      {/* User location */}
+      {userLocation && (
+        <Marker position={[userLocation.lat, userLocation.lng]} icon={userIcon}>
+          <Popup>Таны байршил</Popup>
         </Marker>
-      ))}
+      )}
 
+      {/* Temporary vet */}
       {temporaryVet && (
         <Marker position={[temporaryVet.lat, temporaryVet.lng]}>
           <Popup>
@@ -59,6 +57,18 @@ export default function MapPlaceHolder({ vets, selectedVet: _selectedVet, onSele
           </Popup>
         </Marker>
       )}
+
+      {/* All vets */}
+      {vets.map((vet) => (
+        <Marker key={vet.id} position={[vet.lat, vet.lng]}>
+          <Popup>
+            <div className="flex flex-col gap-1">
+              <strong>{vet.name}</strong>
+              <span className="text-xs">{vet.address}</span>
+            </div>
+          </Popup>
+        </Marker>
+      ))}
     </MapContainer>
   );
 }
