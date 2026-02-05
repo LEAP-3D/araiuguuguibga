@@ -16,7 +16,7 @@ const FILTERS = [
 const FEED_POST_LIMIT = 10;
 
 export function RescuePetsSection() {
-  const { posts } = usePosts();
+  const { posts, postsLoading } = usePosts();
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [activeFilter, setActiveFilter] = useState<string>("all");
 
@@ -39,6 +39,17 @@ export function RescuePetsSection() {
       return next;
     });
   };
+
+  if (postsLoading) {
+    return (
+      <section id="adopt" className="min-h-[70vh] px-4 py-12">
+        <RescueHeader />
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-4 py-16">
+          <p className="text-gray-500">Уншиж байна...</p>
+        </div>
+      </section>
+    );
+  }
 
   if (posts.length === 0) return <RescueEmptyState />;
 

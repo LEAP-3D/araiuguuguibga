@@ -3,8 +3,6 @@
 import { createContext, useCallback, useContext, useState, useEffect } from "react";
 import type { Post, MyPet } from "./postsStorage";
 import {
-  loadPosts,
-  savePosts,
   loadMyPets,
   saveMyPets,
   clearPostsStorage,
@@ -16,7 +14,9 @@ import type { VaccineRecord, HistoryEvent } from "./postsContextTypes";
 
 type PostsContextType = {
   posts: Post[];
-  addPost: (post: Omit<Post, "id" | "createdAt">) => boolean;
+  postsLoading: boolean;
+  refetchPosts: () => Promise<void>;
+  addPost: (post: Omit<Post, "id" | "createdAt">) => Promise<boolean>;
   clearPosts: () => void;
   myPets: MyPet[];
   addMyPet: (pet: Omit<MyPet, "id" | "vaccines" | "history" | "createdAt">) => void;
@@ -26,39 +26,85 @@ type PostsContextType = {
 
 const PostsContext = createContext<PostsContextType | null>(null);
 
-function generateId() {
-  return `post_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
-}
-
 function generatePetId() {
   return `pet_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
 }
 
+function mapApiPostToPost(p: {
+  id: string;
+  name: string;
+  breed: string | null;
+  age: string | null;
+  type: string;
+  description: string | null;
+  location: string;
+  image: string | null;
+  createdAt: number;
+}): Post {
+  return {
+    id: p.id,
+    name: p.name,
+    breed: p.breed ?? "",
+    age: p.age ?? "",
+    type: p.type as Post["type"],
+    description: p.description ?? "",
+    location: p.location,
+    image: p.image ?? "",
+    createdAt: p.createdAt,
+  };
+}
+
 export function PostsProvider({ children }: { children: React.ReactNode }) {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [postsLoading, setPostsLoading] = useState(true);
   const [myPets, setMyPets] = useState<MyPet[]>([]);
+
+  const refetchPosts = useCallback(async () => {
+    setPostsLoading(true);
+    try {
+      const res = await fetch("/api/rescue-posts");
+      const data = res.ok ? await res.json() : [];
+      setPosts(Array.isArray(data) ? data.map(mapApiPostToPost) : []);
+    } catch {
+      setPosts([]);
+    } finally {
+      setPostsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void refetchPosts();
+  }, [refetchPosts]);
 
   useEffect(() => {
     const id = setTimeout(() => {
-      setPosts(loadPosts());
       setMyPets(loadMyPets());
     }, 0);
     return () => clearTimeout(id);
   }, []);
 
-  const addPost = useCallback((post: Omit<Post, "id" | "createdAt">): boolean => {
-    const newPost: Post = {
-      ...post,
-      id: generateId(),
-      createdAt: Date.now(),
-    };
-    let success = false;
-    setPosts((prev) => {
-      const next = [newPost, ...prev];
-      success = savePosts(next);
-      return success ? next : prev;
-    });
-    return success;
+  const addPost = useCallback(async (post: Omit<Post, "id" | "createdAt">): Promise<boolean> => {
+    try {
+      const res = await fetch("/api/rescue-posts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: post.name,
+          breed: post.breed || null,
+          age: post.age || null,
+          type: post.type,
+          description: post.description || null,
+          location: post.location,
+          image: post.image || null,
+        }),
+      });
+      if (!res.ok) return false;
+      const saved = await res.json();
+      setPosts((prev) => [mapApiPostToPost(saved), ...prev]);
+      return true;
+    } catch {
+      return false;
+    }
   }, []);
 
   const clearPosts = useCallback(() => {
@@ -112,6 +158,8 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
     <PostsContext.Provider
       value={{
         posts,
+        postsLoading,
+        refetchPosts,
         addPost,
         clearPosts,
         myPets,

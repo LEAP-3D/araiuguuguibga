@@ -7,7 +7,12 @@ const globalForPrisma = global as unknown as {
 
 function getConnectionString(): string {
   const url = process.env.DATABASE_URL;
-  if (!url) return "";
+  if (!url || !url.trim()) {
+    if (typeof process !== "undefined" && process.env.NODE_ENV === "production") {
+      console.error("[prisma] DATABASE_URL is missing. Set it in Vercel Environment Variables.");
+    }
+    return "";
+  }
   try {
     const [base, search] = url.split("?");
     const params = new URLSearchParams(search ?? "");
