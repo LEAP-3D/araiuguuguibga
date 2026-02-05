@@ -1,5 +1,6 @@
 import { DashboardClientShell } from "./DashboardClientShell";
 
+
 export const dynamic = "force-dynamic";
 
 export default function DashboardLayout({
