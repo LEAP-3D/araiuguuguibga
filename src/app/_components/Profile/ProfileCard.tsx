@@ -1,28 +1,34 @@
-import { Camera, Eye } from 'lucide-react';
+import { Eye } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import ProfileDetails from './ProfileDetails';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
-export default function ProfileCard() {
+type HeaderUserMenuProps = {
+  displayName: string;
+  initial: string;
+  imageUrl?: string; // Changed from `string | undefined` to optional with `?`
+};
+
+export default function ProfileCard({ displayName, initial, imageUrl }: HeaderUserMenuProps) {
   return (
     <div className="bg-[#fefdfc] w-100 h-60 rounded-2xl shadow-lg flex justify-between pr-6 items-center">
       <div className="flex flex-col gap-3 items-center">
         <div className="p-6 flex gap-4 ">
-          <div className="relative inline-block">
-            <div className="w-24 h-24 rounded-full bg-purple-600 text-white text-3xl flex items-center justify-center ring-4 ring-white">U</div>
-            <button className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center shadow-lg hover:bg-gray-300">
-              <Camera className="w-4 h-4" />
-            </button>
-          </div>
+          <Avatar className="size-30 rounded-full text-white border-2 border-white/80 shadow-md">
+            <AvatarImage src={imageUrl} alt={displayName} />
+            <AvatarFallback className="bg-[#87199a] text-white text-sm font-semibold">{initial}</AvatarFallback>
+          </Avatar>
+
           <div className="flex flex-col gap-0.5">
-            <h2 className="text-xl font-bold mt-4">Ujin Munkhjargal</h2>
+            <span className="text-gray-800 font-medium  truncate">{displayName}</span>
             <div className="flex gap-1 text-sm text-gray-600">
               <p>pet owner</p>.<p>2 cats</p>
             </div>
             <div className="text-sm text-gray-600">Ulaanbaatar</div>
           </div>
         </div>
-        <div className="px-5">
+        <div className="px-5 mb-5">
           <Dialog>
             <DialogTrigger asChild>
               <div className="w-90 h-12 bg-[#f6f2e9] text-[#5e493a] font-semibold rounded-2xl p-3 border-2 border-[#eae4dc] flex justify-center gap-2 cursor-pointer">

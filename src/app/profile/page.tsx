@@ -11,8 +11,15 @@ import type { PetMedicalForm } from '../_components/Profile/AddMedicalRecord';
 import { PetCard } from '../_components/Profile/PetCard';
 import { usePets } from '@/lib/petsContext';
 import { useState } from 'react';
+import { useUser  } from '@clerk/nextjs';
+
+const hasClerkKey =
+  typeof process !== "undefined" && !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
 export default function Profile() {
+  const { user } = useUser();
+  const displayName = user?.fullName || user?.firstName || user?.primaryEmailAddress?.emailAddress?.split('@')[0] || 'Хэрэглэгч';
+  const initial = (displayName as string).charAt(0).toUpperCase();
   const [medicalRecords, setMedicalRecords] = useState<PetMedicalForm[]>([]);
   const [selectedPetFilter, setSelectedPetFilter] = useState<string>('all');
   const { pets } = usePets();
@@ -28,6 +35,7 @@ export default function Profile() {
   const filteredRecords = selectedPetFilter === 'all' ? medicalRecords : medicalRecords.filter((record) => record.pet === selectedPetFilter);
 
   return (
+    hasClerkKey ? (
     <div className="w-screen relative flex justify-center-safe">
       <div className=" fixed inset-0 z-0 min-h-screen bg-[url('/pet-background.jpg')] bg-cover bg-center">
         <div className="absolute inset-0 bg-background/85 backdrop-blur-xs" />
@@ -38,7 +46,7 @@ export default function Profile() {
         </button>
         <div className="flex flex-col gap-10 w-7xl items-center border-7 border-white rounded-3xl p-6 shadow-2xl py-14">
           <div className="w-6xl flex justify-start">
-            <ProfileCard />
+            <ProfileCard displayName={displayName as string} initial={initial} imageUrl={user?.imageUrl} />
           </div>
 
           {/* PETS SECTION */}
@@ -97,5 +105,6 @@ export default function Profile() {
         </div>
       </main>
     </div>
+    ) : null
   );
 }
