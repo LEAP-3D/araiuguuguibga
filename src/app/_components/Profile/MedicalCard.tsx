@@ -1,25 +1,44 @@
-import { CircleAlert } from 'lucide-react';
+import { Calendar, CalendarClock, FileText, Hospital, Pill } from 'lucide-react';
 
 export default function MedicalCard() {
   return (
     <div className="w-140 h-60 bg-white rounded-2xl shadow-md p-4 flex gap-4">
-      <div className="flex items-center ">
-        <div className="flex items-center justify-center w-11 h-11 rounded-full bg-red-100">
-          <CircleAlert className="w-6 h-6 text-red-500" />
+      <div className="flex ">
+        <div className="flex items-center justify-center w-11 h-11 rounded-full shadow-2xl">
+          <Pill className="w-6 h-6 text-green-600" />
         </div>
       </div>
       <div className="flex flex-col gap-1">
         <div className="flex items-center ">
-          <div className="flex gap-2 items-center">
-            <h4 className="text-lg font-semibold">Rabies Vaccine</h4>
-            <div className="w-fit py-2 px-4 bg-yellow-100 rounded-full">
-              <p className="text-sm text-black">Bumble</p>
+          <div className="flex gap-40">
+            <div className="text-lg font-semibold">Rabies Vaccine</div>
+            <div className="flex gap-2 font-semibold text-[17px]">
+              <div className="w-fit px-4 bg-yellow-100 rounded-full py-2 h-9">
+                <p className="text-sm text-orange-950">Bumble</p>
+              </div>
+              <div className="w-fit  px-4 bg-red-100 rounded-full py-2 h-9">
+                <p className="text-sm text-red-950">Medicine</p>
+              </div>
             </div>
           </div>
         </div>
-        <div className="flex gap-4 items-center">
-          <span className="text-sm text-gray-500">01/15/2023</span>
-          <p className="text-red-600">Next Due: 01/15/2024</p>
+        <div className="flex gap-2 flex-col">
+          <div className="flex items-center">
+            <Calendar className="w-4 h-4 mr-2 mt-1 text-gray-500" />
+            <span className="text-m text-gray-500">01/15/2023</span>
+          </div>
+          <div className="flex">
+            <CalendarClock className="w-4 h-4 mr-2 mt-1 text-gray-500" />
+            <p className="text-red-600">Next Due: 01/15/2024</p>
+          </div>
+          <div className="flex">
+            <Hospital className="w-4 h-4 mr-2 mt-1 text-gray-500" />
+            <p className=" text-gray-500">Savar Vet center</p>
+          </div>
+          <div className="flex pl-6">
+            <FileText className="w-4 h-4 mr-2 mt-1 text-gray-500" />
+            <p className=" text-gray-500">3sariin tarisn, enin ynzalsan</p>
+          </div>
         </div>
       </div>
     </div>
