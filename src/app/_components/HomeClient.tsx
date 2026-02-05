@@ -12,34 +12,33 @@ export default function HomeClient() {
   const [chatOpen, setChatOpen] = useState(false);
 
   return (
-    <>
-      <Headers />
+    <div
+      className="relative min-h-screen w-full flex flex-col items-center"
+      style={{
+        backgroundImage: 'url("/bgPaw.png")',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+      }}
+    >
+      {/* 1. Шилэн Контейнер */}
+      <div className="relative z-10 w-[94%] max-w-360 my-24  backdrop-blur-[25px]  rounded-[50px] shadow-2xl overflow-hidden flex flex-col ">
+        <Headers />
 
-      <main>
-        {/* 1. HERO SECTION WITH VIDEO BACKGROUND */}
-        <section className="relative h-[100vh] w-full overflow-hidden">
-          <video autoPlay loop muted playsInline className="absolute top-0 left-0 w-full h-full object-cover z-0" >
-            <source src="/NiggaCat.mp4" type="video/mp4" />
-          </video>
-
-          {/* Харанхуйлах overlay */}
-          <div className="absolute top-0 left-0 w-full h-full bg-black/5 z-5" />
-
-          {/* Hero Content */}
-          <div className="relative z-20 h-full">
-            <HeroSection onOpenChat={() => setChatOpen(true)} />
+        <main className="flex-grow">
+          <HeroSection onOpenChat={() => setChatOpen(true)} />
+          <div className="relative">
+            <RescuePetsSection />
+            <div className="h-20" />
+            <VeterinarySection />
           </div>
-        </section>
+        </main>
 
-        {/* 2. БУСАД ХЭСГҮҮД (Видеогүй хэсэг) */}
-        <div className="relative bg-white z-30">
-          <RescuePetsSection />
-          <VeterinarySection />
-        </div>
-      </main>
+        <Footer />
+      </div>
 
       <Chat open={chatOpen} onOpenChange={setChatOpen} />
-      <Footer />
-    </>
+    </div>
   );
 }
