@@ -11,8 +11,12 @@ import type { PetMedicalForm } from '../_components/Profile/AddMedicalRecord';
 import { PetCard } from '../_components/Profile/PetCard';
 import { usePets } from '@/lib/petsContext';
 import { useState } from 'react';
+import { useUser } from '@clerk/nextjs';
 
 export default function Profile() {
+  const { user } = useUser();
+  const displayName = user?.fullName || user?.firstName || user?.primaryEmailAddress?.emailAddress?.split('@')[0] || 'Хэрэглэгч';
+  const initial = (displayName as string).charAt(0).toUpperCase();
   const [medicalRecords, setMedicalRecords] = useState<PetMedicalForm[]>([]);
   const [selectedPetFilter, setSelectedPetFilter] = useState<string>('all');
   const { pets } = usePets();
@@ -38,7 +42,7 @@ export default function Profile() {
         </button>
         <div className="flex flex-col gap-10 w-7xl items-center border-7 border-white rounded-3xl p-6 shadow-2xl py-14">
           <div className="w-6xl flex justify-start">
-            <ProfileCard />
+            <ProfileCard displayName={displayName as string} initial={initial} imageUrl={user?.imageUrl} />
           </div>
 
           {/* PETS SECTION */}

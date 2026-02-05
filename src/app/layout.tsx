@@ -28,13 +28,15 @@ export default function RootLayout({
 }>) {
   const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? '';
   const content = (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Providers>
-          <PetsProvider>{children} </PetsProvider>
-        </Providers>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          <Providers>
+            <PetsProvider>{children} </PetsProvider>
+          </Providers>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 
   if (!publishableKey) {

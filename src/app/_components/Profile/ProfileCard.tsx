@@ -1,29 +1,35 @@
-import { Eye } from 'lucide-react';
+import { Eye, MapPin } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import ProfileDetails from './ProfileDetails';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+
 type HeaderUserMenuProps = {
   displayName: string;
   initial: string;
-  imageUrl: string | undefined;
+  imageUrl?: string; // Changed from `string | undefined` to optional with `?`
 };
 export default function ProfileCard({ displayName, initial, imageUrl }: HeaderUserMenuProps) {
   return (
     <div className="bg-[#fefdfc] w-100 h-60 rounded-2xl shadow-lg flex justify-between pr-6 items-center">
       <div className="flex flex-col gap-3 items-center">
-        <div className="p-6 flex gap-4 ">
+        <div className="flex justify-start w-90 gap-5">
           <Avatar className="size-30 rounded-full bg-[#51986a] text-white border-2 border-white/80 shadow-md">
             <AvatarImage src={imageUrl} alt={displayName} />
             <AvatarFallback className="bg-[#87199a] text-white text-sm font-semibold">{initial}</AvatarFallback>
           </Avatar>
 
           <div className="flex flex-col gap-0.5">
-            <span className="text-gray-800 font-medium max-w-30 truncate">{displayName}</span>
+            <span className="text-gray-800 font-semibold truncate">{displayName}</span>
             <div className="flex gap-1 text-sm text-gray-600">
               <p>pet owner</p>.<p>2 cats</p>
             </div>
-            <div className="text-sm text-gray-600">Ulaanbaatar</div>
+            <div className="flex flex-col gap-1">
+              <div className="flex gap-1 items-center">
+                <MapPin className="w-4 h-4 text-gray-600 mt-1" />
+                <div className="text-sm text-gray-600">Ulaanbaatar</div>
+              </div>
+            </div>
           </div>
         </div>
         <div className="px-5 mb-5">
