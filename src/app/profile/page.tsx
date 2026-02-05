@@ -7,15 +7,26 @@ import ProfileCard from '../_components/Profile/ProfileCard';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import MedicalCard from '../_components/Profile/MedicalCard';
 import AddMedicalRecord from '../_components/Profile/AddMedicalRecord';
+import type { PetMedicalForm } from '../_components/Profile/AddMedicalRecord';
 import { PetCard } from '../_components/Profile/PetCard';
 import { usePets } from '@/lib/petsContext';
+import { useState } from 'react';
 
 export default function Profile() {
+  const [medicalRecords, setMedicalRecords] = useState<PetMedicalForm[]>([]);
+  const [selectedPetFilter, setSelectedPetFilter] = useState<string>('all');
   const { pets } = usePets();
   const router = useRouter();
   const handleButtonClick = () => {
     router.push('/');
   };
+  const handleAddRecord = (record: PetMedicalForm) => {
+    setMedicalRecords((prev) => [...prev, record]);
+  };
+
+  // Filter medical records based on selected pet
+  const filteredRecords = selectedPetFilter === 'all' ? medicalRecords : medicalRecords.filter((record) => record.pet === selectedPetFilter);
+
   return (
     <div className="w-screen relative flex justify-center-safe">
       <div className=" fixed inset-0 z-0 min-h-screen bg-[url('/pet-background.jpg')] bg-cover bg-center">
@@ -56,13 +67,13 @@ export default function Profile() {
                   <p className="text-sm text-[#988375]">Track vaccinations, treatments & medications</p>
                 </div>
               </div>
-              <AddMedicalRecord />
+              <AddMedicalRecord onAddRecord={handleAddRecord} />
             </div>
             <div className="flex flex-col gap-4">
               <div className="flex gap-2 text-[#988375] items-center h-5 mb-4">
                 <Filter className="w-4 h-4" />
                 <p>Filter by pet:</p>
-                <Select>
+                <Select value={selectedPetFilter} onValueChange={setSelectedPetFilter}>
                   <SelectTrigger className="px-5 py-2 pr-11 text-[#503f34] rounded-xl border bg-[#faf8f6] ">
                     <SelectValue placeholder="Select Pet" />
                   </SelectTrigger>
@@ -75,10 +86,11 @@ export default function Profile() {
                 </Select>
               </div>
               <div className="flex flex-wrap gap-5">
-                <MedicalCard />
-                <MedicalCard />
-                <MedicalCard />
-                <MedicalCard />
+                {filteredRecords.length === 0 ? (
+                  <p className="text-gray-500 text-center w-full py-8">No medical records yet. Add your first record above!</p>
+                ) : (
+                  filteredRecords.map((record, index) => <MedicalCard key={index} record={record} />)
+                )}
               </div>
             </div>
           </div>
