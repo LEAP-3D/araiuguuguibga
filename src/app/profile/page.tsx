@@ -1,31 +1,124 @@
 'use client';
 
-import AddPetDialog from '@/app/_components/Profile/AddPetDialog';
+import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { Filter, PawPrint, Syringe } from 'lucide-react';
+import { useUser } from '@clerk/nextjs';
+import AddPetDialog from '@/app/_components/Profile/AddPetDialog';
+import { PawPrint } from 'lucide-react';
 import ProfileCard from '../_components/Profile/ProfileCard';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import MedicalCard from '../_components/Profile/MedicalCard';
-import AddMedicalRecord from '../_components/Profile/AddMedicalRecord';
 import type { PetMedicalForm } from '../_components/Profile/AddMedicalRecord';
 import { PetCard } from '../_components/Profile/PetCard';
 import { usePets } from '@/lib/petsContext';
-import { useState } from 'react';
+import { getTodayStr, toDateOnlyStr } from './profileDateUtils';
+import { DueTodayBanner } from './DueTodayBanner';
+import { ProfileMedicalSection, type MedicalRecordItem } from './ProfileMedicalSection';
+import { useMedicalNotifications } from './useMedicalNotifications';
+
+export type { MedicalRecordItem };
 
 export default function Profile() {
-  const [medicalRecords, setMedicalRecords] = useState<PetMedicalForm[]>([]);
-  const [selectedPetFilter, setSelectedPetFilter] = useState<string>('all');
-  const { pets } = usePets();
+  const { isSignedIn, isLoaded } = useUser();
   const router = useRouter();
+  const [medicalRecords, setMedicalRecords] = useState<MedicalRecordItem[]>([]);
+  const [recordsLoading, setRecordsLoading] = useState(true);
+  const [selectedPetFilter, setSelectedPetFilter] = useState<string>('all');
+  const { pets, refetchPets } = usePets();
+
+  useEffect(() => {
+    if (!isLoaded) return;
+    if (!isSignedIn) {
+      router.replace('/sign-in');
+      return;
+    }
+  }, [isLoaded, isSignedIn, router]);
+
+  useEffect(() => {
+    if (!isSignedIn) return;
+    void refetchPets();
+  }, [isSignedIn, refetchPets]);
+
+  useEffect(() => {
+    if (!isSignedIn) return;
+    let cancelled = false;
+    let tid = 0;
+    tid = requestAnimationFrame(() => {
+      if (!cancelled) setRecordsLoading(true);
+    });
+    fetch('/api/medical-records')
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data: MedicalRecordItem[]) => {
+        if (!cancelled && Array.isArray(data)) {
+          setMedicalRecords(
+            data.map((r) => ({
+              id: r.id,
+              pet: r.pet,
+              type: r.type as PetMedicalForm['type'],
+              medicine: r.medicine,
+              vet: r.vet ?? '',
+              note: r.note ?? '',
+              date: r.date,
+              nextDueDate: r.nextDueDate ?? '',
+            }))
+          );
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setMedicalRecords([]);
+      })
+      .finally(() => {
+        if (!cancelled) setRecordsLoading(false);
+      });
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(tid);
+    };
+  }, [isSignedIn]);
+
   const handleButtonClick = () => {
     router.push('/');
   };
-  const handleAddRecord = (record: PetMedicalForm) => {
-    setMedicalRecords((prev) => [...prev, record]);
+
+  const handleAddRecord = async (record: PetMedicalForm) => {
+    try {
+      const res = await fetch('/api/medical-records', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(record),
+      });
+      if (!res.ok) return;
+      const saved = (await res.json()) as { id: string };
+      setMedicalRecords((prev) => [{ ...record, id: saved.id }, ...prev]);
+    } catch {
+      // ignore
+    }
   };
 
-  // Filter medical records based on selected pet
-  const filteredRecords = selectedPetFilter === 'all' ? medicalRecords : medicalRecords.filter((record) => record.pet === selectedPetFilter);
+  const filteredRecords =
+    selectedPetFilter === 'all'
+      ? medicalRecords
+      : medicalRecords.filter((record) => record.pet === selectedPetFilter);
+
+  const dueTodayRecords = useMemo(() => {
+    const today = getTodayStr();
+    return medicalRecords.filter((r) => {
+      const d = toDateOnlyStr(r.date);
+      const next = toDateOnlyStr(r.nextDueDate);
+      return d === today || (next && next === today);
+    });
+  }, [medicalRecords]);
+
+  useMedicalNotifications(dueTodayRecords);
+
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background/90">
+        <p className="text-gray-600">Loading...</p>
+      </div>
+    );
+  }
+  if (!isSignedIn) {
+    return null;
+  }
 
   return (
     <div className="w-screen relative flex justify-center-safe">
@@ -36,6 +129,9 @@ export default function Profile() {
         <button className="mb-6 font-medium px-4 py-2 hover:text-orange-950 rounded-lg transition" onClick={handleButtonClick}>
           ← Back to home
         </button>
+
+        <DueTodayBanner records={dueTodayRecords} />
+
         <div className="flex flex-col gap-10 w-7xl items-center border-7 border-white rounded-3xl p-6 shadow-2xl py-14">
           <div className="w-6xl flex justify-start">
             <ProfileCard />
@@ -56,44 +152,14 @@ export default function Profile() {
             </div>
           </div>
 
-          <div className="w-6xl h-fit rounded-2xl flex flex-col  gap-6">
-            <div className="flex justify-between">
-              <div className="flex gap-3 items-start">
-                <div className="p-3 bg-[#94c1945b] rounded-full">
-                  <Syringe className="text-green-700" />
-                </div>
-                <div className="flex flex-col">
-                  <p className="text-xl font-bold">Medical Record</p>
-                  <p className="text-sm text-[#988375]">Track vaccinations, treatments & medications</p>
-                </div>
-              </div>
-              <AddMedicalRecord onAddRecord={handleAddRecord} />
-            </div>
-            <div className="flex flex-col gap-4">
-              <div className="flex gap-2 text-[#988375] items-center h-5 mb-4">
-                <Filter className="w-4 h-4" />
-                <p>Filter by pet:</p>
-                <Select value={selectedPetFilter} onValueChange={setSelectedPetFilter}>
-                  <SelectTrigger className="px-5 py-2 pr-11 text-[#503f34] rounded-xl border bg-[#faf8f6] ">
-                    <SelectValue placeholder="Select Pet" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All</SelectItem>
-                    <SelectItem value="bumble">Bumble</SelectItem>
-                    <SelectItem value="kitty">Kitty</SelectItem>
-                    <SelectItem value="tommy">Tommy</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="flex flex-wrap gap-5">
-                {filteredRecords.length === 0 ? (
-                  <p className="text-gray-500 text-center w-full py-8">No medical records yet. Add your first record above!</p>
-                ) : (
-                  filteredRecords.map((record, index) => <MedicalCard key={index} record={record} />)
-                )}
-              </div>
-            </div>
-          </div>
+          <ProfileMedicalSection
+            pets={pets}
+            records={filteredRecords}
+            loading={recordsLoading}
+            selectedPetFilter={selectedPetFilter}
+            onFilterChange={setSelectedPetFilter}
+            onAddRecord={handleAddRecord}
+          />
         </div>
       </main>
     </div>

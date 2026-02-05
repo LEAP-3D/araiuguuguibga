@@ -6,6 +6,7 @@ import { VaccineDate } from './VaccineDate';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Plus, Syringe } from 'lucide-react';
 import { useState } from 'react';
+import type { Pet } from '@/lib/petsContext';
 
 export type PetMedicalForm = {
   pet: string;
@@ -18,10 +19,11 @@ export type PetMedicalForm = {
 };
 
 type Props = {
+  pets?: Pet[];
   onAddRecord: (record: PetMedicalForm) => void;
 };
 
-export default function AddMedicalRecord({ onAddRecord }: Props) {
+export default function AddMedicalRecord({ pets = [], onAddRecord }: Props) {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<PetMedicalForm>({
     pet: '',
@@ -83,9 +85,11 @@ export default function AddMedicalRecord({ onAddRecord }: Props) {
                     <SelectValue placeholder="Select Pet" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="bumble">Bumble</SelectItem>
-                    <SelectItem value="kitty">Kitty</SelectItem>
-                    <SelectItem value="tommy">Tommy</SelectItem>
+                    {pets.map((pet) => (
+                      <SelectItem key={pet.id} value={pet.name}>
+                        {pet.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
