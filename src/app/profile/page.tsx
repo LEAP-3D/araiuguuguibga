@@ -13,6 +13,9 @@ import { usePets } from '@/lib/petsContext';
 import { useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 
+const hasClerkKey =
+  typeof process !== "undefined" && !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
 export default function Profile() {
   const { user } = useUser();
   const displayName = user?.fullName || user?.firstName || user?.primaryEmailAddress?.emailAddress?.split('@')[0] || 'Хэрэглэгч';
@@ -32,6 +35,7 @@ export default function Profile() {
   const filteredRecords = selectedPetFilter === 'all' ? medicalRecords : medicalRecords.filter((record) => record.pet === selectedPetFilter);
 
   return (
+    hasClerkKey ? (
     <div className="w-screen relative flex justify-center-safe">
       <div className=" fixed inset-0 z-0 min-h-screen bg-[url('/pet-background.jpg')] bg-cover bg-center">
         <div className="absolute inset-0 bg-background/85 backdrop-blur-xs" />
@@ -101,5 +105,6 @@ export default function Profile() {
         </div>
       </main>
     </div>
+    ) : null
   );
 }
