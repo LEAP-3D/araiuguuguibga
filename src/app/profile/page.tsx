@@ -11,7 +11,7 @@ import type { PetMedicalForm } from '../_components/Profile/AddMedicalRecord';
 import { PetCard } from '../_components/Profile/PetCard';
 import { usePets } from '@/lib/petsContext';
 import { useState } from 'react';
-import { useUser } from '@clerk/nextjs';
+import { useUser  } from '@clerk/nextjs';
 
 const hasClerkKey =
   typeof process !== "undefined" && !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
