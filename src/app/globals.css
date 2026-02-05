@@ -1,5 +1,14 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@keyframes float {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-200px);
+  }
+}
 
 @custom-variant dark (&:is(.dark *));
 
@@ -125,39 +134,39 @@
 }
 
 /* Clerk карт — шилэн (blur) дүрс, текст тод хэвээр */
-[class*="cl-card"],
-[class*="cl-rootBox"] > div[class*="cl-"] {
+[class*='cl-card'],
+[class*='cl-rootBox'] > div[class*='cl-'] {
   background: rgba(255, 255, 255, 0.22) !important;
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
 }
 
 /* Clerk доторх текст — контрасттай */
-[class*="cl-headerTitle"],
-[class*="cl-headerSubtitle"],
-[class*="cl-formFieldLabel"],
-[class*="cl-dividerText"],
-[class*="cl-footer"] {
+[class*='cl-headerTitle'],
+[class*='cl-headerSubtitle'],
+[class*='cl-formFieldLabel'],
+[class*='cl-dividerText'],
+[class*='cl-footer'] {
   color: #0f172a !important;
 }
-[class*="cl-headerSubtitle"],
-[class*="cl-dividerText"] {
+[class*='cl-headerSubtitle'],
+[class*='cl-dividerText'] {
   color: #475569 !important;
 }
 
 /* Email / input талбар — шилэн blur */
-[class*="cl-formFieldInput"] input,
-[class*="cl-input"] {
+[class*='cl-formFieldInput'] input,
+[class*='cl-input'] {
   background: rgba(255, 255, 255, 0.2) !important;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
 
 /* Clerk доод хэсэг — ижил шилэн blur */
-[class*="cl-footer"],
-[class*="cl-footerPages"],
-[class*="cl-rootBox"] [class*="footer"],
-[class*="cl-badge"] {
+[class*='cl-footer'],
+[class*='cl-footerPages'],
+[class*='cl-rootBox'] [class*='footer'],
+[class*='cl-badge'] {
   background: rgba(255, 255, 255, 0.15) !important;
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);

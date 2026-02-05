@@ -28,14 +28,15 @@ export function HeroSection({ onOpenChat }: HeroSectionProps) {
 
   return (
     <section id="hero" className="relative flex min-h-screen items-center justify-center">
-      <div className="w-full max-w-4xl px-10">
+      <div className="w-full max-w-4xl px-10 relative z-10">
+        <div className="absolute inset-0 -z-10 rounded-3xl bg-white/40 backdrop-blur-xl border border-white/30 shadow-xl" />
         <div className="flex flex-col items-center text-center space-y-6">
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 rounded-full border-2 border-cyan-400/50 bg-white/95 backdrop-blur-sm px-3 py-1.5 shadow-sm"
+            className="inline-flex items-center gap-2 rounded-full border-2 border-cyan-400/50  backdrop-blur-sm px-3 py-1.5 shadow-sm"
           >
             <svg className="h-4 w-4 text-[#5ECB8A]" fill="currentColor" viewBox="0 0 20 20">
               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -89,7 +90,7 @@ export function HeroSection({ onOpenChat }: HeroSectionProps) {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
                 href={servicesHref}
-                className="relative flex items-center gap-2 cursor-pointer rounded-xl px-6 py-3 font-medium text-gray-700 bg-white border border-gray-200 overflow-hidden group transition-all duration-300 hover:text-cyan-600"
+                className="relative flex items-center gap-2 cursor-pointer rounded-xl px-6 py-3 font-medium text-gray-700 border border-gray-200 overflow-hidden group transition-all duration-300 hover:text-cyan-600"
               >
                 <motion.span className="absolute inset-0 bg-linear-to-r from-cyan-50 to-teal-50" initial={{ x: '-100%' }} whileHover={{ x: 0 }} transition={{ duration: 0.3 }} />
                 <span className="relative z-10 flex items-center gap-2">

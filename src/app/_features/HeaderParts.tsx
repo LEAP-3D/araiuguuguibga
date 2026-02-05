@@ -7,20 +7,13 @@ import { Button } from '@/components/ui/button';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import Logo from '../_components/Logo';
-import LanguageSwitcher from '../_components/LanguageSwitcher';
 
-const navLinkClass = 'group relative flex items-center gap-2 text-gray-700 font-medium transition-all duration-300 hover:text-[#51986a] cursor-pointer';
-const iconClass = 'w-4 h-4 transition-transform duration-300 group-hover:scale-125 group-hover:text-[#51986a]';
-const underlineClass = 'absolute -bottom-1 left-0 h-0.5 w-0 bg-[#51986a] transition-all duration-300 group-hover:w-full';
+const navLinkClass = 'text-gray-600 font-medium transition-all duration-300 hover:text-black cursor-pointer';
 
 export function HeaderLogo() {
   return (
-    <motion.div className="relative" whileHover={{ scale: 1.05 }} transition={{ type: 'spring', stiffness: 300 }}>
-      <motion.div
-        className="absolute -inset-2 bg-linear-to-r from-green-300 via-yellow-200 to-green-400 blur-xl rounded-full opacity-60"
-        animate={{ opacity: [0.4, 0.7, 0.4], scale: [1, 1.1, 1] }}
-        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-      />
+    <motion.div className="relative flex items-center pl-5" whileHover={{ scale: 1.02 }}>
+      {/* Өнгөт blur-ийг устгаж, зөвхөн логог үлдээв */}
       <Logo />
     </motion.div>
   );
@@ -30,16 +23,12 @@ export function HeaderNavLinks({ isSignedIn = false }: { isSignedIn?: boolean })
   return (
     <div className="hidden md:flex items-center gap-8">
       <a href="#adopt" className={navLinkClass}>
-        <Heart className={iconClass} /> Үрчлэх <span className={underlineClass} />
+        Үрчлэх
       </a>
-      <a className={navLinkClass}>
-        <MapPin className={iconClass} /> Байршил <span className={underlineClass} />
-      </a>
-      <a className={navLinkClass}>
-        <MessageCircle className={iconClass} /> Community <span className={underlineClass} />
-      </a>
-      <Link href={isSignedIn ? "/dashboard" : "/sign-in"} className={navLinkClass}>
-        <StickyNote className={iconClass} /> Dashboard <span className={underlineClass} />
+      <a className={navLinkClass}>Байршил</a>
+      <a className={navLinkClass}>Community</a>
+      <Link href={isSignedIn ? '/dashboard' : '/sign-in'} className={navLinkClass}>
+        Dashboard
       </Link>
     </div>
   );
@@ -47,10 +36,10 @@ export function HeaderNavLinks({ isSignedIn = false }: { isSignedIn?: boolean })
 
 export function HeaderAuthButtons() {
   return (
-    <>
+    <div className="flex items-center gap-4">
       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
         <Link href="/sign-in">
-          <Button variant="ghost" className="relative text-gray-700 hover:bg-green-100/60 hover:text-[#51986a] rounded-xl transition-all duration-300 overflow-hidden group">
+          <Button variant="ghost" className="relative text-gray-700 hover:bg-orange-100/60 hover:text-[#050503] rounded-xl transition-all duration-300 overflow-hidden group">
             <span className="relative z-10">Нэвтрэх</span>
             <motion.span className="absolute inset-0 bg-linear-to-r from-green-100 to-pink-100" initial={{ x: '-100%' }} whileHover={{ x: 0 }} transition={{ duration: 0.3 }} />
           </Button>
@@ -58,7 +47,7 @@ export function HeaderAuthButtons() {
       </motion.div>
       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
         <Link href="/sign-up">
-          <Button className="relative rounded-xl bg-linear-to-r from-[#51986a] via-green-500 to-[#51986a] text-white shadow-lg shadow-green-300/40 overflow-hidden group bg-[length:200%_100%] hover:bg-right transition-all duration-500">
+          <Button className="rounded-full bg-[#E8B07E] hover:bg-[#d49a6a] text-white px-8 py-5 shadow-none transition-all duration-300 font-semibold border-0">
             <motion.span
               className="absolute inset-0 bg-linear-to-r from-transparent via-white/30 to-transparent"
               initial={{ x: '-100%' }}
@@ -69,7 +58,7 @@ export function HeaderAuthButtons() {
           </Button>
         </Link>
       </motion.div>
-    </>
+    </div>
   );
 }
 
@@ -86,7 +75,7 @@ export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: He
       <PopoverTrigger asChild>
         <motion.button
           type="button"
-          className="flex items-center gap-2 rounded-xl px-2 py-1.5 hover:bg-green-100/60 transition-all duration-300 cursor-pointer outline-none border-0"
+          className="flex items-center gap-2 rounded-xl px-2 py-1.5 transition-all duration-300 cursor-pointer outline-none border-0"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
@@ -94,7 +83,7 @@ export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: He
             <AvatarImage src={imageUrl} alt={displayName} />
             <AvatarFallback className="bg-[#51986a] text-white text-sm font-semibold">{initial}</AvatarFallback>
           </Avatar>
-          <span className="text-gray-800 font-medium max-w-[120px] truncate">{displayName}</span>
+          <span className="text-gray-800 font-medium truncate pr-5">{displayName}</span>
         </motion.button>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-56 rounded-xl shadow-lg border-gray-200/80 p-0">
@@ -135,23 +124,14 @@ const navMotion = {
   transition: { duration: 0.6, ease: 'easeOut' as const },
 };
 
-export function HeaderShell({
-  children,
-  isSignedIn = false,
-}: {
-  children: React.ReactNode;
-  isSignedIn?: boolean;
-}) {
+export function HeaderShell({ children, isSignedIn = false }: { children: React.ReactNode; isSignedIn?: boolean }) {
   return (
     <motion.nav className={navClassName} {...navMotion}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <HeaderLogo />
           <HeaderNavLinks isSignedIn={isSignedIn} />
-          <div className="hidden md:flex items-center gap-4">
-            <LanguageSwitcher />
-            {children}
-          </div>
+          <div className="hidden md:flex items-center gap-4">{children}</div>
         </div>
       </div>
     </motion.nav>
