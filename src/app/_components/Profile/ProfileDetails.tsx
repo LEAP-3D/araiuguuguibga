@@ -26,9 +26,12 @@ export default function ProfileDetails({
   const [bio, setBio] = useState(initialBio);
 
   useEffect(() => {
-    setName(initialName);
-    setPhone(initialPhone);
-    setBio(initialBio);
+    const id = requestAnimationFrame(() => {
+      setName(initialName);
+      setPhone(initialPhone);
+      setBio(initialBio);
+    });
+    return () => cancelAnimationFrame(id);
   }, [initialName, initialPhone, initialBio]);
 
   const handleSubmit = (e: React.FormEvent) => {

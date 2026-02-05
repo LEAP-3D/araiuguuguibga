@@ -50,12 +50,12 @@ export async function POST(req: Request) {
     const name = typeof body.name === "string" ? body.name.trim() : "";
     const type = typeof body.type === "string" ? body.type.trim() : "";
     const breed = typeof body.breed === "string" ? body.breed.trim() || null : null;
-    const age = typeof body.age === "string" ? body.age.trim() || null : body.age != null ? String(body.age) : null;
-    const weight = typeof body.weight === "string" ? body.weight.trim() || null : body.weight != null ? String(body.weight) : null;
+    const age = typeof body.age === "string" ? body.age.trim() || null : body.age !== null && body.age !== undefined ? String(body.age) : null;
+    const weight = typeof body.weight === "string" ? body.weight.trim() || null : body.weight !== null && body.weight !== undefined ? String(body.weight) : null;
     const gender = typeof body.gender === "string" ? body.gender.trim() || null : null;
     const note = typeof body.note === "string" ? body.note.trim() || null : null;
     const allergies = typeof body.allergies === "string" ? body.allergies.trim() || null : null;
-    const microchip = typeof body.microchip === "string" ? body.microchip.trim() || null : body.microchip != null ? String(body.microchip) : null;
+    const microchip = typeof body.microchip === "string" ? body.microchip.trim() || null : body.microchip !== null && body.microchip !== undefined ? String(body.microchip) : null;
     const image = typeof body.image === "string" ? body.image.trim() || null : null;
 
     if (!name || !type) {

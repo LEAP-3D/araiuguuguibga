@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import type { Pet } from '@/lib/petsContext';
 import { Heart, Weight, Eye, PawPrint } from 'lucide-react';
@@ -13,8 +14,12 @@ export function PetCard({ pet }: PetCardProps) {
       <DialogTrigger asChild>
         <div className="w-60 rounded-2xl bg-white border border-[#f1e6d9] ">
           {/* Image */}
-          <div className="h-40 bg-gray-100 flex items-center justify-center overflow-hidden rounded-t-2xl">
-            {pet.image ? <img src={pet.image} alt={pet.name} className="h-full w-full object-cover" /> : <PawPrint className="h-12 w-12 text-gray-300" />}
+          <div className="h-40 bg-gray-100 flex items-center justify-center overflow-hidden rounded-t-2xl relative">
+            {pet.image ? (
+              <Image src={pet.image} alt={pet.name} fill className="object-cover" sizes="240px" />
+            ) : (
+              <PawPrint className="h-12 w-12 text-gray-300" />
+            )}
           </div>
 
           {/* Info */}
@@ -56,9 +61,15 @@ export function PetCard({ pet }: PetCardProps) {
           <DialogTitle>{pet.name}</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-7">
-          <div className="max-w-md mx-auto rounded-xl overflow-hidden shadow-md relative">
+          <div className="max-w-md mx-auto rounded-xl overflow-hidden shadow-md relative h-60">
             {/* Image */}
-            <img src={pet.image} alt={pet.name} className="w-200 h-60 object-cover" />
+            {pet.image ? (
+              <Image src={pet.image} alt={pet.name} fill className="object-cover" sizes="(max-width: 448px) 100vw, 448px" />
+            ) : (
+              <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                <PawPrint className="h-12 w-12 text-gray-300" />
+              </div>
+            )}
             <div className="absolute bottom-0 left-0 w-full text-white p-4">
               <h2 className="text-xl font-bold">{pet.name}</h2>
               <p>

@@ -4,30 +4,17 @@ import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
 import AddPetDialog from '@/app/_components/Profile/AddPetDialog';
-import { Bell, Filter, PawPrint, Syringe } from 'lucide-react';
+import { PawPrint } from 'lucide-react';
 import ProfileCard from '../_components/Profile/ProfileCard';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import MedicalCard from '../_components/Profile/MedicalCard';
-import AddMedicalRecord from '../_components/Profile/AddMedicalRecord';
 import type { PetMedicalForm } from '../_components/Profile/AddMedicalRecord';
 import { PetCard } from '../_components/Profile/PetCard';
 import { usePets } from '@/lib/petsContext';
+import { getTodayStr, toDateOnlyStr } from './profileDateUtils';
+import { DueTodayBanner } from './DueTodayBanner';
+import { ProfileMedicalSection, type MedicalRecordItem } from './ProfileMedicalSection';
+import { useMedicalNotifications } from './useMedicalNotifications';
 
-export type MedicalRecordItem = PetMedicalForm & { id?: string };
-
-function toDateOnlyStr(d: string | undefined): string {
-  if (!d) return '';
-  try {
-    const date = new Date(d);
-    return date.toISOString().split('T')[0];
-  } catch {
-    return d.slice(0, 10);
-  }
-}
-
-function getTodayStr(): string {
-  return new Date().toISOString().split('T')[0];
-}
+export type { MedicalRecordItem };
 
 export default function Profile() {
   const { isSignedIn, isLoaded } = useUser();
@@ -47,13 +34,16 @@ export default function Profile() {
 
   useEffect(() => {
     if (!isSignedIn) return;
-    refetchPets();
+    void refetchPets();
   }, [isSignedIn, refetchPets]);
 
   useEffect(() => {
     if (!isSignedIn) return;
     let cancelled = false;
-    setRecordsLoading(true);
+    let tid = 0;
+    tid = requestAnimationFrame(() => {
+      if (!cancelled) setRecordsLoading(true);
+    });
     fetch('/api/medical-records')
       .then((res) => (res.ok ? res.json() : []))
       .then((data: MedicalRecordItem[]) => {
@@ -80,6 +70,7 @@ export default function Profile() {
       });
     return () => {
       cancelled = true;
+      cancelAnimationFrame(tid);
     };
   }, [isSignedIn]);
 
@@ -116,39 +107,7 @@ export default function Profile() {
     });
   }, [medicalRecords]);
 
-  useEffect(() => {
-    if (dueTodayRecords.length === 0 || typeof window === 'undefined' || !('Notification' in window)) return;
-    const today = getTodayStr();
-    const key = 'medical-notif-date';
-    const lastShown = localStorage.getItem(key);
-    if (lastShown === today) return;
-    if (Notification.permission === 'granted') {
-      const title = dueTodayRecords.length === 1 ? '1 medical reminder today' : `${dueTodayRecords.length} medical reminders today`;
-      const body = dueTodayRecords.slice(0, 3).map((r) => `${r.pet}: ${r.type}${r.nextDueDate ? ' (due)' : ''}`).join('; ');
-      try {
-        new Notification(title, { body });
-        localStorage.setItem(key, today);
-      } catch {
-        // ignore
-      }
-      return;
-    }
-    if (Notification.permission === 'default') {
-      Notification.requestPermission().then((p) => {
-        if (p === 'granted' && dueTodayRecords.length > 0) {
-          try {
-            new Notification(
-              dueTodayRecords.length === 1 ? '1 medical reminder today' : `${dueTodayRecords.length} medical reminders today`,
-              { body: dueTodayRecords.slice(0, 3).map((r) => `${r.pet}: ${r.type}`).join('; ') }
-            );
-            localStorage.setItem(key, today);
-          } catch {
-            // ignore
-          }
-        }
-      });
-    }
-  }, [dueTodayRecords]);
+  useMedicalNotifications(dueTodayRecords);
 
   if (!isLoaded) {
     return (
@@ -171,23 +130,7 @@ export default function Profile() {
           ← Back to home
         </button>
 
-        {dueTodayRecords.length > 0 && (
-          <div className="mb-6 w-full max-w-2xl rounded-xl border border-amber-200 bg-amber-50/95 dark:bg-amber-950/30 dark:border-amber-800 p-4 shadow-sm flex items-start gap-3">
-            <Bell className="h-5 w-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
-            <div className="flex flex-col gap-1">
-              <p className="font-semibold text-amber-900 dark:text-amber-100">Today&apos;s medical reminders</p>
-              <ul className="text-sm text-amber-800 dark:text-amber-200 list-disc list-inside space-y-0.5">
-                {dueTodayRecords.map((r) => (
-                  <li key={r.id ?? `${r.pet}-${r.date}-${r.type}`}>
-                    <span className="font-medium">{r.pet}</span>: {r.type}
-                    {r.medicine ? ` — ${r.medicine}` : ''}
-                    {toDateOnlyStr(r.nextDueDate) === getTodayStr() ? ' (due today)' : ''}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
+        <DueTodayBanner records={dueTodayRecords} />
 
         <div className="flex flex-col gap-10 w-7xl items-center border-7 border-white rounded-3xl p-6 shadow-2xl py-14">
           <div className="w-6xl flex justify-start">
@@ -209,48 +152,14 @@ export default function Profile() {
             </div>
           </div>
 
-          <div className="w-6xl h-fit rounded-2xl flex flex-col  gap-6">
-            <div className="flex justify-between">
-              <div className="flex gap-3 items-start">
-                <div className="p-3 bg-[#94c1945b] rounded-full">
-                  <Syringe className="text-green-700" />
-                </div>
-                <div className="flex flex-col">
-                  <p className="text-xl font-bold">Medical Record</p>
-                  <p className="text-sm text-[#988375]">Track vaccinations, treatments & medications</p>
-                </div>
-              </div>
-              <AddMedicalRecord pets={pets} onAddRecord={handleAddRecord} />
-            </div>
-            <div className="flex flex-col gap-4">
-              <div className="flex gap-2 text-[#988375] items-center h-5 mb-4">
-                <Filter className="w-4 h-4" />
-                <p>Filter by pet:</p>
-                <Select value={selectedPetFilter} onValueChange={setSelectedPetFilter}>
-                  <SelectTrigger className="px-5 py-2 pr-11 text-[#503f34] rounded-xl border bg-[#faf8f6] ">
-                    <SelectValue placeholder="Select Pet" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All</SelectItem>
-                    {pets.map((pet) => (
-                      <SelectItem key={pet.id} value={pet.name}>
-                        {pet.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="flex flex-wrap gap-5">
-                {recordsLoading ? (
-                  <p className="text-gray-500 text-center w-full py-8">Loading records...</p>
-                ) : filteredRecords.length === 0 ? (
-                  <p className="text-gray-500 text-center w-full py-8">No medical records yet. Add your first record above!</p>
-                ) : (
-                  filteredRecords.map((record) => <MedicalCard key={record.id ?? record.medicine + record.date} record={record} />)
-                )}
-              </div>
-            </div>
-          </div>
+          <ProfileMedicalSection
+            pets={pets}
+            records={filteredRecords}
+            loading={recordsLoading}
+            selectedPetFilter={selectedPetFilter}
+            onFilterChange={setSelectedPetFilter}
+            onAddRecord={handleAddRecord}
+          />
         </div>
       </main>
     </div>

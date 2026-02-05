@@ -72,7 +72,7 @@ export function PetsProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    refetchPets();
+    void refetchPets();
   }, [refetchPets]);
 
   const addPet = useCallback(
