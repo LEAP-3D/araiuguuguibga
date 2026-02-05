@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useUser } from '@clerk/nextjs';
 import { MessageCircle, Heart } from 'lucide-react';
-import type { Stats } from '../_components/types';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 
 
@@ -32,7 +32,7 @@ export function HeroSection({ onOpenChat }: HeroSectionProps) {
             transition={{ duration: 0.6 }}
             className="inline-flex items-center mt-8 sm:mt-[95px] gap-2 rounded-full border border-white/50 bg-white/20 backdrop-blur-md px-3 py-1.5 shadow-sm"
           >
-            <img src="/caticon.png" alt="" className="h-4 w-4 sm:h-5 sm:w-5 object-contain" />
+            <Image src="/caticon.png" alt="" width={20} height={20} className="h-4 w-4 sm:h-5 sm:w-5 object-contain" />
             <span className="text-xs sm:text-sm font-medium text-[#8e4585]">Your Pet&apos;s Magical Journey Starts Here</span>
           </motion.div>
 

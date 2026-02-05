@@ -19,7 +19,7 @@ export function HeaderLogo() {
   );
 }
 
-export function HeaderNavLinks({ isSignedIn = false }: { isSignedIn?: boolean }) {
+export function HeaderNavLinks({ isSignedIn: _isSignedIn = false }: { isSignedIn?: boolean }) {
   return (
     <div className="hidden md:flex items-center gap-8" style={{ fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive" }}>
       <a style={{ color: '#43342D' }} href="#adopt" className={navLinkClass}>
