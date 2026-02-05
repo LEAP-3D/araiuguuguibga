@@ -14,7 +14,7 @@ export function PetDetails({ pet, onClose }: Props) {
         <DialogHeader>
           <DialogTitle>{pet.name}</DialogTitle>
         </DialogHeader>
-        <div className="flex flex-col gap-7">
+        <div className="flex flex-col gap-1">
           <div className="max-w-md mx-auto rounded-xl overflow-hidden shadow-md relative">
             {/* Image */}
             <img src={pet.image} alt={pet.name} className="w-full h-60 object-cover" />

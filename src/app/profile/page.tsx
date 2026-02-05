@@ -74,7 +74,12 @@ export default function Profile() {
                   </SelectContent>
                 </Select>
               </div>
-              <MedicalCard />
+              <div className="flex flex-wrap gap-5">
+                <MedicalCard />
+                <MedicalCard />
+                <MedicalCard />
+                <MedicalCard />
+              </div>
             </div>
           </div>
         </div>
