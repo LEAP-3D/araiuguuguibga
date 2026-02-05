@@ -2,7 +2,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import type { Pet } from '@/lib/petsContext';
 import { Heart, Weight, Eye, PawPrint } from 'lucide-react';
-import Image from 'next/image';
 
 type PetCardProps = {
   pet: Pet;
@@ -15,7 +14,7 @@ export function PetCard({ pet }: PetCardProps) {
         <div className="w-60 rounded-2xl bg-white border border-[#f1e6d9] ">
           {/* Image */}
           <div className="h-40 bg-gray-100 flex items-center justify-center overflow-hidden rounded-t-2xl">
-            {pet.image ? <Image src={pet.image} alt={pet.name} className="h-full w-full object-cover" /> : <PawPrint className="h-12 w-12 text-gray-300" />}
+            {pet.image ? <img src={pet.image} alt={pet.name} className="h-full w-full object-cover" /> : <PawPrint className="h-12 w-12 text-gray-300" />}
           </div>
 
           {/* Info */}

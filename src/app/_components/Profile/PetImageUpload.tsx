@@ -1,5 +1,5 @@
 import { Upload, X } from 'lucide-react';
-import Image from 'next/image';
+
 type Props = {
   image: string | null;
   onImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -13,7 +13,7 @@ export function PetImageUpload({ image, onImageChange, onRemove }: Props) {
         <X className="h-4 w-4" />
       </button>
       {/* eslint-disable-next-line @next/next/no-img-element -- dynamic data URL preview */}
-      <Image src={image || ''} alt="Preview" className="rounded-lg object-contain" />
+      <img src={image || ''} alt="Preview" className="rounded-lg object-contain" />
     </div>
   ) : (
     <div className="w-25 h-25 pt-3 rounded-xl border-2 border-dashed border-[#48805b] hover:bg-[#58b97a2c]">
