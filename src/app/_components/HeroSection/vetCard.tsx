@@ -1,24 +1,22 @@
 'use client';
-import { Star, Phone, MapPin, Clock, Building2, Trash2, Edit3 } from 'lucide-react';
+import { Star, Phone, MapPin, Clock, Building2 } from 'lucide-react';
 import type { Veterinary } from '../types';
 
 type VetCardProps = {
   vet: Veterinary;
   selected: boolean;
   onSelect: (vet: Veterinary) => void;
-  onDelete: (vet: Veterinary) => void;
-  onEdit: (vet: Veterinary) => void;
 };
 
 const categoryLabels: Record<string, string> = {
   emneleg: 'Эмнэлэг',
-  klinik: 'Клиник',
-  yaaraltai: 'Яаралтай',
+  duudlagaar_uzdeg: 'Дуудлагаар үздэг',
   emiin_san: 'Эмийн сан',
 };
 
-export function VetCard({ vet, selected, onSelect, onDelete, onEdit }: VetCardProps) {
-  const category = categoryLabels[vet.category ?? 'emneleg'] ?? 'Эмнэлэг';
+export function VetCard({ vet, selected, onSelect }: VetCardProps) {
+  const categoryKey = vet.category?.[0] ?? 'emneleg';
+  const category = categoryLabels[categoryKey] ?? 'Эмнэлэг';
 
   return (
     <div
@@ -33,8 +31,6 @@ export function VetCard({ vet, selected, onSelect, onDelete, onEdit }: VetCardPr
             <p className="text-xs text-gray-500">{category}</p>
           </div>
         </div>
-
-        <span className={`shrink-0 rounded px-2 py-0.5 text-xs font-medium ${vet.isOpen ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>{vet.isOpen ? 'Нээлттэй' : 'Хаалттай'}</span>
       </div>
 
       <div className="space-y-1.5 text-xs text-gray-600">
@@ -63,27 +59,6 @@ export function VetCard({ vet, selected, onSelect, onDelete, onEdit }: VetCardPr
           </span>
         ))}
         {vet.services.length > 4 && <span className="rounded-md bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-gray-600">+{vet.services.length - 4}</span>}
-      </div>
-
-      <div className="mt-3 flex gap-2">
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onEdit(vet);
-          }}
-          className="flex items-center gap-1 rounded bg-blue-500 px-2 py-1 text-white text-xs"
-        >
-          <Edit3 className="h-3 w-3" /> Засах
-        </button>
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onDelete(vet);
-          }}
-          className="flex items-center gap-1 rounded bg-red-500 px-2 py-1 text-white text-xs"
-        >
-          <Trash2 className="h-3 w-3" /> Устгах
-        </button>
       </div>
     </div>
   );

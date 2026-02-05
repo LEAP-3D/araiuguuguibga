@@ -1,19 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Veterinary } from '../_components/types';
 import dynamic from 'next/dynamic';
 import { SearchBar } from '../_components/HeroSection/searchBar';
 import { NoResults } from '../_components/noResult';
+import { mockVets } from '../_components/HeroSection/mockVets';
 import { VetCard } from '../_components/HeroSection/vetCard';
-import Link from 'next/link';
 
 // Filter options
 const FILTERS = [
+  { id: '', label: 'Бүгд' },
   { id: 'emneleg', label: 'Эмнэлэг' },
-  { id: 'klinik', label: 'Клиник' },
-  { id: 'yaaraltai', label: 'Яаралтай' },
+  { id: 'duudlagaar_uzdeg', label: 'Дуудлагаар үздэг' },
   { id: 'emiin_san', label: 'Эмийн сан' },
 ] as const;
 
@@ -21,33 +21,42 @@ const FILTERS = [
 const MapPlaceholder = dynamic(() => import('../_components/HeroSection/mapPlaceHolder'), { ssr: false });
 
 export function VeterinarySection() {
-  const [clinics, setClinics] = useState<Veterinary[]>([]);
   const [selectedVet, setSelectedVet] = useState<Veterinary | null>(null);
   const [temporaryVet, setTemporaryVet] = useState<Veterinary | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<(typeof FILTERS)[number]['id']>(FILTERS[0].id);
-
-  // Filter + search
-  const filteredVets = clinics.filter((vet) => {
-    const matchesSearch = vet.name.toLowerCase().includes(searchQuery.toLowerCase()) || vet.address.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesFilter = activeFilter === 'emneleg' || vet.category === activeFilter;
-    return matchesSearch && matchesFilter;
+  const [askLocation, setAskLocation] = useState(false);
+  const [clinics, setClinics] = useState<Veterinary[]>(mockVets);
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number }>({
+    lat: 47.9183, // ✅ UB-ийн default координат
+    lng: 106.917,
   });
 
-  // Delete
-  const handleDelete = (vet: Veterinary) => {
-    if (!confirm(`${vet.name}-ийг устгах уу?`)) return;
-    setClinics(clinics.filter((v) => v.id !== vet.id));
-    if (selectedVet?.id === vet.id) setSelectedVet(null);
-  };
+  useEffect(() => {
+    if (!navigator.geolocation) return;
 
-  // Edit
-  const handleEdit = (vet: Veterinary) => {
-    const newName = prompt('Эмнэлгийн нэрийг оруулна уу', vet.name);
-    if (newName) {
-      setClinics(clinics.map((v) => (v.id === vet.id ? { ...v, name: newName } : v)));
-    }
-  };
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setUserLocation({
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+        });
+        setAskLocation(false);
+      },
+      () => {
+        setAskLocation(true);
+      }
+    );
+  }, []);
+
+  const filteredVets = clinics.filter((vet) => {
+    const matchesSearch = vet.name.toLowerCase().includes(searchQuery.toLowerCase()) || vet.address.toLowerCase().includes(searchQuery.toLowerCase());
+
+    // Default filter = '' буюу бүгдийг харуулна
+    const matchesFilter = activeFilter === '' || vet.category?.includes(activeFilter);
+
+    return matchesSearch && matchesFilter;
+  });
 
   // Save temporary vet
   const handleSaveTemp = (vet: Veterinary) => {
@@ -76,6 +85,7 @@ export function VeterinarySection() {
             selectedVet={selectedVet}
             onSelect={setSelectedVet}
             temporaryVet={temporaryVet}
+            userLocation={userLocation}
             onMapClick={(lat, lng) =>
               setTemporaryVet({
                 id: Date.now().toString(),
@@ -83,18 +93,39 @@ export function VeterinarySection() {
                 lat,
                 lng,
                 rating: 0,
-                reviewCount: 0,
                 services: [],
                 isOpen: false,
-                phone: '',
+                phone: [''],
                 address: '',
-                category: 'emneleg',
+                category: ['emneleg'],
               })
             }
             onSaveTemp={handleSaveTemp}
             onCancelTemp={() => setTemporaryVet(null)}
           />
         </div>
+        {askLocation && (
+          <div className="mb-3 rounded-lg bg-yellow-50 p-3 text-sm text-yellow-800">
+            📍 Өөрт ойр эмнэлэг харахын тулд location-оо асаана уу
+            <button
+              onClick={() => {
+                setAskLocation(false);
+                navigator.geolocation?.getCurrentPosition(
+                  (pos) => {
+                    setUserLocation({
+                      lat: pos.coords.latitude,
+                      lng: pos.coords.longitude,
+                    });
+                  },
+                  () => setAskLocation(true)
+                );
+              }}
+              className="ml-2 font-medium underline"
+            >
+              Байршил асаах
+            </button>
+          </div>
+        )}
 
         {/* Sidebar */}
         <div className="flex min-h-0 w-full flex-col rounded-xl border border-gray-200 bg-white shadow-sm lg:w-[350px] lg:flex-initial">
@@ -128,15 +159,10 @@ export function VeterinarySection() {
           {/* Vet list */}
           <div className="min-h-0 flex-1 overflow-y-auto p-3 space-y-3">
             {filteredVets.length > 0 ? (
-              filteredVets.map((vet) => <VetCard key={vet.id} vet={vet} selected={selectedVet?.id === vet.id} onSelect={setSelectedVet} onDelete={handleDelete} onEdit={handleEdit} />)
+              filteredVets.map((vet) => <VetCard key={vet.id} vet={vet} selected={selectedVet?.id === vet.id} onSelect={setSelectedVet} />)
             ) : (
               <div className="flex flex-col items-center gap-3 py-8 text-center">
-                {' '}
-                <NoResults />{' '}
-                <Link href="/dashboard/add-clinic" className="text-sm font-medium text-[#4f9669] hover:underline">
-                  {' '}
-                  Админ эмнэлэг нэмэх →{' '}
-                </Link>{' '}
+                <NoResults />
               </div>
             )}
           </div>
