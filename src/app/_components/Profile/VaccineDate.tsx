@@ -6,9 +6,16 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
-export function VaccineDate() {
+type DateProps = {
+  value: string;
+  onChange: (date: string) => void;
+};
+
+export function VaccineDate({ value, onChange }: DateProps) {
   const [open, setOpen] = React.useState(false);
-  const [date, setDate] = React.useState<Date | undefined>(undefined);
+
+  // Convert string to Date object for the calendar
+  const date = value ? new Date(value) : undefined;
 
   return (
     <div className="flex flex-col gap-2">
@@ -25,7 +32,10 @@ export function VaccineDate() {
             selected={date}
             captionLayout="dropdown"
             onSelect={(selectedDate: Date | undefined) => {
-              setDate(selectedDate);
+              if (selectedDate) {
+                // Convert Date to string in YYYY-MM-DD format
+                onChange(selectedDate.toISOString().split('T')[0]);
+              }
               setOpen(false);
             }}
           />
