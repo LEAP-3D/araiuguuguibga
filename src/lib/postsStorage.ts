@@ -74,3 +74,27 @@ export function clearPostsStorage() {
     localStorage.removeItem(STORAGE_KEY);
   }
 }
+
+export function mapApiPostToPost(p: {
+  id: string;
+  name: string;
+  breed: string | null;
+  age: string | null;
+  type: string;
+  description: string | null;
+  location: string;
+  image: string | null;
+  createdAt: number;
+}): Post {
+  return {
+    id: p.id,
+    name: p.name,
+    breed: p.breed ?? "",
+    age: p.age ?? "",
+    type: p.type as Post["type"],
+    description: p.description ?? "",
+    location: p.location,
+    image: p.image ?? "",
+    createdAt: p.createdAt,
+  };
+}
