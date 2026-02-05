@@ -51,17 +51,20 @@ export function AddPostForm() {
     e.preventDefault();
     if (!form.location.trim()) return;
     setIsSubmitting(true);
-    addPost({
-      name: form.petName.trim(),
-      breed: form.breed.trim(),
-      age: form.age.trim(),
-      type: form.type,
-      description: form.description.trim(),
-      location: form.location.trim(),
-      image: form.imagePreview ?? "",
-    });
-    setIsSubmitting(false);
-    router.push("/dashboard/feed");
+    try {
+      const success = await addPost({
+        name: form.petName.trim(),
+        breed: form.breed.trim(),
+        age: form.age.trim(),
+        type: form.type,
+        description: form.description.trim(),
+        location: form.location.trim(),
+        image: form.imagePreview ?? "",
+      });
+      if (success) router.push("/dashboard/feed");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const canPost = form.location.trim().length > 0;

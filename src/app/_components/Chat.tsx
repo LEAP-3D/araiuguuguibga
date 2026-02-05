@@ -5,7 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { motion } from 'framer-motion';
-import { useId, useState } from 'react';
+import { useId, useState, useEffect } from 'react';
 
 type ChatProps = {
   open?: boolean;
@@ -14,11 +14,23 @@ type ChatProps = {
 
 export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps = {}) {
   const contentId = useId();
+  const [mounted, setMounted] = useState(false);
   const [internalOpen, setInternalOpen] = useState(false);
   const isControlled = controlledOpen !== undefined && onOpenChange !== undefined;
   const isOpen = isControlled ? controlledOpen : internalOpen;
   const setIsOpen = isControlled ? onOpenChange : setInternalOpen;
   const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div className="fixed bottom-6 right-6 z-50 w-16 h-16" aria-hidden="true" />
+    );
+  }
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
