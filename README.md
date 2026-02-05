@@ -27,6 +27,16 @@ Gmail (Google)-ээр бүртгүүлэх/нэвтрэхийг ажиллуул
    - `NEXT_PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL=/`
 4. Production дээр deploy хийсэн бол `NEXT_PUBLIC_APP_URL=https://your-domain.com` тохируулаад Clerk Dashboard-д ижил domain-ийг нэмнэ.
 
+### Profile зураг (Cloudinary) + Neon database
+
+Profile хуудсанд аватар Cloudinary-д байрлуулж, URL-ийг Neon (User.image) дээр хадгална.
+
+- `.env` дээр нэмнэ:
+  - `CLOUDINARY_CLOUD_NAME=your_cloud_name`
+  - `CLOUDINARY_API_KEY=your_api_key`
+  - `CLOUDINARY_API_SECRET=your_api_secret`
+- [Cloudinary Dashboard](https://cloudinary.com/console) → API Keys-аас утгуудыг авна.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

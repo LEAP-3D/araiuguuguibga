@@ -13,15 +13,50 @@ datasource db {
 }
 
 model User {
+  id              String          @id @default(nanoid())
+  email           String          @unique
+  name            String?
+  password        String?
+  image           String
+  phone           String?
+  bio             String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  class           Class           @relation(fields: [classId], references: [id])
+  classId         String
+  medicalRecords  MedicalRecord[]
+  pets            Pet[]
+}
+
+model Pet {
   id        String   @id @default(nanoid())
-  email     String   @unique
-  name      String?
-  password  String?
-  image     String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  type      String
+  breed     String?
+  age       String?
+  weight    String?
+  gender    String?
+  note      String?
+  allergies String?
+  microchip String?
+  image     String?
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  class     Class    @relation(fields: [classId], references: [id])
-  classId   String
+}
+
+model MedicalRecord {
+  id          String   @id @default(nanoid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pet         String
+  type        String
+  medicine    String
+  vet         String?
+  note        String?
+  date        String
+  nextDueDate String?
+  createdAt   DateTime @default(now())
 }
 
 model Class {

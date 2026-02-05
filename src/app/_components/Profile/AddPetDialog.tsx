@@ -10,6 +10,7 @@ import { usePets } from '@/lib/petsContext';
 
 export default function AddPetDialog() {
   const { addPet } = usePets();
+  const [open, setOpen] = useState(false);
   const [form, setForm] = useState<PetForm>({
     imagePreview: null,
     name: '',
@@ -24,22 +25,36 @@ export default function AddPetDialog() {
   });
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    console.log('File selected:', file); // Debug log
-
     if (file) {
       const compressed = await compressImage(file, 400);
-      console.log('Compressed result:', compressed); // Debug log
-
       setForm((f) => ({ ...f, imagePreview: compressed || null }));
     }
     e.target.value = '';
   };
   const removeImage = () => setForm((f) => ({ ...f, imagePreview: null }));
-  const handleAddPet = () => {
+
+  const handleAddPet = async () => {
     if (!form.name || !form.type) return;
 
-    addPet({
-      id: crypto.randomUUID(),
+    let imageUrl = form.imagePreview || '';
+    if (imageUrl.startsWith('data:')) {
+      try {
+        const res = await fetch(imageUrl);
+        const blob = await res.blob();
+        const file = new File([blob], 'pet.jpg', { type: blob.type || 'image/jpeg' });
+        const fd = new FormData();
+        fd.append('file', file);
+        const uploadRes = await fetch('/api/upload/cloudinary', { method: 'POST', body: fd });
+        if (uploadRes.ok) {
+          const { url } = await uploadRes.json();
+          imageUrl = url;
+        }
+      } catch {
+        imageUrl = '';
+      }
+    }
+
+    await addPet({
       name: form.name,
       type: form.type,
       breed: form.breed,
@@ -49,10 +64,10 @@ export default function AddPetDialog() {
       note: form.note,
       allergies: form.allergies,
       microchip: form.microchip ? form.microchip.toString() : '',
-      image: form.imagePreview || '',
+      image: imageUrl,
     });
 
-    // Reset form
+    setOpen(false);
     setForm({
       imagePreview: null,
       name: '',
@@ -67,7 +82,7 @@ export default function AddPetDialog() {
     });
   };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <button className="p-4 h-80 rounded-xl border w-60 border-dashed border-[#5e493a] text-center hover:border-[#5e493a] hover:bg-[#8e7f7236] ">
           <div className="flex justify-center mb-3">

@@ -18,7 +18,7 @@ export default function HomeClient() {
       <main>
         {/* 1. HERO SECTION WITH VIDEO BACKGROUND */}
         <section className="relative h-[100vh] w-full overflow-hidden">
-          <video autoPlay loop muted playsInline className="absolute top-0 left-0 w-full h-full object-cover z-0" poster="/dog-fallback.png">
+          <video autoPlay loop muted playsInline className="absolute top-0 left-0 w-full h-full object-cover z-0" >
             <source src="/NiggaCat.mp4" type="video/mp4" />
           </video>
 
