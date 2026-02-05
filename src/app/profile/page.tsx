@@ -19,13 +19,13 @@ export default function Profile() {
   return (
     <div className="w-screen relative flex justify-center-safe">
       <div className=" fixed inset-0 z-0 min-h-screen bg-[url('/pet-background.jpg')] bg-cover bg-center">
-        <div className="absolute inset-0 bg-background/85 backdrop-blur-sm" />
+        <div className="absolute inset-0 bg-background/85 backdrop-blur-xs" />
       </div>
-      <main className="container px-4 py-8 w-6xl relative z-10 flex flex-col items-start ">
-        <button className="mb-6 font-medium px-4 py-2 hover:bg-green-100 rounded-lg transition" onClick={handleButtonClick}>
+      <main className="container w-7xl relative z-10 flex flex-col items-start py-8 backdrop-blur-sm">
+        <button className="mb-6 font-medium px-4 py-2 hover:text-orange-950 rounded-lg transition" onClick={handleButtonClick}>
           ← Back to home
         </button>
-        <div className="flex flex-col gap-10 w-6xl items-center">
+        <div className="flex flex-col gap-10 w-7xl items-center border-7 border-white rounded-3xl p-6 shadow-2xl py-14">
           <div className="w-6xl flex justify-start">
             <ProfileCard />
           </div>

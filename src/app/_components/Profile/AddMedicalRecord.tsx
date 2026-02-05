@@ -10,7 +10,7 @@ export default function AddMedicalRecord() {
     <Dialog>
       <form>
         <DialogTrigger asChild>
-          <div className="w-fit h-fit bg-green-600 rounded-2xl py-3 px-5 flex items-center gap-2 justify-center text-white font-medium hover:bg-green-800 cursor-pointer transition">
+          <div className="w-fit h-fit bg-[#ef9241] rounded-2xl py-3 px-5 flex items-center gap-2 justify-center text-white font-medium hover:bg-green-800 cursor-pointer transition">
             <Plus />
             Add Record
           </div>
@@ -50,7 +50,7 @@ export default function AddMedicalRecord() {
                     <SelectItem value="vaccine">Vaccine</SelectItem>
                     <SelectItem value="medicine">Medicine</SelectItem>
                     <SelectItem value="treatment">Treatment</SelectItem>
-                      <SelectItem value="surgery">Surgery</SelectItem>
+                    <SelectItem value="surgery">Surgery</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
