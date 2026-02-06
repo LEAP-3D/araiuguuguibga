@@ -1,6 +1,9 @@
 'use client';
 
-import { Camera} from 'lucide-react';
+import { Camera, Eye } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import ProfileDetails from './ProfileDetails';
 import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { usePets } from '@/lib/petsContext';
@@ -119,7 +122,7 @@ export default function ProfileCard() {
             {user?.email && <div className="text-sm text-gray-600">{user.email}</div>}
           </div>
         </div>
-        {/* <div className="px-5">
+        <div className="px-5">
           <Dialog>
             <DialogTrigger asChild>
               <div className="w-90 h-12 bg-[#f6f2e9] text-[#5e493a] font-semibold rounded-2xl p-3 border-2 border-[#eae4dc] flex justify-center gap-2 cursor-pointer">
@@ -147,7 +150,7 @@ export default function ProfileCard() {
               </DialogFooter>
             </DialogContent>
           </Dialog>
-        </div> */}
+        </div>
       </div>
     </div>
   );
