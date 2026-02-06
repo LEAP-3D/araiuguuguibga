@@ -93,10 +93,7 @@ export default function Profile() {
     }
   };
 
-  const filteredRecords =
-    selectedPetFilter === 'all'
-      ? medicalRecords
-      : medicalRecords.filter((record) => record.pet === selectedPetFilter);
+  const filteredRecords = selectedPetFilter === 'all' ? medicalRecords : medicalRecords.filter((record) => record.pet === selectedPetFilter);
 
   const dueTodayRecords = useMemo(() => {
     const today = getTodayStr();
@@ -112,7 +109,7 @@ export default function Profile() {
   if (!isLoaded) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background/90">
-        <p className="text-gray-600">Loading...</p>
+        <p className="text-gray-600">Aчааллаж байна...</p>
       </div>
     );
   }
@@ -127,7 +124,7 @@ export default function Profile() {
       </div>
       <main className="container w-7xl relative z-10 flex flex-col items-start py-8 backdrop-blur-sm">
         <button className="mb-6 font-medium px-4 py-2 hover:text-orange-950 rounded-lg transition" onClick={handleButtonClick}>
-          ← Back to home
+          ← Нүүр хуудас руу буцах
         </button>
 
         <DueTodayBanner records={dueTodayRecords} />
@@ -140,7 +137,7 @@ export default function Profile() {
           {/* PETS SECTION */}
           <div className="rounded-2xl w-6xl  flex flex-col overflow-auto ">
             <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-              <PawPrint className="text-green-700" /> My Pets
+              <PawPrint className="text-green-700" /> Миний тэжээвэр амьтад
             </h3>
             <div className="gap-3 flex  overflow-auto ">
               <AddPetDialog />

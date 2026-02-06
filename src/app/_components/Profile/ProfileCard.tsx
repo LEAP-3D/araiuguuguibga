@@ -92,14 +92,7 @@ export default function ProfileCard() {
 
   return (
     <div className="bg-[#fefdfc] w-100 h-60 rounded-2xl shadow-lg flex justify-between pr-6 items-center">
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        className="hidden"
-        onChange={handleFileChange}
-        disabled={uploading}
-      />
+      <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} disabled={uploading} />
       <div className="flex flex-col gap-3 items-center">
         <div className="p-6 flex gap-4 ">
           <div className="relative inline-block">
@@ -124,45 +117,40 @@ export default function ProfileCard() {
           <div className="flex flex-col gap-0.5">
             <h2 className="text-xl font-bold mt-4">{loading ? '...' : displayName}</h2>
             <div className="flex gap-1 text-sm text-gray-600">
-              <p>pet owner</p>.<p>{petCount} pets</p>
+              <p>Тэжээвэр амьтны эзэн</p>.<p>{petCount} pets</p>
             </div>
             {user?.email && <div className="text-sm text-gray-600">{user.email}</div>}
           </div>
         </div>
-        <div className="px-5">
+        {/* <div className="px-5">
           <Dialog>
             <DialogTrigger asChild>
               <div className="w-90 h-12 bg-[#f6f2e9] text-[#5e493a] font-semibold rounded-2xl p-3 border-2 border-[#eae4dc] flex justify-center gap-2 cursor-pointer">
                 <Eye />
-                <p>View details</p>
+                <p>Дэлгэрэнгүй харах</p>
               </div>
             </DialogTrigger>
 
             <DialogContent className="w-120 bg-[#fefdfc] rounded-3xl border border-[#f1e6d9] p-8">
               <DialogHeader>
-                <DialogTitle className="text-2xl font-semibold text-[#3b2f2f]">Edit Profile</DialogTitle>
+                <DialogTitle className="text-2xl font-semibold text-[#3b2f2f]">Профайл засах</DialogTitle>
               </DialogHeader>
-              <ProfileDetails
-                initialName={initialName}
-                initialPhone={user?.phone ?? ''}
-                initialBio={user?.bio ?? ''}
-                onSave={handleSaveDetails}
-              />
+              <ProfileDetails initialName={initialName} initialPhone={user?.phone ?? ''} initialBio={user?.bio ?? ''} onSave={handleSaveDetails} />
               <DialogFooter>
                 <DialogClose asChild>
                   <Button variant="outline" className="rounded-xl px-8 py-2">
-                    Cancel
+                    Цуцлах
                   </Button>
                 </DialogClose>
                 <DialogClose asChild>
                   <Button type="submit" form="profile-details-form" className="rounded-xl px-8 py-2 bg-linear-to-r from-[#09712e] to-[#51986a] text-white shadow-md hover:opacity-90">
-                    Save Changes
+                    Өөрчлөлтийг хадгалах
                   </Button>
                 </DialogClose>
               </DialogFooter>
             </DialogContent>
           </Dialog>
-        </div>
+        </div> */}
       </div>
     </div>
   );
