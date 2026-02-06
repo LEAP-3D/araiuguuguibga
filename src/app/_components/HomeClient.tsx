@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { HeroSection } from '../_features/heroSection';
 import { RescuePetsSection } from '../_features/rescueSection';
 import { VeterinarySection } from '../_features/veterinarySection';
@@ -10,20 +10,31 @@ import Headers from '../_features/Headers';
 
 export default function HomeClient() {
   const [chatOpen, setChatOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(t);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div className="min-h-screen w-full" style={{ backgroundImage: 'url("/7782992.jpg")', backgroundSize: 'cover', backgroundPosition: 'center' }} />
+    );
+  }
 
   return (
     <div
       className="relative min-h-screen w-full flex flex-col items-center"
       style={{
-        backgroundImage: 'url("/bgPaw.png")',
+        backgroundImage: 'url("/7782992.jpg")',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed',
       }}
     >
-      {/* 1. Шилэн Контейнер */}
-      <div className="relative z-10 w-[94%] max-w-360 my-24  backdrop-blur-[25px]  rounded-[50px] shadow-2xl overflow-hidden flex flex-col ">
+      <div className="relative z-10 w-full flex flex-col flex-grow">
         <Headers />
 
         <main className="flex-grow">
