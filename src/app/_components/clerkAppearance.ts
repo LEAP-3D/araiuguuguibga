@@ -30,5 +30,19 @@ const sharedAppearance = {
   },
 };
 
-export const signInAppearance = sharedAppearance;
-export const signUpAppearance = sharedAppearance;
+export const signInAppearance = {
+  ...sharedAppearance,
+  elements: {
+    ...sharedAppearance.elements,
+    formButtonPrimary: "bg-teal-600 hover:bg-[#86D2D9] text-white font-semibold rounded-xl",
+  },
+};
+
+export const signUpAppearance = {
+  ...sharedAppearance,
+  variables: { ...sharedAppearance.variables, colorPrimary: "#43342D" },
+  elements: {
+    ...sharedAppearance.elements,
+    formButtonPrimary: "bg-[#43342D] hover:bg-[#524a3d] text-white font-semibold rounded-xl",
+  },
+};

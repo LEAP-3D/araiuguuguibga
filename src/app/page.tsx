@@ -1,4 +1,4 @@
-import HomeClient from "@/app/_components/HomeClient";
+import HomeClient from "@/app/_components/HomeClientDynamic";
 
 export const dynamic = "force-dynamic";
 

@@ -69,6 +69,7 @@ export function VeterinarySection() {
   return (
     <section id="vets" className="min-h-[70vh] px-4 py-12">
       <div className="mb-8 text-center">
+<<<<<<< HEAD
         <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false }} transition={{ duration: 0.6, ease: 'easeOut' }} className="leading-tight">
           <h2 className="text-3xl md:text-6xl font-bold text-black drop-shadow-sm">
             Танд хамгийн ойр байгаа <span className="text-[#E8B07E]">мал эмнэлэгүүд</span>
@@ -76,6 +77,15 @@ export function VeterinarySection() {
 
           <p className="mt-3 text-sm md:text-base text-gray-600">Яаралтай үед ойр байгаа эмнэлэгүүдийн байршил болон мэдээллийг эндээс харж болно</p>
         </motion.div>
+=======
+        <div className="mb-2 inline-flex items-center align-center gap-2 rounded-full px-4 py-1.5">
+          <MapPin className="h-9 w-9 text-[#cd1c18]" />
+          <span className="block text-2xl md:text-4xl font-bold text-gray-700 drop-shadow-sm" style={{ fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive", color: '#43342D' }}>
+            Танд хамгийн ойр байгаа <span>эмнэлэгүүд</span>
+          </span>
+        </div>
+        <p className="block text-2xl md:text-1xl font-bold drop-shadow-sm" style={{ fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive", color: '#86D2D9' }}>Яаралтай үед ойр байгаа эмнэлэгүүдийн байршил болон мэдээллийг эндээс харж болно</p>
+>>>>>>> origin/115-hero-zaya
       </div>
 
       <div className="mx-auto flex h-[600px] max-w-7xl flex-col gap-4 lg:flex-row lg:gap-6">
@@ -87,6 +97,7 @@ export function VeterinarySection() {
             onSelect={setSelectedVet}
             temporaryVet={temporaryVet}
             userLocation={userLocation}
+<<<<<<< HEAD
             onMapClick={(lat, lng) =>
               setTemporaryVet({
                 id: Date.now().toString(),
@@ -102,29 +113,17 @@ export function VeterinarySection() {
               })
             }
             onTempChange={setTemporaryVet}
+=======
+            onMapClick={(lat, lng) => setTemporaryVet({ id: Date.now().toString(), name: '', lat, lng, rating: 0, services: [], isOpen: false, phone: [''], address: '', category: ['emneleg'] })}
+            onSaveTemp={handleSaveTemp}
+>>>>>>> origin/115-hero-zaya
             onCancelTemp={() => setTemporaryVet(null)}
           />
         </div>
         {askLocation && (
           <div className="mb-3 rounded-lg bg-yellow-50 p-3 text-sm text-yellow-800">
             📍 Өөрт ойр эмнэлэг харахын тулд location-оо асаана уу
-            <button
-              onClick={() => {
-                setAskLocation(false);
-                navigator.geolocation?.getCurrentPosition(
-                  (pos) => {
-                    setUserLocation({
-                      lat: pos.coords.latitude,
-                      lng: pos.coords.longitude,
-                    });
-                  },
-                  () => setAskLocation(true)
-                );
-              }}
-              className="ml-2 font-medium underline"
-            >
-              Байршил асаах
-            </button>
+            <button onClick={() => { setAskLocation(false); navigator.geolocation?.getCurrentPosition((pos) => setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }), () => setAskLocation(true)); }} className="ml-2 font-medium underline">Байршил асаах</button>
           </div>
         )}
 

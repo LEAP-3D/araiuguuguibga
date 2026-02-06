@@ -8,7 +8,7 @@ import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import Logo from '../_components/Logo';
 
-const navLinkClass = 'text-gray-600 font-medium transition-all duration-300 hover:text-black cursor-pointer';
+const navLinkClass = 'text-gray-600 font-bold text-lg transition-all duration-300 hover:text-black cursor-pointer';
 
 export function HeaderLogo() {
   return (
@@ -19,17 +19,17 @@ export function HeaderLogo() {
   );
 }
 
-export function HeaderNavLinks({ isSignedIn = false }: { isSignedIn?: boolean }) {
+export function HeaderNavLinks({ isSignedIn: _isSignedIn = false }: { isSignedIn?: boolean }) {
   return (
-    <div className="hidden md:flex items-center gap-8">
-      <a href="#adopt" className={navLinkClass}>
-        Үрчлэх
+    <div className="hidden md:flex items-center gap-8" style={{ fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive" }}>
+      <a style={{ color: '#43342D' }} href="#adopt" className={navLinkClass}>
+      Амьтны мэдээлэл
       </a>
-      <a className={navLinkClass}>Байршил</a>
-      <a className={navLinkClass}>Community</a>
-      <Link href={isSignedIn ? '/dashboard' : '/sign-in'} className={navLinkClass}>
+      <a style={{ color: '#43342D' }} href="#vets" className={navLinkClass}>Эмнэлэг байршил</a>
+      {/* <a style={{ color: '#43342D' }} className={navLinkClass}>Community</a> */}
+      {/* <Link style={{ color: '#43342D' }} href={isSignedIn ? '/dashboard' : '/sign-in'} className={navLinkClass}>
         Dashboard
-      </Link>
+      </Link> */}
     </div>
   );
 }
@@ -39,15 +39,15 @@ export function HeaderAuthButtons() {
     <div className="flex items-center gap-4">
       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
         <Link href="/sign-in">
-          <Button variant="ghost" className="relative text-gray-700 hover:bg-orange-100/60 hover:text-[#050503] rounded-xl transition-all duration-300 overflow-hidden group">
+          <Button variant="ghost" className="relative text-gray-700 hover:bg-[#86D2D9] hover:text-gray-800 rounded-xl transition-all duration-300 overflow-hidden group">
             <span className="relative z-10">Нэвтрэх</span>
-            <motion.span className="absolute inset-0 bg-linear-to-r from-green-100 to-pink-100" initial={{ x: '-100%' }} whileHover={{ x: 0 }} transition={{ duration: 0.3 }} />
+            <motion.span className="absolute inset-0 bg-[#86D2D9]/20" initial={{ x: '-100%' }} whileHover={{ x: 0 }} transition={{ duration: 0.3 }} />
           </Button>
         </Link>
       </motion.div>
       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
         <Link href="/sign-up">
-          <Button className="rounded-full bg-[#E8B07E] hover:bg-[#d49a6a] text-white px-8 py-5 shadow-none transition-all duration-300 font-semibold border-0">
+          <Button className="rounded-full bg-[#43342D] hover:bg-[#524a3d] text-white px-8 py-5 shadow-none transition-all duration-300 font-semibold border-0">
             <motion.span
               className="absolute inset-0 bg-linear-to-r from-transparent via-white/30 to-transparent"
               initial={{ x: '-100%' }}
@@ -117,8 +117,12 @@ export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: He
   );
 }
 
+<<<<<<< HEAD
 const navClassName = 'relative w-full z-50 bg-transparent';
 
+=======
+const navClassName = 'fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-white/25 border-b border-white/40 shadow-[0_8px_32px_rgba(255,255,255,0.15)]';
+>>>>>>> origin/115-hero-zaya
 const navMotion = {
   initial: { y: -20, opacity: 0 },
   animate: { y: 0, opacity: 1 },

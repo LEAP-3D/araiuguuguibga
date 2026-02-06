@@ -14,9 +14,31 @@ export function RescueEmptyState() {
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="leading-tight"
         >
+<<<<<<< HEAD
           <span className="block text-3xl md:text-6xl font-bold text-black drop-shadow-sm">Тусламж хэрэгтэй амьтад</span>
 
           <span className="block text-1xl md:text-3xl font-bold text-[#E8B07E] drop-shadow-sm">Эдгээр амьтад үүрдийн гэрээ хайж байна</span>
+=======
+          <span
+            className="block text-3xl md:text-6xl font-bold text-gray-700 drop-shadow-sm"
+            style={{
+              fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive",
+              color: '#43342D',
+            }}
+          >
+            Тусламж хэрэгтэй амьтад
+          </span>
+
+          <span
+            className="block text-1xl md:text-3xl font-bold drop-shadow-sm"
+            style={{
+              fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive",
+              color: '#86D2D9',
+            }}
+          >
+            Эдгээр амьтад үүрдийн гэрээ хайж байна
+          </span>
+>>>>>>> origin/115-hero-zaya
         </motion.h1>
       </div>
       <div className="mx-auto flex h-[600px] max-w-7xl flex-col items-center justify-center rounded-2xl border-2 border-dashed border-amber-200 bg-white/50">
@@ -35,9 +57,32 @@ export function RescueEmptyState() {
 export function RescueHeader() {
   return (
     <div className="mb-8 text-center">
-      <p className="mb-1 text-xs font-medium uppercase tracking-widest text-amber-800/60" />
-      <h2 className="mb-2 text-3xl font-bold text-gray-800 md:text-4xl">Хайр хайж буй амьтад</h2>
-      <p className="mx-auto max-w-2xl text-gray-800">Эдгээр эвлүүлэг амьтад мөнхийн гэрийг хүлээж байна. Та тэдний хувьд байж болох уу?</p>
+      <motion.h1
+        initial={{ opacity: 0, scale: 0.95, y: 40 }}
+        whileInView={{ opacity: 1, scale: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.6 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+        className="leading-tight"
+      >
+        <span
+          className="block text-3xl md:text-6xl font-bold text-gray-700 drop-shadow-sm"
+          style={{
+            fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive",
+            color: '#43342D',
+          }}
+        >
+          Тусламж хэрэгтэй амьтад
+        </span>
+        <span
+          className="block text-1xl md:text-3xl font-bold drop-shadow-sm"
+          style={{
+            fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive",
+            color: '#86D2D9',
+          }}
+        >
+          Эдгээр амьтад үүрдийн гэрээ хайж байна
+        </span>
+      </motion.h1>
     </div>
   );
 }
