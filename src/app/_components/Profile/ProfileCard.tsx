@@ -1,9 +1,6 @@
 'use client';
 
-import { Camera, Eye } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import ProfileDetails from './ProfileDetails';
+import { Camera} from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { usePets } from '@/lib/petsContext';
