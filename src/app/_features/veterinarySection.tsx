@@ -8,6 +8,7 @@ import { SearchBar } from '../_components/HeroSection/searchBar';
 import { NoResults } from '../_components/noResult';
 import { mockVets } from '../_components/HeroSection/mockVets';
 import { VetCard } from '../_components/HeroSection/vetCard';
+import { motion } from 'framer-motion';
 
 // Filter options
 const FILTERS = [
@@ -68,13 +69,13 @@ export function VeterinarySection() {
   return (
     <section id="vets" className="min-h-[70vh] px-4 py-12">
       <div className="mb-8 text-center">
-        <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-orange-50 px-4 py-1.5">
-          <MapPin className="h-6 w-6 text-orange-500" />
-          <span className="text-xl font-bold text-black">
-            Танд хамгийн ойр байгаа <span className="text-orange-400">мал эмнэлэгүүд</span>
-          </span>
-        </div>
-        <p className="text-sm text-gray-600">Яаралтай үед ойр байгаа эмнэлэгүүдийн байршил болон мэдээллийг эндээс харж болно</p>
+        <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false }} transition={{ duration: 0.6, ease: 'easeOut' }} className="leading-tight">
+          <h2 className="text-3xl md:text-6xl font-bold text-black drop-shadow-sm">
+            Танд хамгийн ойр байгаа <span className="text-[#E8B07E]">мал эмнэлэгүүд</span>
+          </h2>
+
+          <p className="mt-3 text-sm md:text-base text-gray-600">Яаралтай үед ойр байгаа эмнэлэгүүдийн байршил болон мэдээллийг эндээс харж болно</p>
+        </motion.div>
       </div>
 
       <div className="mx-auto flex h-[600px] max-w-7xl flex-col gap-4 lg:flex-row lg:gap-6">
@@ -100,7 +101,7 @@ export function VeterinarySection() {
                 category: ['emneleg'],
               })
             }
-            onSaveTemp={handleSaveTemp}
+            onTempChange={setTemporaryVet}
             onCancelTemp={() => setTemporaryVet(null)}
           />
         </div>

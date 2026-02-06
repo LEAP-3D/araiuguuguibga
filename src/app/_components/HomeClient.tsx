@@ -15,7 +15,7 @@ export default function HomeClient() {
     <div
       className="relative min-h-screen w-full flex flex-col items-center"
       style={{
-        backgroundImage: 'url("/bgPaw.png")',
+        backgroundImage: 'url("/background.png")',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundPosition: 'center',

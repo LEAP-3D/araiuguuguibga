@@ -117,9 +117,10 @@ export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: He
   );
 }
 
-const navClassName = 'fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-white/50 border-b border-white/20 shadow-[0_8px_30px_rgba(0,0,0,0.06)]';
+const navClassName = 'relative w-full z-50 bg-transparent';
+
 const navMotion = {
-  initial: { y: -80, opacity: 0 },
+  initial: { y: -20, opacity: 0 },
   animate: { y: 0, opacity: 1 },
   transition: { duration: 0.6, ease: 'easeOut' as const },
 };
@@ -127,7 +128,7 @@ const navMotion = {
 export function HeaderShell({ children, isSignedIn = false }: { children: React.ReactNode; isSignedIn?: boolean }) {
   return (
     <motion.nav className={navClassName} {...navMotion}>
-      <div className="container mx-auto px-4">
+      <div className="w-full px-8 py-4">
         <div className="flex items-center justify-between h-16">
           <HeaderLogo />
           <HeaderNavLinks isSignedIn={isSignedIn} />

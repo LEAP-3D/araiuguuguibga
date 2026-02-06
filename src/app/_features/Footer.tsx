@@ -28,21 +28,21 @@ export default function Footer() {
   };
 
   return (
-    <div className="bg-[#30241d] text-background relative overflow-hidden pl-10">
+    <div className="bg-orange-200 text-background relative overflow-hidden pl-10">
       <div className="container mx-auto px-4 py-16 relative z-10">
         {/* Main footer content */}
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-12">
           {/* Brand column */}
           <div className="col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-3xl">
+              <span className="text-3xl text-black ">
                 <PawPrint />
               </span>
-              <span className="font-display text-2xl font-bold">PetCare</span>
+              <span className="font-display text-black text-2xl font-bold">PetCare</span>
             </div>
-            <p className="text-background/70 mb-6 max-w-xs">Connecting rescue pets with loving homes and providing trusted veterinary care resources.</p>
-            <div className="space-y-2 text-sm text-background/70">
-              <div className="flex items-center gap-2">
+            <p className="text-black  mb-6 max-w-xs">Connecting rescue pets with loving homes and providing trusted veterinary care resources.</p>
+            <div className="space-y-2 cursor-pointer text-black  text-sm ">
+              <div className="flex   items-center gap-2">
                 <Mail className="w-4 h-4" />
                 hello@petcare.com
               </div>
@@ -59,11 +59,11 @@ export default function Footer() {
 
           {/* Link columns */}
           <div>
-            <h4 className="font-display font-bold mb-4">Adopt</h4>
-            <ul className="space-y-2">
+            <h4 className="font-display text-black  font-bold mb-4">Adopt</h4>
+            <ul className="space-y-2 ">
               {footerLinks.adopt.map((link) => (
                 <li key={link.label}>
-                  <a href={link.href} className="text-background/70 hover:text-background transition-colors">
+                  <a href={link.href} className="text-black  hover:text-background transition-colors">
                     {link.label}
                   </a>
                 </li>
@@ -72,11 +72,11 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-display font-bold mb-4">Resources</h4>
+            <h4 className="font-display text-black font-bold mb-4">Resources</h4>
             <ul className="space-y-2">
               {footerLinks.resources.map((link) => (
                 <li key={link.label}>
-                  <a href={link.href} className="text-background/70 hover:text-background transition-colors">
+                  <a href={link.href} className="text-black  hover:text-background transition-colors">
                     {link.label}
                   </a>
                 </li>
@@ -85,11 +85,11 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-display font-bold mb-4">About</h4>
+            <h4 className="font-display text-black  font-bold mb-4">About</h4>
             <ul className="space-y-2">
               {footerLinks.about.map((link) => (
                 <li key={link.label}>
-                  <a href={link.href} className="text-background/70 hover:text-background transition-colors">
+                  <a href={link.href} className="text-black  hover:text-background transition-colors">
                     {link.label}
                   </a>
                 </li>
@@ -98,11 +98,11 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-display font-bold mb-4">Legal</h4>
+            <h4 className="font-display text-black  font-bold mb-4">Legal</h4>
             <ul className="space-y-2">
               {footerLinks.legal.map((link) => (
                 <li key={link.label}>
-                  <a href={link.href} className="text-background/70 hover:text-background transition-colors">
+                  <a href={link.href} className="text-black  hover:text-background transition-colors">
                     {link.label}
                   </a>
                 </li>
@@ -113,7 +113,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8 border-t border-background/10">
-          <p className="text-background/50 text-sm">
+          <p className="text-black  text-sm">
             © 2026 PetCare. Made with <Heart className="w-4 h-4 inline text-white fill-white" /> for pets everywhere.
           </p>
         </div>

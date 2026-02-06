@@ -14,24 +14,9 @@ export function RescueEmptyState() {
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="leading-tight"
         >
-          <span
-            className="block text-3xl md:text-6xl font-bold text-gray-700 drop-shadow-sm"
-            style={{
-              fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive",
-            }}
-          >
-            Тусламж хэрэгтэй амьтад
-          </span>
+          <span className="block text-3xl md:text-6xl font-bold text-black drop-shadow-sm">Тусламж хэрэгтэй амьтад</span>
 
-          <span
-            className="block text-1xl md:text-3xl font-bold drop-shadow-sm"
-            style={{
-              fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive",
-              color: '#5ECB8A',
-            }}
-          >
-            Эдгээр амьтад үүрдийн гэрээ хайж байна
-          </span>
+          <span className="block text-1xl md:text-3xl font-bold text-[#E8B07E] drop-shadow-sm">Эдгээр амьтад үүрдийн гэрээ хайж байна</span>
         </motion.h1>
       </div>
       <div className="mx-auto flex h-[600px] max-w-7xl flex-col items-center justify-center rounded-2xl border-2 border-dashed border-amber-200 bg-white/50">
