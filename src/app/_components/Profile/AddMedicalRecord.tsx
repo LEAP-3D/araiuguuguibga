@@ -64,25 +64,25 @@ export default function AddMedicalRecord({ pets = [], onAddRecord }: Props) {
       <DialogTrigger asChild>
         <div className="w-fit h-fit bg-[#ef9241] rounded-2xl py-3 px-5 flex items-center gap-2 justify-center text-white font-medium hover:bg-green-800 cursor-pointer transition">
           <Plus />
-          Add Record
+          нэмэх
         </div>
       </DialogTrigger>
-      <DialogContent className="w-120 ">
+      <DialogContent className="w-120 gap-5">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle className="flex gap-2 items-center text-xl font-semibold">
               <Syringe className="text-green-600 mb-2" />
-              Add Medical Record
+              Эрүүл мэндийн бүртгэл нэмэх
             </DialogTitle>
             <DialogDescription></DialogDescription>
           </DialogHeader>
           <div className="flex flex-col gap-2">
             <div className="flex justify-between">
               <div>
-                <label className="block text-sm font-semibold text-foreground mb-2">Pet *</label>
+                <label className="block text-sm font-semibold text-foreground mb-2">Тэжээвэр амьтан *</label>
                 <Select value={form.pet || ''} onValueChange={(v) => setForm((f) => ({ ...f, pet: v }))}>
                   <SelectTrigger className="px-5 py-2 rounded-xl border bg-[#f7fff3]">
-                    <SelectValue placeholder="Select Pet" />
+                    <SelectValue placeholder="Тэжээвэр амьтан сонгох" />
                   </SelectTrigger>
                   <SelectContent>
                     {pets.map((pet) => (
@@ -94,10 +94,10 @@ export default function AddMedicalRecord({ pets = [], onAddRecord }: Props) {
                 </Select>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-foreground mb-2">Type *</label>
+                <label className="block text-sm font-semibold text-foreground mb-2">Төрөл *</label>
                 <Select value={form.type || ''} onValueChange={(v) => setForm((f) => ({ ...f, type: v as 'vaccine' | 'medicine' | 'treatment' | 'surgery' }))}>
                   <SelectTrigger className="px-5 py-2 rounded-xl border bg-[#f7fff3]">
-                    <SelectValue placeholder="Select Type" />
+                    <SelectValue placeholder="Төрөл сонгох" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="vaccine">Vaccine</SelectItem>
@@ -119,16 +119,16 @@ export default function AddMedicalRecord({ pets = [], onAddRecord }: Props) {
             </div>
             <div className="flex gap-4">
               <div className="flex gap-1 flex-col">
-                <label className="block text-sm font-semibold text-foreground mb-2">Date *</label>
+                <label className="block text-sm font-semibold text-foreground mb-2">Огноо *</label>
                 <VaccineDate value={form.date} onChange={(date) => setForm((f) => ({ ...f, date }))} />
               </div>
               <div className="flex gap-1 flex-col">
-                <label className="block text-sm font-semibold text-foreground mb-2">Next Due Date</label>
+                <label className="block text-sm font-semibold text-foreground mb-2">Дараагийн товлосон огноо</label>
                 <VaccineDate value={form.nextDueDate} onChange={(date) => setForm((f) => ({ ...f, nextDueDate: date }))} />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-foreground mb-2">Vet / Clinic Name</label>
+              <label className="block text-sm font-semibold text-foreground mb-2">Клиникийн нэр</label>
               <input
                 value={form.vet || ''}
                 onChange={(e) => setForm((f) => ({ ...f, vet: e.target.value }))}
@@ -137,24 +137,24 @@ export default function AddMedicalRecord({ pets = [], onAddRecord }: Props) {
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-foreground mb-2">Notes</label>
+              <label className="block text-sm font-semibold text-foreground mb-2">Тэмдэглэл</label>
               <textarea
                 value={form.note || ''}
                 onChange={(e) => setForm((f) => ({ ...f, note: e.target.value }))}
                 rows={3}
                 className="w-full px-4 py-3 rounded-xl bg-secondary border-2 border-transparent focus:border-primary focus:outline-none transition-colors text-foreground placeholder:text-muted-foreground resize-none"
-                placeholder="Any additional notes..."
+                placeholder="Нэмэлт тэмдэглэл..."
               />
             </div>
           </div>
           <DialogFooter>
             <DialogClose asChild>
               <Button type="button" variant="outline" className="rounded-xl px-8 py-2">
-                Cancel
+                Цуцлах
               </Button>
             </DialogClose>
-            <Button type="submit" className="rounded-xl px-8 py-2 bg-gradient-to-r from-[#09712e] to-[#51986a] text-white shadow-md hover:opacity-90">
-              Add Record
+            <Button type="submit" className="rounded-xl px-8 py-2 bg-linear-to-r from-[#09712e] to-[#51986a] text-white shadow-md hover:opacity-90">
+              Бүртгэл нэмэх
             </Button>
           </DialogFooter>
         </form>

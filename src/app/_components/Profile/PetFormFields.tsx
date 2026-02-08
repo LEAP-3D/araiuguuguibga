@@ -10,7 +10,6 @@ export type PetForm = {
   gender: 'Em' | 'Er' | '';
   note: string;
   allergies: string;
-  microchip: number;
 };
 
 type Props = {
@@ -23,7 +22,12 @@ export function PetFormFields({ form, setForm }: Props) {
     <>
       <div>
         <label className="block text-lg font-medium mb-1">Амьтны нэр *</label>
-        <input value={form.name || ''} onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))} className="w-full px-5 py-2 rounded-xl border-2  bg-[#fffef370] outline-none" />
+        <input
+          value={form.name || ''}
+          onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
+          className="w-full px-5 py-2 rounded-xl border-2  bg-[#fffef370] outline-none"
+          placeholder="Амьтны нэр"
+        />
       </div>
       <div className="flex justify-between">
         <div className=" flex flex-col gap-1">
@@ -94,20 +98,11 @@ export function PetFormFields({ form, setForm }: Props) {
       </div>
       <div className="flex justify-between">
         <div className=" flex flex-col gap-1">
-          <label className="block text-sm font-medium ">Allergies</label>
+          <label className="block text-sm font-medium ">Xаршил</label>
           <input
             value={form.allergies || ''}
             onChange={(e) => setForm((f) => ({ ...f, allergies: e.target.value }))}
-            placeholder="Allergies"
-            className="px-5 py-2 rounded-xl border bg-[#fffef387] outline-none "
-          />
-        </div>
-        <div className=" flex flex-col gap-1 mb-2">
-          <label className="block text-sm font-medium ">Microchip ID</label>
-          <input
-            value={form.microchip || ''}
-            onChange={(e) => setForm((f) => ({ ...f, microchip: Number(e.target.value) }))}
-            placeholder="ID number"
+            placeholder="Xаршил"
             className="px-5 py-2 rounded-xl border bg-[#fffef387] outline-none "
           />
         </div>

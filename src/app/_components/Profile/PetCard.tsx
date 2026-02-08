@@ -15,11 +15,7 @@ export function PetCard({ pet }: PetCardProps) {
         <div className="w-60 rounded-2xl bg-white border border-[#f1e6d9] ">
           {/* Image */}
           <div className="h-40 bg-gray-100 flex items-center justify-center overflow-hidden rounded-t-2xl relative">
-            {pet.image ? (
-              <Image src={pet.image} alt={pet.name} fill className="object-cover" sizes="240px" />
-            ) : (
-              <PawPrint className="h-12 w-12 text-gray-300" />
-            )}
+            {pet.image ? <Image src={pet.image} alt={pet.name} fill className="object-cover" sizes="240px" /> : <PawPrint className="h-12 w-12 text-gray-300" />}
           </div>
 
           {/* Info */}
@@ -51,7 +47,7 @@ export function PetCard({ pet }: PetCardProps) {
           <div className="flex justify-center">
             <div className="w-50 h-10 bg-[#f6f2e9] text-[#5e493a] font-semibold text-sm rounded-2xl border-2 border-[#eae4dc] flex justify-center gap-2 cursor-pointer items-center">
               <Eye className="w-5 h-5" />
-              <p>View details</p>
+              <p>Дэлгэрэнгүй харах</p>
             </div>
           </div>
         </div>

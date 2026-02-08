@@ -21,7 +21,6 @@ export default function AddPetDialog() {
     gender: '',
     note: '',
     allergies: '',
-    microchip: 0, // number instead of string
   });
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -63,7 +62,6 @@ export default function AddPetDialog() {
       gender: form.gender,
       note: form.note,
       allergies: form.allergies,
-      microchip: form.microchip ? form.microchip.toString() : '',
       image: imageUrl,
     });
 
@@ -78,7 +76,6 @@ export default function AddPetDialog() {
       gender: '',
       note: '',
       allergies: '',
-      microchip: 0,
     });
   };
   return (
@@ -90,14 +87,14 @@ export default function AddPetDialog() {
               <PlusIcon className="text-[#5e493a]" />
             </div>
           </div>
-          <div className="font-semibold text-gray-700">Add Pet</div>
-          <div className="text-xs text-gray-500">Register new pet</div>
+          <div className="font-semibold text-gray-700">Тэжээвэр амьтан нэмэх</div>
+          <div className="text-xs text-gray-500">Шинэ тэжээвэр амьтан бүртгэх</div>
         </button>
       </DialogTrigger>
-      <DialogContent className="max-w-lg bg-[#fefdfc] rounded-3xl border border-[#f1e6d9] p-8">
+      <DialogContent className=" bg-[#fefdfc] rounded-3xl border border-[#f1e6d9] pr-6">
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold text-[#3b2f2f]">🐾 Тэжээвэр амьтан нэмэх</DialogTitle>
-          <DialogDescription className="text-sm text-gray-500">Fill in the information below to add a new pet to your profile.</DialogDescription>
+          <DialogDescription className="text-sm text-gray-500">доорх мэдээллийг бөглөнө үү.</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col items-center ">
           {/* Image Upload */}

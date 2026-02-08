@@ -22,7 +22,7 @@ export function VaccineDate({ value, onChange }: DateProps) {
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button variant="outline" id="date" className="w-48 justify-between font-normal">
-            {date ? date.toLocaleDateString() : 'Select date'}
+            {date ? date.toLocaleDateString() : 'Огноо сонгох'}
             <ChevronDownIcon />
           </Button>
         </PopoverTrigger>
