@@ -31,7 +31,7 @@ export default function HistoryPage() {
           <p className="mb-2 text-gray-600">Одоогоор өгөгдөл байхгүй</p>
           <p className="mb-6 text-sm text-gray-500">
             Эхлээд &quot;Миний амьтад&quot; дээр амьтан нэмээд вакцин, үйл
-            ажиллагаа бүртгэнэ үү
+            ажиллагаа бүртгэнэ үү?
           </p>
           <Link
             href="/dashboard/my-pets"
