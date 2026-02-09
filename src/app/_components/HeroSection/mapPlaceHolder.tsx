@@ -30,15 +30,17 @@ type Props = {
   onMapClick: (lat: number, lng: number) => void;
   onTempChange?: (vet: Veterinary) => void;
   onCancelTemp: () => void;
+  onSaveTemp?: (vet: Veterinary) => void;
 };
 export default function MapPlaceholder({ vets, selectedVet, onSelect, temporaryVet, userLocation, onMapClick, onTempChange, onCancelTemp }: Props) {
   const isClient = typeof window !== 'undefined';
   const [mapReady, setMapReady] = useState(false);
   if (!isClient) return null;
-  function MapClickHandler({ onMapClick }: { onMapClick: (lat: number, lng: number) => void }) {
+
+  function OnMapClickHandler({ handleClick }: { handleClick: (lat: number, lng: number) => void }) {
     useMapEvents({
       click(e) {
-        onMapClick(e.latlng.lat, e.latlng.lng);
+        handleClick(e.latlng.lat, e.latlng.lng);
       },
     });
     return null;
@@ -63,7 +65,7 @@ export default function MapPlaceholder({ vets, selectedVet, onSelect, temporaryV
 
         <FlyToSelectedVet vet={selectedVet} />
 
-        <MapClickHandler onMapClick={onMapClick} />
+        <OnMapClickHandler handleClick={onMapClick} />
 
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
