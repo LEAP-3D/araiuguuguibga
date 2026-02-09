@@ -1,7 +1,12 @@
 'use client';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import type { Veterinary } from '../types';
+
+import { useState, useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
+import { useMap } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import type { Veterinary } from '../types';
+import MapResizeFix from '../HeroSection/MapResizeFix';
 
 const userIcon = new L.Icon({
   iconUrl: '/map.png',
@@ -19,56 +24,96 @@ L.Icon.Default.mergeOptions({
 type Props = {
   vets: Veterinary[];
   selectedVet: Veterinary | null;
-  onSelect: (vet: Veterinary | null) => void;
+  onSelect: (vet: Veterinary) => void;
   temporaryVet: Veterinary | null;
   userLocation: { lat: number; lng: number } | null;
   onMapClick: (lat: number, lng: number) => void;
-  onSaveTemp: (vet: Veterinary) => void;
+  onTempChange?: (vet: Veterinary) => void;
   onCancelTemp: () => void;
 };
+export default function MapPlaceholder({ vets, selectedVet, onSelect, temporaryVet, userLocation, onMapClick, onTempChange, onCancelTemp }: Props) {
+  const isClient = typeof window !== 'undefined';
+  const [mapReady, setMapReady] = useState(false);
+  if (!isClient) return null;
+  function MapClickHandler({ onMapClick }: { onMapClick: (lat: number, lng: number) => void }) {
+    useMapEvents({
+      click(e) {
+        onMapClick(e.latlng.lat, e.latlng.lng);
+      },
+    });
+    return null;
+  }
+  function FlyToSelectedVet({ vet }: { vet: Veterinary | null }) {
+    const map = useMap();
+    useEffect(() => {
+      if (!vet) return;
 
-export default function MapPlaceholder({ vets, selectedVet: _selectedVet, userLocation, temporaryVet, onSaveTemp, onCancelTemp }: Props) {
+      map.flyTo([vet.lat, vet.lng], 15, {
+        animate: true,
+        duration: 0.8,
+      });
+    }, [vet, map]);
+    return null;
+  }
+
   return (
-    <MapContainer center={[47.9212, 106.9057]} zoom={12} className="h-full w-full rounded-xl">
-      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+    <div className="h-[400px] w-full md:h-[600px] lg:h-[600px]">
+      <MapContainer center={[47.9212, 106.9057]} zoom={12} whenReady={() => setMapReady(true)} style={{ height: '100%', width: '100%' }} className="rounded-xl">
+        {mapReady && <MapResizeFix />}
 
-      {/* User location */}
-      {userLocation && (
-        <Marker position={[userLocation.lat, userLocation.lng]} icon={userIcon}>
-          <Popup>Таны байршил</Popup>
-        </Marker>
-      )}
+        <FlyToSelectedVet vet={selectedVet} />
 
-      {/* Temporary vet */}
-      {temporaryVet && (
-        <Marker position={[temporaryVet.lat, temporaryVet.lng]}>
-          <Popup>
-            <div className="flex flex-col gap-2">
-              <input type="text" placeholder="Эмнэлгийн нэр" className="border p-1" value={temporaryVet.name} onChange={(e) => onSaveTemp({ ...temporaryVet, name: e.target.value })} />
-              <div className="flex gap-2">
-                <button onClick={() => onSaveTemp(temporaryVet)} className="bg-green-500 text-white px-2 py-1 rounded text-xs">
-                  Хадгалах
-                </button>
-                <button onClick={onCancelTemp} className="bg-red-500 text-white px-2 py-1 rounded text-xs">
+        <MapClickHandler onMapClick={onMapClick} />
+
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
+        {/* User location */}
+        {userLocation && (
+          <Marker position={[userLocation.lat, userLocation.lng]} icon={userIcon}>
+            <Popup>Таны байршил</Popup>
+          </Marker>
+        )}
+
+        {/* Temporary vet */}
+        {temporaryVet && (
+          <Marker position={[temporaryVet.lat, temporaryVet.lng]}>
+            <Popup>
+              <div className="flex flex-col gap-2">
+                <input
+                  type="text"
+                  placeholder="Эмнэлгийн нэр"
+                  className="border p-1"
+                  value={temporaryVet.name}
+                  onChange={(e) =>
+                    onTempChange?.({
+                      ...temporaryVet,
+                      name: e.target.value,
+                    })
+                  }
+                />
+                <button onClick={onCancelTemp} className="bg-red-500 text-white px-2 py-1 rounded text-xs mt-1">
                   Цуцлах
                 </button>
               </div>
-            </div>
-          </Popup>
-        </Marker>
-      )}
+            </Popup>
+          </Marker>
+        )}
 
-      {/* All vets */}
-      {vets.map((vet) => (
-        <Marker key={vet.id} position={[vet.lat, vet.lng]}>
-          <Popup>
-            <div className="flex flex-col gap-1">
+        {vets.map((vet) => (
+          <Marker
+            key={vet.id}
+            position={[vet.lat, vet.lng]}
+            eventHandlers={{
+              click: () => onSelect(vet),
+            }}
+          >
+            <Popup>
               <strong>{vet.name}</strong>
-              <span className="text-xs">{vet.address}</span>
-            </div>
-          </Popup>
-        </Marker>
-      ))}
-    </MapContainer>
+              <span className="block text-xs">{vet.address}</span>
+            </Popup>
+          </Marker>
+        ))}
+      </MapContainer>
+    </div>
   );
 }
