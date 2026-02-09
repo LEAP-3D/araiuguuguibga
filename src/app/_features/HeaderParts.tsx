@@ -23,9 +23,11 @@ export function HeaderNavLinks({ isSignedIn: _isSignedIn = false }: { isSignedIn
   return (
     <div className="hidden md:flex items-center gap-8" style={{ fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive" }}>
       <a style={{ color: '#43342D' }} href="#adopt" className={navLinkClass}>
-      Амьтны мэдээлэл
+        Амьтны мэдээлэл
       </a>
-      <a style={{ color: '#43342D' }} href="#vets" className={navLinkClass}>Эмнэлэг байршил</a>
+      <a style={{ color: '#43342D' }} href="#vets" className={navLinkClass}>
+        Эмнэлэг байршил
+      </a>
       {/* <a style={{ color: '#43342D' }} className={navLinkClass}>Community</a> */}
       {/* <Link style={{ color: '#43342D' }} href={isSignedIn ? '/dashboard' : '/sign-in'} className={navLinkClass}>
         Dashboard
