@@ -74,7 +74,9 @@ export function VeterinarySection() {
             Танд хамгийн ойр байгаа <span>эмнэлэгүүд</span>
           </span>
         </div>
-        <p className="block text-2xl md:text-1xl font-bold drop-shadow-sm" style={{ fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive", color: '#86D2D9' }}>Яаралтай үед ойр байгаа эмнэлэгүүдийн байршил болон мэдээллийг эндээс харж болно</p>
+        <p className="block text-2xl md:text-1xl font-bold drop-shadow-sm" style={{ fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive", color: '#86D2D9' }}>
+          Яаралтай үед ойр байгаа эмнэлэгүүдийн байршил болон мэдээллийг эндээс харж болно
+        </p>
       </div>
 
       <div className="mx-auto flex h-[600px] max-w-7xl flex-col gap-4 lg:flex-row lg:gap-6">
@@ -94,7 +96,18 @@ export function VeterinarySection() {
         {askLocation && (
           <div className="mb-3 rounded-lg bg-yellow-50 p-3 text-sm text-yellow-800">
             📍 Өөрт ойр эмнэлэг харахын тулд location-оо асаана уу
-            <button onClick={() => { setAskLocation(false); navigator.geolocation?.getCurrentPosition((pos) => setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }), () => setAskLocation(true)); }} className="ml-2 font-medium underline">Байршил асаах</button>
+            <button
+              onClick={() => {
+                setAskLocation(false);
+                navigator.geolocation?.getCurrentPosition(
+                  (pos) => setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+                  () => setAskLocation(true)
+                );
+              }}
+              className="ml-2 font-medium underline"
+            >
+              Байршил асаах
+            </button>
           </div>
         )}
 
@@ -116,7 +129,7 @@ export function VeterinarySection() {
                   key={f.id}
                   type="button"
                   onClick={() => setActiveFilter(f.id)}
-                  className={`rounded-lg px-3 py-1.5 text-sm font-medium ${activeFilter === f.id ? 'bg-[#4f9669] text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  className={`rounded-lg px-3 py-1.5 text-sm font-medium ${activeFilter === f.id ? 'bg-[#f18912] text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                 >
                   {f.label}
                 </button>

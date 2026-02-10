@@ -22,7 +22,7 @@ export function PetCard({ pet }: PetCardProps) {
           <div className="p-4 ">
             <div className="flex justify-between items-center">
               <h3 className="font-bold text-lg text-[#463327] truncate">{pet.name}</h3>
-              <span className="text-xs px-2 py-1 rounded-full bg-green-100 text-green-700 capitalize">{pet.type}</span>
+              <span className="text-xs px-2 py-1 rounded-full bg-orange-100 text-orange-700 capitalize">{pet.type}</span>
             </div>
 
             <p className="text-sm font-semibold text-[#958071]">{pet.breed}</p>

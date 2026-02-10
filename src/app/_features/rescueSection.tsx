@@ -1,16 +1,15 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { usePosts } from "@/lib/postsContext";
-import { RescueEmptyState, RescueHeader } from "./RescueSectionParts";
-import { RescuePetCard, RescueFooterActions } from "./RescuePetCard";
+import { useState } from 'react';
+import { usePosts } from '@/lib/postsContext';
+import { RescueEmptyState, RescueHeader } from './RescueSectionParts';
+import { RescuePetCard, RescueFooterActions } from './RescuePetCard';
 
 const FILTERS = [
-  { id: "all", label: "Бүгд" },
-  { id: "dog", label: "Нохой" },
-  { id: "cat", label: "Муур" },
-  { id: "bunny", label: "Туулай" },
- 
+  { id: 'all', label: 'Бүгд' },
+  { id: 'dog', label: 'Нохой' },
+  { id: 'cat', label: 'Муур' },
+  { id: 'bunny', label: 'Туулай' },
 ] as const;
 
 const FEED_POST_LIMIT = 10;
@@ -18,14 +17,13 @@ const FEED_POST_LIMIT = 10;
 export function RescuePetsSection() {
   const { posts, postsLoading } = usePosts();
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
-  const [activeFilter, setActiveFilter] = useState<string>("all");
+  const [activeFilter, setActiveFilter] = useState<string>('all');
 
   const filteredPosts = posts.filter((post) => {
-    if (activeFilter === "all") return true;
-    if (activeFilter === "dog" && post.type === "dog") return true;
-    if (activeFilter === "cat" && post.type === "cat") return true;
-    if ((activeFilter === "bunny" || activeFilter === "hamster") && post.type === "other")
-      return true;
+    if (activeFilter === 'all') return true;
+    if (activeFilter === 'dog' && post.type === 'dog') return true;
+    if (activeFilter === 'cat' && post.type === 'cat') return true;
+    if ((activeFilter === 'bunny' || activeFilter === 'hamster') && post.type === 'other') return true;
     return false;
   });
 
@@ -64,9 +62,7 @@ export function RescuePetsSection() {
               type="button"
               onClick={() => setActiveFilter(f.id)}
               className={`rounded-full px-6 py-2.5 text-sm font-medium transition-colors ${
-                activeFilter === f.id
-                  ? "bg-[#6b9b6e] text-white shadow-sm"
-                  : "border-2 border-[#6b9b6e] bg-white text-[#6b9b6e] hover:bg-[#6b9b6e]/5"
+                activeFilter === f.id ? 'bg-[#fc8d0e] text-white shadow-sm' : 'border-2 border-[#fc8d0e] bg-white text-[#fc8d0e] hover:bg-[#fc8d0e]/5'
               }`}
             >
               {f.label}
@@ -76,12 +72,7 @@ export function RescuePetsSection() {
         <div className="min-h-0 flex-1 overflow-y-auto">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {displayPosts.map((post) => (
-              <RescuePetCard
-                key={post.id}
-                post={post}
-                isFavorite={favorites.has(post.id)}
-                onToggleFavorite={toggleFavorite}
-              />
+              <RescuePetCard key={post.id} post={post} isFavorite={favorites.has(post.id)} onToggleFavorite={toggleFavorite} />
             ))}
           </div>
         </div>

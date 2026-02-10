@@ -21,7 +21,7 @@ export function VetCard({ vet, selected, onSelect }: VetCardProps) {
   return (
     <div
       onClick={() => onSelect(vet)}
-      className={`cursor-pointer overflow-hidden rounded-xl border bg-white p-4 shadow-sm transition-all hover:shadow-md ${selected ? 'border-[#4f9669] ring-2 ring-[#4f9669]/20' : 'border-gray-200'}`}
+      className={`cursor-pointer overflow-hidden rounded-xl border bg-white p-4 shadow-sm transition-all hover:shadow-md ${selected ? 'border-[#f18912] ring-2 ring-[#f18912]/20' : 'border-gray-200'}`}
     >
       <div className="mb-3 flex items-start justify-between gap-2">
         <div className="flex min-w-0 flex-1 items-start gap-2">

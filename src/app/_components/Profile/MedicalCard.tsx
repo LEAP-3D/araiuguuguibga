@@ -8,7 +8,7 @@ export default function MedicalCard({ record }: RecordProps) {
     <div className="w-140 h-60 bg-white rounded-2xl shadow-md pl-6 py-5 flex gap-4">
       <div className="flex ">
         <div className="flex items-center justify-center w-11 h-11 rounded-full shadow-2xl">
-          <Pill className="w-6 h-6 text-green-600" />
+          <Pill className="w-6 h-6 text-orange-600" />
         </div>
       </div>
       <div className="flex flex-col gap-1">
