@@ -1,20 +1,13 @@
-"use client";
+'use client';
 
-import {
-  Heart,
-  MessageCircle,
-  Share2,
-  MapPin,
-  PawPrint,
-  User,
-} from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import type { Post } from "@/lib/postsContext";
+import { Heart, MessageCircle, Share2, MapPin, PawPrint, User } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import type { Post } from '@/lib/postsContext';
 
 const typeLabels: Record<string, string> = {
-  dog: "Нохой",
-  cat: "Муур",
-  other: "Бусад",
+  dog: 'Нохой',
+  cat: 'Муур',
+  other: 'Бусад',
 };
 
 function formatRelativeTime(ms: number) {
@@ -22,16 +15,15 @@ function formatRelativeTime(ms: number) {
   const m = Math.floor(diff / 60000);
   const h = Math.floor(diff / 3600000);
   const d = Math.floor(diff / 86400000);
-  if (m < 1) return "Саяхан";
+  if (m < 1) return 'Саяхан';
   if (m < 60) return `${m} мин`;
   if (h < 24) return `${h} цаг`;
   if (d < 7) return `${d} өдөр`;
-  return new Date(ms).toLocaleDateString("mn-MN");
+  return new Date(ms).toLocaleDateString('mn-MN');
 }
 
 function PetImage({ image }: { image: string }) {
-  const isUrl =
-    image.startsWith("http") || image.startsWith("/") || image.startsWith("data:");
+  const isUrl = image.startsWith('http') || image.startsWith('/') || image.startsWith('data:');
   if (isUrl) {
     return (
       /* eslint-disable-next-line @next/next/no-img-element -- dynamic user content */
@@ -53,19 +45,13 @@ type FeedPostCardProps = {
   onToggleFavorite: (id: string) => void;
 };
 
-export function FeedPostCard({
-  post,
-  displayName,
-  userImageUrl,
-  isFavorite,
-  onToggleFavorite,
-}: FeedPostCardProps) {
+export function FeedPostCard({ post, displayName, userImageUrl, isFavorite, onToggleFavorite }: FeedPostCardProps) {
   return (
     <article className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
       <div className="flex items-center gap-3 p-4">
         <Avatar className="h-10 w-10 rounded-full border-2 border-gray-100">
           <AvatarImage src={userImageUrl} alt={displayName} />
-          <AvatarFallback className="bg-[#4f9669]/20 text-[#4f9669]">
+          <AvatarFallback className="bg-[#f18912]/20 text-[#f18912]">
             <User className="h-5 w-5" />
           </AvatarFallback>
         </Avatar>
@@ -76,16 +62,14 @@ export function FeedPostCard({
             {post.location && ` · ${post.location}`}
           </p>
         </div>
-        <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
-          {typeLabels[post.type] ?? "Бусад"}
-        </span>
+        <span className="rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-medium text-orange-800">{typeLabels[post.type] ?? 'Бусад'}</span>
       </div>
       <div className="px-4 pb-3">
         {(post.name || post.description) && (
           <p className="mb-3 text-gray-700">
             {post.name && <span className="font-medium">{post.name}</span>}
-            {post.name && post.description && " — "}
-            {post.description || ""}
+            {post.name && post.description && ' — '}
+            {post.description || ''}
             {post.breed && <span className="text-gray-500"> · {post.breed}</span>}
             {post.age && <span className="text-gray-500"> · {post.age}</span>}
           </p>
@@ -105,24 +89,16 @@ export function FeedPostCard({
           <button
             type="button"
             onClick={() => onToggleFavorite(post.id)}
-            className={`flex flex-1 items-center justify-center gap-2 py-3 text-sm font-medium transition-colors ${
-              isFavorite ? "text-[#4f9669]" : "text-gray-600 hover:bg-gray-50"
-            }`}
+            className={`flex flex-1 items-center justify-center gap-2 py-3 text-sm font-medium transition-colors ${isFavorite ? 'text-[#f18912]' : 'text-gray-600 hover:bg-gray-50'}`}
           >
-            <Heart className={`h-5 w-5 ${isFavorite ? "fill-current" : ""}`} />
-            {isFavorite ? "Таалагдлаа" : "Таалагдах"}
+            <Heart className={`h-5 w-5 ${isFavorite ? 'fill-current' : ''}`} />
+            {isFavorite ? 'Таалагдлаа' : 'Таалагдах'}
           </button>
-          <button
-            type="button"
-            className="flex flex-1 items-center justify-center gap-2 py-3 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50"
-          >
+          <button type="button" className="flex flex-1 items-center justify-center gap-2 py-3 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50">
             <MessageCircle className="h-5 w-5" />
             Сэтгэгдэл
           </button>
-          <button
-            type="button"
-            className="flex flex-1 items-center justify-center gap-2 py-3 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50"
-          >
+          <button type="button" className="flex flex-1 items-center justify-center gap-2 py-3 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50">
             <Share2 className="h-5 w-5" />
             Хуваалцах
           </button>

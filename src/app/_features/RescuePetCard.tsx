@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Heart, MapPin, Calendar, PlusCircle } from 'lucide-react';
 import { PetImage } from '@/app/_components/PetImage';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 const typeLabels: Record<string, string> = {
   dog: 'Нохой',
@@ -29,38 +30,75 @@ type RescuePetCardProps = {
 
 export function RescuePetCard({ post, isFavorite, onToggleFavorite }: RescuePetCardProps) {
   return (
-    <div className="group overflow-hidden rounded-2xl border border-amber-100 bg-white shadow-md transition-all hover:shadow-lg">
-      <div className="relative aspect-4/3 overflow-hidden rounded-t-2xl">
-        <PetImage image={post.image} />
-        <button
-          type="button"
-          onClick={() => onToggleFavorite(post.id)}
-          className={`absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border-2 transition-colors ${
-            isFavorite ? 'border-transparent bg-white/90 text-red-500' : 'border-white/80 bg-white/60 text-gray-600 hover:bg-white/80'
-          }`}
-        >
-          <Heart className={`h-5 w-5 ${isFavorite ? 'fill-current' : ''}`} />
-        </button>
-      </div>
-      <div className="p-5">
-        <div className="mb-2 flex items-start justify-between gap-2">
-          <h3 className="text-lg font-bold text-amber-900">{post.name || 'Нэр тодорхойгүй'}</h3>
-          <span className="shrink-0 rounded-full bg-[#6b9b6e] px-3 py-1 text-xs font-medium text-white">{typeLabels[post.type] ?? 'Бусад'}</span>
-        </div>
-        <p className="mb-2 text-sm text-amber-800/70">{post.breed || '—'}</p>
-        <p className="mb-4 line-clamp-2 text-sm text-gray-600">{post.description || '—'}</p>
-        <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500">
-          <span className="flex items-center gap-1.5">
-            <Calendar className="h-4 w-4 text-amber-600" />
-            {post.age || '—'}
-          </span>
-          <span className="flex items-center gap-1.5">
-            <MapPin className="h-4 w-4 text-amber-600" />
-            {post.location}
-          </span>
-        </div>
-      </div>
-    </div>
+    <Dialog>
+      <form>
+        <DialogTrigger asChild>
+          <div
+            className="group overflow-hidden rounded-2xl border border-amber-100 bg-white shadow-md transition-all hover:shadow-lg"
+            style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}
+          >
+            <div className="relative w-full h-68 overflow-hidden rounded-t-xl group">
+              <PetImage image={post.image} />
+
+              <button
+                type="button"
+                onClick={() => onToggleFavorite(post.id)}
+                className={`absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border-2 transition-colors ${
+                  isFavorite ? 'border-transparent bg-white/90 text-red-500' : 'border-white/80 bg-white/60 text-gray-600 hover:bg-white/80'
+                }`}
+              >
+                <Heart className={`h-5 w-5 ${isFavorite ? 'fill-current' : ''}`} />
+              </button>
+            </div>
+            <div className="p-5">
+              <div className="mb-2 flex items-start justify-between gap-2">
+                <h3 className="text-lg font-extrabold text-black">{post.name || 'Нэр тодорхойгүй'}</h3>
+                <span className="shrink-0 rounded-full border-2 border-[#efac48] px-3 py-1 text-xs font-extrabold text-black">{typeLabels[post.type] ?? 'Бусад'}</span>
+              </div>
+
+              <p className="mb-4 line-clamp-2 text-sm text-gray-800">{post.description || '—'}</p>
+              <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500">
+                <span className="flex items-center gap-1.5">
+                  <Calendar className="h-4 w-4 text-amber-600" />
+                  {post.age || '—'}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <MapPin className="h-4 w-4 text-amber-600" />
+                  {post.location}
+                </span>
+              </div>
+            </div>
+          </div>
+        </DialogTrigger>
+        <DialogContent className="w-220 h-auto flex flex-col justify-between ">
+          <DialogHeader className="hidden">
+            <DialogTitle>Edit profile</DialogTitle>
+            <DialogDescription>Make changes to your profile here. Click save when you&apos;re done.</DialogDescription>
+          </DialogHeader>
+          <div style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+            <div className="relative w-full h-68 overflow-hidden rounded-t-xl group">
+              <PetImage image={post.image} />
+            </div>
+            <div className="p-6 mt-2 flex flex-col gap-4">
+              <div className="mb-2 flex items-start justify-between gap-2">
+                <h3 className="text-lg font-extrabold text-black">{post.name || 'Нэр тодорхойгүй'}</h3>
+                <span className="shrink-0 rounded-full border-2 border-[#efac48] px-3 py-1 text-xs font-extrabold text-black">{typeLabels[post.type] ?? 'Бусад'}</span>
+              </div>
+
+              <p className="mb-4 line-clamp-2 text-sm text-gray-800">{post.description || '—'}</p>
+              <span className="flex items-center gap-1.5">
+                <MapPin className="h-4 w-4 text-amber-600" />
+                {post.location}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Calendar className="h-4 w-4 text-amber-600" />
+                {post.age || '—'}
+              </span>
+            </div>
+          </div>
+        </DialogContent>
+      </form>
+    </Dialog>
   );
 }
 
@@ -76,7 +114,7 @@ export function RescueFooterActions({ postCount }: { postCount: number }) {
           Бүгдийг харах ({postCount})
         </Link>
       )}
-      <Link href="/dashboard/add-post" className="inline-flex items-center gap-2 rounded-full bg-[#6b9b6e] px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#5d8a60]">
+      <Link href="/dashboard/add-post" className="inline-flex items-center gap-2 rounded-full bg-[#ff9900ec] px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#5d8a60]">
         <PlusCircle className="h-5 w-5" />
         Пост оруулах
       </Link>

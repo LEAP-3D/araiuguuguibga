@@ -137,7 +137,7 @@ export default function Profile() {
           {/* PETS SECTION */}
           <div className="rounded-2xl w-6xl  flex flex-col overflow-auto ">
             <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-              <PawPrint className="text-green-700" /> Миний тэжээвэр амьтад
+              <PawPrint className="text-orange-700" /> Миний тэжээвэр амьтад
             </h3>
             <div className="gap-3 flex  overflow-auto ">
               <AddPetDialog />

@@ -103,7 +103,7 @@ export default function AddPetDialog() {
               <button
                 type="button"
                 onClick={removeImage}
-                className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-green-800/70"
+                className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-orange-800/70"
               >
                 <X className="h-4 w-4" />
               </button>

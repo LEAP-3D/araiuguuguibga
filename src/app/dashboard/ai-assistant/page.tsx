@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Sparkles, ImagePlus, Loader2 } from "lucide-react";
-import { compressImage } from "@/lib/compressImage";
-import type { PetAnalysisResult } from "@/app/api/analyze-pet/route";
-import { AiAnalysisResult } from "./AiAnalysisResult";
+import { useState } from 'react';
+import { Sparkles, ImagePlus, Loader2 } from 'lucide-react';
+import { compressImage } from '@/lib/compressImage';
+import type { PetAnalysisResult } from '@/app/api/analyze-pet/route';
+import { AiAnalysisResult } from './AiAnalysisResult';
 
 export default function AiAssistantPage() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -19,30 +19,30 @@ export default function AiAssistantPage() {
     setResult(null);
     const dataUrl = await compressImage(file, 512);
     if (dataUrl) setImagePreview(dataUrl);
-    e.target.value = "";
+    e.target.value = '';
   };
 
   const handleAnalyze = async () => {
     if (!imagePreview) {
-      setError("Эхлээд амьтны зураг оруулна уу");
+      setError('Эхлээд амьтны зураг оруулна уу');
       return;
     }
     setIsLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/analyze-pet", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/analyze-pet', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ imageBase64: imagePreview }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "Алдаа гарлаа");
+        throw new Error(data.error || 'Алдаа гарлаа');
       }
       const data = (await res.json()) as PetAnalysisResult;
       setResult(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Алдаа гарлаа");
+      setError(err instanceof Error ? err.message : 'Алдаа гарлаа');
     } finally {
       setIsLoading(false);
     }
@@ -52,27 +52,21 @@ export default function AiAssistantPage() {
     <div>
       <div className="mb-8">
         <h1 className="flex items-center gap-2 text-2xl font-bold text-gray-900">
-          <Sparkles className="h-7 w-7 text-[#4f9669]" />
+          <Sparkles className="h-7 w-7 text-[#f18912]" />
           AI Туслах
         </h1>
-        <p className="text-gray-600">
-          Хайртай амьтныхаа зураг оруулаад нас, жин, хоолны зөвлөмж аваарай
-        </p>
+        <p className="text-gray-600">Хайртай амьтныхаа зураг оруулаад нас, жин, хоолны зөвлөмж аваарай</p>
       </div>
       <div className="mx-auto max-w-2xl space-y-6">
         <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
           <label
             htmlFor="pet-image"
-            className="flex min-h-[220px] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 transition-colors hover:border-[#4f9669]/50 hover:bg-[#4f9669]/5"
+            className="flex min-h-[220px] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 transition-colors hover:border-[#f18912]/50 hover:bg-[#f18912]/5"
           >
             {imagePreview ? (
               <div className="relative w-full">
                 {/* eslint-disable-next-line @next/next/no-img-element -- dynamic data URL preview */}
-                <img
-                  src={imagePreview}
-                  alt="Амьтан"
-                  className="mx-auto max-h-64 rounded-lg object-contain"
-                />
+                <img src={imagePreview} alt="Амьтан" className="mx-auto max-h-64 rounded-lg object-contain" />
               </div>
             ) : (
               <>
@@ -81,21 +75,14 @@ export default function AiAssistantPage() {
                 <span className="text-xs text-gray-500">JPG, PNG (max 5MB)</span>
               </>
             )}
-            <input
-              id="pet-image"
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleImageChange}
-              disabled={isLoading}
-            />
+            <input id="pet-image" type="file" accept="image/*" className="hidden" onChange={handleImageChange} disabled={isLoading} />
           </label>
           <div className="mt-4 flex gap-3">
             <button
               type="button"
               onClick={handleAnalyze}
               disabled={!imagePreview || isLoading}
-              className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#4f9669] px-6 py-3 font-medium text-white transition-colors hover:bg-[#458559] disabled:opacity-50"
+              className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#f18912] px-6 py-3 font-medium text-white transition-colors hover:bg-[#458559] disabled:opacity-50"
             >
               {isLoading ? (
                 <>

@@ -12,7 +12,7 @@ export function PetCard({ pet }: PetCardProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="w-60 rounded-2xl bg-white border border-[#f1e6d9] ">
+        <div className="w-60 rounded-2xl bg-white border border-[#f1e6d9] " style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
           {/* Image */}
           <div className="h-40 bg-gray-100 flex items-center justify-center overflow-hidden rounded-t-2xl relative">
             {pet.image ? <Image src={pet.image} alt={pet.name} fill className="object-cover" sizes="240px" /> : <PawPrint className="h-12 w-12 text-gray-300" />}
@@ -22,7 +22,7 @@ export function PetCard({ pet }: PetCardProps) {
           <div className="p-4 ">
             <div className="flex justify-between items-center">
               <h3 className="font-bold text-lg text-[#463327] truncate">{pet.name}</h3>
-              <span className="text-xs px-2 py-1 rounded-full bg-green-100 text-green-700 capitalize">{pet.type}</span>
+              <span className="text-xs px-2 py-1 rounded-full bg-orange-100 text-orange-700 capitalize">{pet.type}</span>
             </div>
 
             <p className="text-sm font-semibold text-[#958071]">{pet.breed}</p>
@@ -103,11 +103,7 @@ export function PetCard({ pet }: PetCardProps) {
               <strong>Allergies:</strong> {pet.allergies}
             </p>
           </div>
-          <div className="w-115 h-17 bg-[#f6f2e9] rounded-2xl flex items-center justify-center">
-            <p>
-              <strong>Microchip ID:</strong> {pet.microchip}
-            </p>
-          </div>
+          <div className="w-115 h-17 bg-[#f6f2e9] rounded-2xl flex items-center justify-center"></div>
         </div>
       </DialogContent>
     </Dialog>

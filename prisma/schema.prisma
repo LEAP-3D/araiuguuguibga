@@ -13,20 +13,20 @@ datasource db {
 }
 
 model User {
-  id              String          @id @default(nanoid())
-  email           String          @unique
-  name            String?
-  password        String?
-  image           String
-  phone           String?
-  bio             String?
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
-  class           Class           @relation(fields: [classId], references: [id])
-  classId         String
-  medicalRecords  MedicalRecord[]
-  pets            Pet[]
-  rescuePosts     RescuePost[]
+  id             String          @id @default(nanoid())
+  email          String          @unique
+  name           String?
+  password       String?
+  image          String
+  phone          String?
+  bio            String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  class          Class           @relation(fields: [classId], references: [id])
+  classId        String
+  medicalRecords MedicalRecord[]
+  pets           Pet[]
+  rescuePosts    RescuePost[]
 }
 
 model RescuePost {
@@ -36,7 +36,7 @@ model RescuePost {
   name        String
   breed       String?
   age         String?
-  type        String   // dog | cat | other
+  type        String // dog | cat | other
   description String?
   location    String
   image       String?
@@ -55,7 +55,6 @@ model Pet {
   gender    String?
   note      String?
   allergies String?
-  microchip String?
   image     String?
   createdAt DateTime @default(now())
 }
