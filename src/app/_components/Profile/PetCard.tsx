@@ -12,7 +12,7 @@ export function PetCard({ pet }: PetCardProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="w-60 rounded-2xl bg-white border border-[#f1e6d9] ">
+        <div className="w-60 rounded-2xl bg-white border border-[#f1e6d9] " style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
           {/* Image */}
           <div className="h-40 bg-gray-100 flex items-center justify-center overflow-hidden rounded-t-2xl relative">
             {pet.image ? <Image src={pet.image} alt={pet.name} fill className="object-cover" sizes="240px" /> : <PawPrint className="h-12 w-12 text-gray-300" />}

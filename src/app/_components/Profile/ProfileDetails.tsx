@@ -35,13 +35,13 @@ export default function ProfileDetails({ initialName = '', initialPhone = '', in
   };
 
   return (
-    <form id="profile-details-form" onSubmit={handleSubmit} className="flex flex-col gap-2">
+    <form id="profile-details-form" onSubmit={handleSubmit} className="flex flex-col gap-2" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
       <div>
         <label className="block text-sm font-semibold text-foreground mb-2">Нэр</label>
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full px-4 py-1.5 rounded-xl bg-secondary border-2 border-transparent focus:border-primary focus:outline-none transition-colors text-foreground placeholder:text-muted-foreground"
+          className="px-4 py-1.5 rounded-xl bg-secondary border-2 border-transparent focus:border-primary focus:outline-none transition-colors text-foreground placeholder:text-muted-foreground"
           placeholder="Таны нэр"
         />
       </div>
