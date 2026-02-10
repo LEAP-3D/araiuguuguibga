@@ -8,7 +8,18 @@ import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import Logo from '../_components/Logo';
 
-const navLinkClass = 'text-gray-600 font-bold text-lg transition-all duration-300 hover:text-black cursor-pointer';
+const navLinkClass = `
+  relative font-bold text-lg text-gray-600 cursor-pointer
+  transition-colors duration-300 hover:text-black
+  after:content-['']
+  after:absolute after:left-0 after:-bottom-1
+  after:h-[2px] after:w-full
+  after:bg-[#fd8c3e]
+  after:scale-x-0
+  after:origin-left
+  after:transition-transform after:duration-500 after:ease-out
+  hover:after:scale-x-100
+  `;
 
 export function HeaderLogo() {
   return (
@@ -81,9 +92,9 @@ export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: He
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
-          <Avatar className="size-9 rounded-full bg-[#51986a] text-white border-2 border-white/80 shadow-md">
+          <Avatar className="size-9 rounded-full bg-[#fc8d0e] text-white border-2 border-white/80 shadow-md">
             <AvatarImage src={imageUrl} alt={displayName} />
-            <AvatarFallback className="bg-[#51986a] text-white text-sm font-semibold">{initial}</AvatarFallback>
+            <AvatarFallback className="bg-[#fc8d0e] text-white text-sm font-semibold">{initial}</AvatarFallback>
           </Avatar>
           <span className="text-gray-800 font-medium truncate pr-5">{displayName}</span>
         </motion.button>
@@ -93,20 +104,20 @@ export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: He
           <p className="font-semibold text-gray-900">My Account</p>
         </div>
         <div className="py-2">
-          <Link href="/dashboard" className="flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-green-50 transition-colors">
-            <LayoutDashboard className="w-4 h-4 text-[#51986a]" />
+          <Link href="/dashboard" className="flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 transition-colors">
+            <LayoutDashboard className="w-4 h-4 text-[#fc8d0e]" />
             <span>Dashboard</span>
           </Link>
-          <Link href="/profile" className="flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-green-50 transition-colors">
-            <User className="w-4 h-4 text-[#51986a]" />
+          <Link href="/profile" className="flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 transition-colors">
+            <User className="w-4 h-4 text-[#fc8d0e]" />
             <span>Profile</span>
           </Link>
-          <button type="button" className="w-full flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-green-50 transition-colors text-left">
-            <Heart className="w-4 h-4 text-[#51986a]" />
+          <button type="button" className="w-full flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 transition-colors text-left">
+            <Heart className="w-4 h-4 text-[#fc8d0e]" />
             <span>Saved Pets</span>
           </button>
-          <button type="button" className="w-full flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-green-50 transition-colors text-left">
-            <Settings className="w-4 h-4 text-[#51986a]" />
+          <button type="button" className="w-full flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 transition-colors text-left">
+            <Settings className="w-4 h-4 text-[#fc8d0e]" />
             <span>Settings</span>
           </button>
           <button type="button" onClick={onSignOut} className="w-full flex gap-3 px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors text-left">

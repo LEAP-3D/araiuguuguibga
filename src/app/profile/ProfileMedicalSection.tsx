@@ -24,7 +24,7 @@ export function ProfileMedicalSection({ pets, records, loading, selectedPetFilte
       <div className="flex justify-between">
         <div className="flex gap-3 items-start">
           <div className="p-3 bg-[#94c1945b] rounded-full">
-            <Syringe className="text-green-700" />
+            <Syringe className="text-orange-700" />
           </div>
           <div className="flex flex-col">
             <p className="text-xl font-bold">Эрүүл мэндийн бүртгэл</p>

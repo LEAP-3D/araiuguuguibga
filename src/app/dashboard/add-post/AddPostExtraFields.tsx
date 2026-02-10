@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { Input } from "@/components/ui/input";
+import { Input } from '@/components/ui/input';
 
 const PET_TYPES = [
-  { value: "dog", label: "Нохой" },
-  { value: "cat", label: "Муур" },
-  { value: "other", label: "Бусад" },
+  { value: 'dog', label: 'Нохой' },
+  { value: 'cat', label: 'Муур' },
+  { value: 'other', label: 'Бусад' },
 ] as const;
 
 type FormSubset = {
   petName: string;
   breed: string;
   age: string;
-  type: "dog" | "cat" | "other";
+  type: 'dog' | 'cat' | 'other';
 };
 
 type AddPostExtraFieldsProps<T extends FormSubset> = {
@@ -20,10 +20,7 @@ type AddPostExtraFieldsProps<T extends FormSubset> = {
   setForm: React.Dispatch<React.SetStateAction<T>>;
 };
 
-export function AddPostExtraFields<T extends FormSubset>({
-  form,
-  setForm,
-}: AddPostExtraFieldsProps<T>) {
+export function AddPostExtraFields<T extends FormSubset>({ form, setForm }: AddPostExtraFieldsProps<T>) {
   return (
     <div className="mt-4 space-y-4 border-t border-gray-100 pt-4">
       <div className="grid grid-cols-2 gap-3">
@@ -36,9 +33,7 @@ export function AddPostExtraFields<T extends FormSubset>({
                 type="button"
                 onClick={() => setForm((f) => ({ ...f, type: t.value }))}
                 className={`flex-1 rounded-lg border px-2 py-1.5 text-xs font-medium transition-all ${
-                  form.type === t.value
-                    ? "border-[#4f9669] bg-[#4f9669]/10 text-[#4f9669]"
-                    : "border-gray-200 text-gray-600 hover:border-gray-300"
+                  form.type === t.value ? 'border-[#f18912] bg-[#f18912]/10 text-[#f18912]' : 'border-gray-200 text-gray-600 hover:border-gray-300'
                 }`}
               >
                 {t.label}
@@ -48,32 +43,17 @@ export function AddPostExtraFields<T extends FormSubset>({
         </div>
         <div>
           <label className="mb-1 block text-xs font-medium text-gray-600">Нэр</label>
-          <Input
-            placeholder="Buddy"
-            value={form.petName}
-            onChange={(e) => setForm((f) => ({ ...f, petName: e.target.value }))}
-            className="h-10"
-          />
+          <Input placeholder="Buddy" value={form.petName} onChange={(e) => setForm((f) => ({ ...f, petName: e.target.value }))} className="h-10" />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="mb-1 block text-xs font-medium text-gray-600">Үүлдэр</label>
-          <Input
-            placeholder="Golden Retriever"
-            value={form.breed}
-            onChange={(e) => setForm((f) => ({ ...f, breed: e.target.value }))}
-            className="h-10"
-          />
+          <Input placeholder="Golden Retriever" value={form.breed} onChange={(e) => setForm((f) => ({ ...f, breed: e.target.value }))} className="h-10" />
         </div>
         <div>
           <label className="mb-1 block text-xs font-medium text-gray-600">Нас</label>
-          <Input
-            placeholder="2 жил"
-            value={form.age}
-            onChange={(e) => setForm((f) => ({ ...f, age: e.target.value }))}
-            className="h-10"
-          />
+          <Input placeholder="2 жил" value={form.age} onChange={(e) => setForm((f) => ({ ...f, age: e.target.value }))} className="h-10" />
         </div>
       </div>
     </div>

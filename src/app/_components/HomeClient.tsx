@@ -29,7 +29,6 @@ export default function HomeClient() {
     backdrop-blur-2xl
     shadow-[0_40px_120px_rgba(0,0,0,0.25)]
     overflow-hidden
-
     before:content-['']
     before:absolute
     before:inset-0

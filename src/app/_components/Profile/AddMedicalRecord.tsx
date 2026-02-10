@@ -62,7 +62,7 @@ export default function AddMedicalRecord({ pets = [], onAddRecord }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <div className="w-fit h-fit bg-[#ef9241] rounded-2xl py-3 px-5 flex items-center gap-2 justify-center text-white font-medium hover:bg-green-800 cursor-pointer transition">
+        <div className="w-fit h-fit bg-[#ef9241] rounded-2xl py-3 px-5 flex items-center gap-2 justify-center text-white font-medium hover:bg-orange-800 cursor-pointer transition">
           <Plus />
           нэмэх
         </div>
@@ -71,7 +71,7 @@ export default function AddMedicalRecord({ pets = [], onAddRecord }: Props) {
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle className="flex gap-2 items-center text-xl font-semibold">
-              <Syringe className="text-green-600 mb-2" />
+              <Syringe className="text-orange-600 mb-2" />
               Эрүүл мэндийн бүртгэл нэмэх
             </DialogTitle>
             <DialogDescription></DialogDescription>
