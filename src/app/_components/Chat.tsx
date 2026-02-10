@@ -50,7 +50,7 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
           >
             <Button className="group relative w-16 h-16 bg-[#ff8037] hover:bg-[#f37439] rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ease-out hover:scale-105 active:scale-95">
               <MessageCircle className="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-12" />
-              <span className="absolute top-1 right-1 w-3 h-3 bg-orange-500 rounded-full  animate-pulse"></span>
+              <span className="absolute top-1 right-1 w-3 h-3 bg-green-500 rounded-full  animate-pulse"></span>
             </Button>
           </motion.div>
         </PopoverTrigger>

@@ -43,7 +43,7 @@ export default function DashboardFeedPage() {
           <PlusCircle className="mb-4 h-16 w-16 text-gray-300" />
           <p className="mb-2 text-center text-gray-600">Одоогоор пост байхгүй</p>
           <p className="mb-6 text-center text-sm text-gray-500">Анхны пост оруулаад эхлээрэй</p>
-          <Link href="/dashboard/add-post" className="inline-flex items-center gap-2 rounded-lg bg-[#f18912] px-6 py-3 font-medium text-white shadow-sm transition-colors hover:bg-[#458559]">
+          <Link href="/dashboard/add-post" className="inline-flex items-center gap-2 rounded-lg bg-[#f18912] px-6 py-3 font-medium text-white shadow-sm transition-colors hover:bg-[#ffa616]">
             <PlusCircle className="h-5 w-5" />
             Пост оруулах
           </Link>

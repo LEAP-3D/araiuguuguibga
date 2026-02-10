@@ -52,7 +52,7 @@ export function PetDetails({ pet, onClose }: Props) {
             <strong>Allergies:</strong> {pet.allergies}
           </p>
           <p>
-            <strong>Microchip ID:</strong> {pet.microchip}
+            <strong> ID:</strong> {pet.}
           </p>
         </div>
 

@@ -105,7 +105,7 @@ export function PetCard({ pet }: PetCardProps) {
           </div>
           <div className="w-115 h-17 bg-[#f6f2e9] rounded-2xl flex items-center justify-center">
             <p>
-              <strong>Microchip ID:</strong> {pet.microchip}
+              <strong> ID:</strong> {pet.}
             </p>
           </div>
         </div>

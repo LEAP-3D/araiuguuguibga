@@ -1,28 +1,23 @@
-"use client";
+'use client';
 
-import { createContext, useCallback, useContext, useState, useEffect } from "react";
-import type { Post, MyPet } from "./postsStorage";
-import {
-  loadMyPets,
-  saveMyPets,
-  clearPostsStorage,
-  mapApiPostToPost,
-} from "./postsStorage";
+import { createContext, useCallback, useContext, useState, useEffect } from 'react';
+import type { Post, MyPet } from './postsStorage';
+import { loadMyPets, saveMyPets, clearPostsStorage, mapApiPostToPost } from './postsStorage';
 
-export type { Post, MyPet } from "./postsStorage";
-export type { VaccineRecord, HistoryEvent } from "./postsContextTypes";
-import type { VaccineRecord, HistoryEvent } from "./postsContextTypes";
+export type { Post, MyPet } from './postsStorage';
+export type { VaccineRecord, HistoryEvent } from './postsContextTypes';
+import type { VaccineRecord, HistoryEvent } from './postsContextTypes';
 
 type PostsContextType = {
   posts: Post[];
   postsLoading: boolean;
   refetchPosts: () => Promise<void>;
-  addPost: (post: Omit<Post, "id" | "createdAt">) => Promise<boolean>;
+  addPost: (post: Omit<Post, 'id' | 'createdAt'>) => Promise<boolean>;
   clearPosts: () => void;
   myPets: MyPet[];
-  addMyPet: (pet: Omit<MyPet, "id" | "vaccines" | "history" | "createdAt">) => void;
+  addMyPet: (pet: Omit<MyPet, 'id' | 'vaccines' | 'history' | 'createdAt'>) => void;
   addVaccine: (petId: string, vaccine: VaccineRecord) => void;
-  addHistoryEvent: (petId: string, event: Omit<HistoryEvent, "petId">) => void;
+  addHistoryEvent: (petId: string, event: Omit<HistoryEvent, 'petId'>) => void;
 };
 
 const PostsContext = createContext<PostsContextType | null>(null);
@@ -39,7 +34,7 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
   const refetchPosts = useCallback(async () => {
     setPostsLoading(true);
     try {
-      const res = await fetch("/api/rescue-posts");
+      const res = await fetch('/api/rescue-posts');
       const data = res.ok ? await res.json() : [];
       setPosts(Array.isArray(data) ? data.map(mapApiPostToPost) : []);
     } catch {
@@ -60,11 +55,11 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
     return () => clearTimeout(id);
   }, []);
 
-  const addPost = useCallback(async (post: Omit<Post, "id" | "createdAt">): Promise<boolean> => {
+  const addPost = useCallback(async (post: Omit<Post, 'id' | 'createdAt'>): Promise<boolean> => {
     try {
-      const res = await fetch("/api/rescue-posts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/rescue-posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: post.name,
           breed: post.breed || null,
@@ -89,47 +84,36 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
     clearPostsStorage();
   }, []);
 
-  const addMyPet = useCallback(
-    (pet: Omit<MyPet, "id" | "vaccines" | "history" | "createdAt">) => {
-      const newPet: MyPet = {
-        ...pet,
-        id: generatePetId(),
-        vaccines: [],
-        history: [],
-        createdAt: Date.now(),
-      };
-      setMyPets((prev) => {
-        const next = [newPet, ...prev];
-        saveMyPets(next);
-        return next;
-      });
-    },
-    []
-  );
-
-  const addVaccine = useCallback((petId: string, vaccine: VaccineRecord) => {
+  const addMyPet = useCallback((pet: Omit<MyPet, 'id' | 'vaccines' | 'history' | 'createdAt'>) => {
+    const newPet: MyPet = {
+      ...pet,
+      id: generatePetId(),
+      vaccines: [],
+      history: [],
+      createdAt: Date.now(),
+    };
     setMyPets((prev) => {
-      const next = prev.map((p) =>
-        p.id === petId ? { ...p, vaccines: [...p.vaccines, vaccine] } : p
-      );
+      const next = [newPet, ...prev];
       saveMyPets(next);
       return next;
     });
   }, []);
 
-  const addHistoryEvent = useCallback(
-    (petId: string, event: Omit<HistoryEvent, "petId">) => {
-      setMyPets((prev) => {
-        const next = prev.map((p) =>
-          p.id === petId
-            ? { ...p, history: [...p.history, { ...event, petId }] } : p
-        );
-        saveMyPets(next);
-        return next;
-      });
-    },
-    []
-  );
+  const addVaccine = useCallback((petId: string, vaccine: VaccineRecord) => {
+    setMyPets((prev) => {
+      const next = prev.map((p) => (p.id === petId ? { ...p, vaccines: [...p.vaccines, vaccine] } : p));
+      saveMyPets(next);
+      return next;
+    });
+  }, []);
+
+  const addHistoryEvent = useCallback((petId: string, event: Omit<HistoryEvent, 'petId'>) => {
+    setMyPets((prev) => {
+      const next = prev.map((p) => (p.id === petId ? { ...p, history: [...p.history, { ...event, petId }] } : p));
+      saveMyPets(next);
+      return next;
+    });
+  }, []);
 
   return (
     <PostsContext.Provider
@@ -153,7 +137,7 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
 export function usePosts() {
   const ctx = useContext(PostsContext);
   if (!ctx) {
-    throw new Error("usePosts must be used within PostsProvider");
+    throw new Error('usePosts must be used within PostsProvider');
   }
   return ctx;
 }

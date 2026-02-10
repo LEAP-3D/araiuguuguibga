@@ -13,7 +13,6 @@ export type Pet = {
   gender: string;
   note: string;
   allergies?: string;
-  microchip?: string;
   image?: string;
 };
 
@@ -36,7 +35,6 @@ function mapApiPetToPet(p: {
   gender?: string | null;
   note?: string | null;
   allergies?: string | null;
-  microchip?: string | null;
   image?: string | null;
 }): Pet {
   return {
@@ -49,7 +47,6 @@ function mapApiPetToPet(p: {
     gender: p.gender ?? '',
     note: p.note ?? '',
     allergies: p.allergies ?? undefined,
-    microchip: p.microchip ?? undefined,
     image: p.image ?? undefined,
   };
 }
@@ -75,36 +72,28 @@ export function PetsProvider({ children }: { children: ReactNode }) {
     void refetchPets();
   }, [refetchPets]);
 
-  const addPet = useCallback(
-    async (pet: Omit<Pet, 'id'>) => {
-      const res = await fetch('/api/pets', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: pet.name,
-          type: pet.type,
-          breed: pet.breed || null,
-          age: pet.age || null,
-          weight: pet.weight || null,
-          gender: pet.gender || null,
-          note: pet.note || null,
-          allergies: pet.allergies || null,
-          microchip: pet.microchip || null,
-          image: pet.image || null,
-        }),
-      });
-      if (!res.ok) return;
-      const saved = await res.json();
-      setPets((prev) => [mapApiPetToPet(saved), ...prev]);
-    },
-    []
-  );
+  const addPet = useCallback(async (pet: Omit<Pet, 'id'>) => {
+    const res = await fetch('/api/pets', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: pet.name,
+        type: pet.type,
+        breed: pet.breed || null,
+        age: pet.age || null,
+        weight: pet.weight || null,
+        gender: pet.gender || null,
+        note: pet.note || null,
+        allergies: pet.allergies || null,
+        image: pet.image || null,
+      }),
+    });
+    if (!res.ok) return;
+    const saved = await res.json();
+    setPets((prev) => [mapApiPetToPet(saved), ...prev]);
+  }, []);
 
-  return (
-    <PetsContext.Provider value={{ pets, addPet, refetchPets, petsLoading }}>
-      {children}
-    </PetsContext.Provider>
-  );
+  return <PetsContext.Provider value={{ pets, addPet, refetchPets, petsLoading }}>{children}</PetsContext.Provider>;
 }
 
 export const usePets = () => {
