@@ -130,7 +130,7 @@ export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: He
   );
 }
 
-const navClassName = 'fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-white/25 border-b border-white/40 shadow-[0_8px_32px_rgba(255,255,255,0.15)]';
+const navClassName = 'relative w-full z-50 pt-7 bg-transparent';
 const navMotion = {
   initial: { y: -80, opacity: 0 },
   animate: { y: 0, opacity: 1 },

@@ -17,7 +17,7 @@ export default function HomeClient() {
       <div className="fixed inset-0 -z-10 bg-center bg-no-repeat bg-cover" style={{ backgroundImage: 'url("/7782992.jpg")' }} />
 
       {/* 🧊 SCROLLABLE CONTENT */}
-      <div className="min-h-screen flex justify-center px-6 py-10">
+      <div className="min-h-screen flex justify-center pt-20 px-6 py-10">
         <div
           className="
     relative
@@ -26,7 +26,7 @@ export default function HomeClient() {
     rounded-[48px]
     border border-white/70
     bg-white/35
-    backdrop-blur-2xl
+    backdrop-blur-xl
     shadow-[0_40px_120px_rgba(0,0,0,0.25)]
     overflow-hidden
     before:content-['']
