@@ -59,7 +59,7 @@ export default function MapPlaceholder({ vets, selectedVet, onSelect, temporaryV
   }
 
   return (
-    <div className="h-[400px] w-full md:h-[600px] lg:h-[600px]">
+    <div className="h-100 w-full md:h-150 lg:h-150">
       <MapContainer center={[47.9212, 106.9057]} zoom={12} whenReady={() => setMapReady(true)} style={{ height: '100%', width: '100%' }} className="rounded-xl">
         {mapReady && <MapResizeFix />}
 

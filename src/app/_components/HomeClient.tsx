@@ -1,55 +1,59 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import Headers from '../_features/Headers';
+import Footer from '../_features/Footer';
 import { HeroSection } from '../_features/heroSection';
 import { RescuePetsSection } from '../_features/rescueSection';
 import { VeterinarySection } from '../_features/veterinarySection';
 import Chat from './Chat';
-import Footer from '../_features/Footer';
-import Headers from '../_features/Headers';
 
 export default function HomeClient() {
   const [chatOpen, setChatOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    const t = setTimeout(() => setMounted(true), 0);
-    return () => clearTimeout(t);
-  }, []);
-
-  if (!mounted) {
-    return (
-      <div className="min-h-screen w-full" style={{ backgroundImage: 'url("/7782992.jpg")', backgroundSize: 'cover', backgroundPosition: 'center' }} />
-    );
-  }
 
   return (
-    <div
-      className="relative min-h-screen w-full flex flex-col items-center"
-      style={{
-        backgroundImage: 'url("/7782992.jpg")',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-      }}
-    >
-      <div className="relative z-10 w-full flex flex-col flex-grow">
-        <Headers />
+    <>
+      {/* 🔒 FIXED BACKGROUND (never moves) */}
+      <div className="fixed inset-0 -z-10 bg-center bg-no-repeat bg-cover" style={{ backgroundImage: 'url("/7782992.jpg")' }} />
 
-        <main className="flex-grow">
-          <HeroSection onOpenChat={() => setChatOpen(true)} />
-          <div className="relative">
+      {/* 🧊 SCROLLABLE CONTENT */}
+      <div className="min-h-screen flex justify-center px-6 py-10">
+        <div
+          className="
+    relative
+    w-full
+    max-w-360
+    rounded-[48px]
+    border border-white/70
+    bg-white/35
+    backdrop-blur-2xl
+    shadow-[0_40px_120px_rgba(0,0,0,0.25)]
+    overflow-hidden
+
+    before:content-['']
+    before:absolute
+    before:inset-0
+    before:rounded-[48px]
+    before:bg-linear-to-br
+    before:from-white/40
+    before:via-white/10
+    before:to-transparent
+    before:pointer-events-none
+  "
+        >
+          <Headers />
+
+          <main>
+            <HeroSection onOpenChat={() => setChatOpen(true)} />
             <RescuePetsSection />
-            <div className="h-20" />
             <VeterinarySection />
-          </div>
-        </main>
+          </main>
 
-        <Footer />
+          <Footer />
+        </div>
       </div>
 
       <Chat open={chatOpen} onOpenChange={setChatOpen} />
-    </div>
+    </>
   );
 }

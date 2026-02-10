@@ -21,42 +21,62 @@ export function HeroSection({ onOpenChat }: HeroSectionProps) {
   const servicesHref = mounted && isSignedIn ? '/dashboard' : '/sign-up';
 
   return (
-    <section id="hero" className="relative flex min-h-screen items-start justify-start px-4 sm:px-6 pt-16 sm:pt-[100px] pb-6 sm:pb-[30px]">
-      <div className="flex flex-col items-start text-center space-y-5 ml-35  sm:space-y-6 w-full max-w-4xl pl-0 pr-4 sm:pl-6 sm:pr-[50px] md:pl-[200px] md:pr-[50px]">
-        {/* Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="inline-flex items-center mt-8 sm:mt-[95px] gap-2 rounded-full border border-white/50 bg-white/20 backdrop-blur-md px-3 py-1.5 shadow-sm"
-        >
-          <Image src="/caticon.png" alt="" width={20} height={20} className="h-4 w-4 sm:h-5 sm:w-5 object-contain" />
-          <span className="text-xs sm:text-sm font-medium text-[#8e4585]">Таны тэжээвэр амьтны ид шидийн аялал эндээс эхэлнэ</span>
-        </motion.div>
-
+    <section id="hero" className="relative w-full min-h-238 flex flex-col items-center pt-60 overflow-hidden">
+      <div className="relative w-full max-w-6xl  px-10">
         {/* Headline */}
-        <motion.h1 initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2 }} className="leading-tight text-3xl sm:text-5xl md:text-7xl">
-          <span
-            className="block font-bold text-white drop-shadow-sm w-210 justify-start"
-            style={{
-              fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive",
-              color: '#43342D',
-            }}
-          >
-            Бүх тэжээвэр амьтан
-          </span>
-          <span
-            className="block font-bold drop-shadow-sm"
-            style={{
-              fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive",
-              color: '#86D2D9',
-            }}
-          >
-            өөрийн гэрээ энд олдог
-          </span>
-        </motion.h1>
+        <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false }} transition={{ duration: 0.6, ease: 'easeOut' }} className="leading-tight">
+          <div className="relative z-0 text-center md:text-left select-none pointer-events-none mb-20">
+            <h1 className="text-[80px] md:text-[150px] font-black leading-[0.8] text-black tracking-tighter">Your Pet Care</h1>
+            <h2 className="text-[70px] md:text-[130px] font-bold leading-none -mt-4 text-[#E8B07E]/90">Center</h2>
+          </div>
+        </motion.div>
+        <div className="absolute top-[115%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center">
+          <div className="relative flex items-center justify-center">
+            {/* Шар тойрог фон */}
+            <div className="absolute bottom-10 w-50 h-50 md:w-[320px] md:h-80 bg-[#F3D5B5] rounded-full -z-10" />
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }} className="flex flex-wrap justify-start gap-3 sm:gap-4 pt-2 sm:pt-4">
+            {/* Муурны зураг - Скриншот шиг толгой нь текстийн доор байхаар тохируулав */}
+            <motion.div
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+              className="relative -mt-24 md:-mt-32" // Муурны толгойг текстийн доор байлгах гол тохиргоо
+            >
+              <Image
+                src="/cat.png"
+                alt="Main Cat"
+                width={600} // Хэт том биш, текстийг дарахгүй хэмжээтэй болгов
+                height={600}
+                className="object-contain"
+                priority
+              />
+            </motion.div>
+          </div>
+        </div>
+
+        {/* 3. Хажуугийн зургууд - Байршлыг төв мууртайгаа уялдуулан доошлуулав */}
+        <div className="absolute inset-0 flex justify-between items-center px-4 pointer-events-none z-30">
+          {/* Зүүн тал: Нохой (Өндөг хэлбэртэй) */}
+          <div className="mt-150 ml-4 md:ml-12">
+            <div className="w-50 h-70 rounded-[100px] overflow-hidden shadow-2xl  pointer-events-auto bg-white">
+              <Image src="/dog.jpg" alt="Dog" width={300} height={400} className="object-cover h-full w-full scale-110" />
+            </div>
+          </div>
+
+          {/* Баруун тал: Муур (Бөөрөнхий) */}
+          <div className="mt-175 mr-6 md:mr-17">
+            <div className="w-60 h-70 rounded-full overflow-hidden shadow-2xl  pointer-events-auto bg-white">
+              <Image src="/caat.jpg" alt="Small Cat" width={200} height={200} className="object-cover h-full w-full scale-110" />
+            </div>
+          </div>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="absolute right-[5%] top-[72%] z-40 max-w-fit space-y-3 hidden md:block"
+        >
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
