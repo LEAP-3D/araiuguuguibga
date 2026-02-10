@@ -103,11 +103,7 @@ export function PetCard({ pet }: PetCardProps) {
               <strong>Allergies:</strong> {pet.allergies}
             </p>
           </div>
-          <div className="w-115 h-17 bg-[#f6f2e9] rounded-2xl flex items-center justify-center">
-            <p>
-              <strong> ID:</strong> {pet.}
-            </p>
-          </div>
+          <div className="w-115 h-17 bg-[#f6f2e9] rounded-2xl flex items-center justify-center"></div>
         </div>
       </DialogContent>
     </Dialog>
