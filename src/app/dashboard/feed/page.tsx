@@ -8,11 +8,13 @@ import { usePosts } from '@/lib/postsContext';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { FeedPostCard } from './FeedPostCard';
 import { RescuePetCard } from '@/app/_features/RescuePetCard';
+import shelter from '../../../../public/shelter.png';
+import Image from 'next/image';
 
 const FILTERS = [
   { id: 'all', label: 'Бүгд' },
-  { id: 'lost', label: 'lost' },
-  { id: 'found', label: 'found' },
+  { id: 'lost', label: 'Алдагдсан' },
+  { id: 'found', label: 'Олдсон' },
 ] as const;
 
 const FEED_POST_LIMIT = 6;
@@ -57,11 +59,16 @@ export default function DashboardFeedPage() {
   }
   return (
     <div className="flex flex-col gap-10 p-6 w-360" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
-      <div className="flex flex-col">
-        <p>Find Animals</p>
-        <p>Browse lost and found animals in your area</p>
+      <div className="flex flex-col items-start text-center" style={{ fontFamily: 'Tahoma, Veerdana, Segoe, sans-serif' }}>
+        {' '}
+        <div className="flex items-center gap-3">
+          <Image src={shelter} alt="Shelter" width={44} height={44} className="shrink-0" />
+          <h1 className="text-3xl font-bold leading-none">Амьтдыг олох</h1>
+        </div>
+        <p className="mt-2 text-muted-foreground">Өөрийн бүс нутагт алдагдсан болон олдсон амьтдыг үзэх</p>
       </div>
-      <div className="flex shrink-0 flex-wrap justify-center gap-3">
+
+      <div className="flex shrink-0 flex-wrap justify-start gap-3">
         {FILTERS.map((f) => (
           <button
             key={f.id}
