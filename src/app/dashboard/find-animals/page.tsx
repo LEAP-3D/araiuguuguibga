@@ -14,7 +14,7 @@ const FILTERS = [
 
 const FEED_POST_LIMIT = 6;
 
-export default function DashboardFeedPage() {
+export default function DashboardFindAnimalPage() {
   const { posts, postsLoading } = usePosts();
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [activeFilter, setActiveFilter] = useState<string>('all');

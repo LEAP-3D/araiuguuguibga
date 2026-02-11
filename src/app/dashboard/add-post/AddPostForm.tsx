@@ -53,7 +53,7 @@ export function AddPostForm() {
         location: form.location.trim(),
         image: form.imagePreview ?? '',
       });
-      if (success) router.push('/dashboard/feed');
+      if (success) router.push('/dashboard/find-animals');
     } finally {
       setIsSubmitting(false);
     }
