@@ -7,10 +7,10 @@ export default function Footer() {
         <div className="flex gap-4">
           <div className="flex items-center gap-2">
             <div className="py-2 px-8 bg-[#f88a0c] rounded-2xl">
-              <span className="text-white">Post an Animal</span>
+              <span className="text-white">Post an Animal.</span>
             </div>
             <div className="py-2 px-8 border border-[#f88a0c] rounded-2xl">
-              <span className="text-black ">Explore Map </span>
+              <span className="text-black ">Explore Map. </span>
             </div>
           </div>
         </div>
