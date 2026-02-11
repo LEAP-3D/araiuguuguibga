@@ -64,7 +64,7 @@ export function RescueHeader() {
 
         {/* Right action */}
         <Link
-          href="/dashboard/feed"
+          href="/dashboard/find-animals"
           className="
     relative inline-block px-3 py-2
     text-black font-normal text-base
