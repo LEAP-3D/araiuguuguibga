@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <div className="bg-[#fcba77] w-360 h-60 flex items-center justify-center text-black">
+    <div className="bg-[#fcba77] w-[1800px] h-60 flex items-center justify-center text-black">
       <div className="flex flex-col gap-2 text-center items-center">
         <p className="text-[30px] font-black">Help Bring Them Home</p>
         <p className="tex-[20px] w-110 text-gray-800 text-center mb-2">Every report counts. Whether you found a stray or lost your beloved pet, our community is here to help.</p>
