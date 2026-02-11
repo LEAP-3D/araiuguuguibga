@@ -7,6 +7,29 @@ import path from 'path';
 let adminApp: App | null = null;
 let messagingInstance: Messaging | null = null;
 
+/** Google service account JSON can use snake_case (private_key) or camelCase (privateKey). */
+type ServiceAccountLike = Record<string, unknown> & {
+  private_key?: string;
+  privateKey?: string;
+  client_email?: string;
+  clientEmail?: string;
+  project_id?: string;
+  projectId?: string;
+};
+
+function toServiceAccount(raw: ServiceAccountLike): ServiceAccount {
+  const pk = (raw.privateKey ?? raw.private_key) as string | undefined;
+  let privateKey = typeof pk === 'string' ? pk : undefined;
+  if (privateKey && privateKey.includes('\\n')) {
+    privateKey = privateKey.replace(/\\n/g, '\n');
+  }
+  return {
+    projectId: (raw.projectId ?? raw.project_id) as string | undefined,
+    clientEmail: (raw.clientEmail ?? raw.client_email) as string | undefined,
+    privateKey,
+  };
+}
+
 function parseServiceAccountJson(raw: string): ServiceAccount {
   let json = raw.trim();
   if (json.startsWith('"') && json.endsWith('"')) {
@@ -15,18 +38,15 @@ function parseServiceAccountJson(raw: string): ServiceAccount {
   if (json.startsWith("'") && json.endsWith("'")) {
     json = json.slice(1, -1);
   }
-  let creds: ServiceAccount;
+  let parsed: ServiceAccountLike;
   try {
-    creds = JSON.parse(json) as ServiceAccount;
+    parsed = JSON.parse(json) as ServiceAccountLike;
   } catch {
     throw new Error(
       'FIREBASE_SERVICE_ACCOUNT_JSON is invalid JSON. Use one line in .env or set FIREBASE_SERVICE_ACCOUNT_PATH to a .json file.'
     );
   }
-  if (creds.private_key && typeof creds.private_key === 'string' && creds.private_key.includes('\\n')) {
-    creds = { ...creds, private_key: creds.private_key.replace(/\\n/g, '\n') };
-  }
-  return creds;
+  return toServiceAccount(parsed);
 }
 
 function getCredentials(): ServiceAccount {
@@ -40,7 +60,8 @@ function getCredentials(): ServiceAccount {
     try {
       const filePath = path.isAbsolute(pathEnv) ? pathEnv : path.join(process.cwd(), pathEnv);
       const raw = readFileSync(filePath, 'utf8');
-      return JSON.parse(raw) as ServiceAccount;
+      const parsed = JSON.parse(raw) as ServiceAccountLike;
+      return toServiceAccount(parsed);
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'unknown';
       const hint = msg.includes('ENOENT')
