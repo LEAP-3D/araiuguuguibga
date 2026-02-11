@@ -108,7 +108,7 @@ export function RescueFooterActions({ postCount }: { postCount: number }) {
     <div className="flex shrink-0 flex-wrap justify-center gap-4 py-2">
       {postCount > FEED_POST_LIMIT && (
         <Link
-          href="/dashboard/feed"
+          href="/dashboard/find-animals"
           className="inline-flex items-center gap-2 rounded-full border-2 border-amber-300 bg-white px-6 py-2.5 text-sm font-medium text-amber-800 transition-colors hover:bg-amber-50"
         >
           Бүгдийг харах ({postCount})

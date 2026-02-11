@@ -2,23 +2,22 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { ImagePlus, MapPin, X, ChevronDown, ChevronUp, ArrowLeft } from 'lucide-react';
-import { useUser } from '@clerk/nextjs';
+import { X, Upload } from 'lucide-react';
 import { usePosts } from '@/lib/postsContext';
 import { compressImage } from '@/lib/compressImage';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { AddPostExtraFields } from './AddPostExtraFields';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Details from './Details';
+import Location from './Location';
+import Contact from './Contact';
 
 export function AddPostForm() {
+  const [step, setStep] = useState(0);
   const router = useRouter();
-  const { user } = useUser();
   const { addPost } = usePosts();
+  const [selected, setSelected] = useState<'lost' | 'found'>('lost');
+
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showExtra, setShowExtra] = useState(false);
   const [form, setForm] = useState({
     petName: '',
     breed: '',
@@ -28,9 +27,6 @@ export function AddPostForm() {
     location: '',
     imagePreview: '' as string | null,
   });
-
-  const displayName = user?.fullName || user?.firstName || user?.primaryEmailAddress?.emailAddress?.split('@')[0] || 'Хэрэглэгч';
-  const userInitial = (displayName as string).charAt(0).toUpperCase();
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -66,77 +62,94 @@ export function AddPostForm() {
   const canPost = form.location.trim().length > 0;
 
   return (
-    <div className="mx-auto max-w-2xl">
-      <Link href="/dashboard/feed" className="mb-6 inline-flex items-center gap-2 text-gray-600 transition-colors hover:text-gray-900">
-        <ArrowLeft className="h-4 w-4" />
-        Буцах
-      </Link>
-      <form onSubmit={handleSubmit} className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-        <div className="border-b border-gray-100 px-4 py-3">
-          <h2 className="text-lg font-semibold text-gray-900">Шинэ пост үүсгэх</h2>
+    <div className="mx-auto max-w-2xl" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+      <div className="flex flex-col gap-6 ">
+        <div className="flex flex-col">
+          <p className="text-3xl font-semibold text-orange-400">Post an Animal</p>
+          <p>Fill in the details to help reunite this animal</p>
         </div>
-        <div className="p-4">
-          <div className="flex gap-3">
-            <Avatar className="h-10 w-10 shrink-0 rounded-full border-2 border-gray-100">
-              <AvatarImage src={user?.imageUrl} alt={displayName as string} />
-              <AvatarFallback className="bg-[#f18912] text-white">{userInitial}</AvatarFallback>
-            </Avatar>
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-medium text-gray-900">{displayName}</p>
-              <Textarea
-                placeholder="Юу бодож байна вэ? Олдсон амьтны тухай бичээрэй..."
-                value={form.description}
-                onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
-                className="mt-2 min-h-[80px] resize-none border-0 bg-transparent p-0 text-gray-900 placeholder:text-gray-500 focus-visible:ring-0"
-                rows={3}
-              />
-            </div>
+        <div className="flex gap-4">
+          <div
+            onClick={() => setSelected('lost')}
+            className={`px-8 py-2 rounded-xl cursor-pointer transition
+          ${selected === 'lost' ? 'bg-orange-400 text-white' : 'border border-orange-400 text-black'}`}
+          >
+            I Lost My Animal
           </div>
-          {form.imagePreview && (
-            <div className="relative mt-4 rounded-lg border border-gray-200 bg-gray-50 p-2">
-              <button
-                type="button"
-                onClick={removeImage}
-                className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-black/70"
-              >
-                <X className="h-4 w-4" />
-              </button>
-              {/* eslint-disable-next-line @next/next/no-img-element -- dynamic data URL preview */}
-              <img src={form.imagePreview} alt="Preview" className="max-h-80 w-full rounded-lg object-contain" />
-            </div>
-          )}
-          <div className="mt-4 rounded-lg border border-gray-200 p-2">
-            <p className="mb-2 px-2 text-xs font-medium text-gray-500">Постонд нэмэх</p>
-            <div className="flex flex-wrap gap-2">
-              <label className="flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100">
-                <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
-                <ImagePlus className="h-5 w-5 text-[#f18912]" />
-                Зураг
-              </label>
-              <div
-                role="button"
-                tabIndex={0}
-                onClick={() => setShowExtra(!showExtra)}
-                onKeyDown={(e) => e.key === 'Enter' && setShowExtra(!showExtra)}
-                className="flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
-              >
-                <MapPin className="h-5 w-5 text-red-500" />
-                Байршил
-                {showExtra ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+
+          <div
+            onClick={() => setSelected('found')}
+            className={`px-8 py-2 rounded-xl cursor-pointer transition
+          ${selected === 'found' ? 'bg-orange-400 text-white' : 'border border-orange-400 text-black'}`}
+          >
+            I Found An Animal
+          </div>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl font-bold">
+                {step === 0 && 'Photos'}
+                {step === 1 && 'Details'}
+                {step === 2 && 'Location'}
+                {step === 3 && 'Contact'}
+              </CardTitle>
+            </CardHeader>
+
+            <CardContent className="space-y-4 w-150">
+              {step === 0 && (
+                <div>
+                  {form.imagePreview && (
+                    <div className="relative mt-4 rounded-lg border border-gray-200 bg-gray-50 p-2">
+                      <button
+                        type="button"
+                        onClick={removeImage}
+                        className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-black/70"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                      {/* eslint-disable-next-line @next/next/no-img-element -- dynamic data URL preview */}
+                      <img src={form.imagePreview} alt="Preview" className="max-h-80 w-full rounded-lg object-contain" />
+                    </div>
+                  )}
+                  <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 p-10 text-center transition-colors hover:bg-gray-50">
+                    <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+
+                    <Upload className="h-10 w-10 text-[#f18912]" />
+
+                    <p className="font-medium">Upload Photos</p>
+                    <p className="text-sm text-gray-500">Drag & drop or click to browse</p>
+
+                    <span className="mt-2 rounded-md border px-4 py-1.5 text-sm font-medium">Choose Files</span>
+                  </label>
+                </div>
+              )}
+              {step === 1 && <Details />}
+              {step === 2 && <Location />}
+              {step === 3 && <Contact />}
+            </CardContent>
+          </Card>
+          <div className="flex justify-end gap-2">
+            {step > 0 && (
+              <Button variant="outline" onClick={() => setStep(step - 1)} className=" my-10">
+                Back
+              </Button>
+            )}
+            {step < 3 && (
+              <Button onClick={() => setStep(step + 1)} className="bg-amber-500 my-10">
+                Continue
+              </Button>
+            )}
+            {step === 3 && (
+              <div>
+                <Button type="submit" disabled={isSubmitting || !canPost} className=" bg-amber-500  hover:bg-[#f1a210] disabled:opacity-50 my-10 px-7">
+                  {isSubmitting ? 'Боловсруулж байна...' : 'Пост'}
+                </Button>
               </div>
-            </div>
-            {showExtra && <AddPostExtraFields form={form} setForm={setForm} />}
+            )}
           </div>
-          <div className="mt-4">
-            <Input placeholder="Олдсон байршил * (заавал бөглөнө)" value={form.location} onChange={(e) => setForm((f) => ({ ...f, location: e.target.value }))} required className="h-10" />
-          </div>
-        </div>
-        <div className="border-t border-gray-100 p-4">
-          <Button type="submit" disabled={isSubmitting || !canPost} className="w-full bg-[#f18912] py-6 text-base font-semibold hover:bg-[#458559] disabled:opacity-50">
-            {isSubmitting ? 'Боловсруулж байна...' : 'Пост'}
-          </Button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }
