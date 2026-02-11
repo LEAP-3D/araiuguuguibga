@@ -169,7 +169,7 @@ export default function ProfileCard() {
                 Цуцлах
               </Button>
             </DialogClose>
-            <Button type="submit" form="profile-details-form" className="rounded-xl px-8 py-2 bg-linear-to-r from-[#09712e] to-[#51986a] text-white shadow-md hover:opacity-90">
+            <Button type="submit" form="profile-details-form" className="rounded-xl px-8 py-2 bg-linear-to-r from-[#ef9241] to-[#ef9241] text-white shadow-md hover:opacity-90">
               Өөрчлөлтийг хадгалах
             </Button>
           </DialogFooter>
