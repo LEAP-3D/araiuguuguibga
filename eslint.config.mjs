@@ -18,7 +18,7 @@ const eslintConfig = defineConfig([
         tsconfigRootDir: import.meta.dirname,
       },
     },
-    // ⬇️ ЭНЭ ХЭСГИЙГ НЭМЖ ӨГЛӨӨ (React хувилбарыг таниулах)
+
     settings: {
       react: {
         version: 'detect',
