@@ -10,7 +10,7 @@ export default function Footer() {
               <span className="text-white">Post an Animal</span>
             </div>
             <div className="py-2 px-8 border border-[#f88a0c] rounded-2xl">
-              <span className="text-black ">Explore Map. </span>
+              <span className="text-black ">Explore Map </span>
             </div>
           </div>
         </div>
