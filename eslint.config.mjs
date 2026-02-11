@@ -1,7 +1,7 @@
 import { defineConfig } from 'eslint/config';
 import nextVitals from 'eslint-config-next/core-web-vitals';
 import nextTs from 'eslint-config-next/typescript';
-
+import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import unusedImports from 'eslint-plugin-unused-imports';
 
@@ -18,8 +18,13 @@ const eslintConfig = defineConfig([
         tsconfigRootDir: import.meta.dirname,
       },
     },
+    // ⬇️ ЭНЭ ХЭСГИЙГ НЭМЖ ӨГЛӨӨ (React хувилбарыг таниулах)
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
     plugins: {
-      // @typescript-eslint-ийг эндээс хаслаа, учир нь дээрх ...nextTs дотор байгаа
       'unused-imports': unusedImports,
     },
     rules: {
@@ -66,7 +71,7 @@ const eslintConfig = defineConfig([
   },
 
   {
-    ignores: ['.next/**', 'out/**', 'build/**', 'next-env.d.ts'],
+    ignores: ['.next/**', 'out/**', 'build/**', 'next-env.d.ts', 'eslint.config.mjs'],
   },
 ]);
 
