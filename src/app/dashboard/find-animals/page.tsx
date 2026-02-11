@@ -12,8 +12,6 @@ const FILTERS = [
   { id: 'found', label: 'Олдсон' },
 ] as const;
 
-const FEED_POST_LIMIT = 6;
-
 export default function DashboardFindAnimalPage() {
   const { posts, postsLoading } = usePosts();
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
@@ -27,7 +25,8 @@ export default function DashboardFindAnimalPage() {
     return false;
   });
 
-  const displayPosts = filteredPosts.slice(0, FEED_POST_LIMIT);
+  const displayPosts = filteredPosts;
+
   const toggleFavorite = (id: string) => {
     setFavorites((prev) => {
       const next = new Set(prev);
