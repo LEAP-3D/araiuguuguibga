@@ -12,7 +12,7 @@ import { usePets } from '@/lib/petsContext';
 import { getTodayStr, toDateOnlyStr } from './profileDateUtils';
 import { DueTodayBanner } from './DueTodayBanner';
 import { ProfileMedicalSection, type MedicalRecordItem } from './ProfileMedicalSection';
-import { useMedicalNotifications } from './useMedicalNotifications';
+import { useMedicalNotifications, triggerTestMedicalNotification } from './useMedicalNotifications';
 
 export type { MedicalRecordItem };
 
@@ -128,6 +128,16 @@ export default function Profile() {
         </button>
 
         <DueTodayBanner records={dueTodayRecords} />
+        <div className="mb-4 flex items-center gap-2 text-sm text-amber-800/90">
+          <span>Мэдэгдэл: &quot;Дараагийн огноо&quot; өнөөдөр болсон бүртгэлд л гарна.</span>
+          <button
+            type="button"
+            onClick={triggerTestMedicalNotification}
+            className="rounded bg-amber-200 px-3 py-1.5 font-medium hover:bg-amber-300"
+          >
+            Мэдэгдэл турших
+          </button>
+        </div>
 
         <div className="flex flex-col gap-10 w-7xl items-center border-7 border-white rounded-3xl p-6 shadow-2xl py-14">
           <div className="w-6xl flex justify-start">

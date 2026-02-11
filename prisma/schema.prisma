@@ -27,6 +27,16 @@ model User {
   medicalRecords MedicalRecord[]
   pets           Pet[]
   rescuePosts    RescuePost[]
+  fcmTokens      FcmToken[]
+}
+
+model FcmToken {
+  id        String   @id @default(nanoid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String
+  createdAt DateTime @default(now())
+  @@unique([userId, token])
 }
 
 model RescuePost {
@@ -55,6 +65,7 @@ model Pet {
   gender    String?
   note      String?
   allergies String?
+  microchip String?
   image     String?
   createdAt DateTime @default(now())
 }

@@ -1,11 +1,7 @@
 'use client';
-import React, { useId } from 'react'; // 1. useMemo-г ашиглаагүй тул хасав
-import { useEffect, useState } from 'react';
-import Particles, { initParticlesEngine } from '@tsparticles/react';
-import type { Container } from '@tsparticles/engine'; // 2. SingleOrMultiple-г ашиглаагүй тул хасав
-import { loadSlim } from '@tsparticles/slim';
+
+import React, { useId, useMemo } from 'react';
 import { cn } from '@/lib/utils';
-import { motion, useAnimation } from 'motion/react';
 
 type ParticlesProps = {
   id?: string;
@@ -19,114 +15,61 @@ type ParticlesProps = {
   particleDensity?: number;
 };
 
+/** Deterministic 0..1 from index and seed (pure, no Math.random). */
+function pseudo(i: number, seed: number): number {
+  return ((i * 9301 + seed) % 233280) / 233280;
+}
+
 export const SparklesCore = (props: ParticlesProps) => {
-  const { id, className, background, minSize, maxSize, speed, particleColor, particleDensity } = props;
-
-  const [init, setInit] = useState(false);
-
-  useEffect(() => {
-    // 3. ESLint 'Promises must be awaited' алдааг 'void' ашиглан засав
-    void initParticlesEngine(async (engine) => {
-      await loadSlim(engine);
-    }).then(() => {
-      setInit(true);
-    });
-  }, []);
-
-  const controls = useAnimation();
-
-  const particlesLoaded = async (container?: Container) => {
-    if (container) {
-      // 4. Асинхрон үйлдлийг await хийж баталгаажуулав
-      await controls.start({
-        opacity: 1,
-        transition: {
-          duration: 1,
-        },
-      });
-    }
-  };
+  const {
+    id,
+    className,
+    background = 'transparent',
+    minSize = 1,
+    maxSize = 3,
+    speed = 4,
+    particleColor = '#ffffff',
+    particleDensity = 120,
+  } = props;
 
   const generatedId = useId();
 
+  const particles = useMemo(() => {
+    const count = Math.min(Math.max(particleDensity, 20), 200);
+    const seed = 12345;
+    return Array.from({ length: count }, (_, i) => ({
+      id: i,
+      x: pseudo(i, seed) * 100,
+      y: pseudo(i, seed + 1) * 100,
+      size: minSize + pseudo(i, seed + 2) * (maxSize - minSize),
+      duration: 2 + pseudo(i, seed + 3) * (6 / (speed * 0.25)),
+      delay: pseudo(i, seed + 4) * 2,
+    }));
+  }, [particleDensity, minSize, maxSize, speed]);
+
   return (
-    <motion.div animate={controls} className={cn('opacity-0', className)}>
-      {init && (
-        <Particles
-          id={id || generatedId}
-          className={cn('h-full w-full')}
-          particlesLoaded={particlesLoaded}
-          options={{
-            background: {
-              color: {
-                value: background || 'transparent', // Default-оор transparent болгов
-              },
-            },
-            fullScreen: {
-              enable: false,
-              zIndex: 1,
-            },
-            fpsLimit: 120,
-            interactivity: {
-              events: {
-                onClick: { enable: true, mode: 'push' },
-                onHover: { enable: false, mode: 'repulse' },
-                resize: { enable: true },
-              },
-              modes: {
-                push: { quantity: 4 },
-                repulse: { distance: 200, duration: 0.4 },
-              },
-            },
-            particles: {
-              bounce: {
-                horizontal: { value: 1 },
-                vertical: { value: 1 },
-              },
-              collisions: {
-                enable: false,
-                maxSpeed: 50,
-                mode: 'bounce',
-                overlap: { enable: true, retries: 0 },
-              },
-              color: {
-                value: particleColor || '#ffffff',
-              },
-              move: {
-                enable: true,
-                direction: 'none',
-                speed: { min: 0.1, max: 1 },
-                outModes: { default: 'out' },
-              },
-              number: {
-                density: {
-                  enable: true,
-                  width: 400,
-                  height: 400,
-                },
-                value: particleDensity || 120,
-              },
-              opacity: {
-                value: { min: 0.1, max: 1 },
-                animation: {
-                  enable: true,
-                  speed: speed || 4,
-                  sync: false,
-                  startValue: 'random',
-                },
-              },
-              shape: { type: 'circle' },
-              size: {
-                value: {
-                  min: minSize || 1,
-                  max: maxSize || 3,
-                },
-              },
-            },
-            detectRetina: true,
+    <div
+      id={id || generatedId}
+      className={cn('h-full w-full relative overflow-hidden opacity-0 animate-in fade-in duration-1000', className)}
+      style={{ background }}
+      aria-hidden
+    >
+      {particles.map((p) => (
+        <span
+          key={p.id}
+          className="absolute rounded-full"
+          style={{
+            left: `${p.x}%`,
+            top: `${p.y}%`,
+            width: `${p.size}px`,
+            height: `${p.size}px`,
+            backgroundColor: particleColor,
+            animation: 'sparkle ease-in-out infinite',
+            animationDuration: `${p.duration}s`,
+            animationDelay: `${p.delay}s`,
           }}
         />
-      )}
-    </motion.div>
+      ))}
+    </div>
   );
 };
