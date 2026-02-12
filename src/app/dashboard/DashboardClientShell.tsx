@@ -4,11 +4,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, PawPrint, PlusSquare, ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+
 import Logo from '../_components/Logo';
 import { useUser } from '@clerk/nextjs';
 import { TestNotificationButton } from '@/components/TestNotificationButton';
 import { useNotification } from '@/hooks/useNotification';
+import { HeaderUserMenu } from '../_features/HeaderUserMenu';
 
 const sidebarItems = [
   { href: '/dashboard/find-animals', label: 'Find Animals', icon: Home },
@@ -22,7 +23,7 @@ export function DashboardClientShell({ children }: { children: React.ReactNode }
   const { permission, requestPermission, loading } = useNotification();
 
   return (
-    <div className="flex flex-col font-sans">
+    <div className="flex flex-col font-sans ">
       {/* Header */}
       <div className="sticky top-0 z-50 bg-card/80 backdrop-blur-md ">
         <div className="flex justify-between items-center px-10 h-16 border-b border-amber-400">
@@ -50,12 +51,7 @@ export function DashboardClientShell({ children }: { children: React.ReactNode }
             <div className="flex flex-col items-end gap-0.5">
               <div className="flex items-center gap-2">
                 {permission !== 'granted' ? (
-                  <button
-                    type="button"
-                    onClick={() => requestPermission()}
-                    disabled={loading}
-                    className="rounded-lg bg-gray-800 px-4 py-2 text-sm text-white hover:bg-gray-700 disabled:opacity-50"
-                  >
+                  <button type="button" onClick={() => requestPermission()} disabled={loading} className="rounded-lg bg-gray-800 px-4 py-2 text-sm text-white hover:bg-gray-700 disabled:opacity-50">
                     {loading ? '…' : 'Мэдэгдэл идэвхжүүлэх'}
                   </button>
                 ) : null}
@@ -65,17 +61,14 @@ export function DashboardClientShell({ children }: { children: React.ReactNode }
                 Demo: эхлээд бүгд идэвхжүүлнэ, дараа нь Test дарна
               </p>
             </div>
-            <Avatar className="h-10 w-10 rounded-full border-2 border-gray-100">
-              <AvatarImage src={user?.imageUrl} />
-              <AvatarFallback className="bg-[#f18912] text-white">U</AvatarFallback>
-            </Avatar>
+            <HeaderUserMenu displayName={user?.fullName || 'User'} initial={user?.firstName?.charAt(0) || 'U'} imageUrl={user?.imageUrl} onSignOut={() => {}} />
           </nav>
         </div>
 
-        <div className="px-10 ">
-          <Link href="/" className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-gray-500 transition-colors hover:bg-gray-50 hover:text-gray-700">
+        <div className="px-10 w-fit mt-5">
+          <Link href="/" className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-black transition-colors hover:bg-orange-50 hover:text-orange-600">
             <ArrowLeft className="h-5 w-5" />
-            Нүүр рүү буцах
+            Нүүр лүү буцах
           </Link>
         </div>
       </div>
