@@ -104,23 +104,23 @@ export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: He
           <p className="font-semibold text-gray-900">My Account</p>
         </div>
         <div className="py-2">
-          <Link href="/dashboard" className="flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 transition-colors">
+          <Link href="/dashboard" className="flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 cursor-pointer transition-colors">
             <LayoutDashboard className="w-4 h-4 text-[#fc8d0e]" />
             <span>Dashboard</span>
           </Link>
-          <Link href="/profile" className="flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 transition-colors">
+          <Link href="/profile" className="flex cursor-pointer gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 transition-colors">
             <User className="w-4 h-4 text-[#fc8d0e]" />
             <span>Profile</span>
           </Link>
-          <button type="button" className="w-full flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 transition-colors text-left">
+          <button type="button" className="w-full cursor-pointer flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 transition-colors text-left">
             <Heart className="w-4 h-4 text-[#fc8d0e]" />
             <span>Saved Pets</span>
           </button>
-          <button type="button" className="w-full flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 transition-colors text-left">
+          <button type="button" className="w-full flex cursor-pointer gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 transition-colors text-left">
             <Settings className="w-4 h-4 text-[#fc8d0e]" />
             <span>Settings</span>
           </button>
-          <button type="button" onClick={onSignOut} className="w-full flex gap-3 px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors text-left">
+          <button type="button" onClick={onSignOut} className="w-full cursor-pointer flex gap-3 px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors text-left">
             <LogOut className="w-4 h-4" />
             <span>Log out</span>
           </button>
