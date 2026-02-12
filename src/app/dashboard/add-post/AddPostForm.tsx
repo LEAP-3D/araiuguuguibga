@@ -142,12 +142,12 @@ export function AddPostForm() {
           </Card>
           <div className="flex justify-end gap-2">
             {step > 0 && (
-              <Button variant="outline" onClick={() => setStep(step - 1)} className=" my-10">
+              <Button type="button" variant="outline" onClick={() => setStep(step - 1)} className="my-10">
                 Back
               </Button>
             )}
             {step < 3 && (
-              <Button onClick={() => setStep(step + 1)} className="bg-amber-500 my-10">
+              <Button type="button" onClick={() => setStep(step + 1)} className="bg-amber-500 my-10">
                 Continue
               </Button>
             )}
