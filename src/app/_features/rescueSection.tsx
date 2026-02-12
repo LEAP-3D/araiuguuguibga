@@ -61,8 +61,8 @@ export function RescuePetsSection() {
               key={f.id}
               type="button"
               onClick={() => setActiveFilter(f.id)}
-              className={`rounded-full px-6 py-1.5 text-sm font-medium transition-colors ${
-                activeFilter === f.id ? 'bg-[#fc8d0e] text-white shadow-sm' : 'border-2 border-[#fc8d0e] bg-white text-[#fc8d0e] hover:bg-[#fc8d0e]/5'
+              className={`rounded-full px-6 py-1.5 text-sm font-medium hover:bg-[#fc8d0e] transition-colors ${
+                activeFilter === f.id ? 'bg-[#fc8d0e] hover:bg-[#fc8d0e] text-white shadow-sm' : 'border-2 border-[#fc8d0e] bg-white text-[#fc8d0e] hover:bg-[#fc8d0e]/5'
               }`}
             >
               {f.label}

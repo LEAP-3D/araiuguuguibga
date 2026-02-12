@@ -117,7 +117,7 @@ export function HeroSection({ onOpenChat }: HeroSectionProps) {
                 href={servicesHref}
                 className="relative flex items-center gap-2 cursor-pointer rounded-xl px-3 py-2.5 sm:px-6 sm:py-3
                 text-sm sm:text-base font-medium border border-[#f0c49f] text-[#E8B07E] bg-transparent overflow-hidden group
-                transition-all duration-300 hover:text-white hover:border-[#E8B07E] 
+                transition-all duration-300 hover:text-[#E8B07E] hover:border-[#E8B07E] 
                 hover:shadow-[0_12px_40px_rgba(232,176,126,0.45)] hover:-translate-y-0.5"
               >
                 <motion.span className="absolute inset-0 bg-[#86D2D9]/10" initial={{ x: '-100%' }} whileHover={{ x: 0 }} transition={{ duration: 0.3 }} />
