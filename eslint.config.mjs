@@ -71,7 +71,7 @@ const eslintConfig = defineConfig([
   },
 
   {
-    ignores: ['.next/**', 'out/**', 'build/**', 'next-env.d.ts', 'eslint.config.mjs'],
+    ignores: ['.next/**', 'out/**', 'build/**', 'next-env.d.ts', 'eslint.config.mjs', 'scripts/**', 'worker/**'],
   },
 ]);
 

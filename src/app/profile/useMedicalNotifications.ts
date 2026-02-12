@@ -3,6 +3,10 @@ import { getTodayStr } from './profileDateUtils';
 
 type DueRecord = { pet: string; type: string; nextDueDate?: string };
 
+/**
+ * Мэдэгдэл: зөвхөн date эсвэл nextDueDate нь ӨНӨӨДӨР болсон бүртгэлд л гарна.
+ * Жишээ: "3 сарын 1" гэж тэмдэглэсэн бол 3-р сарын 1-ний өдөр profile нээхэд мэдэгдэл ирнэ.
+ */
 export function useMedicalNotifications(dueTodayRecords: DueRecord[]) {
   useEffect(() => {
     if (dueTodayRecords.length === 0 || typeof window === 'undefined' || !('Notification' in window)) return;
@@ -41,4 +45,20 @@ export function useMedicalNotifications(dueTodayRecords: DueRecord[]) {
       });
     }
   }, [dueTodayRecords]);
+}
+
+/** Туршилт: ижил форматын мэдэгдэл гаргаж, зөвшөөрөл/хэлбэр ажиллаж байгааг шалгана. */
+export function triggerTestMedicalNotification(): void {
+  if (typeof window === 'undefined' || !('Notification' in window)) return;
+  if (Notification.permission === 'granted') {
+    new Notification('1 medical reminder today', {
+      body: 'Туршилт: Нохой — Вакцин (due today)',
+    });
+  } else {
+    void Notification.requestPermission().then((p) => {
+      if (p === 'granted') {
+        new Notification('1 medical reminder today', { body: 'Туршилт: Эрүүл мэндийн мэдэгдэл' });
+      }
+    });
+  }
 }

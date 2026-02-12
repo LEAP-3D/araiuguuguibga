@@ -53,7 +53,18 @@ export function AddPostForm() {
         location: form.location.trim(),
         image: form.imagePreview ?? '',
       });
-      if (success) router.push('/dashboard/find-animals');
+      if (success) {
+        await fetch('/api/send-notification', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: 'New rescue post',
+            body: `${form.petName.trim() || 'Animal'} — ${form.location.trim()}`,
+            data: { url: '/dashboard/find-animals' },
+          }),
+        }).catch(() => {});
+        router.push('/dashboard/find-animals');
+      }
     } finally {
       setIsSubmitting(false);
     }
