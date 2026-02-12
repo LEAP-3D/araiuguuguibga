@@ -32,7 +32,7 @@ export function HeaderLogo() {
 
 export function HeaderNavLinks({ isSignedIn: _isSignedIn = false }: { isSignedIn?: boolean }) {
   return (
-    <div className="hidden md:flex items-center gap-8" style={{ fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive" }}>
+    <div className="hidden md:flex items-center gap-8" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
       <a style={{ color: '#43342D' }} href="#adopt" className={navLinkClass}>
         Амьтны мэдээлэл
       </a>
@@ -96,10 +96,12 @@ export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: He
             <AvatarImage src={imageUrl} alt={displayName} />
             <AvatarFallback className="bg-[#fc8d0e] text-white text-sm font-semibold">{initial}</AvatarFallback>
           </Avatar>
-          <span className="text-gray-800 font-medium truncate pr-5">{displayName}</span>
+          <span className="text-gray-800 font-medium truncate pr-5" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+            {displayName}
+          </span>
         </motion.button>
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-56 rounded-xl shadow-lg border-gray-200/80 p-0">
+      <PopoverContent align="end" className="w-56 rounded-xl shadow-lg border-gray-200/80 p-0" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
         <div className="px-4 py-3 border-b border-gray-100">
           <p className="font-semibold text-gray-900">My Account</p>
         </div>

@@ -25,7 +25,7 @@ export function DashboardClientShell({ children }: { children: React.ReactNode }
   return (
     <div className="flex flex-col font-sans ">
       {/* Header */}
-      <div className="sticky top-0 z-50 bg-card/80 backdrop-blur-md ">
+      <div className="sticky top-0 z-50 bg-card/80 backdrop-blur-md">
         <div className="flex justify-between items-center px-10 h-16 border-b border-amber-400">
           <Logo />
 
@@ -64,17 +64,16 @@ export function DashboardClientShell({ children }: { children: React.ReactNode }
             <HeaderUserMenu displayName={user?.fullName || 'User'} initial={user?.firstName?.charAt(0) || 'U'} imageUrl={user?.imageUrl} onSignOut={() => {}} />
           </nav>
         </div>
-
-        <div className="px-10 w-fit mt-5">
-          <Link href="/" className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-black transition-colors hover:bg-orange-50 hover:text-orange-600">
-            <ArrowLeft className="h-5 w-5" />
-            Нүүр лүү буцах
-          </Link>
-        </div>
+      </div>
+      <div className="px-10 w-fit mt-5 bg-transparent">
+        <Link href="/" className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-black transition-colors hover:bg-orange-50 hover:text-orange-600">
+          <ArrowLeft className="h-5 w-5" />
+          Нүүр лүү буцах
+        </Link>
       </div>
 
       {/* Main content */}
-      <main className="p-6 flex justify-center">{children}</main>
+      <main className="flex justify-center bg-transparent">{children}</main>
     </div>
   );
 }

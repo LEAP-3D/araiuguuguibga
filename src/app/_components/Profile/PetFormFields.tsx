@@ -19,7 +19,7 @@ type Props = {
 
 export function PetFormFields({ form, setForm }: Props) {
   return (
-    <>
+    <div>
       <div>
         <label className="block text-lg font-medium mb-1">Амьтны нэр *</label>
         <input
@@ -107,6 +107,6 @@ export function PetFormFields({ form, setForm }: Props) {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 }

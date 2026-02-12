@@ -62,16 +62,16 @@ export default function AddMedicalRecord({ pets = [], onAddRecord }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <div className="w-fit h-fit bg-[#ef9241] rounded-2xl py-3 px-5 flex items-center gap-2 justify-center text-white font-medium hover:bg-orange-800 cursor-pointer transition">
+        <div className="w-fit h-fit bg-[#ef9241] rounded-2xl py-3 px-5 flex items-center gap-2 justify-center text-white font-medium hover:bg-orange-400 cursor-pointer transition">
           <Plus />
           нэмэх
         </div>
       </DialogTrigger>
-      <DialogContent className="w-120 gap-5">
+      <DialogContent className="w-120 gap-5 p-6 " style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle className="flex gap-2 items-center text-xl font-semibold">
-              <Syringe className="text-orange-600 mb-2" />
+            <DialogTitle className="flex gap-2 items-center text-xl font-semibold mb-2">
+              <Syringe className="text-orange-400 mb-2" />
               Эрүүл мэндийн бүртгэл нэмэх
             </DialogTitle>
             <DialogDescription></DialogDescription>
@@ -81,7 +81,7 @@ export default function AddMedicalRecord({ pets = [], onAddRecord }: Props) {
               <div>
                 <label className="block text-sm font-semibold text-foreground mb-2">Тэжээвэр амьтан *</label>
                 <Select value={form.pet || ''} onValueChange={(v) => setForm((f) => ({ ...f, pet: v }))}>
-                  <SelectTrigger className="px-5 py-2 rounded-xl border bg-[#f7fff3]">
+                  <SelectTrigger className="px-5 py-2 rounded-xl border bg-[#fffef3]">
                     <SelectValue placeholder="Тэжээвэр амьтан сонгох" />
                   </SelectTrigger>
                   <SelectContent>
@@ -96,7 +96,7 @@ export default function AddMedicalRecord({ pets = [], onAddRecord }: Props) {
               <div>
                 <label className="block text-sm font-semibold text-foreground mb-2">Төрөл *</label>
                 <Select value={form.type || ''} onValueChange={(v) => setForm((f) => ({ ...f, type: v as 'vaccine' | 'medicine' | 'treatment' | 'surgery' }))}>
-                  <SelectTrigger className="px-5 py-2 rounded-xl border bg-[#f7fff3]">
+                  <SelectTrigger className="px-5 py-2 rounded-xl border bg-[#fffbf3]">
                     <SelectValue placeholder="Төрөл сонгох" />
                   </SelectTrigger>
                   <SelectContent>
@@ -147,13 +147,13 @@ export default function AddMedicalRecord({ pets = [], onAddRecord }: Props) {
               />
             </div>
           </div>
-          <DialogFooter>
+          <DialogFooter className="mt-5">
             <DialogClose asChild>
               <Button type="button" variant="outline" className="rounded-xl px-8 py-2">
                 Цуцлах
               </Button>
             </DialogClose>
-            <Button type="submit" className="rounded-xl px-8 py-2 bg-linear-to-r from-[#09712e] to-[#51986a] text-white shadow-md hover:opacity-90">
+            <Button type="submit" className="rounded-xl px-8 py-2 bg-linear-to-r from-[#ff9100] to-[#ffae00] text-white shadow-md hover:opacity-90">
               Бүртгэл нэмэх
             </Button>
           </DialogFooter>

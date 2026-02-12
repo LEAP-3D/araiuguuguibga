@@ -22,7 +22,7 @@ type Props = {
 export default function ProfileDetailsDialog({ owner, open, onOpenChange, onEdit }: Props) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-2xl rounded-3xl border-0 shadow-2xl p-0 overflow-hidden">
+      <DialogContent className="sm:max-w-xl rounded-3xl border-0 shadow-2xl p-0 overflow-hidden">
         {/* Header */}
         <div className="bg-gradient-to-br p-8 pb-10 relative">
           <DialogHeader>
