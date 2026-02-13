@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Details from './Details';
 import Location from './Location';
 import Contact from './Contact';
-import Catshelter from '../../../../public/catshelter.svg';
+import { CatShelter } from '@/app/_icons/CatShelter';
 export function AddPostForm() {
   const [step, setStep] = useState(0);
   const router = useRouter();
@@ -25,20 +25,28 @@ export function AddPostForm() {
     type: 'dog' as 'dog' | 'cat' | 'other',
     description: '',
     location: '',
-    imagePreview: '' as string | null,
+    imagePreviews: [] as string[],
   });
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const compressed = await compressImage(file, 400);
-      setForm((f) => ({ ...f, imagePreview: compressed || null }));
-    }
+    const files = e.target.files;
+    if (!files) return;
+
+    const compressedImages = await Promise.all(Array.from(files).map((file) => compressImage(file, 400)));
+
+    setForm((prev) => ({
+      ...prev,
+      imagePreviews: [...prev.imagePreviews, ...(compressedImages.filter(Boolean) as string[])],
+    }));
+
     e.target.value = '';
   };
-
-  const removeImage = () => setForm((f) => ({ ...f, imagePreview: null }));
-
+  const removeImage = (index: number) => {
+    setForm((prev) => ({
+      ...prev,
+      imagePreviews: prev.imagePreviews.filter((_, i) => i !== index),
+    }));
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.location.trim()) return;
@@ -51,7 +59,8 @@ export function AddPostForm() {
         type: form.type,
         description: form.description.trim(),
         location: form.location.trim(),
-        image: form.imagePreview ?? '',
+        // backend currently expects a single image string; send the first selected preview if any
+        image: form.imagePreviews[0] ?? '',
       });
       if (success) {
         await fetch('/api/send-notification', {
@@ -69,31 +78,28 @@ export function AddPostForm() {
       setIsSubmitting(false);
     }
   };
-
   const canPost = form.location.trim().length > 0;
-
   return (
     <div className="mx-auto max-w-2xl" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
       <div className="flex flex-col gap-6 ">
         <div className="flex flex-col items-start text-center" style={{ fontFamily: 'Tahoma, Veerdana, Segoe, sans-serif' }}>
           <div className="flex items-center gap-3">
-            <Catshelter className="shrink-0" />
+            <CatShelter className="w-14 h-14" />
             <p className="text-3xl font-bold leading-none">Амьтан постлох</p>
           </div>
           <p className="mt-2 text-muted-foreground">Энэ амьтныг дахин нэгтгэхэд туслахын тулд дэлгэрэнгүй мэдээллийг бөглөнө үү</p>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 font-medium">
           <div
             onClick={() => setSelected('lost')}
-            className={`px-8 py-2 rounded-xl cursor-pointer transition
+            className={`px-5 py-1.5 rounded-xl cursor-pointer transition
           ${selected === 'lost' ? 'bg-orange-400 text-white' : 'border border-orange-400 text-black'}`}
           >
-            Би амьтанаа алдсан
+            Би амьтнаа алдсан
           </div>
-
           <div
             onClick={() => setSelected('found')}
-            className={`px-8 py-2 rounded-xl cursor-pointer transition
+            className={`px-5 py-1.5 rounded-xl cursor-pointer transition
           ${selected === 'found' ? 'bg-orange-400 text-white' : 'border border-orange-400 text-black'}`}
           >
             Би амьтан оллоо
@@ -109,25 +115,29 @@ export function AddPostForm() {
                 {step === 3 && 'Contact'}
               </CardTitle>
             </CardHeader>
-
             <CardContent className="space-y-4 w-150">
               {step === 0 && (
                 <div>
-                  {form.imagePreview && (
-                    <div className="relative mt-4 rounded-lg border border-gray-200 bg-gray-50 p-2">
-                      <button
-                        type="button"
-                        onClick={removeImage}
-                        className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-black/70"
-                      >
-                        <X className="h-4 w-4" />
-                      </button>
-                      {/* eslint-disable-next-line @next/next/no-img-element -- dynamic data URL preview */}
-                      <img src={form.imagePreview} alt="Preview" className="max-h-80 w-full rounded-lg object-contain" />
+                  {form.imagePreviews.length > 0 && (
+                    <div className="grid grid-cols-2 gap-4 mt-4">
+                      {form.imagePreviews.map((img, index) => (
+                        <div key={index} className="relative rounded-lg border border-gray-200 bg-gray-50 p-2">
+                          <button
+                            type="button"
+                            onClick={() => removeImage(index)}
+                            className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70"
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                          {/* next/image doesn't support data-urls well for local previews; allow plain <img> here */}
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={img} alt="Preview" className="max-h-60 w-full rounded-lg object-contain" />
+                        </div>
+                      ))}
                     </div>
                   )}
                   <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 p-10 text-center transition-colors hover:bg-gray-50">
-                    <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+                    <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageChange} />
 
                     <Upload className="h-10 w-10 text-[#f18912]" />
 
