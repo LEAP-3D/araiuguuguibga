@@ -7,127 +7,136 @@ import { MessageCircle, Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
-type HeroSectionProps = {
-  onOpenChat?: () => void;
-};
-
-export function HeroSection({ onOpenChat }: HeroSectionProps) {
+export function HeroSection({ onOpenChat }: { onOpenChat?: () => void }) {
   const { isSignedIn } = useUser();
   const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
-    const id = setTimeout(() => setMounted(true), 0);
-    return () => clearTimeout(id);
+    setMounted(true);
   }, []);
+
   const servicesHref = mounted && isSignedIn ? '/dashboard' : '/sign-up';
+  const TeardropRay = ({ size, rotate }: { size: number; rotate: number }) => (
+    <svg width={size} height={size * 2} viewBox="0 0 24 48" fill="none" style={{ transform: `rotate(${rotate}deg)`, transformOrigin: 'bottom center' }} className="absolute">
+      {/* Дусал хэлбэр: Доод тал нь дугуй, дээд тал нь шовх */}
+      <path d="M12 0C12 0 4 12 4 18C4 22.4183 7.58172 26 12 26C16.4183 26 20 22.4183 20 18C20 12 12 0 12 0Z" stroke="#eda92b" strokeWidth="1.5" opacity="0.6" />
+    </svg>
+  );
 
   return (
-    <section id="hero" className="relative w-full min-h-238 flex flex-col items-center pt-50 overflow-hidden">
-      <div className="relative w-full max-w-6xl  px-10">
-        {/* Headline */}
-        <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false }} transition={{ duration: 0.6, ease: 'easeOut' }} className="leading-tight">
-          <div className="relative z-0 text-center md:text-left select-none pointer-events-none mb-20">
-            <h1 className="text-[80px] md:text-[150px] font-black leading-[0.8] text-black tracking-tighter">Your Pet Care</h1>
-            <h2 className="text-[70px] md:text-[130px] font-bold leading-none -mt-4 text-[#E8B07E]/90">Center</h2>
-          </div>
-          <div className="absolute top-[115%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center">
-            <div className="relative flex items-center justify-center">
-              {/* Шар тойрог фон */}
-              <div className="absolute bottom-10 w-50 h-50 md:w-[320px] md:h-80 bg-[#F3D5B5] rounded-full -z-10" />
+    <section id="hero" className="relative w-full min-h-[90vh] flex items-center justify-center bg-[#FFFEF9] overflow-hidden px-6 py-12 pt-24">
+      {/* Арын фонны туяанууд */}
+      <div className="absolute top-[15%] right-[20%] w-125 h-125 bg-[#e99d40] rounded-full blur-[150px] opacity-40 pointer-events-none" />
+      <div className="absolute bottom-[10%] right-[5%] w-75 h-75 bg-[#e6b740] rounded-full blur-[100px] opacity-30 pointer-events-none" />
+      <div className="absolute top-[20%] left-[5%] w-50 h-50 bg-[#FFF4D9] rounded-full blur-[80px] opacity-20 pointer-events-none" />
 
-              {/* Муурны зураг - Скриншот шиг толгой нь текстийн доор байхаар тохируулав */}
-              <motion.div
-                initial={{ y: 50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.8, ease: 'easeOut' }}
-                className="relative -mt-24 md:-mt-32" // Муурны толгойг текстийн доор байлгах гол тохиргоо
-              >
-                <Image
-                  src="/cat.png"
-                  alt="Main Cat"
-                  width={600} // Хэт том биш, текстийг дарахгүй хэмжээтэй болгов
-                  height={600}
-                  className="object-contain"
-                  priority
-                />
-              </motion.div>
-            </div>
+      <div className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 items-center z-10 relative">
+        {/* --- ЗҮҮН ТАЛ: Текст, Button болон Icons --- */}
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="flex flex-col items-center md:items-start space-y-8 text-center md:text-left relative z-20 md:-mt-16" // -mt-16-аар дээшлүүлэв
+        >
+          {/* Гарчиг */}
+          <div className="space-y-2">
+            <h1 className="text-6xl md:text-7xl font-extrabold text-[#2D2D2D] leading-[1.1]">
+              We Care Of Your <br />
+              <span className="text-[#eda92b]">Beloved Paws</span>
+            </h1>
+            <p className="text-gray-600 text-lg md:text-xl max-w-lg leading-relaxed mt-4">Таны бяцхан савруудад зориулсан 24/7 AI туслах</p>
           </div>
 
-          {/* 3. Хажуугийн зургууд - Байршлыг төв мууртайгаа уялдуулан доошлуулав */}
-          <div className="absolute inset-0 flex justify-between items-center px-4 pointer-events-none z-30">
-            {/* Зүүн тал: Нохой (Өндөг хэлбэртэй) */}
-            <div className="mt-160 ml-4 md:ml-14">
-              <div className="w-50 h-70 rounded-full overflow-hidden shadow-2xl  pointer-events-auto bg-white">
-                <Image src="/dog.jpg" alt="Dog" width={300} height={400} className="object-cover h-full w-full scale-110" />
-              </div>
-            </div>
-
-            {/* Баруун тал: Муур (Бөөрөнхий) */}
-            <div className="mt-160 mr-4 md:mr-14">
-              <div className="w-60 h-70 rounded-full overflow-hidden shadow-2xl  pointer-events-auto bg-white">
-                <Image src="/caaat.jpg" alt="Small Cat" width={200} height={200} className="object-cover h-full w-full scale-110" />
-              </div>
-            </div>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="absolute right-[5%] top-[55%] z-40 max-w-fit space-y-3 hidden md:block"
-          >
+          {/* Товчлуурууд */}
+          <div className="flex flex-wrap gap-4 justify-center md:justify-start">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={onOpenChat}
-              className="
-  relative flex items-center gap-2 cursor-pointer
-  rounded-xl px-3 py-2.5 sm:px-6 sm:py-3
-  text-sm sm:text-base font-medium
-
-  bg-[#E8B07E]
-  text-white
-  shadow-lg
-
-  overflow-hidden
-  group
-
-  transition-all duration-500
-  hover:shadow-[0_16px_50px_rgba(232,176,126,0.55)]
-  hover:-translate-y-0.5
-"
+              className="relative flex items-center gap-2 cursor-pointer rounded-full px-8 py-4 text-base font-bold bg-[#FF782D] text-white shadow-lg overflow-hidden group transition-all duration-500"
             >
-              <motion.span
-                className="absolute inset-0 "
-                style={{
-                  background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent)',
-                }}
-                initial={{ x: '-100%' }}
-                animate={{ x: '100%' }}
-                transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
-              />
-              <span className="relative z-10 flex  items-center gap-2">
-                <MessageCircle className="h-5 w-5" />
-                AI туслах
-              </span>
+              <MessageCircle className="h-5 w-5" />
+              AI туслах
             </motion.button>
 
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link
-                href={servicesHref}
-                className="relative flex items-center gap-2 cursor-pointer rounded-xl px-3 py-2.5 sm:px-6 sm:py-3
-                text-sm sm:text-base font-medium border border-[#f0c49f] text-[#E8B07E] bg-transparent overflow-hidden group
-                transition-all duration-300 hover:text-[#E8B07E] hover:border-[#E8B07E] 
-                hover:shadow-[0_12px_40px_rgba(232,176,126,0.45)] hover:-translate-y-0.5"
+            <Link href={servicesHref}>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative flex items-center gap-2 cursor-pointer rounded-full px-8 py-4 text-base font-bold border-2 border-[#FF782D] text-[#FF782D] bg-transparent overflow-hidden group transition-all duration-300"
               >
-                <motion.span className="absolute inset-0 bg-[#86D2D9]/10" initial={{ x: '-100%' }} whileHover={{ x: 0 }} transition={{ duration: 0.3 }} />
-                <span className="relative z-10 flex items-center gap-2">
-                  <Heart className="h-5 w-5" />
-                  Манай үйлчилгээ
-                </span>
-              </Link>
-            </motion.div>
-          </motion.div>
+                <Heart className="h-5 w-5" />
+                Манай үйлчилгээ
+              </motion.div>
+            </Link>
+          </div>
+
+          {/* Гурван икон - Товчлууруудын доор голлосон */}
+          <div className="flex flex-row gap-6 pt-4">
+            {[
+              { src: '/clinic.png', delay: 1.0 },
+              { src: '/vaccine.png', delay: 1.1 },
+              { src: '/pet-care.png', delay: 1.2 },
+            ].map((icon, index) => (
+              <motion.div
+                key={index}
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: icon.delay, duration: 0.5 }}
+                whileHover={{ y: -5, scale: 1.1 }}
+                className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full shadow-xl border-4 border-[#FFE8B5] overflow-hidden flex items-center justify-center p-1"
+              >
+                <Image src={icon.src} alt={`pet-icon-${index}`} width={70} height={70} className="object-cover rounded-full" />
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* --- БАРУУН ТАЛ: Муурны зураг --- */}
+        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="relative flex justify-center md:justify-end items-center">
+          <div className="relative z-10 w-full max-w-137.5 md:ml-auto">
+            <Image src="/cat.png" alt="Beloved Cat" width={800} height={900} className="object-contain ml-auto md:scale-150" priority />
+          </div>
+        </motion.div>
+
+        {/* 1. ЗҮҮН ТАЛЫН ЦАЦРАГ (Дээд талын 2 нь том) */}
+        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6, duration: 0.8 }} className="absolute top-[-9%] right-[27%] z-10 hidden md:block">
+          <svg width="200" height="350" viewBox="0 0 120 120" fill="none">
+            {/* 1. Доод талын жижиг дусал */}
+            <g transform="translate(55, 90) rotate(-90) scale(0.5, 1.1) translate(-12, -26)">
+              <path d="M12 0C7.58 0 4 3.58 4 8C4 14 12 26 12 26C12 26 20 14 20 8C20 3.58 16.42 0 12 0Z" stroke="#eda92b" strokeWidth="1.3" opacity="0.6" />
+            </g>
+
+            {/* 2. Дээд талын том дусал (Дунд) */}
+            <g transform="translate(55, 80) rotate(-50) scale(1.1, 1.4) translate(-12, -26)">
+              <path d="M12 0C7.58 0 4 3.58 4 8C4 14 12 26 12 26C12 26 20 14 20 8C20 3.58 16.42 0 12 0Z" stroke="#eda92b" strokeWidth="1.1" opacity="0.6" />
+            </g>
+
+            {/* 3. Дээд талын том дусал (Босоо) - Илүү урт болгов */}
+            <g transform="translate(65, 70) rotate(-10) scale(1.1, 1.6) translate(-12, -26)">
+              <path d="M12 0C7.58 0 4 3.58 4 8C4 14 12 26 12 26C12 26 20 14 20 8C20 3.58 16.42 0 12 0Z" stroke="#eda92b" strokeWidth="1.1" opacity="0.6" />
+            </g>
+          </svg>
+        </motion.div>
+
+        {/* 2. БАРУУН ТАЛЫН ЦАЦРАГ (Дээд талын 2 нь том) */}
+        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.8, duration: 0.8 }} className="absolute top-[2%] right-[5%] z-10 hidden md:block">
+          <svg width="150" height="150" viewBox="0 0 120 120" fill="none">
+            {/* 1. Доод талын жижиг дусал */}
+            <g transform="translate(75, 90) rotate(90) scale(0.6, 1.1) translate(-12, -26)">
+              <path d="M12 0C7.58 0 4 3.58 4 8C4 14 12 26 12 26C12 26 20 14 20 8C20 3.58 16.42 0 12 0Z" stroke="#eda92b" strokeWidth="1.6" opacity="0.6" />
+            </g>
+
+            {/* 2. Дээд талын том дусал (Дунд) */}
+            <g transform="translate(68, 80) rotate(45) scale(0.9, 1.6) translate(-12, -26)">
+              <path d="M12 0C7.58 0 4 3.58 4 8C4 14 12 26 12 26C12 26 20 14 20 8C20 3.58 16.42 0 12 0Z" stroke="#eda92b" strokeWidth="1.5" opacity="0.6" />
+            </g>
+
+            {/* 3. Дээд талын том дусал (Босоо) */}
+            <g transform="translate(55, 70) rotate(5) scale(0.9, 1.9) translate(-12, -26)">
+              <path d="M12 0C7.58 0 4 3.58 4 8C4 14 12 26 12 26C12 26 20 14 20 8C20 3.58 16.42 0 12 0Z" stroke="#eda92b" strokeWidth="1.5" opacity="0.6" />
+            </g>
+          </svg>
         </motion.div>
       </div>
     </section>

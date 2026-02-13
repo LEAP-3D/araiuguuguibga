@@ -45,3 +45,20 @@ export type Stats = {
   label: string;
   icon: string;
 };
+
+export type PawPrint = {
+  id: number;
+  x: number;
+  y: number;
+  rotation: number;
+  size: number;
+  isLeft: boolean;
+};
+
+export type Trail = {
+  id: number;
+  prints: PawPrint[];
+};
+
+export const STEP_INTERVAL = 0.4; // Алхаа хоорондын хугацаа (секунд)
+export const PAW_LIFETIME = 5;
