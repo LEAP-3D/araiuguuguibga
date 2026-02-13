@@ -91,15 +91,15 @@ export default function AddPetDialog() {
           <div className="text-xs text-gray-500">Шинэ тэжээвэр амьтан бүртгэх</div>
         </button>
       </DialogTrigger>
-      <DialogContent className=" bg-[#fefdfc] rounded-3xl border border-[#f1e6d9] pr-6">
+      <DialogContent className=" bg-[#fefdfc] rounded-3xl border border-[#f1e6d9] px-6 pb-6 pt-1" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
         <DialogHeader>
-          <DialogTitle className="text-2xl font-semibold text-[#3b2f2f]">🐾 Тэжээвэр амьтан нэмэх</DialogTitle>
-          <DialogDescription className="text-sm text-gray-500">доорх мэдээллийг бөглөнө үү.</DialogDescription>
+          <DialogTitle className="text-2xl font-semibold text-[#3b2f2f] mt-3 ">🐾 Тэжээвэр амьтан нэмэх</DialogTitle>
+          <DialogDescription className="text-sm text-gray-500 ">доорх мэдээллийг бөглөнө үү.</DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col items-center ">
+        <div className="flex flex-col items-center">
           {/* Image Upload */}
           {form.imagePreview ? (
-            <div className="relative rounded-lg border border-gray-200 bg-gray-50 ">
+            <div className="relative rounded-lg  border border-gray-200 bg-gray-50 ">
               <button
                 type="button"
                 onClick={removeImage}
@@ -108,13 +108,13 @@ export default function AddPetDialog() {
                 <X className="h-4 w-4" />
               </button>
               {/* eslint-disable-next-line @next/next/no-img-element -- dynamic data URL preview */}
-              <img src={form.imagePreview || ''} alt="Preview" className="rounded-lg object-contain" />
+              <img src={form.imagePreview || ''} alt="Preview" className=" object-contain h-50 w-auto" />
             </div>
           ) : (
-            <div className="w-25 h-25 pt-3 rounded-xl border-2 border-dashed border-[#48805b] hover:border-[#51986a] hover:bg-[#58b97a2c] outline-none ">
+            <div className="w-25 h-25 pt-3 rounded-xl border-2 border-dashed border-[#ff9900] hover:border-[#fc9a07] hover:bg-[#ffc1051f] outline-none ">
               <label className="flex flex-col cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-500 transition-colors ">
                 <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
-                <Upload className="h-8 w-8 text-[#2b6440]" />
+                <Upload className="h-8 w-8 text-[#ffa303]" />
                 <p className="text-[9px]">Зураг оруулах</p>
               </label>
             </div>
@@ -130,7 +130,7 @@ export default function AddPetDialog() {
           </DialogClose>
 
           <DialogClose asChild>
-            <Button onClick={handleAddPet} className="rounded-xl px-8 py-2 bg-linear-to-r from-[#09712e] to-[#51986a] text-white shadow-md hover:opacity-90">
+            <Button onClick={handleAddPet} className="rounded-xl px-8 py-2 bg-linear-to-r from-[#ff9203] to-[#ffaa00] text-white shadow-md hover:opacity-90">
               Нэмэх
             </Button>
           </DialogClose>

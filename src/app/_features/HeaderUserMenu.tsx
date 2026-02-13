@@ -27,7 +27,7 @@ export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: He
           </Avatar>
         </motion.button>
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-56 rounded-xl shadow-lg border-gray-200/80 p-0">
+      <PopoverContent align="end" className="w-56 rounded-xl shadow-lg border-gray-200/80 p-0" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
         <div className="px-4 py-3 border-b border-gray-100">
           <p className="font-semibold text-gray-900">My Account</p>
         </div>

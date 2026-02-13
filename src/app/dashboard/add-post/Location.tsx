@@ -1,3 +1,4 @@
+import SimpleMap from '@/app/_components/HeroSection/SimpleMap';
 import { MapPin } from 'lucide-react';
 
 export default function Location() {
@@ -9,7 +10,7 @@ export default function Location() {
           <p>Pick Location on Map</p>
           <p>Click on the map to drop a pin where the animal was seen</p>
         </div>
-        <div className="w-130 h-70 bg-gray-400"></div>
+        <SimpleMap zoom={13} className="w-130 h-70 " />
       </div>
     </div>
   );

@@ -34,10 +34,10 @@ export function RescuePetCard({ post, isFavorite, onToggleFavorite }: RescuePetC
       <form>
         <DialogTrigger asChild>
           <div
-            className="group overflow-hidden rounded-2xl border border-amber-100 bg-white shadow-md transition-all hover:shadow-lg"
+            className="group flex h-[420px] flex-col overflow-hidden rounded-2xl border border-amber-100 bg-white shadow-md transition-all hover:shadow-lg"
             style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}
           >
-            <div className="relative w-full h-68 overflow-hidden rounded-t-xl group">
+            <div className="relative w-full h-50 overflow-hidden rounded-t-2xl">
               <PetImage image={post.image} />
 
               <button
@@ -50,13 +50,13 @@ export function RescuePetCard({ post, isFavorite, onToggleFavorite }: RescuePetC
                 <Heart className={`h-5 w-5 ${isFavorite ? 'fill-current' : ''}`} />
               </button>
             </div>
-            <div className="p-5">
+            <div className="flex flex-1 flex-col p-5">
               <div className="mb-2 flex items-start justify-between gap-2">
                 <h3 className="text-lg font-extrabold text-black">{post.name || 'Нэр тодорхойгүй'}</h3>
                 <span className="shrink-0 rounded-full border-2 border-[#efac48] px-3 py-1 text-xs font-extrabold text-black">{typeLabels[post.type] ?? 'Бусад'}</span>
               </div>
 
-              <p className="mb-4 line-clamp-2 text-sm text-gray-800">{post.description || '—'}</p>
+              <p className="mb-4 line-clamp-3 text-sm text-gray-800 min-h-[60px]">{post.description || '—'}</p>
               <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500">
                 <span className="flex items-center gap-1.5">
                   <Calendar className="h-4 w-4 text-amber-600" />

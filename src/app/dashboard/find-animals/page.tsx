@@ -46,7 +46,7 @@ export default function DashboardFindAnimalPage() {
     );
   }
   return (
-    <div className="flex flex-col gap-10 w-360" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+    <div className="flex flex-col gap-5 w-full max-w-6xl mx-auto px-6" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
       <div className="flex flex-col items-start text-center" style={{ fontFamily: 'Tahoma, Veerdana, Segoe, sans-serif' }}>
         <div className="flex items-center gap-3">
           <Image src={shelter} alt="Shelter" width={44} height={44} className="shrink-0" />
