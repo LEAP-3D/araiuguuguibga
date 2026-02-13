@@ -1,8 +1,8 @@
-import { Trail, PawPrint } from '../types';
+import type { Trail, PawPrint } from '../types';
 
-function clamp(v: number, min: number, max: number) {
-  return Math.max(min, Math.min(max, v));
-}
+// function clamp(v: number, min: number, max: number) {
+//   return Math.max(min, Math.min(max, v));
+// }
 export function generateTrail(trailId: number, startId: number): Trail {
   const stepCount = 22; // Hangalttai urt zam
 

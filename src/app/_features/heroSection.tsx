@@ -12,16 +12,10 @@ export function HeroSection({ onOpenChat }: { onOpenChat?: () => void }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
-
   const servicesHref = mounted && isSignedIn ? '/dashboard' : '/sign-up';
-  const TeardropRay = ({ size, rotate }: { size: number; rotate: number }) => (
-    <svg width={size} height={size * 2} viewBox="0 0 24 48" fill="none" style={{ transform: `rotate(${rotate}deg)`, transformOrigin: 'bottom center' }} className="absolute">
-      {/* Дусал хэлбэр: Доод тал нь дугуй, дээд тал нь шовх */}
-      <path d="M12 0C12 0 4 12 4 18C4 22.4183 7.58172 26 12 26C16.4183 26 20 22.4183 20 18C20 12 12 0 12 0Z" stroke="#eda92b" strokeWidth="1.5" opacity="0.6" />
-    </svg>
-  );
 
   return (
     <section id="hero" className="relative w-full min-h-[90vh] flex items-center justify-center bg-[#FFFEF9] overflow-hidden px-6 py-12 pt-24">

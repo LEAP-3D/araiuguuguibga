@@ -7,7 +7,7 @@ import { HeroSection } from '../_features/heroSection';
 import { RescuePetsSection } from '../_features/rescueSection';
 import { VeterinarySection } from '../_features/veterinarySection';
 import Chat from './Chat';
-import { SparklesPreview } from '@/components/ui/SparkStar';
+
 import { PawBackground } from './paw-trail/PawBackground';
 
 export default function HomeClient() {

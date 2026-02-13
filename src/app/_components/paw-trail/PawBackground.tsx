@@ -3,7 +3,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { PawIcon } from '../paw-trail/Paw-Icon';
-import { Trail, STEP_INTERVAL, PAW_LIFETIME } from '../types';
+import type { Trail } from '../types';
+import { PAW_LIFETIME } from '../types';
 import { generateTrail } from './utils';
 
 function WalkingTrail({ trail, onFinish }: { trail: Trail; onFinish: (id: number) => void }) {
