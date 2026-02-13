@@ -29,11 +29,7 @@ export function DashboardClientShell({ children }: { children: React.ReactNode }
         <div className="flex justify-between items-center px-4 md:px-10 h-14 md:h-16">
           <div className="flex items-center gap-2">
             <Logo />
-            <Link
-              href="/"
-              className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg text-foreground hover:bg-amber-100"
-              aria-label="Нүүр лүү"
-            >
+            <Link href="/" className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg text-foreground hover:bg-amber-100" aria-label="Нүүр лүү">
               <ArrowLeft className="h-5 w-5" />
             </Link>
           </div>
@@ -63,12 +59,7 @@ export function DashboardClientShell({ children }: { children: React.ReactNode }
             <div className="hidden md:flex flex-col items-end gap-0.5">
               <div className="flex items-center gap-2">
                 {permission !== 'granted' ? (
-                  <button
-                    type="button"
-                    onClick={() => requestPermission()}
-                    disabled={loading}
-                    className="rounded-lg bg-gray-800 px-4 py-2 text-sm text-white hover:bg-gray-700 disabled:opacity-50"
-                  >
+                  <button type="button" onClick={() => requestPermission()} disabled={loading} className="rounded-lg bg-gray-800 px-4 py-2 text-sm text-white hover:bg-gray-700 disabled:opacity-50">
                     {loading ? '…' : 'Мэдэгдэл идэвхжүүлэх'}
                   </button>
                 ) : null}
@@ -78,26 +69,18 @@ export function DashboardClientShell({ children }: { children: React.ReactNode }
                 Demo: идэвхжүүлнэ → Test
               </p>
             </div>
-            <HeaderUserMenu
-              displayName={user?.fullName || 'User'}
-              initial={user?.firstName?.charAt(0) || 'U'}
-              imageUrl={user?.imageUrl}
-              onSignOut={() => {}}
-            />
+            <HeaderUserMenu displayName={user?.fullName || 'User'} initial={user?.firstName?.charAt(0) || 'U'} imageUrl={user?.imageUrl} onSignOut={() => {}} />
           </div>
         </div>
 
         {/* Desktop only: back to home link */}
-        <div className="hidden md:block px-10 w-fit mt-2 pb-2">
-          <Link
-            href="/"
-            className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-amber-50 hover:text-amber-700"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Нүүр лүү буцах
-          </Link>
-        </div>
       </header>
+      <div className="hidden md:block px-10 w-fit mt-2 pb-2">
+        <Link href="/" className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-amber-50 hover:text-amber-700">
+          <ArrowLeft className="h-4 w-4" />
+          Нүүр лүү буцах
+        </Link>
+      </div>
 
       {/* Main content — extra bottom padding on mobile for bottom nav */}
       <main className="flex-1 p-4 md:p-6 flex justify-center pb-24 md:pb-6">{children}</main>
