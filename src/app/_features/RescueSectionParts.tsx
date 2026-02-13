@@ -50,7 +50,7 @@ export function RescueEmptyState() {
 
 export function RescueHeader() {
   return (
-    <div className="mb-8 px-4 md:px-15">
+    <div className="mb-8 px-11 ">
       <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="flex items-end justify-between gap-4">
         {/* Left text */}
         <div className="flex flex-col gap-1">

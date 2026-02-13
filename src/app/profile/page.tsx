@@ -130,11 +130,7 @@ export default function Profile() {
         <DueTodayBanner records={dueTodayRecords} />
         <div className="mb-4 flex items-center gap-2 text-sm text-amber-800/90">
           <span>Мэдэгдэл: &quot;Дараагийн огноо&quot; өнөөдөр болсон бүртгэлд л гарна.</span>
-          <button
-            type="button"
-            onClick={triggerTestMedicalNotification}
-            className="rounded bg-amber-200 px-3 py-1.5 font-medium hover:bg-amber-300"
-          >
+          <button type="button" onClick={triggerTestMedicalNotification} className="rounded bg-amber-200 px-3 py-1.5 font-medium hover:bg-amber-300">
             Мэдэгдэл турших
           </button>
         </div>
@@ -147,7 +143,7 @@ export default function Profile() {
           {/* PETS SECTION */}
           <div className="rounded-2xl w-6xl  flex flex-col overflow-auto ">
             <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-              <PawPrint className="text-orange-700" /> Миний тэжээвэр амьтад
+              <PawPrint className="text-orange-400" /> Миний тэжээвэр амьтад
             </h3>
             <div className="gap-3 flex  overflow-auto ">
               <AddPetDialog />
