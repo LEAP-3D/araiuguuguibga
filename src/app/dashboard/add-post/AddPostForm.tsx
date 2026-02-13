@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Details from './Details';
 import Location from './Location';
 import Contact from './Contact';
-
+import Catshelter from '../../../../public/catshelter.svg';
 export function AddPostForm() {
   const [step, setStep] = useState(0);
   const router = useRouter();
@@ -75,9 +75,12 @@ export function AddPostForm() {
   return (
     <div className="mx-auto max-w-2xl" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
       <div className="flex flex-col gap-6 ">
-        <div className="flex flex-col">
-          <p className="text-3xl font-semibold text-orange-400">Post an Animal</p>
-          <p>Fill in the details to help reunite this animal</p>
+        <div className="flex flex-col items-start text-center" style={{ fontFamily: 'Tahoma, Veerdana, Segoe, sans-serif' }}>
+          <div className="flex items-center gap-3">
+            <Catshelter className="shrink-0" />
+            <p className="text-3xl font-bold leading-none">Амьтан постлох</p>
+          </div>
+          <p className="mt-2 text-muted-foreground">Энэ амьтныг дахин нэгтгэхэд туслахын тулд дэлгэрэнгүй мэдээллийг бөглөнө үү</p>
         </div>
         <div className="flex gap-4">
           <div
@@ -85,7 +88,7 @@ export function AddPostForm() {
             className={`px-8 py-2 rounded-xl cursor-pointer transition
           ${selected === 'lost' ? 'bg-orange-400 text-white' : 'border border-orange-400 text-black'}`}
           >
-            I Lost My Animal
+            Би амьтанаа алдсан
           </div>
 
           <div
@@ -93,7 +96,7 @@ export function AddPostForm() {
             className={`px-8 py-2 rounded-xl cursor-pointer transition
           ${selected === 'found' ? 'bg-orange-400 text-white' : 'border border-orange-400 text-black'}`}
           >
-            I Found An Animal
+            Би амьтан оллоо
           </div>
         </div>
         <form onSubmit={handleSubmit}>
@@ -129,9 +132,9 @@ export function AddPostForm() {
                     <Upload className="h-10 w-10 text-[#f18912]" />
 
                     <p className="font-medium">Upload Photos</p>
-                    <p className="text-sm text-gray-500">Drag & drop or click to browse</p>
+                    <p className="text-sm text-gray-500">Дарна уу</p>
 
-                    <span className="mt-2 rounded-md border px-4 py-1.5 text-sm font-medium">Choose Files</span>
+                    <span className="mt-2 rounded-md border px-4 py-1.5 text-sm font-medium">Файлуудыг сонгох</span>
                   </label>
                 </div>
               )}
@@ -143,12 +146,12 @@ export function AddPostForm() {
           <div className="flex justify-end gap-2">
             {step > 0 && (
               <Button type="button" variant="outline" onClick={() => setStep(step - 1)} className="my-10">
-                Back
+                Буцах
               </Button>
             )}
             {step < 3 && (
               <Button type="button" onClick={() => setStep(step + 1)} className="bg-amber-500 my-10">
-                Continue
+                Дараах
               </Button>
             )}
             {step === 3 && (
