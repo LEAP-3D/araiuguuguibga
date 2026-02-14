@@ -1,6 +1,7 @@
 'use client';
 
-import { MessageCircle, X, Send, Bot, PawPrint } from 'lucide-react';
+import Image from 'next/image';
+import { X, Send } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -27,7 +28,7 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
   }, []);
 
   if (!mounted) {
-    return <div className="fixed bottom-6 right-6 z-50 w-16 h-16" aria-hidden="true" />;
+    return <div className="fixed bottom-6 right-6 z-50 w-14 h-14" aria-hidden="true" />;
   }
 
   return (
@@ -35,30 +36,27 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <motion.div
-            className="rounded-full bg-[#ff8037] w-16 h-16 flex items-center justify-center"
+            className="rounded-full w-14 h-14 flex items-center justify-center cursor-pointer"
             whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+            whileTap={{ scale: 0.95 }}
             animate={{
-              boxShadow: isOpen ? '0 0 0 0 rgba(67, 52, 45, 0)' : ['0 0 0 0 rgba(67, 52, 45, 0.5)', '0 0 0 20px rgba(67, 52, 45, 0)'],
+              boxShadow: isOpen ? '0 4px 14px rgba(0,0,0,0.12)' : ['0 4px 14px rgba(0,0,0,0.12)', '0 6px 20px rgba(0,0,0,0.15)'],
             }}
             transition={{
-              boxShadow: {
-                duration: 1.5,
-                repeat: isOpen ? 0 : Infinity,
-              },
+              boxShadow: { duration: 1.5, repeat: isOpen ? 0 : Infinity, repeatType: 'reverse' },
             }}
           >
-            <Button className="group relative w-16 h-16 bg-[#ff8037] hover:bg-[#f37439] rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ease-out hover:scale-105 active:scale-95">
-              <MessageCircle className="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-12" />
-              <span className="absolute top-1 right-1 w-3 h-3 bg-green-500 rounded-full  animate-pulse"></span>
+            <Button className="group relative w-14 h-14 rounded-full bg-transparent hover:bg-transparent shadow-md hover:shadow-lg transition-shadow overflow-hidden p-0">
+              <Image src="/caticon.png" alt="Chat" width={56} height={56} className="w-14 h-14 object-contain transition-transform duration-300 group-hover:scale-105" />
+              <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse" />
             </Button>
           </motion.div>
         </PopoverTrigger>
         <PopoverContent id={contentId} className="w-95 h-130 flex flex-col p-0 mr-4 mb-2 shadow-2xl border-0 rounded-2xl overflow-hidden bg-white" sideOffset={8}>
           <div className="relative h-16 flex justify-between items-center px-5 bg-[#ff8037]">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-[#ff9768] backdrop-blur-sm rounded-full flex items-center justify-center">
-                <Bot className="w-5 h-5 text-white" />
+              <div className="w-9 h-9 flex items-center justify-center overflow-hidden flex-shrink-0 rounded-full">
+                <Image src="/caticon.png" alt="" width={36} height={36} className="w-9 h-9 object-contain" />
               </div>
               <div>
                 <p className="font-semibold text-white text-base">Chat Assistant</p>
@@ -73,8 +71,8 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
           <div className="flex-1 overflow-y-auto px-5 py-4 bg-linear-to-b from-gray-50 to-white">
             <div className="space-y-4">
               <div className="flex gap-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <div className="w-8 h-8 rounded-full bg-[#ff8037] flex items-center justify-center flex-shrink-0">
-                  <PawPrint className="w-4 h-4 text-white" />
+                <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                  <Image src="/caticon.png" alt="" width={32} height={32} className="w-8 h-8 object-contain" />
                 </div>
                 <div className="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm border border-gray-100 max-w-[260px]">
                   <p className="text-sm text-gray-800">👋 Hi! Im here to help. What can I do for you today?</p>

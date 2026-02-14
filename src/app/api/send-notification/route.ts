@@ -9,11 +9,13 @@ import { getAdminMessaging } from '@/lib/firebase-admin';
  */
 export async function POST(req: Request) {
   try {
+    const hasFb = process.env.FB_PROJECT_ID && process.env.FB_CLIENT_EMAIL && process.env.FB_PRIVATE_KEY;
     const hasJson = process.env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim();
+    const hasBase64 = process.env.FIREBASE_SERVICE_ACCOUNT_BASE64?.trim();
     const hasPath = process.env.FIREBASE_SERVICE_ACCOUNT_PATH?.trim();
-    if (!hasJson && !hasPath) {
+    if (!hasFb && !hasJson && !hasBase64 && !hasPath) {
       return NextResponse.json(
-        { error: 'Set FIREBASE_SERVICE_ACCOUNT_JSON or FIREBASE_SERVICE_ACCOUNT_PATH in .env' },
+        { error: 'Set FB_PROJECT_ID, FB_CLIENT_EMAIL, FB_PRIVATE_KEY in .env (or FIREBASE_SERVICE_ACCOUNT_* / base64)' },
         { status: 500 }
       );
     }

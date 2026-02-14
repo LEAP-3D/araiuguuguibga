@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, PawPrint, PlusSquare, ArrowLeft } from 'lucide-react';
+import { Home, PawPrint, PlusSquare, ArrowLeft, Bell } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 import Logo from '../_components/Logo';
@@ -56,6 +56,20 @@ export function DashboardClientShell({ children }: { children: React.ReactNode }
           </nav>
 
           <div className="flex items-center gap-2">
+            {/* Mobile: мэдэгдэл идэвхжүүлэх товч — апп нээхэд харагдана */}
+            {permission !== 'granted' && (
+              <button
+                type="button"
+                onClick={() => requestPermission()}
+                disabled={loading}
+                className="md:hidden flex items-center gap-1.5 rounded-lg bg-amber-500 px-3 py-2 text-sm font-medium text-white hover:bg-amber-600 disabled:opacity-50 touch-manipulation"
+                aria-label="Мэдэгдэл идэвхжүүлэх"
+              >
+                <Bell className="h-4 w-4" />
+                {loading ? '…' : 'Мэдэгдэл'}
+              </button>
+            )}
+            {/* Desktop: мэдэгдэл + Test */}
             <div className="hidden md:flex flex-col items-end gap-0.5">
               <div className="flex items-center gap-2">
                 {permission !== 'granted' ? (
@@ -83,7 +97,25 @@ export function DashboardClientShell({ children }: { children: React.ReactNode }
       </div>
 
       {/* Main content — extra bottom padding on mobile for bottom nav */}
-      <main className="flex-1 p-4 md:p-6 flex justify-center pb-24 md:pb-6">{children}</main>
+      <main className="flex-1 p-4 md:p-6 flex flex-col items-center pb-24 md:pb-6">
+        {/* Mobile: мэдэгдэл идэвхжүүлэх санал — dashboard руу ормогц харагдана */}
+        {permission !== 'granted' && permission !== 'denied' && (
+          <div className="md:hidden w-full max-w-[450px] mb-3 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 flex items-center justify-between gap-3">
+            <p className="text-sm text-amber-900 flex-1 min-w-0">
+              Шинэ постын мэдэгдэл авахыг хүсч байна уу?
+            </p>
+            <button
+              type="button"
+              onClick={() => requestPermission()}
+              disabled={loading}
+              className="shrink-0 rounded-lg bg-amber-500 px-3 py-2 text-sm font-medium text-white hover:bg-amber-600 disabled:opacity-50 touch-manipulation"
+            >
+              {loading ? '…' : 'Идэвхжүүлэх'}
+            </button>
+          </div>
+        )}
+        <div className="w-full flex justify-center">{children}</div>
+      </main>
 
       {/* Mobile bottom nav — апп шиг доод цэс */}
       <nav
