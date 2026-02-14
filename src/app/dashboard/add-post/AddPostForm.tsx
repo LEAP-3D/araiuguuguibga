@@ -27,6 +27,15 @@ export function AddPostForm() {
     location: '',
     imagePreviews: [] as string[],
   });
+  type PostForm = {
+    petName: string;
+    breed: string;
+    age: string;
+    type: 'dog' | 'cat' | 'other';
+    description: string;
+    location: string;
+    imagePreviews: string[];
+  };
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -60,7 +69,7 @@ export function AddPostForm() {
         description: form.description.trim(),
         location: form.location.trim(),
         // backend currently expects a single image string; send the first selected preview if any
-        image: form.imagePreviews[0] ?? '',
+        images: form.imagePreviews,
       });
       if (success) {
         await fetch('/api/send-notification', {
@@ -148,9 +157,9 @@ export function AddPostForm() {
                   </label>
                 </div>
               )}
-              {step === 1 && <Details />}
-              {step === 2 && <Location />}
-              {step === 3 && <Contact />}
+              {step === 1 && <Details form={form} setForm={setForm} />}
+              {step === 2 && <Location form={form} setForm={setForm} />}
+              {step === 3 && <Contact form={form} setForm={setForm} />}
             </CardContent>
           </Card>
           <div className="flex justify-end gap-2">

@@ -19,7 +19,7 @@ type Post = {
   type: string;
   description: string;
   location: string;
-  image: string;
+  images: string[]; // 🔥 array for multiple images
 };
 
 type RescuePetCardProps = {
@@ -38,7 +38,7 @@ export function RescuePetCard({ post, isFavorite, onToggleFavorite }: RescuePetC
             style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}
           >
             <div className="relative w-full h-50 overflow-hidden rounded-t-2xl">
-              <PetImage image={post.image} />
+              <PetImage image={post.images?.[0] || ''} />
 
               <button
                 type="button"
@@ -77,7 +77,13 @@ export function RescuePetCard({ post, isFavorite, onToggleFavorite }: RescuePetC
           </DialogHeader>
           <div style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
             <div className="relative w-full h-68 overflow-hidden rounded-t-xl group">
-              <PetImage image={post.image} />
+              <div className="flex gap-3 overflow-x-auto py-2">
+                {post.images.map((img, i) => (
+                  <div key={i} className="min-w-[200px] h-48 relative rounded-lg overflow-hidden">
+                    <PetImage image={img} />
+                  </div>
+                ))}
+              </div>
             </div>
             <div className="p-6 mt-2 flex flex-col gap-4">
               <div className="mb-2 flex items-start justify-between gap-2">

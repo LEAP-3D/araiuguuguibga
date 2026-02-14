@@ -75,7 +75,13 @@ export function FeedPostCard({ post, displayName, userImageUrl, isFavorite, onTo
           </p>
         )}
         <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-gray-100">
-          <PetImage image={post.image} />
+          <div className="flex gap-3 overflow-x-auto">
+            {post.images?.map((img, i) => (
+              <div key={i} className="min-w-[200px] h-48 relative rounded-lg overflow-hidden">
+                <PetImage image={img} />
+              </div>
+            ))}
+          </div>
         </div>
         {post.location && (
           <p className="mt-2 flex items-center gap-1 text-sm text-gray-500">

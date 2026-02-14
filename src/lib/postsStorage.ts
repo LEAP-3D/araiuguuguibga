@@ -6,7 +6,7 @@ export type Post = {
   type: "dog" | "cat" | "other";
   description: string;
   location: string;
-  image: string;
+  images: string[];
   createdAt: number;
 };
 
@@ -83,7 +83,8 @@ export function mapApiPostToPost(p: {
   type: string;
   description: string | null;
   location: string;
-  image: string | null;
+  image?: string | null;   // old
+  images?: string[] | null; // new
   createdAt: number;
 }): Post {
   return {
@@ -94,7 +95,14 @@ export function mapApiPostToPost(p: {
     type: p.type as Post["type"],
     description: p.description ?? "",
     location: p.location,
-    image: p.image ?? "",
+
+    // 🔥 IMPORTANT PART
+    images: p.images?.length
+      ? p.images
+      : p.image
+      ? [p.image]
+      : [],
+
     createdAt: p.createdAt,
   };
 }

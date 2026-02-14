@@ -1,11 +1,12 @@
 'use client';
 import { useState } from 'react';
-import SimpleMap from '@/app/_components/HeroSection/SimpleMap';
+import LeafletMap from '@/app/_components/Map';
 
 export default function Map() {
   const [selected, setSelected] = useState<'1km' | '3km' | '5km'>('1km');
   const [selectedView, setSelectedView] = useState<'map' | 'list'>('map');
   const [selectedType, setSelectedType] = useState<'all' | 'lost' | 'vets'>('all');
+
   return (
     <div className="h-screen w-screen flex flex-col items-center gap-4 ">
       <div className="w-220 h-fit bg-white rounded-2xl flex flex-col gap-3 p-3 items-end">
@@ -79,7 +80,7 @@ export default function Map() {
           </div>
         </div>
       </div>
-      <SimpleMap zoom={14} className="h-120 w-220" />
+      <LeafletMap selectedType={selectedType} selectedDistance={selected} />
     </div>
   );
 }
