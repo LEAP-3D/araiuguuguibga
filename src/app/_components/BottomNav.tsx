@@ -31,7 +31,7 @@ export default function BottomNav() {
       {items.map((item) => {
         const Icon = item.icon;
         const isChat = 'isChat' in item && item.isChat;
-        const isActive = isChat ? chatOpen : 'match' in item && item.match(pathname);
+        const isActive = isChat ? chatOpen : Boolean('match' in item && item.match?.(pathname));
 
         if (isChat) {
           return (
@@ -50,7 +50,7 @@ export default function BottomNav() {
           );
         }
 
-        const href = 'href' in item ? item.href : '#';
+        const href: string = 'href' in item && item.href ? item.href : '#';
         const scrollToHeroOnClick = 'scrollToHero' in item && item.scrollToHero && pathname === '/';
 
         if (scrollToHeroOnClick) {
