@@ -49,12 +49,48 @@ function parseServiceAccountJson(raw: string): ServiceAccount {
   return toServiceAccount(parsed);
 }
 
+function getCredentialsFromEnvVars(): ServiceAccount | null {
+  const projectId = process.env.FB_PROJECT_ID?.trim();
+  const clientEmail = process.env.FB_CLIENT_EMAIL?.trim();
+  const privateKeyRaw = process.env.FB_PRIVATE_KEY?.trim();
+  if (!projectId || !clientEmail || !privateKeyRaw) return null;
+  let privateKey = privateKeyRaw;
+  if (privateKey.startsWith('"') && privateKey.endsWith('"')) {
+    privateKey = privateKey.slice(1, -1).replace(/\\n/g, '\n');
+  } else if (privateKey.includes('\\n')) {
+    privateKey = privateKey.replace(/\\n/g, '\n');
+  }
+  return toServiceAccount({ projectId, clientEmail, privateKey });
+}
+
 function getCredentials(): ServiceAccount {
+  // 0) FB_PROJECT_ID, FB_CLIENT_EMAIL, FB_PRIVATE_KEY (.env тусдаа хувьсагчаар)
+  const fromEnv = getCredentialsFromEnvVars();
+  if (fromEnv) return fromEnv;
+
+  // 1) .env дээрх JSON
+  const json = process.env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim();
+  if (json) {
+    return parseServiceAccountJson(json);
+  }
+  // 2) Base64 (Vercel дээр JSON оруулахад асуудал гарвал энийг ашиглана)
+  const base64 = process.env.FIREBASE_SERVICE_ACCOUNT_BASE64?.trim();
+  if (base64) {
+    try {
+      const decoded = Buffer.from(base64, 'base64').toString('utf8');
+      const parsed = JSON.parse(decoded) as ServiceAccountLike;
+      return toServiceAccount(parsed);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'unknown';
+      throw new Error(`FIREBASE_SERVICE_ACCOUNT_BASE64 invalid: ${msg}. Run: node scripts/setup-firebase-account.js path/to/key.json --base64`);
+    }
+  }
+  // 3) Файлын зам (локал)
   const pathEnv = process.env.FIREBASE_SERVICE_ACCOUNT_PATH?.trim();
   if (pathEnv) {
     if (pathEnv.startsWith('{') || pathEnv.startsWith('[')) {
       throw new Error(
-        'FIREBASE_SERVICE_ACCOUNT_PATH must be a file path (e.g. firebase-service-account.json), not JSON. In .env set: FIREBASE_SERVICE_ACCOUNT_PATH=firebase-service-account.json then run: npm run setup-firebase path/to/downloaded-key.json'
+        'FIREBASE_SERVICE_ACCOUNT_PATH must be a file path. Use FIREBASE_SERVICE_ACCOUNT_BASE64 on Vercel (--base64).'
       );
     }
     try {
@@ -65,16 +101,14 @@ function getCredentials(): ServiceAccount {
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'unknown';
       const hint = msg.includes('ENOENT')
-        ? ` File not found. Set FIREBASE_SERVICE_ACCOUNT_PATH=firebase-service-account.json and run: npm run setup-firebase path/to/downloaded-key.json`
+        ? ' Use FIREBASE_SERVICE_ACCOUNT_BASE64 on Vercel: node scripts/setup-firebase-account.js path/to/key.json --base64'
         : '';
       throw new Error(`FIREBASE_SERVICE_ACCOUNT_PATH could not be read: ${msg}.${hint}`);
     }
   }
-  const json = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
-  if (!json || json.trim() === '') {
-    throw new Error('FIREBASE_SERVICE_ACCOUNT_JSON is not set. Add it to .env or set FIREBASE_SERVICE_ACCOUNT_PATH.');
-  }
-  return parseServiceAccountJson(json);
+  throw new Error(
+    'Set FB_PROJECT_ID+FB_CLIENT_EMAIL+FB_PRIVATE_KEY, or FIREBASE_SERVICE_ACCOUNT_JSON, or FIREBASE_SERVICE_ACCOUNT_BASE64 in .env.'
+  );
 }
 
 function getAdminApp(): App {

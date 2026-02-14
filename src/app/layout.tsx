@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ClerkProvider } from '@clerk/nextjs';
 import { Providers } from './_components/Providers';
+import { ChatOpenProvider } from './_contexts/ChatContext';
+import AppShell from './_components/AppShell';
 import './globals.css';
 import 'leaflet/dist/leaflet.css';
 import { PetsProvider } from '@/lib/petsContext';
@@ -20,8 +22,8 @@ export const viewport: Viewport = {
   themeColor: '#ffffff',
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 5,
-  userScalable: true,
+  maximumScale: 1,
+  userScalable: false,
   viewportFit: 'cover',
 };
 
@@ -57,7 +59,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>
-          <PetsProvider>{children}</PetsProvider>
+          <ChatOpenProvider>
+            <PetsProvider>
+              <AppShell>{children}</AppShell>
+            </PetsProvider>
+          </ChatOpenProvider>
         </Providers>
       </body>
     </html>

@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 /**
  * Sends a test notification to the 'posts' topic (all subscribed devices).
- * Requires FIREBASE_SERVICE_ACCOUNT_JSON and /api/send-notification.
+ * Requires FB_PROJECT_ID+FB_CLIENT_EMAIL+FB_PRIVATE_KEY (or FIREBASE_SERVICE_ACCOUNT_*) and /api/send-notification.
  */
 export function TestNotificationButton() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'ok' | 'error'>('idle');
@@ -47,7 +47,7 @@ export function TestNotificationButton() {
         disabled={status === 'sending'}
         className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-800 hover:bg-gray-50 disabled:opacity-50"
       >
-        {status === 'idle' && "Test Notification' явуулах"}
+        {status === 'idle' && 'Test мэдэгдэл явуулах'}
         {status === 'sending' && 'Илгээж байна…'}
         {status === 'ok' && 'Илгээгдлээ'}
         {status === 'error' && 'Алдаа гарлаа'}

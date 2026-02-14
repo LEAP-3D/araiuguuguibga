@@ -1,24 +1,20 @@
 'use client';
 
-import { useState } from 'react';
 import Headers from '../_features/Headers';
 import Footer from '../_features/Footer';
 import { HeroSection } from '../_features/heroSection';
 import { RescuePetsSection } from '../_features/rescueSection';
 import { VeterinarySection } from '../_features/veterinarySection';
-import Chat from './Chat';
+import { useChatOpen } from '../_contexts/ChatContext';
 
 import { PawBackground } from './paw-trail/PawBackground';
 
 export default function HomeClient() {
-  const [chatOpen, setChatOpen] = useState(false);
+  const { setOpen: setChatOpen } = useChatOpen();
 
   return (
     <PawBackground>
       <div className="relative min-h-screen w-full bg-cover bg-center">
-        {/* ✨ FIXED BACKGROUND */}
-
-        {/* 🧊 CONTENT AREA */}
         <div className="relative flex justify-center pt-20 px-6 py-10">
           <div
             className="
@@ -42,8 +38,6 @@ export default function HomeClient() {
             <Footer />
           </div>
         </div>
-
-        <Chat open={chatOpen} onOpenChange={setChatOpen} />
       </div>
     </PawBackground>
   );
