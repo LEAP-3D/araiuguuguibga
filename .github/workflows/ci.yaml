@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint-and-build:
+  lint:
     name: Lint & Build
     runs-on: ubuntu-latest
     steps:
@@ -35,7 +35,7 @@ jobs:
         run: npm run build
 
   check-vercel:
-    needs: lint-and-build
+    needs: lint
     runs-on: ubuntu-latest
     outputs:
       run: ${{ steps.set.outputs.run }}
@@ -53,7 +53,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
   preview:
-    needs: [lint-and-build, check-vercel]
+    needs: [lint, check-vercel]
     if: needs.check-vercel.outputs.run == 'true'
     runs-on: ubuntu-latest
     env:
@@ -136,7 +136,7 @@ jobs:
             }
 
   build:
-    needs: [lint-and-build, check-vercel]
+    needs: [lint, check-vercel]
     if: needs.check-vercel.outputs.run == 'true'
     runs-on: ubuntu-latest
     env:
