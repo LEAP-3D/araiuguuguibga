@@ -39,7 +39,7 @@ export function CuteSleepingCatLoader() {
             <line x1="60" y1="45" x2="65" y2="45" stroke="#7C2D12" strokeWidth="2" strokeLinecap="round" />
 
             {/* nose */}
-            <circle cx="55" cy="52" r="2" fill="#F472B6" />
+            <circle cx="55" cy="52" r="2" fill="#fa87c8" />
 
             {/* whiskers */}
             <line x1="30" y1="48" x2="40" y2="48" stroke="#7C2D12" strokeWidth="1" opacity="0.4" />
@@ -48,14 +48,9 @@ export function CuteSleepingCatLoader() {
             <line x1="70" y1="51" x2="78" y2="52" stroke="#7C2D12" strokeWidth="1" opacity="0.4" />
 
             {/* belly */}
-            <ellipse cx="65" cy="70" rx="15" ry="10" fill="#FED7AA" opacity="0.6" />
 
             {/* tail */}
             <path d="M 85 60 Q 95 55 95 45" stroke="#F97316" strokeWidth="8" fill="none" strokeLinecap="round" />
-
-            {/* paws */}
-            <ellipse cx="45" cy="75" rx="8" ry="6" fill="#FB923C" opacity="0.8" />
-            <ellipse cx="65" cy="75" rx="8" ry="6" fill="#FB923C" opacity="0.8" />
           </svg>
 
           {/* ZZZ */}

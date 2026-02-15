@@ -1,5 +1,9 @@
 import { PetImage } from '@/app/_components/PetImage';
-import { MapPin, Calendar } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+const PostMap = dynamic(() => import('./PostMap'), {
+  ssr: false, // IMPORTANT for Next.js
+});
 
 const typeLabels: Record<string, string> = {
   dog: 'Нохой',
@@ -14,7 +18,7 @@ type Post = {
   age: string;
   type: string;
   description: string;
-  location: string;
+  location: string | null; // Change this to string
   image: string;
 };
 
@@ -26,8 +30,8 @@ type RescuePetCardProps = {
 
 export default function RescuePetDetail({ post }: RescuePetCardProps) {
   return (
-    <div style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
-      <div className="relative w-full h-68 overflow-hidden rounded-t-xl group">
+    <div style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }} className="bg-white rounded-2xl">
+      <div className="relative w-full h-68 overflow-hidden rounded-t-2xl group">
         <PetImage image={post.image} />
       </div>
       <div className="p-6 mt-2 flex flex-col gap-4">
@@ -40,12 +44,17 @@ export default function RescuePetDetail({ post }: RescuePetCardProps) {
           <p className="text-gray-700">Temdeglel:</p>
           <p className="text-sm">{post.description || '—'}</p>
         </div>
+        <div className="flex flex-col gap-2">
+          {post.location &&
+            typeof post.location === 'string' &&
+            (() => {
+              const [lat, lng] = post.location.split(',').map(Number);
+              return <PostMap lat={lat} lng={lng} />;
+            })()}
+        </div>
+
         <span className="flex items-center gap-1.5">
-          <MapPin className="h-4 w-4 text-amber-600" />
-          {post.location}
-        </span>
-        <span className="flex items-center gap-1.5">
-          <Calendar className="h-4 w-4 text-amber-600" />
+          <p>nas:</p>
           {post.age || '—'}
         </span>
       </div>
