@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import L from 'leaflet';
 
 const lostPetIcon = L.icon({
-  iconUrl: '/lostPetPin.svg',
+  iconUrl: '/lostPet.svg',
   iconSize: [22, 22],
   iconAnchor: [16, 32],
 });
