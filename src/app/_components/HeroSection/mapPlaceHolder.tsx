@@ -86,7 +86,7 @@ export default function MapPlaceholder({
 
   return (
     <div className="h-100 w-full md:h-150 lg:h-150 relative group">
-      <MapContainer center={[47.9212, 106.9057]} zoom={12} whenReady={() => setMapReady(true)} style={{ height: '100%', width: '100%' }} className="rounded-xl z-0">
+      <MapContainer center={[47.9212, 106.9057]} scrollWheelZoom={false} zoom={12} whenReady={() => setMapReady(true)} style={{ height: '100%', width: '100%' }} className="rounded-xl z-0">
         {mapReady && (
           <>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' />

@@ -14,13 +14,7 @@ export function RescueEmptyState() {
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="leading-tight"
         >
-          <span
-            className="block text-3xl md:text-6xl font-bold text-gray-700 "
-            style={{
-              fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive",
-              color: '#43342D',
-            }}
-          >
+          <span className="block text-3xl md:text-6xl font-bold text-gray-700 " style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif', color: '#43342D' }}>
             Тусламж хэрэгтэй амьтад
           </span>
 
