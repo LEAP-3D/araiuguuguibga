@@ -31,8 +31,8 @@ export function CuteSleepingCatLoader() {
             <circle cx="55" cy="45" r="22" fill="#F97316" />
 
             {/* ears */}
-            <path d="M 40 35 L 35 25 L 45 30 Z" fill="#FB923C" />
-            <path d="M 70 35 L 75 25 L 65 30 Z" fill="#FB923C" />
+            <path d="M 40 35 L 35 25 L 45 30 Z" fill="#F97316" />
+            <path d="M 70 35 L 75 25 L 65 30 Z" fill="#F97316" />
 
             {/* eyes */}
             <line x1="45" y1="45" x2="50" y2="45" stroke="#7C2D12" strokeWidth="2" strokeLinecap="round" />
@@ -50,7 +50,7 @@ export function CuteSleepingCatLoader() {
             {/* belly */}
 
             {/* tail */}
-            <path d="M 85 60 Q 95 55 95 45" stroke="#F97316" strokeWidth="8" fill="none" strokeLinecap="round" />
+            <path d="M 85 60 Q 95 55 95 45" stroke="#F97316" strokeWidth="8" fill="F97316" opacity="0.9" strokeLinecap="round" />
           </svg>
 
           {/* ZZZ */}

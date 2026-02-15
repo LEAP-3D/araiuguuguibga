@@ -68,6 +68,9 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
           description: post.description || null,
           location: post.location,
           image: post.image || null,
+          contactName: post.contactName,
+          contactPhone: post.contactPhone,
+          contactNotes: post.contactNotes || null,
         }),
       });
       if (!res.ok) return false;

@@ -76,7 +76,13 @@ export function AddPostForm() {
         description: form.description.trim(),
         location: `${form.location.lat.toFixed(4)}, ${form.location.lng.toFixed(4)}`,
         image: form.imagePreviews[0] ?? '',
+
+        // 🔥 ADD CONTACT INFO
+        contactName: form.contactName.trim(),
+        contactPhone: form.contactPhone.trim(),
+        contactNotes: form.contactNotes?.trim() ?? '',
       });
+
       if (success) {
         await fetch('/api/send-notification', {
           method: 'POST',
@@ -104,7 +110,6 @@ export function AddPostForm() {
           </div>
           <p className="mt-2 text-muted-foreground">Энэ амьтныг дахин нэгтгэхэд туслахын тулд дэлгэрэнгүй мэдээллийг бөглөнө үү</p>
         </div>
-
         <form onSubmit={handleSubmit}>
           <Card>
             <CardHeader>

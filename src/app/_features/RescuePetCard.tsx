@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Heart, MapPin, Calendar, PlusCircle } from 'lucide-react';
+import { Heart, PlusCircle } from 'lucide-react';
 import { PetImage } from '@/app/_components/PetImage';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import RescuePetDetail from './RescuePetDetail';
@@ -60,12 +60,8 @@ export function RescuePetCard({ post, isFavorite, onToggleFavorite }: RescuePetC
               <p className="mb-4 line-clamp-3 text-sm text-gray-800 min-h-[60px]">{post.description || '—'}</p>
               <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500">
                 <span className="flex items-center gap-1.5">
-                  <Calendar className="h-4 w-4 text-amber-600" />
+                  <p>nas:</p>
                   {post.age || '—'}
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <MapPin className="h-4 w-4 text-amber-600" />
-                  {post.location}
                 </span>
               </div>
             </div>

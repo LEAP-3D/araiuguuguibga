@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { MapContainer, TileLayer, Popup, Marker } from 'react-leaflet';
 import { mockVets } from '@/app/_components/HeroSection/mockVets'; // adjust path
-import { mockLostPets } from '@/app/_components/HeroSection/mockLostPets';
+import { usePosts } from '@/lib/postsContext';
 
 const hospitalIcon = new L.Icon({
   iconUrl: '/hospitalMapPin.svg', // your svg file
@@ -27,6 +27,8 @@ type Props = {
 };
 
 export default function LeafletMap({ selectedType }: Props) {
+  const { posts } = usePosts();
+
   return (
     <div className="h-130 w-220 ">
       <MapContainer center={[47.9212, 106.9057]} zoom={13} scrollWheelZoom={false} className="h-full w-full">
@@ -46,13 +48,25 @@ export default function LeafletMap({ selectedType }: Props) {
             </Marker>
           ))}
         {(selectedType === 'all' || selectedType === 'lost') &&
-          mockLostPets.map((pet) => (
-            <Marker key={pet.id} position={[pet.lat, pet.lng]} icon={lostPetIcon}>
-              <Popup>
-                <h2>{pet.title}</h2>
-              </Popup>
-            </Marker>
-          ))}
+          posts.map((post) => {
+            if (!post.location) return null;
+
+            const [lat, lng] = post.location.split(',').map(Number);
+
+            if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+
+            return (
+              <Marker key={post.id} position={[lat, lng]} icon={lostPetIcon}>
+                <Popup>
+                  <div className="text-black">
+                    <h2 className="font-bold">{post.name}</h2>
+                    <p>{post.description}</p>
+                    <p>📞 {post.contactPhone}</p>
+                  </div>
+                </Popup>
+              </Marker>
+            );
+          })}
       </MapContainer>
     </div>
   );
