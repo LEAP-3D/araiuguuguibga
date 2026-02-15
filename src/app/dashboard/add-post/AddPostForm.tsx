@@ -11,12 +11,24 @@ import Details from './Details';
 import Location from './Location';
 import Contact from './Contact';
 import { CatShelter } from '@/app/_icons/CatShelter';
+export type FormState = {
+  petName: string;
+  breed: string;
+  age: string;
+  size: AnimalSize;
+  color: string;
+  type: 'dog' | 'cat' | 'other';
+  description: string;
+  location: { lat: number; lng: number } | null;
+  imagePreviews: string[];
+  contactName: string;
+  contactPhone: string;
+  contactNotes: string;
+};
 export function AddPostForm() {
   const [step, setStep] = useState(0);
   const router = useRouter();
   const { addPost } = usePosts();
-  const [selected, setSelected] = useState<'lost' | 'found'>('lost');
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({
     petName: '',
@@ -92,22 +104,7 @@ export function AddPostForm() {
           </div>
           <p className="mt-2 text-muted-foreground">Энэ амьтныг дахин нэгтгэхэд туслахын тулд дэлгэрэнгүй мэдээллийг бөглөнө үү</p>
         </div>
-        <div className="flex gap-4 font-medium">
-          <div
-            onClick={() => setSelected('lost')}
-            className={`px-5 py-1.5 rounded-xl cursor-pointer transition
-          ${selected === 'lost' ? 'bg-orange-400 text-white' : 'border border-orange-400 text-black'}`}
-          >
-            Би амьтнаа алдсан
-          </div>
-          <div
-            onClick={() => setSelected('found')}
-            className={`px-5 py-1.5 rounded-xl cursor-pointer transition
-          ${selected === 'found' ? 'bg-orange-400 text-white' : 'border border-orange-400 text-black'}`}
-          >
-            Би амьтан оллоо
-          </div>
-        </div>
+
         <form onSubmit={handleSubmit}>
           <Card>
             <CardHeader>

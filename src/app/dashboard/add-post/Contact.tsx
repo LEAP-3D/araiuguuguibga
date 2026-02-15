@@ -1,13 +1,8 @@
 import { Input } from '@/components/ui/input';
-
-export type ContactForm = {
-  contactName: string;
-  contactPhone: string;
-  contactNotes: string;
-};
+import type { FormState } from './AddPostForm';
 type Props = {
-  form: ContactForm;
-  setForm: React.Dispatch<React.SetStateAction<ContactForm>>;
+  form: FormState;
+  setForm: React.Dispatch<React.SetStateAction<FormState>>;
 };
 
 export default function Contact({ form, setForm }: Props) {

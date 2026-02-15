@@ -1,32 +1,9 @@
 import SimpleMap from '@/app/_components/HeroSection/SimpleMap';
-
-export type LocationType = {
-  lat: number;
-  lng: number;
-};
-
-type LostPetForm = {
-  // contact
-  contactName: string;
-  contactPhone: string;
-  contactNotes: string;
-
-  // details
-  type: 'dog' | 'cat' | 'bird' | 'rabbit' | 'other';
-  size: 'small' | 'medium' | 'large' | 'extra-large';
-  petName: string;
-  breed: string;
-  age: string;
-  color: string;
-  description: string;
-
-  // location
-  location: LocationType | null;
-};
+import type { FormState } from './AddPostForm';
 
 type Props = {
-  form: LostPetForm;
-  setForm: React.Dispatch<React.SetStateAction<LostPetForm>>;
+  form: FormState;
+  setForm: React.Dispatch<React.SetStateAction<FormState>>;
 };
 
 export default function Location({ form, setForm }: Props) {

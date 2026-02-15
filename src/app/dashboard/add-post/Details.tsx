@@ -1,28 +1,13 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
+import type { FormState } from './AddPostForm';
 export type AnimalType = 'dog' | 'cat' | 'other';
 export type AnimalSize = 'small' | 'medium' | 'large' | 'extra-large';
 
-export type DetailsForm = {
-  type: AnimalType;
-  size: AnimalSize;
-  petName: string;
-  breed: string;
-  age: string;
-  color: string;
-  description: string;
-  location: { lat: number; lng: number } | null;
-  imagePreviews: string[];
-  contactName: string;
-  contactPhone: string;
-  contactNotes: string;
-};
-
 type Props = {
-  form: DetailsForm;
-  setForm: React.Dispatch<React.SetStateAction<DetailsForm>>;
+  form: FormState;
+  setForm: React.Dispatch<React.SetStateAction<FormState>>;
 };
-
 export default function Details({ form, setForm }: Props) {
   return (
     <div className="flex flex-col gap-4">
@@ -30,7 +15,7 @@ export default function Details({ form, setForm }: Props) {
         {/* Animal Type */}
         <div className="flex-1">
           <label className="block text-sm font-semibold text-foreground mb-2">Animal Type</label>
-          <Select value={form.type} onValueChange={(value: AnimalType) => setForm((prev: DetailsForm) => ({ ...prev, type: value }))}>
+          <Select value={form.type} onValueChange={(value: AnimalType) => setForm((prev: FormState) => ({ ...prev, type: value }))}>
             <SelectTrigger className="h-12 w-full rounded-xl border px-5 py-2">
               <SelectValue placeholder="Select Type" className="leading-none" />
             </SelectTrigger>
@@ -46,7 +31,7 @@ export default function Details({ form, setForm }: Props) {
         {/* Size */}
         <div className="flex-1">
           <label className="block text-sm font-semibold text-foreground mb-2">Size</label>
-          <Select value={form.size} onValueChange={(value: AnimalSize) => setForm((prev: DetailsForm) => ({ ...prev, size: value }))}>
+          <Select value={form.size} onValueChange={(value: AnimalSize) => setForm((prev: FormState) => ({ ...prev, size: value }))}>
             <SelectTrigger className="h-12 w-full rounded-xl border px-5 py-2 leading-none">
               <SelectValue placeholder="Select Size" />
             </SelectTrigger>
