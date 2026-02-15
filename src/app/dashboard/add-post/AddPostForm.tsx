@@ -5,6 +5,7 @@ import { X, Upload } from 'lucide-react';
 import { usePosts } from '@/lib/postsContext';
 import { compressImage } from '@/lib/compressImage';
 import { Button } from '@/components/ui/button';
+import type { AnimalSize } from './Details';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Details from './Details';
 import Location from './Location';
@@ -21,7 +22,7 @@ export function AddPostForm() {
     petName: '',
     breed: '',
     age: '',
-    size: '',
+    size: 'medium' as AnimalSize,
     color: '',
     type: 'dog' as 'dog' | 'cat' | 'other',
     description: '',
