@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { Heart, MapPin, Calendar, PlusCircle } from 'lucide-react';
+import { Heart, PlusCircle } from 'lucide-react';
 import { PetImage } from '@/app/_components/PetImage';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import RescuePetDetail from './RescuePetDetail';
 
 const typeLabels: Record<string, string> = {
   dog: 'Нохой',
@@ -59,12 +60,8 @@ export function RescuePetCard({ post, isFavorite, onToggleFavorite }: RescuePetC
               <p className="mb-4 line-clamp-3 text-sm text-gray-800 min-h-[60px]">{post.description || '—'}</p>
               <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500">
                 <span className="flex items-center gap-1.5">
-                  <Calendar className="h-4 w-4 text-amber-600" />
+                  <p>nas:</p>
                   {post.age || '—'}
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <MapPin className="h-4 w-4 text-amber-600" />
-                  {post.location}
                 </span>
               </div>
             </div>
@@ -75,27 +72,7 @@ export function RescuePetCard({ post, isFavorite, onToggleFavorite }: RescuePetC
             <DialogTitle>Edit profile</DialogTitle>
             <DialogDescription>Make changes to your profile here. Click save when you&apos;re done.</DialogDescription>
           </DialogHeader>
-          <div style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
-            <div className="relative w-full h-68 overflow-hidden rounded-t-xl group">
-              <PetImage image={post.image} />
-            </div>
-            <div className="p-6 mt-2 flex flex-col gap-4">
-              <div className="mb-2 flex items-start justify-between gap-2">
-                <h3 className="text-lg font-extrabold text-black">{post.name || 'Нэр тодорхойгүй'}</h3>
-                <span className="shrink-0 rounded-full border-2 border-[#efac48] px-3 py-1 text-xs font-extrabold text-black">{typeLabels[post.type] ?? 'Бусад'}</span>
-              </div>
-
-              <p className="mb-4 line-clamp-2 text-sm text-gray-800">{post.description || '—'}</p>
-              <span className="flex items-center gap-1.5">
-                <MapPin className="h-4 w-4 text-amber-600" />
-                {post.location}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Calendar className="h-4 w-4 text-amber-600" />
-                {post.age || '—'}
-              </span>
-            </div>
-          </div>
+          <RescuePetDetail post={post} isFavorite={isFavorite} onToggleFavorite={onToggleFavorite} />
         </DialogContent>
       </form>
     </Dialog>

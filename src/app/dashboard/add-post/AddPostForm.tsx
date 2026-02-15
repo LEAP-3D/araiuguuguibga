@@ -1,33 +1,49 @@
 'use client';
-
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { X, Upload } from 'lucide-react';
 import { usePosts } from '@/lib/postsContext';
 import { compressImage } from '@/lib/compressImage';
 import { Button } from '@/components/ui/button';
+import type { AnimalSize } from './Details';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Details from './Details';
 import Location from './Location';
 import Contact from './Contact';
 import { CatShelter } from '@/app/_icons/CatShelter';
+export type FormState = {
+  petName: string;
+  breed: string;
+  age: string;
+  size: AnimalSize;
+  color: string;
+  type: 'dog' | 'cat' | 'other';
+  description: string;
+  location: { lat: number; lng: number } | null;
+  imagePreviews: string[];
+  contactName: string;
+  contactPhone: string;
+  contactNotes: string;
+};
 export function AddPostForm() {
   const [step, setStep] = useState(0);
   const router = useRouter();
   const { addPost } = usePosts();
-  const [selected, setSelected] = useState<'lost' | 'found'>('lost');
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({
     petName: '',
     breed: '',
     age: '',
+    size: 'medium' as AnimalSize,
+    color: '',
     type: 'dog' as 'dog' | 'cat' | 'other',
     description: '',
-    location: '',
+    location: null as { lat: number; lng: number } | null,
     imagePreviews: [] as string[],
+    contactName: '',
+    contactPhone: '',
+    contactNotes: '',
   });
-
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
@@ -49,7 +65,7 @@ export function AddPostForm() {
   };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.location.trim()) return;
+    if (!form.location) return;
     setIsSubmitting(true);
     try {
       const success = await addPost({
@@ -58,17 +74,22 @@ export function AddPostForm() {
         age: form.age.trim(),
         type: form.type,
         description: form.description.trim(),
-        location: form.location.trim(),
-        // backend currently expects a single image string; send the first selected preview if any
+        location: `${form.location.lat.toFixed(4)}, ${form.location.lng.toFixed(4)}`,
         image: form.imagePreviews[0] ?? '',
+
+        // 🔥 ADD CONTACT INFO
+        contactName: form.contactName.trim(),
+        contactPhone: form.contactPhone.trim(),
+        contactNotes: form.contactNotes?.trim() ?? '',
       });
+
       if (success) {
         await fetch('/api/send-notification', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             title: 'New rescue post',
-            body: `${form.petName.trim() || 'Animal'} — ${form.location.trim()}`,
+            body: `${form.petName.trim() || 'Animal'} — Location: ${form.location.lat.toFixed(4)}, ${form.location.lng.toFixed(4)}`,
             data: { url: '/dashboard/find-animals' },
           }),
         }).catch(() => {});
@@ -78,7 +99,7 @@ export function AddPostForm() {
       setIsSubmitting(false);
     }
   };
-  const canPost = form.location.trim().length > 0;
+  const canPost = form.location !== null;
   return (
     <div className="mx-auto max-w-2xl" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
       <div className="flex flex-col gap-6 ">
@@ -88,22 +109,6 @@ export function AddPostForm() {
             <p className="text-3xl font-bold leading-none">Амьтан постлох</p>
           </div>
           <p className="mt-2 text-muted-foreground">Энэ амьтныг дахин нэгтгэхэд туслахын тулд дэлгэрэнгүй мэдээллийг бөглөнө үү</p>
-        </div>
-        <div className="flex gap-4 font-medium">
-          <div
-            onClick={() => setSelected('lost')}
-            className={`px-5 py-1.5 rounded-xl cursor-pointer transition
-          ${selected === 'lost' ? 'bg-orange-400 text-white' : 'border border-orange-400 text-black'}`}
-          >
-            Би амьтнаа алдсан
-          </div>
-          <div
-            onClick={() => setSelected('found')}
-            className={`px-5 py-1.5 rounded-xl cursor-pointer transition
-          ${selected === 'found' ? 'bg-orange-400 text-white' : 'border border-orange-400 text-black'}`}
-          >
-            Би амьтан оллоо
-          </div>
         </div>
         <form onSubmit={handleSubmit}>
           <Card>
@@ -118,10 +123,17 @@ export function AddPostForm() {
             <CardContent className="space-y-4 w-150">
               {step === 0 && (
                 <div>
+                  <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 p-10 text-center transition-colors hover:bg-gray-50">
+                    <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageChange} />
+                    <Upload className="h-10 w-10 text-[#f18912]" />
+                    <p className="font-medium">Upload Photos</p>
+                    <p className="text-sm text-gray-500">Дарна уу</p>
+                    <span className="mt-2 rounded-md border px-4 py-1.5 text-sm font-medium">Файлуудыг сонгох</span>
+                  </label>
                   {form.imagePreviews.length > 0 && (
                     <div className="grid grid-cols-2 gap-4 mt-4">
                       {form.imagePreviews.map((img, index) => (
-                        <div key={index} className="relative rounded-lg border border-gray-200 bg-gray-50 p-2">
+                        <div key={index} className="relative rounded-lg ">
                           <button
                             type="button"
                             onClick={() => removeImage(index)}
@@ -129,28 +141,17 @@ export function AddPostForm() {
                           >
                             <X className="h-4 w-4" />
                           </button>
-                          {/* next/image doesn't support data-urls well for local previews; allow plain <img> here */}
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img src={img} alt="Preview" className="max-h-60 w-full rounded-lg object-contain" />
                         </div>
                       ))}
                     </div>
                   )}
-                  <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 p-10 text-center transition-colors hover:bg-gray-50">
-                    <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageChange} />
-
-                    <Upload className="h-10 w-10 text-[#f18912]" />
-
-                    <p className="font-medium">Upload Photos</p>
-                    <p className="text-sm text-gray-500">Дарна уу</p>
-
-                    <span className="mt-2 rounded-md border px-4 py-1.5 text-sm font-medium">Файлуудыг сонгох</span>
-                  </label>
                 </div>
               )}
-              {step === 1 && <Details />}
-              {step === 2 && <Location />}
-              {step === 3 && <Contact />}
+              {step === 1 && <Details form={form} setForm={setForm} />}
+              {step === 2 && <Location form={form} setForm={setForm} />}
+              {step === 3 && <Contact form={form} setForm={setForm} />}
             </CardContent>
           </Card>
           <div className="flex justify-end gap-2">

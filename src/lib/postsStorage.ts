@@ -8,6 +8,9 @@ export type Post = {
   location: string;
   image: string;
   createdAt: number;
+  contactName: string;
+  contactPhone: string;
+  contactNotes?: string;
 };
 
 export type MyPet = {
@@ -84,6 +87,9 @@ export function mapApiPostToPost(p: {
   description: string | null;
   location: string;
   image: string | null;
+  contactName: string;
+  contactPhone: string;
+  contactNotes?: string;
   createdAt: number;
 }): Post {
   return {
@@ -96,5 +102,11 @@ export function mapApiPostToPost(p: {
     location: p.location,
     image: p.image ?? "",
     createdAt: p.createdAt,
+
+    // 🔥 ADD THESE
+    contactName: p.contactName,
+    contactPhone: p.contactPhone,
+    contactNotes: p.contactNotes ?? "",
   };
 }
+

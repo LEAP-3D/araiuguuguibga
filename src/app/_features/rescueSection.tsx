@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { usePosts } from '@/lib/postsContext';
 import { RescueEmptyState, RescueHeader } from './RescueSectionParts';
 import { RescuePetCard, RescueFooterActions } from './RescuePetCard';
+import { CuteSleepingCatLoader } from '../_components/loading/CuteSleepingCatLoader';
 
 const FILTERS = [
   { id: 'all', label: 'Бүгд' },
@@ -42,8 +43,10 @@ export function RescuePetsSection() {
     return (
       <section id="adopt" className="min-h-[70vh] px-4 py-12">
         <RescueHeader />
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-4 py-16">
-          <p className="text-gray-500">Уншиж байна...</p>
+        <div className="w-screen h-screen flex items-center justify-center">
+          <div className="w-64 h-64">
+            <CuteSleepingCatLoader />
+          </div>
         </div>
       </section>
     );
