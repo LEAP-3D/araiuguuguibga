@@ -2,10 +2,11 @@
 
 import dynamic from 'next/dynamic';
 import React from 'react';
+import { CuteSleepingCatLoader } from '../loading/CuteSleepingCatLoader';
 
 const SimpleMapClient = dynamic(() => import('./SimpleMap.client'), {
   ssr: false,
-  loading: () => <div className="h-full w-full bg-gray-100 rounded-xl flex items-center justify-center">Loading map...</div>,
+  loading: () => <CuteSleepingCatLoader />,
 });
 
 type Props = {

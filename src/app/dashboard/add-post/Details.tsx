@@ -14,14 +14,14 @@ export default function Details({ form, setForm }: Props) {
       <div className="flex gap-4">
         {/* Animal Type */}
         <div className="flex-1">
-          <label className="block text-sm font-semibold text-foreground mb-2">Animal Type</label>
+          <label className="block text-sm font-semibold text-foreground mb-2">Амьтны төрөл</label>
           <Select value={form.type} onValueChange={(value: AnimalType) => setForm((prev: FormState) => ({ ...prev, type: value }))}>
             <SelectTrigger className="h-12 w-full rounded-xl border px-5 py-2">
               <SelectValue placeholder="Select Type" className="leading-none" />
             </SelectTrigger>
 
             <SelectContent>
-              <SelectItem value="dog">Dog</SelectItem>
+              <SelectItem value="dog">Нохой</SelectItem>
               <SelectItem value="cat">Cat</SelectItem>
               <SelectItem value="other">Other</SelectItem>
             </SelectContent>

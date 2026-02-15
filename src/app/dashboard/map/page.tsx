@@ -11,7 +11,7 @@ export default function Map() {
     <div className="h-screen w-screen flex flex-col items-center gap-4 ">
       <div className="w-220 h-fit bg-white rounded-2xl flex flex-col gap-3 p-3 items-end">
         <div className="flex justify-between w-220 pl-4">
-          <p className="text-[25px] font-bold">Надад ойр</p>
+          <p className="text-[25px] font-bold ml-5">Надад ойр</p>
           <div className="flex flex-col gap-2 items-end">
             <div className="flex gap-1.5 w-fit py-1 rounded-2xl font-medium text-sm">
               <div

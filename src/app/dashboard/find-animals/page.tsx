@@ -5,6 +5,7 @@ import { usePosts } from '@/lib/postsContext';
 import { RescuePetCard } from '@/app/_features/RescuePetCard';
 import shelter from '../../../../public/shelter.png';
 import Image from 'next/image';
+import { CuteSleepingCatLoader } from '@/app/_components/loading/CuteSleepingCatLoader';
 
 const FILTERS = [
   { id: 'all', label: 'Бүгд' },
@@ -38,11 +39,11 @@ export default function DashboardFindAnimalPage() {
 
   if (postsLoading) {
     return (
-      <section id="adopt" className="min-h-[70vh] px-4 py-12">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-4 py-16">
-          <p className="text-gray-500">Уншиж байна...</p>
+      <div className="w-screen h-screen flex items-center justify-center">
+        <div className="w-64 h-64">
+          <CuteSleepingCatLoader />
         </div>
-      </section>
+      </div>
     );
   }
   return (
