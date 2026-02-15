@@ -34,9 +34,11 @@ export function HeroSection({ onOpenChat }: { onOpenChat?: () => void }) {
         >
           {/* Гарчиг */}
           <div className="space-y-2">
-            <h1 className="text-6xl md:text-7xl font-extrabold text-[#2D2D2D] leading-[1.1]">
-              We Care Of Your <br />
-              <span className="text-[#eda92b]">Beloved Paws</span>
+            <h1 className="text-6xl md:text-7xl font-extrabold text-[#2D2D2D] leading-[1.1] w-240">
+              Бид Таны Хайртай Амьтдын <br />
+              <span className="text-[#eda92b]" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+                Эрхэм Хамгаалагч
+              </span>
             </h1>
             <p className="text-gray-600 text-lg md:text-xl max-w-lg leading-relaxed mt-4">Таны бяцхан савруудад зориулсан 24/7 AI туслах</p>
           </div>
