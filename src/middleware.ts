@@ -7,6 +7,7 @@ const isPublicRoute = createRouteMatcher([
   "/api/hello",
   "/api/article",
   "/api/user/create-user",
+  "/api/rescue-posts", // GET: бүх хэрэглэгч постуудыг харна; POST: route дотор auth шалгана
 ]);
 
 export default clerkMiddleware(async (auth, req) => {

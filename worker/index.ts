@@ -2,22 +2,48 @@
  * Custom Service Worker: Web Push event listener.
  * Bundled by @ducanh2912/next-pwa and loaded by sw.js.
  */
+/** FCM payload: { notification?: { title?, body? }, data?: { url?, ... } }. Standard Web Push: { title?, body?, tag? }. */
 self.addEventListener(
   'push',
   (event: ExtendableEvent & { data?: { json(): unknown; text(): string } }) => {
     let title = 'My App';
     let body = '';
     let tag = 'default';
-    let data: { title?: string; body?: string; tag?: string } = {};
+    let data: Record<string, string> = {};
 
     if (event.data) {
       try {
-        data = event.data.json() as typeof data;
-        title = data.title ?? title;
-        body = data.body ?? body;
-        tag = data.tag ?? tag;
+        const raw = event.data.json() as {
+          notification?: { title?: string; body?: string };
+          data?: Record<string, string>;
+          title?: string;
+          body?: string;
+          tag?: string;
+        };
+        // FCM format
+        if (raw.notification) {
+          title = raw.notification.title ?? title;
+          body = raw.notification.body ?? body;
+        }
+        if (raw.data) {
+          data = raw.data;
+          if (!raw.notification && (raw.data.title != null || raw.data.body != null)) {
+            title = raw.data.title ?? title;
+            body = raw.data.body ?? body;
+          }
+        }
+        // Standard Web Push format
+        if (!raw.notification && !raw.data?.title) {
+          title = raw.title ?? title;
+          body = raw.body ?? body;
+          tag = raw.tag ?? tag;
+        }
       } catch {
-        body = event.data.text() ?? body;
+        try {
+          body = event.data.text() ?? body;
+        } catch {
+          // ignore
+        }
       }
     }
 
@@ -26,7 +52,7 @@ self.addEventListener(
       icon: '/caticon.png',
       badge: '/caticon.png',
       tag,
-      data: data,
+      data: data as NotificationOptions['data'],
     };
 
     event.waitUntil((self as ServiceWorkerGlobalScope).registration.showNotification(title, options));

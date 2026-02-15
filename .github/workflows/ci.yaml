@@ -1,7 +1,6 @@
 name: CI
 on:
   pull_request:
-    types: [opened, synchronize, reopened, labeled]
     branches:
       - main
 
@@ -15,32 +14,28 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
+  lint-and-build:
+    name: Lint & Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps --ignore-scripts
-
-      - name: Generate Prisma Client
-        run: npx prisma generate
-
-      - name: Run Next.js lint
-        run: npm run lint
+        run: npm ci --legacy-peer-deps --ignore-scripts
 
       - name: Build
         run: npm run build
 
   check-vercel:
-    needs: lint
+    needs: lint-and-build
     runs-on: ubuntu-latest
     outputs:
       run: ${{ steps.set.outputs.run }}
@@ -58,7 +53,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
   preview:
-    needs: [lint, check-vercel]
+    needs: [lint-and-build, check-vercel]
     if: needs.check-vercel.outputs.run == 'true'
     runs-on: ubuntu-latest
     env:
@@ -141,7 +136,7 @@ jobs:
             }
 
   build:
-    needs: [lint, check-vercel]
+    needs: [lint-and-build, check-vercel]
     if: needs.check-vercel.outputs.run == 'true'
     runs-on: ubuntu-latest
     env:

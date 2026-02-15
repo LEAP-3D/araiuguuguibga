@@ -20,7 +20,7 @@ const sidebarItems = [
 export function DashboardClientShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { user } = useUser();
-  const { permission, requestPermission, loading } = useNotification();
+  const { permission, requestPermission, loading, error: notificationError } = useNotification();
 
   return (
     <div className="flex flex-col font-sans min-h-[100dvh]">
@@ -79,9 +79,15 @@ export function DashboardClientShell({ children }: { children: React.ReactNode }
                 ) : null}
                 <TestNotificationButton />
               </div>
-              <p className="text-[10px] text-gray-500 max-w-[200px] text-right" title="Demo: эхлээд идэвхжүүлнэ, дараа нь Test">
-                Demo: идэвхжүүлнэ → Test
-              </p>
+              {notificationError ? (
+                <p className="text-[10px] text-red-600 max-w-[220px] text-right" title={notificationError}>
+                  {notificationError}
+                </p>
+              ) : (
+                <p className="text-[10px] text-gray-500 max-w-[200px] text-right" title="Demo: эхлээд идэвхжүүлнэ, дараа нь Test">
+                  Demo: идэвхжүүлнэ → Test
+                </p>
+              )}
             </div>
             <HeaderUserMenu displayName={user?.fullName || 'User'} initial={user?.firstName?.charAt(0) || 'U'} imageUrl={user?.imageUrl} onSignOut={() => {}} />
           </div>
@@ -99,7 +105,13 @@ export function DashboardClientShell({ children }: { children: React.ReactNode }
       {/* Main content — extra bottom padding on mobile for bottom nav */}
       <main className="flex-1 p-4 md:p-6 flex flex-col items-center pb-24 md:pb-6">
         {/* Mobile: мэдэгдэл идэвхжүүлэх санал — dashboard руу ормогц харагдана */}
-        {permission !== 'granted' && permission !== 'denied' && (
+        {notificationError ? (
+          <div className="w-full max-w-[450px] mb-3 rounded-xl bg-red-50 border border-red-200 px-4 py-3">
+            <p className="text-sm text-red-800">Мэдэгдэл идэвхжүүлэхэд алдаа: {notificationError}</p>
+            <p className="text-xs text-red-600 mt-1">Дахин оролдох эсвэл браузерын мэдэгдлийн тохиргоог шалгана уу.</p>
+          </div>
+        ) : null}
+        {permission !== 'granted' && permission !== 'denied' && !notificationError && (
           <div className="md:hidden w-full max-w-[450px] mb-3 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 flex items-center justify-between gap-3">
             <p className="text-sm text-amber-900 flex-1 min-w-0">
               Шинэ постын мэдэгдэл авахыг хүсч байна уу?
