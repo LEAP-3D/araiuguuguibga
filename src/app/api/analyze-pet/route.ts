@@ -3,97 +3,102 @@ import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
 export type PetAnalysisResult = {
-  ageMonths?: number;
-  ageDays?: number;
-  weightKg?: number;
-  foodGramsPerDay?: number;
-  feedingTimesPerDay?: number;
-  petType?: string;
-  breed?: string;
-  recommendations?: string;
+  petType: string;
+  breed: string;
+  estimatedAge: string;
+  careGuide: string;
+  recommendedFood: string;
+  forbiddenFood: string;
+  vaccineAdvice: string;
 };
 
-function getMockAnalysis(): PetAnalysisResult {
-  return {
-    ageMonths: 12,
-    ageDays: 15,
-    weightKg: 8.5,
-    foodGramsPerDay: 170,
-    feedingTimesPerDay: 2,
-    petType: "Нохой",
-    breed: "Үлдэр тодорхойгүй",
-    recommendations:
-      "OPENAI_API_KEY тохируулаагүй бол demo үр дүн харуулна. .env.local дээр OPENAI_API_KEY нэмээд дахин оролдоно уу.",
-  };
+function jsonError(message: string, extra?: unknown, status = 500) {
+  return NextResponse.json(
+    { error: message, ...(extra ? { extra } : {}) },
+    { status }
+  );
 }
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { imageBase64 } = body as { imageBase64?: string };
+    const body = (await req.json()) as { imageBase64?: string };
+    const imageBase64 = body.imageBase64;
 
-    if (!imageBase64) {
-      return NextResponse.json(
-        { error: "Зураг байхгүй байна" },
-        { status: 400 }
-      );
+    if (!imageBase64 || typeof imageBase64 !== "string") {
+      return jsonError("imageBase64 байхгүй байна", undefined, 400);
     }
 
-    const apiKey = process.env.OPENAI_API_KEY;
+    const apiKey = process.env.HF_TOKEN;
+    if (!apiKey) return jsonError("HF_TOKEN тохируулаагүй байна (.env.local)");
 
-    if (!apiKey) {
-      return NextResponse.json(getMockAnalysis());
-    }
+    const hfRouter = new OpenAI({
+      apiKey,
+      baseURL: "https://router.huggingface.co/v1",
+    });
 
-    const openai = new OpenAI({ apiKey });
+    const imageUrl = imageBase64.startsWith("data:")
+      ? imageBase64
+      : `data:image/jpeg;base64,${imageBase64}`;
 
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      max_tokens: 500,
+    const prompt = `
+Энэ амьтны зураг дээр үндэслэн дараах мэдээллийг JSON хэлбэрээр буцаана уу.
+
+{
+  "petType": "ямар амьтан (жишээ: Нохой, Муур, Шувуу)",
+  "breed": "Үүлдэр (тодорхойгүй бол 'Тодорхойгүй')",
+  "estimatedAge": "Ойролцоогоор хэдэн настай",
+  "careGuide": "Арчлах дэлгэрэнгүй зөвлөгөө",
+  "recommendedFood": "Ямар хоол өгөх хэрэгтэй",
+  "forbiddenFood": "Ямар хоол өгч болохгүй",
+  "vaccineAdvice": "Вакцин хийлгэх шаардлагатай эсэх, зөвлөмж"
+}
+
+ЗӨВХӨН JSON буцаана. Өөр тайлбар бичихгүй.
+`.trim();
+
+    const response = await hfRouter.chat.completions.create({
+      model: "CohereLabs/aya-vision-32b:cohere",
+      max_tokens: 700,
       messages: [
         {
           role: "user",
           content: [
-            {
-              type: "text",
-              text: `Энэ амьтны зураг дээр үндэслэн дараах мэдээллийг JSON хэлбэрээр буцаана уу. Хэрэв зургаас тодорхой харагдахгүй бол тооцоолсон утга өгнө үү.
-
-{
-  "ageMonths": тоо (нас сараар),
-  "ageDays": тоо (нэмэлт өдрөөр, 0-30),
-  "weightKg": тоо (жинг кг-аар),
-  "foodGramsPerDay": тоо (өдөрт хэрэгтэй хоол граммаар),
-  "feedingTimesPerDay": тоо (өдөрт хэдэн удаа хооллох),
-  "petType": "Нохой" | "Муур" | "Бусад",
-  "breed": үүлдрийн нэр эсвэл "Тодорхойгүй",
-  "recommendations": богино зөвлөмж монгол хэлээр
-}
-
-Зөвхөн JSON буцаана, ямар ч өөр текст бичихгүй.`,
-            },
-            {
-              type: "image_url",
-              image_url: {
-                url: imageBase64.startsWith("data:")
-                  ? imageBase64
-                  : `data:image/jpeg;base64,${imageBase64}`,
-              },
-            },
+            { type: "text", text: prompt },
+            { type: "image_url", image_url: { url: imageUrl } },
           ],
         },
       ],
     });
 
-    const content = response.choices[0]?.message?.content;
-    if (!content) {
-      return NextResponse.json(getMockAnalysis());
+    const content = response.choices?.[0]?.message?.content ?? "";
+    if (!content) return jsonError("AI хариу өгөөгүй");
+
+    // ✅ 1) ```json ... ``` арилгана
+    const cleaned = content
+      .replace(/^```(?:json)?\s*/i, "")
+      .replace(/```$/i, "")
+      .trim();
+
+    // ✅ 2) JSON object хэсгийг олж сугална
+    const start = cleaned.indexOf("{");
+    const end = cleaned.lastIndexOf("}");
+    if (start === -1 || end === -1) {
+      return jsonError("AI JSON буцаасангүй", { raw: content });
     }
 
-    const jsonStr = content.replace(/^```json?\s*|\s*```$/g, "").trim();
-    const parsed = JSON.parse(jsonStr) as PetAnalysisResult;
+    const jsonOnly = cleaned.slice(start, end + 1);
+
+    let parsed: PetAnalysisResult;
+    try {
+      parsed = JSON.parse(jsonOnly) as PetAnalysisResult;
+    } catch {
+      return jsonError("JSON parse failed", { raw: content });
+    }
+
     return NextResponse.json(parsed);
   } catch (err) {
-    console.error("analyze-pet error:", err);
-    return NextResponse.json(getMockAnalysis());
+    return jsonError("analyze-pet error", {
+      message: err instanceof Error ? err.message : String(err),
+    });
   }
 }

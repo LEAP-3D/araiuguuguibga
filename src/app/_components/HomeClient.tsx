@@ -9,6 +9,7 @@ import { VeterinarySection } from '../_features/veterinarySection';
 import Chat from './Chat';
 import { PawBackground } from './paw-trail/PawBackground';
 import HomeMobile from '../_mobile/page'; 
+import PetAiAssistantSection from '../_features/PetAiAssistantSection';
 
 export default function HomeClient() {
   const [chatOpen, setChatOpen] = useState(false);
@@ -48,6 +49,7 @@ export default function HomeClient() {
             <main>
               <HeroSection onOpenChat={() => setChatOpen(true)} />
               <RescuePetsSection />
+              <PetAiAssistantSection/>
               <VeterinarySection />
             </main>
             <Footer />
