@@ -8,7 +8,7 @@ import { CuteSleepingCatLoader } from '../_components/loading/CuteSleepingCatLoa
 delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIconUrl;
 
 const lostPet = new L.Icon({
-  iconUrl: '/lostPet.svg', // your svg file
+  iconUrl: '/lostPetPin.svg', // your svg file
   iconSize: [30, 30], // size
   iconAnchor: [20, 40], // bottom center
   popupAnchor: [0, -40],

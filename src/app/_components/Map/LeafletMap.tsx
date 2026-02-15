@@ -7,10 +7,12 @@ import { mockVets } from '@/app/_components/HeroSection/mockVets'; // adjust pat
 import { mockLostPets } from '@/app/_components/HeroSection/mockLostPets';
 
 const hospitalIcon = new L.Icon({
-  iconUrl: '/hospitalPin.svg', // your svg file
-  iconSize: [20, 20], // size
-  iconAnchor: [20, 40], // bottom center
-  popupAnchor: [0, -40],
+  iconUrl: '/hospitalMapPin.svg', // your svg file
+  iconSize: [30, 41], // same as default marker
+  iconAnchor: [12, 41], // bottom center (IMPORTANT)
+  popupAnchor: [1, -34], // popup position
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+  shadowSize: [41, 41],
 });
 const lostPetIcon = new L.Icon({
   iconUrl: '/lostPetPin.svg', // your svg file

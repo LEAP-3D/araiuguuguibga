@@ -6,9 +6,12 @@ import React, { useState } from 'react';
 import L from 'leaflet';
 
 const lostPetIcon = L.icon({
-  iconUrl: '/lostPet.svg',
-  iconSize: [22, 22],
-  iconAnchor: [16, 32],
+  iconUrl: '/foundPin.svg',
+  iconSize: [30, 41], // same as default marker
+  iconAnchor: [12, 41], // bottom center (IMPORTANT)
+  popupAnchor: [1, -34], // popup position
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+  shadowSize: [41, 41],
 });
 
 type Props = {
