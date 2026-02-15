@@ -1,6 +1,6 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-export type AnimalType = 'dog' | 'cat' | 'bird' | 'rabbit' | 'other';
+export type AnimalType = 'dog' | 'cat' | 'other';
 export type AnimalSize = 'small' | 'medium' | 'large' | 'extra-large';
 
 export type DetailsForm = {
@@ -33,8 +33,6 @@ export default function Details({ form, setForm }: Props) {
             <SelectContent>
               <SelectItem value="dog">Dog</SelectItem>
               <SelectItem value="cat">Cat</SelectItem>
-              <SelectItem value="bird">Bird</SelectItem>
-              <SelectItem value="rabbit">Rabbit</SelectItem>
               <SelectItem value="other">Other</SelectItem>
             </SelectContent>
           </Select>

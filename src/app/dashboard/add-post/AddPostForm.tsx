@@ -23,7 +23,7 @@ export function AddPostForm() {
     age: '',
     size: '',
     color: '',
-    type: 'dog' as 'dog' | 'cat' | 'bird' | 'rabbit' | 'other',
+    type: 'dog' as 'dog' | 'cat' | 'other',
     description: '',
     location: null as { lat: number; lng: number } | null,
     imagePreviews: [] as string[],
