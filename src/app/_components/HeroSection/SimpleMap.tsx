@@ -5,14 +5,14 @@ import React from 'react';
 
 const SimpleMapClient = dynamic(() => import('./SimpleMap.client'), {
   ssr: false,
-  // Minimal loader while the map bundle is being loaded on client
-  loading: () => <div className="h-200 w-300" />,
+  loading: () => <div className="h-full w-full bg-gray-100 rounded-xl flex items-center justify-center">Loading map...</div>,
 });
 
 type Props = {
   center?: [number, number];
   zoom?: number;
   className?: string;
+  onSelect?: (location: { lat: number; lng: number }) => void;
 };
 
 export default function SimpleMap(props: Props) {
