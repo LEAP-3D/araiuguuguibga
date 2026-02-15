@@ -11,6 +11,11 @@ export type DetailsForm = {
   age: string;
   color: string;
   description: string;
+  location: { lat: number; lng: number } | null;
+  imagePreviews: string[];
+  contactName: string;
+  contactPhone: string;
+  contactNotes: string;
 };
 
 type Props = {
