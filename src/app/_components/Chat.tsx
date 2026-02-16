@@ -1,12 +1,16 @@
 'use client';
 
 import Image from 'next/image';
-import { X, Send } from 'lucide-react';
+import { X, Send, Loader2 } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { motion } from 'framer-motion';
-import { useId, useState, useEffect } from 'react';
+import { useId, useState, useEffect, useRef } from 'react';
+
+type ChatMessage = { role: 'user' | 'assistant'; content: string };
+
+const WELCOME_MESSAGE = "👋 Hi! I'm here to help. What can I do for you today?";
 
 type ChatProps = {
   open?: boolean;
@@ -21,11 +25,46 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
   const isOpen = isControlled ? controlledOpen : internalOpen;
   const setIsOpen = isControlled ? onOpenChange : setInternalOpen;
   const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const id = requestAnimationFrame(() => setMounted(true));
     return () => cancelAnimationFrame(id);
   }, []);
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
+  }, [messages, loading]);
+
+  const sendMessage = async () => {
+    const text = message.trim();
+    if (!text || loading) return;
+    setError(null);
+    setMessage('');
+    const userMsg: ChatMessage = { role: 'user', content: text };
+    setMessages((prev) => [...prev, userMsg]);
+    setLoading(true);
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: [...messages, userMsg].map((m) => ({ role: m.role, content: m.content })),
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Something went wrong');
+      const assistantContent = data.message?.content ?? '';
+      setMessages((prev) => [...prev, { role: 'assistant', content: assistantContent }]);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to get response');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (!mounted) {
     return <div className="fixed bottom-6 right-6 z-50 w-14 h-14" aria-hidden="true" />;
@@ -68,16 +107,46 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
             </Button>
           </div>
 
-          <div className="flex-1 overflow-y-auto px-5 py-4 bg-linear-to-b from-gray-50 to-white">
+          <div ref={scrollRef} className="flex-1 overflow-y-auto px-5 py-4 bg-linear-to-b from-gray-50 to-white min-h-0">
             <div className="space-y-4">
               <div className="flex gap-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
                   <Image src="/caticon.png" alt="" width={32} height={32} className="w-8 h-8 object-contain" />
                 </div>
                 <div className="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm border border-gray-100 max-w-[260px]">
-                  <p className="text-sm text-gray-800">👋 Hi! Im here to help. What can I do for you today?</p>
+                  <p className="text-sm text-gray-800">{WELCOME_MESSAGE}</p>
                 </div>
               </div>
+              {messages.map((msg, i) =>
+                msg.role === 'user' ? (
+                  <div key={i} className="flex justify-end">
+                    <div className="bg-[#ff8037] text-white rounded-2xl rounded-tr-sm px-4 py-3 shadow-sm max-w-[260px]">
+                      <p className="text-sm">{msg.content}</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div key={i} className="flex gap-3">
+                    <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                      <Image src="/caticon.png" alt="" width={32} height={32} className="w-8 h-8 object-contain" />
+                    </div>
+                    <div className="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm border border-gray-100 max-w-[260px]">
+                      <p className="text-sm text-gray-800 whitespace-pre-wrap">{msg.content}</p>
+                    </div>
+                  </div>
+                )
+              )}
+              {loading && (
+                <div className="flex gap-3">
+                  <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                    <Image src="/caticon.png" alt="" width={32} height={32} className="w-8 h-8 object-contain" />
+                  </div>
+                  <div className="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm border border-gray-100 flex items-center gap-2 text-gray-500 text-sm">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Thinking...</span>
+                  </div>
+                </div>
+              )}
+              {error && <p className="text-sm text-red-600 px-1">{error}</p>}
             </div>
           </div>
           <div className="px-4 py-4 bg-white border-t border-gray-100">
@@ -88,21 +157,15 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Type your message..."
                   className="pr-3 py-6 rounded-xl border-gray-200 focus:border-[#ff8037] focus:ring-[#ff8037] resize-none transition-all"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault();
-                      setMessage('');
-                    }
-                  }}
+                  onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void sendMessage(); } }}
+                  disabled={loading}
                 />
               </div>
               <Button
                 size="icon"
-                disabled={!message.trim()}
+                disabled={!message.trim() || loading}
                 className="w-12 h-12 bg-[#ff8037] hover:bg-[#f47d46] rounded-xl shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group"
-                onClick={() => {
-                  setMessage('');
-                }}
+                onClick={() => void sendMessage()}
               >
                 <Send className="w-5 h-5 text-white transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Button>

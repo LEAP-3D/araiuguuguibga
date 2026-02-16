@@ -18,6 +18,9 @@
     ],
 
     /* Prevent false positives from base rule */
-    "no-unused-vars": "off"
+    "no-unused-vars": "off",
+
+    /* Max 180 lines per file */
+    "max-lines": ["error", { "max": 180 }]
   }
 }
