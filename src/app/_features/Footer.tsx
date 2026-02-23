@@ -15,7 +15,7 @@ export default function Footer() {
             </Link>
             <Link href="/dashboard/map">
               <div className="py-2 px-8 border border-[#f88a0c] rounded-2xl cursor-pointer">
-                <span className="text-black ">Explore Map</span>
+                <span className="text-black ">Explore map</span>
               </div>
             </Link>
           </div>
