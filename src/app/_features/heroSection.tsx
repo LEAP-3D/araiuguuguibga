@@ -18,12 +18,16 @@ export function HeroSection({ onOpenChat }: { onOpenChat?: () => void }) {
   const servicesHref = mounted && isSignedIn ? '/dashboard' : '/sign-up';
 
   return (
-    <section id="hero" className="relative w-full min-h-[90vh] flex items-center justify-center bg-[#FFFEF9] overflow-hidden px-6 py-12 pt-24">
+    <section
+      id="hero"
+      className="relative w-full min-h-[90vh] flex items-center justify-center bg-[#FFFEF9] overflow-hidden px-6 pt-24
+             pb-[calc(env(safe-area-inset-bottom)+96px)]"
+    >
+      {' '}
       {/* Арын фонны туяанууд */}
       <div className="absolute top-[15%] right-[20%] w-125 h-125 bg-[#e99d40] rounded-full blur-[150px] opacity-40 pointer-events-none" />
       <div className="absolute bottom-[10%] right-[5%] w-75 h-75 bg-[#e6b740] rounded-full blur-[100px] opacity-30 pointer-events-none" />
       <div className="absolute top-[20%] left-[5%] w-50 h-50 bg-[#FFF4D9] rounded-full blur-[80px] opacity-20 pointer-events-none" />
-
       <div className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 items-center z-10 relative">
         {/* --- ЗҮҮН ТАЛ: Текст, Button болон Icons --- */}
         <motion.div
@@ -34,17 +38,17 @@ export function HeroSection({ onOpenChat }: { onOpenChat?: () => void }) {
         >
           {/* Гарчиг */}
           <div className="space-y-2">
-            <h1 className="text-6xl md:text-7xl font-extrabold text-[#2D2D2D] leading-[1.1] w-240">
+            <h1 className="w-full max-w-[36rem] text-4xl sm:text-5xl md:text-7xl font-extrabold text-[#2D2D2D] leading-[1.1] break-words">
               Бид Таны Хайртай Амьтдын <br />
               <span className="text-[#eda92b]" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
                 Эрхэм Хамгаалагч
               </span>
             </h1>
-            <p className="text-gray-600 text-lg md:text-xl max-w-lg leading-relaxed mt-4">Таны бяцхан савруудад зориулсан 24/7 AI туслах</p>
+            <p className="hidden md:block text-gray-600 text-lg md:text-xl max-w-lg leading-relaxed mt-4">Таны бяцхан савруудад зориулсан 24/7 AI туслах</p>{' '}
           </div>
 
           {/* Товчлуурууд */}
-          <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-2">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

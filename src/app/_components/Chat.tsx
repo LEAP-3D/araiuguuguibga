@@ -16,7 +16,6 @@ type ChatProps = {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 };
-
 export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps = {}) {
   const contentId = useId();
   const [mounted, setMounted] = useState(false);
@@ -29,16 +28,13 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     const id = requestAnimationFrame(() => setMounted(true));
     return () => cancelAnimationFrame(id);
   }, []);
-
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages, loading]);
-
   const sendMessage = async () => {
     const text = message.trim();
     if (!text || loading) return;
@@ -65,13 +61,11 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
       setLoading(false);
     }
   };
-
   if (!mounted) {
-    return <div className="fixed bottom-6 right-6 z-50 w-14 h-14" aria-hidden="true" />;
+    return <div className="fixed right-6 z-50 w-14 h-14 bottom-[calc(env(safe-area-inset-bottom)+96px)]" />;
   }
-
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed right-6 z-50 bottom-[calc(env(safe-area-inset-bottom)+96px)]">
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <motion.div
@@ -91,7 +85,7 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
             </Button>
           </motion.div>
         </PopoverTrigger>
-        <PopoverContent id={contentId} className="w-95 h-130 flex flex-col p-0 mr-4 mb-2 shadow-2xl border-0 rounded-2xl overflow-hidden bg-white" sideOffset={8}>
+        <PopoverContent id={contentId} className="w-95 h-130 flex flex-col p-0 mr-4 shadow-2xl border-0 rounded-2xl overflow-hidden bg-white" sideOffset={12}>
           <div className="relative h-16 flex justify-between items-center px-5 bg-[#ff8037]">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 flex items-center justify-center overflow-hidden flex-shrink-0 rounded-full">
@@ -110,7 +104,7 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
           <div ref={scrollRef} className="flex-1 overflow-y-auto px-5 py-4 bg-linear-to-b from-gray-50 to-white min-h-0">
             <div className="space-y-4">
               <div className="flex gap-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                <div className="w-8 h-8 rounded-full overflow-hidden shrink-0">
                   <Image src="/caticon.png" alt="" width={32} height={32} className="w-8 h-8 object-contain" />
                 </div>
                 <div className="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm border border-gray-100 max-w-[260px]">
@@ -157,7 +151,12 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Type your message..."
                   className="pr-3 py-6 rounded-xl border-gray-200 focus:border-[#ff8037] focus:ring-[#ff8037] resize-none transition-all"
-                  onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void sendMessage(); } }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      void sendMessage();
+                    }
+                  }}
                   disabled={loading}
                 />
               </div>

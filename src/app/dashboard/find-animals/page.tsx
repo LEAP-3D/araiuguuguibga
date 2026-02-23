@@ -57,13 +57,14 @@ export default function DashboardFindAnimalPage() {
         <p className="mt-2 text-muted-foreground">Өөрийн бүс нутагт алдагдсан болон олдсон амьтдыг үзэх</p>
       </div>
 
-      <div className="flex shrink-0 flex-wrap justify-start gap-3">
+      <div className="flex shrink-0 flex-nowrap justify-start gap-3 overflow-x-auto pb-1">
+        {' '}
         {FILTERS.map((f) => (
           <button
             key={f.id}
             type="button"
             onClick={() => setActiveFilter(f.id)}
-            className={`rounded-full px-6 py-1.5 text-sm font-medium transition-colors ${
+            className={`whitespace-nowrap rounded-full px-6 py-1.5 text-sm font-medium transition-colors ${
               activeFilter === f.id ? 'bg-[#fc8d0e] text-white shadow-sm' : 'border-2 border-[#fc8d0e] bg-white text-[#fc8d0e] hover:bg-[#fc8d0e]/5'
             }`}
           >
