@@ -51,12 +51,21 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
           messages: [...messages, userMsg].map((m) => ({ role: m.role, content: m.content })),
         }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Something went wrong');
-      const assistantContent = data.message?.content ?? '';
-      setMessages((prev) => [...prev, { role: 'assistant', content: assistantContent }]);
+      let data: { error?: string; message?: { content?: string } } = {};
+      try {
+        data = await res.json();
+      } catch {
+        setError(res.ok ? 'Хариу уншихад алдаа гарлаа.' : `Алдаа: ${res.status}`);
+        return;
+      }
+      if (!res.ok) {
+        setError(typeof data.error === 'string' ? data.error : 'Чат хариу ирэхэд алдаа гарлаа.');
+        return;
+      }
+      const assistantContent = data.message?.content?.trim() ?? '';
+      setMessages((prev) => [...prev, { role: 'assistant', content: assistantContent || '(Хариу хоосон)' }]);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to get response');
+      setError(err instanceof Error ? err.message : 'Сүлжээний алдаа. Дахин оролдоно уу.');
     } finally {
       setLoading(false);
     }
@@ -101,7 +110,7 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
             </Button>
           </div>
 
-          <div ref={scrollRef} className="flex-1 overflow-y-auto px-5 py-4 bg-linear-to-b from-gray-50 to-white min-h-0">
+          <div ref={scrollRef} className="flex-1 overflow-y-auto px-5 py-4 bg-gradient-to-b from-gray-50 to-white min-h-0">
             <div className="space-y-4">
               <div className="flex gap-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div className="w-8 h-8 rounded-full overflow-hidden shrink-0">
