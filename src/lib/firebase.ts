@@ -56,14 +56,30 @@ export function getMessagingInstance(): Messaging | null {
 }
 
 /**
- * Get FCM token for this device. Registers SW at /firebase-messaging-sw.js if needed.
+ * Get FCM token for this device. Uses SW at /firebase-messaging-sw.js (registered by ServiceWorkerRegistration).
+ * If .ready has not resolved yet (e.g. first load on Vercel), registers the SW first.
  */
 export async function getFCMToken(): Promise<string | null> {
   if (typeof window === 'undefined') return null;
   const messaging = getMessagingInstance();
   if (!messaging || !VAPID_KEY) return null;
+  if (!('serviceWorker' in navigator)) return null;
   try {
-    const registration = await navigator.serviceWorker.ready;
+    let registration: ServiceWorkerRegistration | null = null;
+    try {
+      registration = await Promise.race([
+        navigator.serviceWorker.ready,
+        new Promise<null>((_, reject) =>
+          setTimeout(() => reject(new Error('SW ready timeout')), 5000)
+        ),
+      ]);
+    } catch {
+      registration = null;
+    }
+    if (!registration) {
+      await navigator.serviceWorker.register('/firebase-messaging-sw.js', { scope: '/' });
+      registration = await navigator.serviceWorker.ready;
+    }
     const token = await getToken(messaging, {
       vapidKey: VAPID_KEY,
       serviceWorkerRegistration: registration,
