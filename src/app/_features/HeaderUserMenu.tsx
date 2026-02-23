@@ -16,7 +16,9 @@ type HeaderUserMenuProps = {
 
 export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: HeaderUserMenuProps) {
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true); // eslint-disable-line react-hooks/set-state-in-effect -- defer Popover until after hydration
+  }, []);
 
   const trigger = (
     <motion.button
