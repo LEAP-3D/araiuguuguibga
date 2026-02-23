@@ -6,6 +6,7 @@ const isPublicRoute = createRouteMatcher([
   "/sign-up(.*)",
   "/api/hello",
   "/api/article",
+  "/api/chat", // Chat assistant — GROQ ашиглана, auth шаардахгүй
   "/api/user/create-user",
   "/api/rescue-posts", // GET: бүх хэрэглэгч постуудыг харна; POST: route дотор auth шалгана
 ]);
