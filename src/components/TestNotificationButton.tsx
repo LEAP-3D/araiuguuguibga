@@ -3,8 +3,8 @@
 import { useState } from 'react';
 
 /**
- * Sends a test notification to the 'posts' topic (all subscribed devices).
- * Requires FB_PROJECT_ID+FB_CLIENT_EMAIL+FB_PRIVATE_KEY (or FIREBASE_SERVICE_ACCOUNT_*) and /api/send-notification.
+ * 1) Sends test notification to 'posts' topic → all subscribed users get push.
+ * 2) Shows a local notification to the clicker so they see it immediately.
  */
 export function TestNotificationButton() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'ok' | 'error'>('idle');
@@ -27,8 +27,21 @@ export function TestNotificationButton() {
       const data = text ? (() => { try { return JSON.parse(text) as { error?: string }; } catch { return {}; } })() : {};
       if (res.ok) {
         setStatus('ok');
+        if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+          try {
+            new Notification('Test Notification', {
+              body: 'Энэ бол My App-аас илгээсэн туршилтын мэдэгдэл. Бусад идэвхжүүлсэн хэрэглэгчид ч ижил мэдэгдэл ирнэ.',
+              icon: '/caticon.png',
+            });
+          } catch {
+            // ignore
+          }
+        }
       } else {
-        const msg = typeof data.error === 'string' ? data.error : res.statusText || `HTTP ${res.status}`;
+        let msg = typeof data.error === 'string' ? data.error : res.statusText || `HTTP ${res.status}`;
+        if (res.status === 500 && (msg.includes('env') || msg.includes('FB_') || msg.includes('тохируул'))) {
+          msg += ' Vercel дээр Environment Variables тохируулаад Redeploy хийнэ үү.';
+        }
         setErrorMessage(msg);
         setStatus('error');
       }
@@ -45,6 +58,7 @@ export function TestNotificationButton() {
         type="button"
         onClick={handleClick}
         disabled={status === 'sending'}
+        title="Утас дээр ирүүлэх: эхлээд утаснаасаа сайт нээгээд Мэдэгдэл идэвхжүүлнэ"
         className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-800 hover:bg-gray-50 disabled:opacity-50"
       >
         {status === 'idle' && 'Test мэдэгдэл явуулах'}
