@@ -105,12 +105,12 @@ export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: He
         <div className="px-4 py-3 border-b border-gray-100">
           <p className="font-semibold text-gray-900">My Account</p>
         </div>
-        <div className="py-2">
-          <Link href="/dashboard" className="flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 cursor-pointer transition-colors">
+        <div className="">
+          <Link href="/dashboard" className="flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 cursor-pointer transition-colors items-center">
             <LayoutDashboard className="w-4 h-4 text-[#fc8d0e]" />
-            <span>Dashboard</span>
+            <span>Rescue</span>
           </Link>
-          <Link href="/profile" className="flex cursor-pointer gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 transition-colors">
+          <Link href="/profile" className="flex cursor-pointer gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 transition-colors items-center">
             <User className="w-4 h-4 text-[#fc8d0e]" />
             <span>Profile</span>
           </Link>

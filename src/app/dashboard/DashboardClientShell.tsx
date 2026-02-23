@@ -24,7 +24,7 @@ export function DashboardClientShell({ children }: { children: React.ReactNode }
   const { permission, requestPermission, loading, error: notificationError } = useNotification();
 
   return (
-    <div className="flex flex-col font-sans min-h-[100dvh]">
+    <div className="flex flex-col font-sans min-h-[100dvh] ">
       {/* Header — mobile: logo + back + user; desktop: full nav */}
       <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-md border-b border-amber-400 safe-area-inset-top">
         <div className="flex justify-between items-center px-4 md:px-10 h-14 md:h-16">
@@ -97,7 +97,7 @@ export function DashboardClientShell({ children }: { children: React.ReactNode }
 
         {/* Desktop only: back to home link */}
       </header>
-      <div className="hidden md:block px-10 w-fit pb-2">
+      <div className="hidden md:block px-10 w-fit pb-2 mt-7">
         <Link href="/" className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-amber-50 hover:text-amber-700">
           <ArrowLeft className="h-4 w-4" />
           Нүүр лүү буцах
@@ -115,9 +115,7 @@ export function DashboardClientShell({ children }: { children: React.ReactNode }
         ) : null}
         {permission !== 'granted' && permission !== 'denied' && !notificationError && (
           <div className="md:hidden w-full max-w-[450px] mb-3 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 flex items-center justify-between gap-3">
-            <p className="text-sm text-amber-900 flex-1 min-w-0">
-              Шинэ постын мэдэгдэл авахыг хүсч байна уу?
-            </p>
+            <p className="text-sm text-amber-900 flex-1 min-w-0">Шинэ постын мэдэгдэл авахыг хүсч байна уу?</p>
             <button
               type="button"
               onClick={() => requestPermission()}
