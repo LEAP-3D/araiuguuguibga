@@ -84,11 +84,7 @@ export function DashboardClientShell({ children }: { children: React.ReactNode }
                 <p className="text-[10px] text-red-600 max-w-[220px] text-right" title={notificationError}>
                   {notificationError}
                 </p>
-              ) : (
-                <p className="text-[10px] text-gray-500 max-w-[200px] text-right" title="Demo: эхлээд идэвхжүүлнэ, дараа нь Test">
-                  Demo: идэвхжүүлнэ → Test
-                </p>
-              )}
+              ) : null}
               <NotificationConfigCheck />
             </div>
             <HeaderUserMenu displayName={user?.fullName || 'User'} initial={user?.firstName?.charAt(0) || 'U'} imageUrl={user?.imageUrl} onSignOut={() => {}} />
@@ -128,6 +124,11 @@ export function DashboardClientShell({ children }: { children: React.ReactNode }
             </button>
           </div>
         )}
+        {/* Утас дээр мэдэгдэл ирүүлэх — зөвлөмж (зөвхөн mobile) */}
+        <div className="md:hidden w-full max-w-[450px] mb-3 rounded-xl bg-sky-50 border border-sky-200 px-4 py-3">
+          <p className="text-sm text-sky-900 font-medium">Утас дээр мэдэгдэл авах</p>
+          <p className="text-xs text-sky-800 mt-1">Энэ хуудсыг утаснаасаа нээгээд дээд талын &quot;Мэдэгдэл&quot; дарж зөвшөөрнө. Android: Chrome. iPhone: Safari эсвэл Chrome. Ирэхгүй бол браузерын &quot;Гэрт нэмэх&quot; хийгээд дахин идэвхжүүлэх; утасны Тохиргоо → Мэдэгдэл дотор энэ сайтыг идэвхтэй эсэхийг шалгана.</p>
+        </div>
         <div className="w-full flex justify-center">{children}</div>
       </main>
 
