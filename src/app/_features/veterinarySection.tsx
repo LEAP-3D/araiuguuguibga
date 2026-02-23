@@ -72,7 +72,13 @@ export function VeterinarySection() {
               Танд хамгийн ойр байгаа <span>эмнэлэгүүд</span>
             </span>
           </div>
-          <p className="block text-2xl md:text-1xl font-bold drop-shadow-sm" style={{ fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive", color: '#E8B07E' }}>
+          <p
+            className="hidden md:block text-2xl md:text-xl font-bold drop-shadow-sm"
+            style={{
+              fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive",
+              color: '#E8B07E',
+            }}
+          >
             Эмнэлэгүүдийн байршил болон мэдээллийг эндээс харж болно
           </p>
         </div>
@@ -86,8 +92,8 @@ export function VeterinarySection() {
               onSelect={setSelectedVet}
               temporaryVet={temporaryVet}
               userLocation={userLocation}
-              setUserLocation={setUserLocation} // Байршил тогтоох функц дамжуулав
-              radius={radius} // Сонгосон радиус дамжуулав
+              setUserLocation={setUserLocation}
+              radius={radius}
               onMapClick={(lat, lng) => setTemporaryVet({ id: Date.now().toString(), name: '', lat, lng, rating: 0, services: [], isOpen: false, phone: [''], address: '', category: ['emneleg'] })}
               onSaveTemp={handleSaveTemp}
               onCancelTemp={() => setTemporaryVet(null)}

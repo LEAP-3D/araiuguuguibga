@@ -5,7 +5,8 @@ import { motion } from 'framer-motion';
 
 export function RescueEmptyState() {
   return (
-    <section id="adopt" className="min-h-[70vh] px-4 py-12">
+    <section id="adopt" className="min-h-[70vh] px-4 pt-6 pb-12">
+      {' '}
       <div className="mb-8 text-left">
         <motion.h1
           initial={{ opacity: 0, scale: 0.95, y: 40 }}
@@ -44,30 +45,23 @@ export function RescueEmptyState() {
 
 export function RescueHeader() {
   return (
-    <div className="mb-8 px-11 ">
-      <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="flex items-end justify-between gap-4">
+    <div className="mb-6 px-6 md:px-11 -mt-4 md:mt-0">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="flex flex-col md:flex-row md:items-end md:justify-between gap-2"
+      >
         {/* Left text */}
         <div className="flex flex-col gap-1">
-          <span className="text-2xl md:text-4xl font-black" style={{ fontFamily: "'Comic Sans MS', cursive", color: '#fc8d0e' }}>
-            Тусламж хэрэгтэй амьтад
-          </span>
-          <span className="text-sm md:text-base font-semibold pl-1" style={{ fontFamily: "'Comic Sans MS', cursive", color: '#43342D' }}>
-            Эдгээр амьтад үүрдийн гэрээ хайж байна
-          </span>
+          <span className="text-2xl md:text-4xl font-black whitespace-nowrap text-[#fc8d0e]">Тусламж хэрэгтэй амьтад</span>
+
+          <span className="text-sm md:text-base font-semibold pl-1 whitespace-nowrap text-[#43342D]">Эдгээр амьтад үүрдийн гэрээ хайж байна</span>
         </div>
 
-        {/* Right action */}
-        <Link
-          href="/dashboard/find-animals"
-          className="
-    relative inline-block px-3 py-2
-    text-black font-normal text-base
-    rounded-md
-    transition-all duration-300
-    hover:after:w-full
-    hover:bg-[#ff944c] hover:text-white
-  "
-        >
+        {/* Right  */}
+        <Link href="/dashboard/find-animals" className="self-start md:self-auto mt-2 md:mt-0 text-base hover:text-[#ff944c]">
           Бүгдийг харах →
         </Link>
       </motion.div>
