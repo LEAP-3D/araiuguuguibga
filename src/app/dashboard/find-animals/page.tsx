@@ -9,8 +9,9 @@ import { CuteSleepingCatLoader } from '@/app/_components/loading/CuteSleepingCat
 
 const FILTERS = [
   { id: 'all', label: 'Бүгд' },
-  { id: 'lost', label: 'Алдагдсан' },
-  { id: 'found', label: 'Олдсон' },
+  { id: 'lost', label: 'Алдсан' },
+  { id: 'found', label: 'Олсон' },
+  { id: 'found', label: 'Аврагдсан' },
 ] as const;
 
 export default function DashboardFindAnimalPage() {
