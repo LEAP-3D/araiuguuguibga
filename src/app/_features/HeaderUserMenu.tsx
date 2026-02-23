@@ -1,3 +1,6 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { motion } from 'framer-motion';
@@ -12,20 +15,31 @@ type HeaderUserMenuProps = {
 };
 
 export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: HeaderUserMenuProps) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  const trigger = (
+    <motion.button
+      type="button"
+      className="flex items-center gap-2 rounded-xl px-2 py-1.5 transition-all duration-300 cursor-pointer outline-none border-0"
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+    >
+      <Avatar className="size-10 rounded-full bg-[#fc8d0e] text-white border-2 border-white/80 shadow-md">
+        <AvatarImage src={imageUrl} alt={displayName} />
+        <AvatarFallback className="bg-[#fc8d0e] text-white text-sm font-semibold">{initial}</AvatarFallback>
+      </Avatar>
+    </motion.button>
+  );
+
+  if (!mounted) {
+    return <div className="flex items-center gap-2 rounded-xl px-2 py-1.5">{trigger}</div>;
+  }
+
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <motion.button
-          type="button"
-          className="flex items-center gap-2 rounded-xl px-2 py-1.5 transition-all duration-300 cursor-pointer outline-none border-0"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          <Avatar className="size-10 rounded-full bg-[#fc8d0e] text-white border-2 border-white/80 shadow-md">
-            <AvatarImage src={imageUrl} alt={displayName} />
-            <AvatarFallback className="bg-[#fc8d0e] text-white text-sm font-semibold">{initial}</AvatarFallback>
-          </Avatar>
-        </motion.button>
+        {trigger}
       </PopoverTrigger>
       <PopoverContent align="end" className="w-56 rounded-xl shadow-lg border-gray-200/80 p-0" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
         <div className="px-4 py-3 border-b border-gray-100">
