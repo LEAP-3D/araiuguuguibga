@@ -15,6 +15,28 @@ export type Pet = {
   distance?: string;
 };
 
+export type PetAnalysisResult = {
+  general: {
+    breed: string;
+    age: string;
+    weight: string;
+    foodGramsPerDay: number;
+    feedingTimesPerDay: number;
+    foodType: string;
+    forbiddenFoods: string;
+  };
+  care: {
+    neutering: string;
+    bathing: string;
+    nails: string;
+  };
+  recommendations: {
+    vaccines: string;
+    deworming: string;
+    extraTips: string;
+  };
+};
+
 export type Veterinary = {
   id: string;
   name: string;
