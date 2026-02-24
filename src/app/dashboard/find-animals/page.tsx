@@ -11,7 +11,7 @@ const FILTERS = [
   { id: 'all', label: 'Бүгд' },
   { id: 'lost', label: 'Алдсан' },
   { id: 'found', label: 'Олсон' },
-  { id: 'found', label: 'Аврагдсан' },
+  { id: 'rescued', label: 'Аврагдсан' },
 ] as const;
 
 export default function DashboardFindAnimalPage() {
