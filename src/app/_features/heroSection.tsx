@@ -22,6 +22,7 @@ export function HeroSection({ onOpenChat }: { onOpenChat?: () => void }) {
       id="hero"
       className="relative w-full min-h-[90vh] flex items-center justify-center bg-[#FFFEF9] overflow-hidden px-6 pt-24
              pb-[calc(env(safe-area-inset-bottom)+96px)]"
+      style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}
     >
       {' '}
       {/* Арын фонны туяанууд */}
