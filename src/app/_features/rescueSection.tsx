@@ -10,7 +10,7 @@ const FILTERS = [
   { id: 'all', label: 'Бүгд' },
   { id: 'dog', label: 'Нохой' },
   { id: 'cat', label: 'Муур' },
-  { id: 'bunny', label: 'Туулай' },
+  { id: 'Бусад', label: 'Бусад' },
 ] as const;
 
 const FEED_POST_LIMIT = 6;
@@ -24,7 +24,7 @@ export function RescuePetsSection() {
     if (activeFilter === 'all') return true;
     if (activeFilter === 'dog' && post.type === 'dog') return true;
     if (activeFilter === 'cat' && post.type === 'cat') return true;
-    if ((activeFilter === 'bunny' || activeFilter === 'hamster') && post.type === 'other') return true;
+    if ((activeFilter === 'Бусад' || activeFilter === 'hamster') && post.type === 'other') return true;
     return false;
   });
 
@@ -41,7 +41,7 @@ export function RescuePetsSection() {
 
   if (postsLoading) {
     return (
-      <section id="adopt" className="min-h-[70vh] px-4 py-12">
+      <section id="adopt" className="scroll-mt-28 min-h-[70vh] px-4 py-12">
         <RescueHeader />
         <div className="w-screen h-screen flex items-center justify-center">
           <div className="w-64 h-64">
@@ -55,7 +55,7 @@ export function RescuePetsSection() {
   if (posts.length === 0) return <RescueEmptyState />;
 
   return (
-    <section id="adopt" className="min-h-[70vh] px-4 py-12">
+    <section id="adopt" className="scroll-mt-28 min-h-[70vh] px-4 py-12">
       <RescueHeader />
       <div className="mx-auto max-w-7xl flex flex-col gap-5">
         <div className="flex shrink-0 flex-wrap justify-center gap-3">

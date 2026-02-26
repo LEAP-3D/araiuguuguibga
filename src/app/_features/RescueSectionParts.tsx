@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 export function RescueEmptyState() {
   return (
-    <section id="adopt" className="min-h-[70vh] px-4 py-12">
+    <section id="adopt" className="scroll-mt-28 min-h-[70vh] px-4 py-12">
       <div className="flex justify-center">
         <div className="mb-8 text-left w-345">
           <motion.h1
@@ -51,10 +51,10 @@ export function RescueHeader() {
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="flex items-end justify-between gap-4">
           {/* Left text */}
           <div className="flex flex-col gap-1">
-            <span className="text-2xl md:text-4xl font-black" style={{ fontFamily: "'Comic Sans MS', cursive", color: '#fc8d0e' }}>
+            <span className="text-2xl md:text-4xl font-black" style={{ fontFamily: "'Comic Sans MS', cursive", color: 'black' }}>
               Тусламж хэрэгтэй амьтад
             </span>
-            <span className="text-sm md:text-base font-semibold pl-1" style={{ fontFamily: "'Comic Sans MS', cursive", color: '#43342D' }}>
+            <span className="text-sm md:text-base font-semibold pl-1" style={{ fontFamily: "'Comic Sans MS', cursive", color: '#FFBE98' }}>
               Эдгээр амьтад үүрдийн гэрээ хайж байна
             </span>
           </div>
@@ -70,6 +70,7 @@ export function RescueHeader() {
     hover:after:w-full
     hover:bg-[#ff944c] hover:text-white
   "
+            style={{ fontFamily: "'Comic Sans MS', cursive", color: 'black' }}
           >
             Бүгдийг харах →
           </Link>

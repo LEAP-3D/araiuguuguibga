@@ -41,7 +41,7 @@ export function HeroSection({ onOpenChat }: { onOpenChat?: () => void }) {
           <div className="space-y-2">
             <h1 className="w-full max-w-[36rem] text-4xl sm:text-5xl md:text-7xl font-extrabold text-[#2D2D2D] leading-[1.1] break-words">
               Бид Таны Хайртай Амьтдын <br />
-              <span className="text-[#eda92b]" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+              <span className="text-[#FFBE98]" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
                 Эрхэм Хамгаалагч
               </span>
             </h1>
