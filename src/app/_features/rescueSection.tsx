@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { usePosts } from '@/lib/postsContext';
 import { RescueEmptyState, RescueHeader } from './RescueSectionParts';
 import { RescuePetCard, RescueFooterActions } from './RescuePetCard';
+import { NeonGradientCard } from '@/components/ui/neon-gradient-card';
 import { CuteSleepingCatLoader } from '../_components/loading/CuteSleepingCatLoader';
 
 const FILTERS = [
@@ -41,10 +42,10 @@ export function RescuePetsSection() {
 
   if (postsLoading) {
     return (
-      <section id="adopt" className="scroll-mt-28 min-h-[70vh] px-4 py-12">
+      <section id="adopt" className="scroll-mt-28 min-h-[70vh] px-4 py-12 flex flex-col">
         <RescueHeader />
-        <div className="w-360 h-screen flex items-center justify-center">
-          <div className="w-64 h-64 ">
+        <div className="flex-1 w-full flex items-center justify-center min-h-[50vh]">
+          <div className="w-64 h-64">
             <CuteSleepingCatLoader />
           </div>
         </div>
@@ -72,10 +73,17 @@ export function RescuePetsSection() {
             </button>
           ))}
         </div>
-        <div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="overflow-visible">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 overflow-visible">
             {displayPosts.map((post) => (
-              <RescuePetCard key={post.id} post={post} isFavorite={favorites.has(post.id)} onToggleFavorite={toggleFavorite} />
+              <NeonGradientCard
+                key={post.id}
+                borderSize={3}
+                borderRadius={24}
+                neonColors={{ firstColor: '#ff9a56', secondColor: '#FFBE98' }}
+              >
+                <RescuePetCard post={post} isFavorite={favorites.has(post.id)} onToggleFavorite={toggleFavorite} noBorder />
+              </NeonGradientCard>
             ))}
           </div>
         </div>

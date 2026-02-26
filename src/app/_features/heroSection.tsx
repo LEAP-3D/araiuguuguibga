@@ -5,6 +5,7 @@ import { useUser } from '@clerk/nextjs';
 import { MessageCircle, Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { ShinyButton } from '@/components/ui/shiny-button';
 export function HeroSection({ onOpenChat }: { onOpenChat?: () => void }) {
   const { isSignedIn } = useUser();
   const [mounted, setMounted] = useState(false);
@@ -85,30 +86,20 @@ export function HeroSection({ onOpenChat }: { onOpenChat?: () => void }) {
             transition={{ delay: 0.55, duration: 0.55 }}
             className="flex flex-col md:flex-row md:items-end md:justify-between gap-3"
           >
-            <motion.button
-              whileHover={{ scale: 1.05, boxShadow: '0 16px 36px rgba(255,120,45,0.4)' }}
-              whileTap={{ scale: 0.95 }}
+            <ShinyButton
               onClick={onOpenChat}
-              className="btn-shine relative flex items-center gap-2 cursor-pointer rounded-full px-8 py-3.5 text-base border-[#FF782D] border-2 font-bold bg-[#FF782D] text-white overflow-hidden group transition-all duration-300"
-              style={{
-                fontFamily: "'Outfit', sans-serif",
-                boxShadow: '0 8px 24px rgba(255,120,45,0.3)',
-              }}
+              className="font-[Outfit,sans-serif]"
             >
-              <MessageCircle className="h-5 w-5" />
+              <MessageCircle className="h-5 w-5 shrink-0" />
               AI туслах
-            </motion.button>
-            <Link href={servicesHref}>
-              <motion.div
-                whileHover={{ scale: 1.05, backgroundColor: '#FF782D', color: '#fff', borderColor: '#FF782D' }}
-                whileTap={{ scale: 0.95 }}
-                className="relative flex items-center gap-2 cursor-pointer rounded-full px-8 py-3.5 text-base font-bold border-2 border-[#FF782D] text-[#FF782D] bg-transparent overflow-hidden group transition-all duration-300"
-                style={{ fontFamily: "'Outfit', sans-serif" }}
-              >
-                <Heart className="h-5 w-5" />
-                Манай үйлчилгээ
-              </motion.div>
-            </Link>
+            </ShinyButton>
+            <ShinyButton
+              href={servicesHref}
+              className="font-[Outfit,sans-serif]"
+            >
+              <Heart className="h-5 w-5 shrink-0" />
+              Манай үйлчилгээ
+            </ShinyButton>
           </motion.div>
           <div className="flex flex-row gap-6 pt-4">
             {[

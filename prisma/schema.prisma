@@ -40,17 +40,20 @@ model FcmToken {
 }
 
 model RescuePost {
-  id          String   @id @default(nanoid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name        String
-  breed       String?
-  age         String?
-  type        String // dog | cat | other
-  description String?
-  location    String
-  image       String?
-  createdAt   DateTime @default(now())
+  id           String   @id @default(nanoid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  breed        String?
+  age          String?
+  type         String // dog | cat | other
+  description  String?
+  location     String
+  image        String?
+  contactName  String?
+  contactPhone String?
+  contactNotes String?
+  createdAt    DateTime @default(now())
 }
 
 model Pet {
