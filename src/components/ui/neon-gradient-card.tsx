@@ -1,15 +1,15 @@
 "use client";
 
-import { ReactElement, ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
-interface NeonColorsProps {
+type NeonColorsProps = {
   firstColor: string;
   secondColor: string;
-}
+};
 
-interface NeonGradientCardProps extends React.HTMLAttributes<HTMLDivElement> {
+type NeonGradientCardProps = React.HTMLAttributes<HTMLDivElement> & {
   as?: ReactElement;
   className?: string;
   children?: ReactNode;
@@ -17,7 +17,7 @@ interface NeonGradientCardProps extends React.HTMLAttributes<HTMLDivElement> {
   borderRadius?: number;
   neonColors?: NeonColorsProps;
   innerClassName?: string;
-}
+};
 
 export const NeonGradientCard: React.FC<NeonGradientCardProps> = ({
   className,

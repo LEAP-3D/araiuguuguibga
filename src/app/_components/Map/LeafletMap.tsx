@@ -35,7 +35,7 @@ function MapController({ mapRef }: { mapRef: React.MutableRefObject<L.Map | null
   const map = useMap();
   useEffect(() => {
     mapRef.current = map;
-  }, [map]);
+  }, [map, mapRef]);
   return null;
 }
 
@@ -45,7 +45,7 @@ function FlyToUser({ location }: { location: [number, number] | null }) {
     if (location) {
       map.flyTo(location, 15);
     }
-  }, [location]);
+  }, [location, map]);
   return null;
 }
 
