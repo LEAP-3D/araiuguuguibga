@@ -22,7 +22,7 @@ type NeonGradientCardProps = React.HTMLAttributes<HTMLDivElement> & {
 export const NeonGradientCard: React.FC<NeonGradientCardProps> = ({
   className,
   children,
-  borderSize = 3,
+  borderSize = 1,
   borderRadius = 24,
   innerClassName,
   neonColors = {

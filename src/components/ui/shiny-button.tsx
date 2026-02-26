@@ -6,7 +6,7 @@ import { motion, type MotionProps } from "framer-motion";
 
 import { cn } from "@/lib/utils";
 
-const animationProps: MotionProps = {
+const animationProps = {
   initial: { "--x": "100%", scale: 0.8 } as React.CSSProperties & { "--x"?: string },
   animate: { "--x": "-100%", scale: 1 } as React.CSSProperties & { "--x"?: string },
   whileTap: { scale: 0.95 },
@@ -26,7 +26,7 @@ const animationProps: MotionProps = {
       mass: 0.5,
     },
   },
-};
+} as MotionProps;
 
 type ShinyButtonProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, keyof MotionProps> &
   Partial<MotionProps> & {

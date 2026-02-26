@@ -80,7 +80,7 @@ export function VeterinarySection() {
 
         <div className="mx-auto flex h-150 max-w-7xl flex-col gap-4 lg:flex-row lg:gap-6">
           {/* Map Хэсэг */}
-          <NeonGradientCard borderSize={3} borderRadius={16} neonColors={{ firstColor: '#4f9669', secondColor: '#7ab88a' }} innerClassName="bg-transparent" className="min-h-0 flex-1">
+          <NeonGradientCard borderSize={1} borderRadius={16} neonColors={{ firstColor: '#4f9669', secondColor: '#7ab88a' }} innerClassName="bg-transparent" className="min-h-0 flex-1">
           <div className="min-h-0 flex-1 overflow-hidden relative">
             <MapPlaceholder
               vets={filteredVets}
@@ -98,7 +98,7 @@ export function VeterinarySection() {
           </NeonGradientCard>
 
           {/* Sidebar Хэсэг */}
-          <NeonGradientCard borderSize={3} borderRadius={16} neonColors={{ firstColor: '#4f9669', secondColor: '#7ab88a' }} className="flex min-h-0 w-full flex-col lg:w-[350px] lg:flex-initial">
+          <NeonGradientCard borderSize={1} borderRadius={16} neonColors={{ firstColor: '#4f9669', secondColor: '#7ab88a' }} className="flex min-h-0 w-full flex-col lg:w-[350px] lg:flex-initial">
           <div className="flex min-h-0 w-full flex-col bg-white lg:w-full">
             {/* Search */}
             <div className="border-b border-gray-100 p-3">

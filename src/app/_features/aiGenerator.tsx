@@ -67,7 +67,7 @@ export default function AiGenerator() {
         <div className="grid items-start gap-8 lg:grid-cols-[1fr_480px]">
           {/* Зураг оруулах */}
           <div className="flex w-full flex-col">
-            <NeonGradientCard borderSize={3} borderRadius={24} neonColors={{ firstColor: '#ff9a56', secondColor: '#FFBE98' }} className="min-h-96">
+            <NeonGradientCard borderSize={1} borderRadius={24} neonColors={{ firstColor: '#ff9a56', secondColor: '#FFBE98' }} className="min-h-96">
             <div className="relative min-h-96 w-full overflow-hidden bg-white/50">
               {image ? (
                 <>
@@ -107,7 +107,7 @@ export default function AiGenerator() {
           </div>
 
           {/* Үр дүн */}
-          <NeonGradientCard borderSize={3} borderRadius={24} neonColors={{ firstColor: '#ff9a56', secondColor: '#FFBE98' }} className="h-[620px] min-h-[480px]">
+          <NeonGradientCard borderSize={1} borderRadius={24} neonColors={{ firstColor: '#ff9a56', secondColor: '#FFBE98' }} className="h-[620px] min-h-[480px]">
           <div className="flex h-[620px] min-h-[480px] w-full flex-col overflow-hidden bg-white">
             <div className="border-b border-zinc-100 px-6 py-4">
               <h3 className="flex items-center gap-2 text-xl font-black text-[#43342D]">

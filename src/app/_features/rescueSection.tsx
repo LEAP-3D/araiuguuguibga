@@ -78,7 +78,7 @@ export function RescuePetsSection() {
             {displayPosts.map((post) => (
               <NeonGradientCard
                 key={post.id}
-                borderSize={3}
+                borderSize={1}
                 borderRadius={24}
                 neonColors={{ firstColor: '#ff9a56', secondColor: '#FFBE98' }}
               >
