@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 export function RescueEmptyState() {
   return (
-    <section id="adopt" className="scroll-mt-28 min-h-[70vh] px-4 py-12">
+    <section id="adopt" className="scroll-mt-28 min-h-[70vh] px-4 py-12" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
       <div className="flex justify-center">
         <div className="mb-8 text-left w-345">
           <motion.h1
@@ -19,15 +19,7 @@ export function RescueEmptyState() {
               Тусламж хэрэгтэй амьтад
             </span>
 
-            <span
-              className="block text-1xl md:text-3xl font-bold "
-              style={{
-                fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive",
-                color: '#86D2D9',
-              }}
-            >
-              Эдгээр амьтад үүрдийн гэрээ хайж байна
-            </span>
+            <span className="block text-1xl md:text-3xl font-bold ">Эдгээр амьтад үүрдийн гэрээ хайж байна</span>
           </motion.h1>
         </div>
         <div className="mx-auto flex h-[600px] max-w-7xl flex-col items-center justify-center rounded-2xl border-2 border-dashed border-amber-200 bg-white/50">
@@ -48,29 +40,31 @@ export function RescueHeader() {
   return (
     <div className="flex justify-center">
       <div className="mb-8 px-11 w-345">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="flex items-end justify-between gap-4">
+        <motion.div
+          style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="flex items-end justify-between gap-4"
+        >
           {/* Left text */}
           <div className="flex flex-col gap-1">
-            <span className="text-2xl md:text-4xl font-black" style={{ fontFamily: "'Comic Sans MS', cursive", color: 'black' }}>
-              Тусламж хэрэгтэй амьтад
-            </span>
-            <span className="text-sm md:text-base font-semibold pl-1" style={{ fontFamily: "'Comic Sans MS', cursive", color: '#FFBE98' }}>
-              Эдгээр амьтад үүрдийн гэрээ хайж байна
-            </span>
+            <span className="text-2xl md:text-4xl font-black">Тусламж хэрэгтэй амьтад</span>
+            <span className="text-sm md:text-base font-semibold pl-1 text-[#fbb2a3]">Эдгээр амьтад үүрдийн гэрээ хайж байна</span>
           </div>
 
           {/* Right action */}
           <Link
             href="/dashboard/find-animals"
-            className="
+            className="font-medium
     relative inline-block px-3 py-2
-    text-black font-normal text-base
+    text-black text-base
     rounded-md
     transition-all duration-300
     hover:after:w-full
     hover:bg-[#ff944c] hover:text-white
   "
-            style={{ fontFamily: "'Comic Sans MS', cursive", color: 'black' }}
           >
             Бүгдийг харах →
           </Link>

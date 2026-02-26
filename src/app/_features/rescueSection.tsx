@@ -43,8 +43,8 @@ export function RescuePetsSection() {
     return (
       <section id="adopt" className="scroll-mt-28 min-h-[70vh] px-4 py-12">
         <RescueHeader />
-        <div className="w-screen h-screen flex items-center justify-center">
-          <div className="w-64 h-64">
+        <div className="w-360 h-screen flex items-center justify-center">
+          <div className="w-64 h-64 ">
             <CuteSleepingCatLoader />
           </div>
         </div>
