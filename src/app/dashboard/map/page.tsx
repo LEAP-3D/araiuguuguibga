@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import LeafletMap from '@/app/_components/Map';
+import ListView from '@/app/_components/Map/ListView';
 
 export default function Map() {
   const [selected, setSelected] = useState<'1km' | '3km' | '5km'>('1km');
@@ -80,7 +81,7 @@ export default function Map() {
           </div>
         </div>
       </div>
-      <LeafletMap selectedType={selectedType} selectedDistance={selected} />
+      {selectedView === 'map' ? <LeafletMap selectedType={selectedType} selectedDistance={selected} /> : <ListView selectedType={selectedType} selectedDistance={selected} />}
     </div>
   );
 }

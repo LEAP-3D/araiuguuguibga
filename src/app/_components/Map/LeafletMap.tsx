@@ -78,8 +78,8 @@ export default function LeafletMap({ selectedType, selectedDistance }: Props) {
   return (
     <div className="h-130 w-220 relative">
       {/* Button sits on top of the map */}
-      <button onClick={handleMyLocation} className="absolute top-4 right-4 z-[1000] bg-white px-3 py-2 rounded-lg shadow hover:bg-orange-50 transition">
-        📍 My Location
+      <button onClick={handleMyLocation} className="absolute bottom-4 right-4 z-[1000] bg-[#fe8c09] px-3.5 py-1 text-white font-semibold text-[15px] rounded-2xl shadow hover:bg-orange-50 transition">
+        Миний байршил
       </button>
 
       <MapContainer center={[47.9212, 106.9057]} zoom={13} scrollWheelZoom={false} className="h-full w-full">
@@ -94,7 +94,7 @@ export default function LeafletMap({ selectedType, selectedDistance }: Props) {
             {/* Outer pulse ring */}
             <Circle center={userLocation} radius={40} pathOptions={{ color: '#3b82f6', fillColor: '#93c5fd', fillOpacity: 0.3, weight: 1 }} />
             {/* Distance radius */}
-            <Circle center={userLocation} radius={getRadius()} pathOptions={{ color: 'orange', fillColor: 'orange', fillOpacity: 0.08, weight: 1.5 }} />
+            <Circle center={userLocation} radius={getRadius()} pathOptions={{ color: 'orange', fillColor: 'orange', fillOpacity: 0.18, weight: 2.5 }} />
             <FlyToUser location={userLocation} />
           </>
         )}
