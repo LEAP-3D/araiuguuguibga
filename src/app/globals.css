@@ -1,6 +1,12 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+.great-vibes-regular {
+  font-family: 'Great Vibes', cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
 @keyframes float {
   from {
     transform: translateY(0px);
@@ -152,15 +158,24 @@
 
 /* ——— PWA / утасны апп: дэлгэцний аюулгүй бүс (notch, home indicator) ——— */
 @supports (padding: env(safe-area-inset-top)) {
-  .safe-area-inset-top { padding-top: env(safe-area-inset-top); }
-  .safe-area-inset-bottom { padding-bottom: env(safe-area-inset-bottom); }
-  .safe-area-inset-left { padding-left: env(safe-area-inset-left); }
-  .safe-area-inset-right { padding-right: env(safe-area-inset-right); }
+  .safe-area-inset-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  .safe-area-inset-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .safe-area-inset-left {
+    padding-left: env(safe-area-inset-left);
+  }
+  .safe-area-inset-right {
+    padding-right: env(safe-area-inset-right);
+  }
 }
 
 /* Standalone (суулгасан апп) режимд бүтэн дэлгэц, safe area ——— */
 @media (display-mode: standalone) {
-  html, body {
+  html,
+  body {
     min-height: 100dvh;
     padding-top: env(safe-area-inset-top, 0px);
     padding-bottom: env(safe-area-inset-bottom, 0px);

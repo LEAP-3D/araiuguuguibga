@@ -76,7 +76,7 @@ export default function HomeClient() {
         #home-theme .bg-\\[\\#fba925\\],
         #home-theme .bg-\\[\\#f88a0c\\],
         #home-theme .bg-\\[\\#4f9669\\] {
-          background-color: #FFBE98 !important;
+          background-color: #ffbe98 !important;
         }
 
         #home-theme .hover\\:bg-\\[\\#f06f23\\]:hover,
@@ -84,20 +84,20 @@ export default function HomeClient() {
         #home-theme .hover\\:bg-\\[\\#f89d35\\]:hover,
         #home-theme .hover\\:bg-\\[\\#5d8a60\\]:hover,
         #home-theme .hover\\:bg-\\[\\#f47d46\\]:hover {
-          background-color: #FFBE98 !important;
+          background-color: #ffbe98 !important;
         }
 
         #home-theme .text-\\[\\#FF782D\\],
         #home-theme .text-\\[\\#fc8d0e\\],
         #home-theme .text-\\[\\#fba925\\] {
-          color: #FFBE98 !important;
+          color: #ffbe98 !important;
         }
 
         #home-theme .border-\\[\\#FF782D\\],
         #home-theme .border-\\[\\#fc8d0e\\],
         #home-theme .border-\\[\\#f88a0c\\],
         #home-theme .border-\\[\\#4f9669\\] {
-          border-color: #FFBE98 !important;
+          border-color: #ffbe98 !important;
         }
       `}</style>
     </PawBackground>
