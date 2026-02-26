@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Geist, Geist_Mono, Great_Vibes } from 'next/font/google';
 import { ClerkProvider } from '@clerk/nextjs';
 import { Providers } from './_components/Providers';
 import { ChatOpenProvider } from './_contexts/ChatContext';
@@ -8,6 +8,11 @@ import './globals.css';
 import 'leaflet/dist/leaflet.css';
 import { PetsProvider } from '@/lib/petsContext';
 
+const greatVibes = Great_Vibes({
+  variable: '--font-great-vibes',
+  subsets: ['latin'],
+  weight: '400',
+});
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -57,7 +62,7 @@ export default function RootLayout({
   const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? '';
   const content = (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${greatVibes.variable} antialiased`}>
         <Providers>
           <ChatOpenProvider>
             <PetsProvider>

@@ -99,7 +99,7 @@ export default function AiGenerator() {
   };
 
   return (
-    <div className="mx-auto my-10 w-full max-w-6xl p-4">
+    <div className="mx-auto my-10 w-full max-w-6xl p-4" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
       <div className="mb-10 text-center">
         <h1 className="text-3xl font-black uppercase text-zinc-900">AI Assistant</h1>
         <p className="text-sm font-medium text-[#c77747]">Мэргэжлийн эмчийн онош биш болохыг анхаарна уу.</p>

@@ -68,17 +68,11 @@ export function VeterinarySection() {
         <div className="mb-8 text-center">
           <div className="mb-2 inline-flex items-center align-center gap-2 rounded-full px-4 py-1.5">
             <MapPin className="h-9 w-9 text-[#cd1c18]" />
-            <span className="block text-2xl md:text-4xl font-bold text-black drop-shadow-sm" style={{ fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive", color: '#43342D' }}>
+            <span className="block text-2xl md:text-4xl font-bold text-black " style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif', color: '#43342D' }}>
               Танд хамгийн ойр байгаа <span>эмнэлэгүүд</span>
             </span>
           </div>
-          <p
-            className="hidden md:block text-2xl md:text-xl font-bold drop-shadow-sm"
-            style={{
-              fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive",
-              color: '#E8B07E',
-            }}
-          >
+          <p className="hidden md:block text-2xl md:text-xl font-bold " style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif', color: '#E8B07E' }}>
             Эмнэлэгүүдийн байршил болон мэдээллийг эндээс харж болно
           </p>
         </div>
