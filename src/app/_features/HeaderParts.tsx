@@ -9,7 +9,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import Logo from '../_components/Logo';
 
 const navLinkClass = `
-  relative font-bold text-lg text-gray-600 cursor-pointer
+  relative bg-transparent border-0 font-bold text-lg text-gray-600 cursor-pointer
   transition-colors duration-300 hover:text-black
   after:content-['']
   after:absolute after:left-0 after:-bottom-1
@@ -31,14 +31,22 @@ export function HeaderLogo() {
 }
 
 export function HeaderNavLinks({ isSignedIn: _isSignedIn = false }: { isSignedIn?: boolean }) {
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const headerOffset = 96;
+    const y = el.getBoundingClientRect().top + window.scrollY - headerOffset;
+    window.scrollTo({ top: Math.max(y, 0), behavior: 'smooth' });
+  };
+
   return (
     <div className="hidden md:flex items-center gap-8" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
-      <a style={{ color: '#43342D' }} href="#adopt" className={navLinkClass}>
+      <button type="button" style={{ color: '#43342D' }} onClick={() => scrollToSection('adopt')} className={navLinkClass}>
         Амьтны мэдээлэл
-      </a>
-      <a style={{ color: '#43342D' }} href="#vets" className={navLinkClass}>
+      </button>
+      <button type="button" style={{ color: '#43342D' }} onClick={() => scrollToSection('vets')} className={navLinkClass}>
         Эмнэлэг байршил
-      </a>
+      </button>
       {/* <a style={{ color: '#43342D' }} className={navLinkClass}>Community</a> */}
       {/* <Link style={{ color: '#43342D' }} href={isSignedIn ? '/dashboard' : '/sign-in'} className={navLinkClass}>
         Dashboard
@@ -124,18 +132,18 @@ export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: He
   );
 }
 
-const navClassName = 'relative w-full z-50 pt-7 bg-transparent';
+const navClassName = 'sticky top-0 relative w-full z-50 bg-white/75 backdrop-blur-md border-b border-white/70';
 const navMotion = {
-  initial: { y: -80, opacity: 0 },
+  initial: { y: 0, opacity: 1 },
   animate: { y: 0, opacity: 1 },
-  transition: { duration: 0.6, ease: 'easeOut' as const },
+  transition: { duration: 0.2, ease: 'easeOut' as const },
 };
 
 export function HeaderShell({ children, isSignedIn = false }: { children: React.ReactNode; isSignedIn?: boolean }) {
   return (
     <motion.nav className={navClassName} {...navMotion}>
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex h-16 items-center justify-between">
           <HeaderLogo />
           <HeaderNavLinks isSignedIn={isSignedIn} />
           <div className="hidden md:flex items-center gap-4">{children}</div>

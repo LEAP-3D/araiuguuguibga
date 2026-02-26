@@ -11,7 +11,7 @@ export default function Logo() {
         </motion.div>
         <span className="text-2xl font-bold" style={{ fontFamily: "'Comic Sans MS', 'Marker Felt', 'Chalkboard SE', cursive" }}>
           <span className="text-[#9400d3]">Pet</span>
-          <span className="text-[#e08f1d]">World</span>
+          <span className="text-[#FFBE98]">World</span>
         </span>
       </div>
     </Link>

@@ -63,7 +63,7 @@ export function VeterinarySection() {
   };
 
   return (
-    <section id="vets" className="min-h-[70vh] px-4 py-12">
+    <section id="vets" className="scroll-mt-28 min-h-[70vh] px-4 py-12">
       <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false }} transition={{ duration: 0.6, ease: 'easeOut' }} className="leading-tight">
         <div className="mb-8 text-center">
           <div className="mb-2 inline-flex items-center align-center gap-2 rounded-full px-4 py-1.5">
