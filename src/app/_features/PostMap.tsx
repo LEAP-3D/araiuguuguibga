@@ -22,13 +22,13 @@ type Props = {
 export default function PostMap({ lat, lng }: Props) {
   if (!Number.isFinite(lat as number) || !Number.isFinite(lng as number)) {
     return (
-      <div className="w-full h-48  ">
+      <div className="h-full min-h-[320px] w-full">
         <CuteSleepingCatLoader />
       </div>
     );
   }
   return (
-    <div className="w-full h-38  overflow-hidden">
+    <div className="h-full min-h-[320px] w-full overflow-hidden">
       <MapContainer center={[lat as number, lng as number]} zoom={15} scrollWheelZoom={false} className="w-full h-full">
         <TileLayer attribution="&copy; OpenStreetMap contributors" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
