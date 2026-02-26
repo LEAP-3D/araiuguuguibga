@@ -93,7 +93,7 @@ export function DashboardClientShell({ children }: { children: React.ReactNode }
 
         {/* Desktop only: back to home link */}
       </header>
-      <div className="hidden md:block px-10 w-fit pb-2 mt-7">
+      <div className="hidden md:block px-10 w-fit pb-2 mt-4">
         <Link href="/" className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-amber-50 hover:text-amber-700">
           <ArrowLeft className="h-4 w-4" />
           Нүүр лүү буцах
@@ -125,7 +125,10 @@ export function DashboardClientShell({ children }: { children: React.ReactNode }
         {/* Утас дээр мэдэгдэл ирүүлэх — зөвлөмж (зөвхөн mobile) */}
         <div className="md:hidden w-full max-w-[450px] mb-3 rounded-xl bg-sky-50 border border-sky-200 px-4 py-3">
           <p className="text-sm text-sky-900 font-medium">Утас дээр мэдэгдэл авах</p>
-          <p className="text-xs text-sky-800 mt-1">Энэ хуудсыг утаснаасаа нээгээд дээд талын &quot;Мэдэгдэл&quot; дарж зөвшөөрнө. Android: Chrome. iPhone: Safari эсвэл Chrome. Ирэхгүй бол браузерын &quot;Гэрт нэмэх&quot; хийгээд дахин идэвхжүүлэх; утасны Тохиргоо → Мэдэгдэл дотор энэ сайтыг идэвхтэй эсэхийг шалгана.</p>
+          <p className="text-xs text-sky-800 mt-1">
+            Энэ хуудсыг утаснаасаа нээгээд дээд талын &quot;Мэдэгдэл&quot; дарж зөвшөөрнө. Android: Chrome. iPhone: Safari эсвэл Chrome. Ирэхгүй бол браузерын &quot;Гэрт нэмэх&quot; хийгээд дахин
+            идэвхжүүлэх; утасны Тохиргоо → Мэдэгдэл дотор энэ сайтыг идэвхтэй эсэхийг шалгана.
+          </p>
         </div>
         <div className="w-full flex justify-center">{children}</div>
       </main>

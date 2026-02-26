@@ -76,7 +76,7 @@ export default function LeafletMap({ selectedType, selectedDistance }: Props) {
   };
 
   return (
-    <div className="h-130 w-220 relative">
+    <div className="h-230 w-320 relative">
       {/* Button sits on top of the map */}
       <button onClick={handleMyLocation} className="absolute bottom-4 right-4 z-[1000] bg-[#fe8c09] px-3.5 py-1 text-white font-semibold text-[15px] rounded-2xl shadow hover:bg-orange-50 transition">
         Миний байршил
