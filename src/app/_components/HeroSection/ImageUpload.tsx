@@ -1,5 +1,7 @@
 'use client';
 
+import { Camera } from 'lucide-react';
+
 type ImageUploadProps = {
   image: string | null;
   loading: boolean;
@@ -21,7 +23,7 @@ export const ImageUpload = ({ image, loading, onImageChange, onRemove, onAnalyze
         </>
       ) : (
         <label className="flex flex-col items-center justify-center h-80 cursor-pointer">
-          <span className="text-3xl mb-2">📷</span>
+          <Camera />
           <p className="font-bold text-gray-400 text-xs uppercase">Зураг оруулах</p>
           <input type="file" className="hidden" onChange={onImageChange} accept="image/*" />
         </label>

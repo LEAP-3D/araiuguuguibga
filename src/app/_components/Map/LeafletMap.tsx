@@ -111,7 +111,7 @@ export default function LeafletMap({ selectedType, selectedDistance }: Props) {
 
         <FullscreenToggle isFullScreen={isFullScreen} setIsFullScreen={handleFullScreenChange} />
 
-        <MapContainer center={[47.9212, 106.9057]} zoom={13} scrollWheelZoom={false} className="h-full w-full">
+        <MapContainer center={[47.917245, 106.917727]} zoom={13} scrollWheelZoom={false} className="h-full w-full">
           <MapController mapRef={mapRef} />
           <TileLayer attribution="&copy; OpenStreetMap contributors" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 

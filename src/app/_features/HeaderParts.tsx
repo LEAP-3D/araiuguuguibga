@@ -57,7 +57,7 @@ export function HeaderNavLinks({ isSignedIn = false }: { isSignedIn?: boolean })
             Миний амьтан
           </Link>
           <Link href="/dashboard/add-post" className={navLinkClass}>
-            Post оруулах
+            Пост оруулах
           </Link>
         </>
       ) : null}

@@ -5,6 +5,7 @@ import type { ChangeEvent } from 'react';
 import type { PetAnalysisResult } from '../_components/types';
 import { NeonGradientCard } from '@/components/ui/neon-gradient-card';
 import { AiGeneratorTabContent } from './AiGeneratorTabContent';
+import { Camera } from 'lucide-react';
 
 type TabType = 'general' | 'care' | 'tips';
 
@@ -86,7 +87,7 @@ export default function AiGenerator() {
                   <label className="group flex min-h-full w-full cursor-pointer flex-col items-center justify-center gap-4 text-zinc-700 transition-all duration-300 active:scale-95">
                     {/* Камерын эможи бүхий бөөрөнхий хэсэг */}
                     <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#fc8d0e] shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-[#fc8d0e]/40">
-                      <span className="text-3xl">📸</span>
+                      <Camera />
                     </div>
 
                     <div className="text-center transition-all duration-300 group-hover:translate-y-1">
