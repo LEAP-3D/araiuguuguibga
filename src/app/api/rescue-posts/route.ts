@@ -218,6 +218,7 @@ export async function POST(req: Request) {
     const contactPhone = typeof body.contactPhone === 'string' ? body.contactPhone.trim() : '';
     const contactNotes = typeof body.contactNotes === 'string' ? body.contactNotes.trim() : '';
     const location = typeof body.location === 'string' ? body.location.trim() || null : null;
+    const locationForCreate = location ?? '';
     const rawImages = body.images;
     const imagesFromArray = Array.isArray(rawImages) ? rawImages.filter((img): img is string => typeof img === 'string' && img.trim().length > 0) : [];
     const singleImage = typeof body.image === 'string' && body.image.trim().length > 0 ? body.image.trim() : '';
@@ -245,7 +246,7 @@ export async function POST(req: Request) {
           color,
           size,
           note: persistedNote,
-          location,
+          location: locationForCreate,
           images,
         },
       });
