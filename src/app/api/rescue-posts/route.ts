@@ -42,6 +42,9 @@ export async function GET(req: Request) {
         description: true,
         location: true,
         image: true,
+        contactName: true,
+        contactPhone: true,
+        contactNotes: true,
         createdAt: true,
       },
     });
@@ -56,6 +59,9 @@ export async function GET(req: Request) {
         description: p.description ?? "",
         location: p.location,
         image: p.image ?? "",
+        contactName: p.contactName ?? "",
+        contactPhone: p.contactPhone ?? "",
+        contactNotes: p.contactNotes ?? "",
         createdAt: typeof p.createdAt.getTime === "function" ? p.createdAt.getTime() : Number(new Date(p.createdAt)),
       }))
     );
@@ -85,6 +91,9 @@ export async function POST(req: Request) {
     const description = typeof body.description === "string" ? body.description.trim() || null : null;
     const location = typeof body.location === "string" ? body.location.trim() : "";
     const image = typeof body.image === "string" ? body.image.trim() || null : null;
+    const contactName = typeof body.contactName === "string" ? body.contactName.trim() || null : null;
+    const contactPhone = typeof body.contactPhone === "string" ? body.contactPhone.trim() || null : null;
+    const contactNotes = typeof body.contactNotes === "string" ? body.contactNotes.trim() || null : null;
 
     if (!location) {
       return NextResponse.json(
@@ -103,6 +112,9 @@ export async function POST(req: Request) {
         description,
         location,
         image,
+        contactName,
+        contactPhone,
+        contactNotes,
       },
     });
 
@@ -115,6 +127,9 @@ export async function POST(req: Request) {
       description: post.description ?? "",
       location: post.location,
       image: post.image ?? "",
+      contactName: post.contactName ?? "",
+      contactPhone: post.contactPhone ?? "",
+      contactNotes: post.contactNotes ?? "",
       createdAt: post.createdAt.getTime(),
     });
   } catch (err) {

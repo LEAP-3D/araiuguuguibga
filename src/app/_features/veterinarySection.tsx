@@ -9,6 +9,7 @@ import { NoResults } from '../_components/noResult';
 import { mockVets } from '../_components/HeroSection/mockVets';
 import { motion } from 'framer-motion';
 import { VetCard } from '../_components/HeroSection/vetCard';
+import { NeonGradientCard } from '@/components/ui/neon-gradient-card';
 
 const FILTERS = [
   { id: '', label: 'Бүгд' },
@@ -79,7 +80,8 @@ export function VeterinarySection() {
 
         <div className="mx-auto flex h-150 max-w-7xl flex-col gap-4 lg:flex-row lg:gap-6">
           {/* Map Хэсэг */}
-          <div className="min-h-0 flex-1 rounded-xl overflow-hidden shadow-sm relative">
+          <NeonGradientCard borderSize={1} borderRadius={16} neonColors={{ firstColor: '#4f9669', secondColor: '#7ab88a' }} innerClassName="bg-transparent" className="min-h-0 flex-1">
+          <div className="min-h-0 flex-1 overflow-hidden relative">
             <MapPlaceholder
               vets={filteredVets}
               selectedVet={selectedVet}
@@ -93,9 +95,11 @@ export function VeterinarySection() {
               onCancelTemp={() => setTemporaryVet(null)}
             />
           </div>
+          </NeonGradientCard>
 
           {/* Sidebar Хэсэг */}
-          <div className="flex min-h-0 w-full flex-col rounded-xl border border-gray-200 bg-white shadow-sm lg:w-[350px] lg:flex-initial">
+          <NeonGradientCard borderSize={1} borderRadius={16} neonColors={{ firstColor: '#4f9669', secondColor: '#7ab88a' }} className="flex min-h-0 w-full flex-col lg:w-[350px] lg:flex-initial">
+          <div className="flex min-h-0 w-full flex-col bg-white lg:w-full">
             {/* Search */}
             <div className="border-b border-gray-100 p-3">
               <SearchBar query={searchQuery} onChange={setSearchQuery} />
@@ -158,6 +162,7 @@ export function VeterinarySection() {
               <p className="text-center text-xs font-medium text-gray-400">Нийт {filteredVets.length} байршил олдлоо</p>
             </div>
           </div>
+          </NeonGradientCard>
         </div>
       </motion.div>
     </section>

@@ -27,18 +27,19 @@ type RescuePetCardProps = {
   post: Post;
   isFavorite: boolean;
   onToggleFavorite: (id: string) => void;
+  noBorder?: boolean;
 };
 
-export function RescuePetCard({ post, isFavorite, onToggleFavorite }: RescuePetCardProps) {
+export function RescuePetCard({ post, isFavorite, onToggleFavorite, noBorder }: RescuePetCardProps) {
   return (
     <Dialog>
       <form>
         <DialogTrigger asChild>
           <div
-            className="group flex h-[430px] cursor-pointer flex-col overflow-hidden rounded-3xl border border-amber-200/70 bg-white shadow-[0_10px_30px_rgba(120,80,20,0.10)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(120,80,20,0.16)]"
+            className={`group flex h-[520px] cursor-pointer flex-col overflow-hidden rounded-[22px] bg-white shadow-[0_4px_24px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] ${noBorder ? '' : 'border border-amber-200/70'}`}
             style={{ fontFamily: 'ui-rounded, system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}
           >
-            <div className="relative h-52 w-full overflow-hidden">
+            <div className="relative h-[380px] w-full overflow-hidden">
               <PetImage image={post.image} />
               <div className="absolute inset-0 bg-linear-to-t from-black/50 via-black/10 to-transparent" />
               <span className="absolute bottom-3 left-3 inline-flex items-center gap-1 rounded-full bg-white/95 px-3 py-1 text-xs font-bold text-amber-900 shadow-sm">
@@ -57,33 +58,35 @@ export function RescuePetCard({ post, isFavorite, onToggleFavorite }: RescuePetC
               </button>
             </div>
 
-            <div className="flex flex-1 flex-col px-5 pb-5 pt-4">
-              <div className="mb-3 flex items-start justify-between gap-2">
-                <h3 className="text-xl font-extrabold leading-tight text-black">{post.name || 'Нэр тодорхойгүй'}</h3>
-                <span className="shrink-0 rounded-full border border-amber-300 bg-amber-50 px-2.5 py-1 text-[11px] font-bold text-amber-800">#{post.id.slice(0, 6)}</span>
+            <div className="flex flex-1 flex-col px-4 pb-4 pt-4">
+              <div className="mb-2 flex items-start justify-between gap-2">
+                <h3 className="text-base font-extrabold leading-tight text-black">{post.name || 'Нэр тодорхойгүй'}</h3>
+                <span className="shrink-0 rounded-full border border-amber-300 bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-amber-800">#{post.id.slice(0, 6)}</span>
               </div>
 
-              <p className="mb-4 min-h-[62px] line-clamp-3 text-sm leading-relaxed text-zinc-700">{post.description || 'Тайлбар оруулаагүй байна.'}</p>
+              <p className="mb-3 min-h-[48px] line-clamp-3 text-xs leading-relaxed text-zinc-700">{post.description || 'Тайлбар оруулаагүй байна.'}</p>
 
-              <div className="mb-5 grid grid-cols-2 gap-2 text-xs">
-                <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-3 py-1.5 font-medium text-amber-900">
-                  <PawPrint className="h-3.5 w-3.5" />
+              <div className="mb-3 grid grid-cols-2 gap-1.5 text-[11px]">
+                <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 font-medium text-amber-900">
+                  <PawPrint className="h-3 w-3" />
                   {post.breed || 'Үүлдэргүй'}
                 </span>
-                <span className="inline-flex items-center justify-center rounded-full bg-zinc-100 px-3 py-1.5 font-medium text-zinc-700">Нас: {post.age || '—'}</span>
-                <span className="col-span-2 inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1.5 font-medium text-emerald-800">
-                  <MapPin className="h-3.5 w-3.5" />
+                <span className="inline-flex items-center justify-center rounded-full bg-zinc-100 px-2.5 py-1 font-medium text-zinc-700">Нас: {post.age || '—'}</span>
+                <span className="col-span-2 inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 font-medium text-emerald-800">
+                  <MapPin className="h-3 w-3" />
                   {post.location || 'Байршилгүй'}
                 </span>
               </div>
 
-              <div className="mt-auto rounded-xl bg-[#FFBE98] px-4 py-2.5 text-center text-sm font-bold text-zinc-900 transition-opacity group-hover:opacity-95">
-                Дэлгэрэнгүй харах
+              <div className="mt-auto">
+                <span className="inline-block rounded-full bg-[#FFBE98] px-5 py-2 text-center text-xs font-bold text-zinc-900 transition-all duration-300 group-hover:opacity-95 group-hover:scale-105">
+                  Дэлгэрэнгүй харах
+                </span>
               </div>
             </div>
           </div>
         </DialogTrigger>
-        <DialogContent className="h-auto max-h-[92vh] w-[96vw] max-w-5xl overflow-y-auto p-2 md:p-4">
+        <DialogContent className="h-auto max-h-[92vh] w-[96vw] max-w-5xl overflow-y-auto p-2 md:p-4 border-0 outline-none ring-0 focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0">
           <DialogHeader className="hidden">
             <DialogTitle>Edit profile</DialogTitle>
             <DialogDescription>Make changes to your profile here. Click save when you&apos;re done.</DialogDescription>
