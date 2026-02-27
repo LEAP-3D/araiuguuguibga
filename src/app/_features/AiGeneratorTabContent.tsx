@@ -25,7 +25,7 @@ export function AiGeneratorTabContent({ result, activeTab }: { result: PetAnalys
         </div>
         <div className="rounded-2xl border border-zinc-200 bg-amber-50/80 p-4">
           <p className="mb-1 text-[10px] font-bold uppercase text-amber-800/80">
-            Хооллолт · {general.foodGramsPerDay}гр / {general.feedingTimesPerDay}х
+            Хооллолт · {general.foodGramsPerDay} / {general.feedingTimesPerDay}
           </p>
           <p className="text-sm leading-relaxed text-zinc-700">{general.foodType}</p>
         </div>
