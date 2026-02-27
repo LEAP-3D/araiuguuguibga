@@ -203,7 +203,7 @@ export async function POST(req: Request) {
     const userId = await getDbUserId();
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const body = await req.json();
+    const body = (await req.json()) as Record<string, unknown>;
     const status = normalizeStatus(body.status);
     const name = typeof body.name === 'string' ? body.name.trim() : '';
     const color = typeof body.color === 'string' ? body.color.trim() || null : null;
@@ -218,7 +218,8 @@ export async function POST(req: Request) {
     const contactPhone = typeof body.contactPhone === 'string' ? body.contactPhone.trim() : '';
     const contactNotes = typeof body.contactNotes === 'string' ? body.contactNotes.trim() : '';
     const location = typeof body.location === 'string' ? body.location.trim() || null : null;
-    const imagesFromArray = Array.isArray(body.images) ? body.images.filter((img): img is string => typeof img === 'string' && img.trim().length > 0) : [];
+    const rawImages = body.images;
+    const imagesFromArray = Array.isArray(rawImages) ? rawImages.filter((img): img is string => typeof img === 'string' && img.trim().length > 0) : [];
     const singleImage = typeof body.image === 'string' && body.image.trim().length > 0 ? body.image.trim() : '';
     const images = (imagesFromArray.length > 0 ? imagesFromArray : singleImage ? [singleImage] : []).slice(0, 10);
     const baseDescription = description || (note ?? '');
