@@ -81,14 +81,65 @@ export default function AddPetDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <button className="p-4 h-80 rounded-xl border w-60 border-dashed border-[#5e493a] text-center hover:border-[#5e493a] hover:bg-[#8e7f7236] ">
-          <div className="flex justify-center mb-3">
-            <div className="text-5xl font-bold w-13 h-13 rounded-2xl bg-[#5e493a32] flex items-center justify-center ">
-              <PlusIcon className="text-[#5e493a]" />
+        <button
+          className="relative cursor-pointer p-4 h-80 w-60 rounded-3xl text-center overflow-hidden group transition-all duration-300 hover:scale-[1.03] hover:shadow-xl"
+          style={{
+            background: 'linear-gradient(145deg, #fff8f0 0%, #fff3e8 100%)',
+            border: '2px solid #ffd4a8',
+            boxShadow: '0 4px 16px rgba(255, 140, 50, 0.1)',
+          }}
+        >
+          {/* Decorative blobs */}
+          <div
+            style={{
+              position: 'absolute',
+              top: -20,
+              right: -20,
+              width: 80,
+              height: 80,
+              borderRadius: '50%',
+              background: 'rgba(255, 160, 60, 0.15)',
+              transition: 'transform 0.3s',
+            }}
+            className="group-hover:scale-125"
+          />
+          <div
+            style={{
+              position: 'absolute',
+              bottom: -16,
+              left: -16,
+              width: 60,
+              height: 60,
+              borderRadius: '50%',
+              background: 'rgba(100, 200, 130, 0.15)',
+              transition: 'transform 0.3s',
+            }}
+            className="group-hover:scale-125"
+          />
+
+          <div className="relative flex flex-col items-center justify-center h-full gap-3">
+            {/* Icon bubble */}
+            <div
+              className="group-hover:rotate-12 transition-transform duration-300"
+              style={{
+                width: 56,
+                height: 56,
+                borderRadius: 18,
+                background: 'linear-gradient(135deg, #ff9a3c, #ff6b35)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 6px 20px rgba(255, 107, 53, 0.4)',
+              }}
+            >
+              <PlusIcon style={{ color: 'white', width: 28, height: 28, strokeWidth: 2.5 }} />
+            </div>
+            {/* Text */}
+            <div>
+              <div style={{ fontWeight: 700, fontSize: 16, color: '#3d2c1e' }}>Амьтан нэмэх</div>
+              <div style={{ fontSize: 12, color: '#b08060', marginTop: 3, fontWeight: 500 }}>Шинэ тэжээвэр амьтан бүртгэх</div>
             </div>
           </div>
-          <div className="font-semibold text-gray-700">Тэжээвэр амьтан нэмэх</div>
-          <div className="text-xs text-gray-500">Шинэ тэжээвэр амьтан бүртгэх</div>
         </button>
       </DialogTrigger>
       <DialogContent className=" bg-[#fefdfc] rounded-3xl border border-[#f1e6d9] px-6 pb-6 pt-1" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
