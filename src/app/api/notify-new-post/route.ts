@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { currentUser } from '@clerk/nextjs/server';
 import { getAdminMessaging } from '@/lib/firebase-admin';
 import prisma from '@/lib/prisma';
-import { sendNewPostEmail } from '@/lib/email';
+import { sendNewPostEmailsBatch } from '@/lib/email';
 
 /**
  * POST /api/notify-new-post
@@ -37,18 +37,12 @@ export async function POST(req: Request) {
       console.warn('[notify-new-post] FCM failed:', e);
     }
 
-    // 2. Email to all users (including poster – demo-д poster ч имэйл авна)
-    const users = await prisma.user.findMany({
-      select: { email: true },
-    });
-
-    let emailsSent = 0;
-    for (const u of users) {
-      if (!u.email?.trim()) continue;
-      const result = await sendNewPostEmail(u.email, postName, posterName);
-      if (result.ok) emailsSent++;
-      else console.warn('[notify-new-post] Email failed for', u.email, result.error);
-    }
+    // 2. Email to all users (single request: to: [emails] – avoids 429)
+    const users = await prisma.user.findMany({ select: { email: true } });
+    const emails = users.map((u) => u.email).filter((e): e is string => !!e?.trim());
+    const result = await sendNewPostEmailsBatch(emails, postName, posterName);
+    const emailsSent = result.ok ? result.sent : 0;
+    if (!result.ok) console.warn('[notify-new-post] Batch email failed:', result.error);
 
     return NextResponse.json({ fcmSent, emailsSent, totalUsers: users.length });
   } catch (e) {
