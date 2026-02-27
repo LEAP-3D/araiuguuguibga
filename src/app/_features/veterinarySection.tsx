@@ -68,12 +68,12 @@ export function VeterinarySection() {
       <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false }} transition={{ duration: 0.6, ease: 'easeOut' }} className="leading-tight">
         <div className="mb-8 text-center">
           <div className="mb-2 inline-flex items-center align-center gap-2 rounded-full px-4 py-1.5">
-            <MapPin className="h-9 w-9 text-[#cd1c18]" />
+            <MapPin className="h-9 w-9 text-[#fbb2a3]" />
             <span className="block text-2xl md:text-4xl font-bold text-black " style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif', color: '#43342D' }}>
               Танд хамгийн ойр байгаа <span>эмнэлэгүүд</span>
             </span>
           </div>
-          <p className="hidden md:block text-2xl md:text-xl font-bold " style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif', color: '#E8B07E' }}>
+          <p className="hidden md:block text-2xl md:text-xl font-bold " style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif', color: '#fbb2a3' }}>
             Эмнэлэгүүдийн байршил болон мэдээллийг эндээс харж болно
           </p>
         </div>
@@ -81,87 +81,87 @@ export function VeterinarySection() {
         <div className="mx-auto flex h-150 max-w-7xl flex-col gap-4 lg:flex-row lg:gap-6">
           {/* Map Хэсэг */}
           <NeonGradientCard borderSize={1} borderRadius={16} neonColors={{ firstColor: '#4f9669', secondColor: '#7ab88a' }} innerClassName="bg-transparent" className="min-h-0 flex-1">
-          <div className="min-h-0 flex-1 overflow-hidden relative">
-            <MapPlaceholder
-              vets={filteredVets}
-              selectedVet={selectedVet}
-              onSelect={setSelectedVet}
-              temporaryVet={temporaryVet}
-              userLocation={userLocation}
-              setUserLocation={setUserLocation}
-              radius={radius}
-              onMapClick={(lat, lng) => setTemporaryVet({ id: Date.now().toString(), name: '', lat, lng, rating: 0, services: [], isOpen: false, phone: [''], address: '', category: ['emneleg'] })}
-              onSaveTemp={handleSaveTemp}
-              onCancelTemp={() => setTemporaryVet(null)}
-            />
-          </div>
+            <div className="min-h-0 flex-1 overflow-hidden relative">
+              <MapPlaceholder
+                vets={filteredVets}
+                selectedVet={selectedVet}
+                onSelect={setSelectedVet}
+                temporaryVet={temporaryVet}
+                userLocation={userLocation}
+                setUserLocation={setUserLocation}
+                radius={radius}
+                onMapClick={(lat, lng) => setTemporaryVet({ id: Date.now().toString(), name: '', lat, lng, rating: 0, services: [], isOpen: false, phone: [''], address: '', category: ['emneleg'] })}
+                onSaveTemp={handleSaveTemp}
+                onCancelTemp={() => setTemporaryVet(null)}
+              />
+            </div>
           </NeonGradientCard>
 
           {/* Sidebar Хэсэг */}
-          <NeonGradientCard borderSize={1} borderRadius={16} neonColors={{ firstColor: '#4f9669', secondColor: '#7ab88a' }} className="flex min-h-0 w-full flex-col lg:w-[350px] lg:flex-initial">
-          <div className="flex min-h-0 w-full flex-col bg-white lg:w-full">
-            {/* Search */}
-            <div className="border-b border-gray-100 p-3">
-              <SearchBar query={searchQuery} onChange={setSearchQuery} />
-            </div>
-
-            {/* Radius Selector (Шинээр нэмэгдсэн) */}
-            <div className="border-b border-gray-100 p-3 bg-gray-50/50">
-              <p className="text-[11px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Хайх радиус</p>
-              <div className="flex gap-1.5">
-                {RADIUS_OPTIONS.map((r) => (
-                  <button
-                    key={r}
-                    type="button"
-                    onClick={() => setRadius(r)}
-                    className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all border ${
-                      radius === r ? 'bg-[#4f9669] border-[#4f9669] text-white shadow-sm' : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300'
-                    }`}
-                  >
-                    {r < 1000 ? `${r}м` : `${r / 1000}км`}
-                  </button>
-                ))}
+          <NeonGradientCard borderSize={1} borderRadius={16} neonColors={{ firstColor: '#4f9669', secondColor: '#7ab88a' }} className="flex flex-col lg:w-[350px] h-[600px]">
+            <div className="flex flex-col bg-white h-full overflow-hidden" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+              {/* Search */}
+              <div className="border-b border-gray-100 p-3">
+                <SearchBar query={searchQuery} onChange={setSearchQuery} />
               </div>
-            </div>
 
-            {/* Filters */}
-            <div className="flex items-center gap-1 border-b border-gray-100 p-3 overflow-x-auto">
-              <button type="button" className="rounded p-1 text-gray-400 hover:bg-gray-100 shrink-0">
-                <ChevronLeft className="h-4 w-4" />
-              </button>
-              <div className="flex flex-1 gap-2 overflow-x-auto no-scrollbar py-1">
-                {FILTERS.map((f) => (
-                  <button
-                    key={f.id}
-                    type="button"
-                    onClick={() => setActiveFilter(f.id)}
-                    className={`shrink-0 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${activeFilter === f.id ? 'bg-[#4f9669] text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
-                  >
-                    {f.label}
-                  </button>
-                ))}
-              </div>
-              <button type="button" className="rounded p-1 text-gray-400 hover:bg-gray-100 shrink-0">
-                <ChevronRight className="h-4 w-4" />
-              </button>
-            </div>
-
-            {/* Vet list */}
-            <div className="min-h-0 flex-1 overflow-y-auto p-3 space-y-3 custom-scrollbar">
-              {filteredVets.length > 0 ? (
-                filteredVets.map((vet) => <VetCard key={vet.id} vet={vet} selected={selectedVet?.id === vet.id} onSelect={setSelectedVet} />)
-              ) : (
-                <div className="flex flex-col items-center gap-3 py-12 text-center">
-                  <NoResults />
+              {/* Radius Selector (Шинээр нэмэгдсэн) */}
+              <div className="border-b border-gray-100 p-3 bg-gray-50/50">
+                <p className="text-[11px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Хайх радиус</p>
+                <div className="flex gap-1.5">
+                  {RADIUS_OPTIONS.map((r) => (
+                    <button
+                      key={r}
+                      type="button"
+                      onClick={() => setRadius(r)}
+                      className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all border ${
+                        radius === r ? 'bg-[#4f9669] border-[#4f9669] text-white shadow-sm' : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300'
+                      }`}
+                    >
+                      {r < 1000 ? `${r}м` : `${r / 1000}км`}
+                    </button>
+                  ))}
                 </div>
-              )}
-            </div>
+              </div>
 
-            {/* Footer */}
-            <div className="border-t border-gray-100 px-4 py-3 bg-gray-50/30">
-              <p className="text-center text-xs font-medium text-gray-400">Нийт {filteredVets.length} байршил олдлоо</p>
+              {/* Filters */}
+              <div className="flex items-center gap-1 border-b border-gray-100 p-3 overflow-x-auto">
+                <button type="button" className="rounded p-1 text-gray-400 hover:bg-gray-100 shrink-0">
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+                <div className="flex flex-1 gap-2 overflow-x-auto no-scrollbar py-1">
+                  {FILTERS.map((f) => (
+                    <button
+                      key={f.id}
+                      type="button"
+                      onClick={() => setActiveFilter(f.id)}
+                      className={`shrink-0 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${activeFilter === f.id ? 'bg-[#4f9669] text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                    >
+                      {f.label}
+                    </button>
+                  ))}
+                </div>
+                <button type="button" className="rounded p-1 text-gray-400 hover:bg-gray-100 shrink-0">
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
+
+              {/* Vet list */}
+              <div className="min-h-0 flex-1 overflow-y-auto p-3 space-y-3 custom-scrollbar">
+                {filteredVets.length > 0 ? (
+                  filteredVets.map((vet) => <VetCard key={vet.id} vet={vet} selected={selectedVet?.id === vet.id} onSelect={setSelectedVet} />)
+                ) : (
+                  <div className="flex flex-col items-center gap-3 py-12 text-center">
+                    <NoResults />
+                  </div>
+                )}
+              </div>
+
+              {/* Footer */}
+              <div className="border-t border-gray-100 px-4 py-3 bg-gray-50/30">
+                <p className="text-center text-xs font-medium text-gray-400">Нийт {filteredVets.length} байршил олдлоо</p>
+              </div>
             </div>
-          </div>
           </NeonGradientCard>
         </div>
       </motion.div>

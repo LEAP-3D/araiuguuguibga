@@ -1,4 +1,5 @@
 'use client';
+import { useEffect, useRef } from 'react';
 import { Star, Phone, MapPin, Clock, Building2 } from 'lucide-react';
 import type { Veterinary } from '../types';
 
@@ -15,13 +16,27 @@ const categoryLabels: Record<string, string> = {
 };
 
 export function VetCard({ vet, selected, onSelect }: VetCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (selected && cardRef.current) {
+      cardRef.current.scrollIntoView({
+        behavior: 'smooth', // Зөөлөн гүйж очих
+        block: 'nearest', // Хамгийн ойр байрлалд зогсох
+      });
+    }
+  }, [selected]);
+
   const categoryKey = vet.category?.[0] ?? 'emneleg';
   const category = categoryLabels[categoryKey] ?? 'Эмнэлэг';
 
   return (
     <div
+      ref={cardRef} // 4. Ref-ээ div-дээ холбов
       onClick={() => onSelect(vet)}
-      className={`cursor-pointer overflow-hidden rounded-xl border bg-white p-4 shadow-sm transition-all hover:shadow-md ${selected ? 'border-[#f18912] ring-2 ring-[#f18912]/20' : 'border-gray-200'}`}
+      className={`cursor-pointer overflow-hidden rounded-xl border bg-white p-4 shadow-sm transition-all hover:shadow-md 
+        ${selected ? 'border-[#f18912] ring-2 ring-[#f18912]/20 scale-[1.01]' : 'border-gray-200'}
+      `}
     >
       <div className="mb-3 flex items-start justify-between gap-2">
         <div className="flex min-w-0 flex-1 items-start gap-2">

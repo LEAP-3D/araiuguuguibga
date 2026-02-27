@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Circle, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
 import { useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -35,14 +35,14 @@ type Props = {
   setUserLocation?: (loc: { lat: number; lng: number }) => void;
 };
 
-function OnMapClickHandler({ handleClick }: { handleClick: (lat: number, lng: number) => void }) {
-  useMapEvents({
-    click(e) {
-      handleClick(e.latlng.lat, e.latlng.lng);
-    },
-  });
-  return null;
-}
+// function OnMapClickHandler({ handleClick }: { handleClick: (lat: number, lng: number) => void }) {
+//   useMapEvents({
+//     click(e) {
+//       handleClick(e.latlng.lat, e.latlng.lng);
+//     },
+//   });
+//   return null;
+// }
 
 function FlyToSelectedVet({ vet }: { vet: Veterinary | null }) {
   const map = useMap();
@@ -62,7 +62,7 @@ export default function MapPlaceholder({
   onSelect,
   temporaryVet,
   userLocation,
-  onMapClick,
+
   onTempChange,
   onCancelTemp,
 
@@ -86,14 +86,14 @@ export default function MapPlaceholder({
 
   return (
     <div className="h-100 w-full md:h-150 lg:h-200 relative group">
-      <MapContainer center={[47.9212, 106.9057]} scrollWheelZoom={false} zoom={12} whenReady={() => setMapReady(true)} style={{ height: '100%', width: '100%' }} className="rounded-xl z-0">
+      <MapContainer center={[47.9212, 106.9057]} scrollWheelZoom={true} zoom={12} whenReady={() => setMapReady(true)} style={{ height: '100%', width: '100%' }} className="rounded-xl z-0">
         {mapReady && (
           <>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' />
 
             <MapResizeFix />
             <FlyToSelectedVet vet={selectedVet} />
-            <OnMapClickHandler handleClick={onMapClick} />
+            {/* <OnMapClickHandler handleClick={onMapClick} /> */}
 
             {userLocation && userIcon && (
               <>
