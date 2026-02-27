@@ -18,6 +18,7 @@ import { HeaderUserMenu } from '../_features/HeaderParts';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 export type { MedicalRecordItem };
+import Image from 'next/image';
 
 export default function Profile() {
   const { isSignedIn, isLoaded } = useUser();
@@ -146,8 +147,9 @@ export default function Profile() {
           </button>
         </div>
         <div className="flex flex-col gap-10 w-7xl items-center border-7 border-white rounded-3xl p-6 shadow-2xl py-14">
-          <div className="w-6xl flex justify-start">
+          <div className="flex w-full items-center justify-between pr-20 pl-8">
             <ProfileCard />
+            <Image src="/harmony.png" alt="Harmony" width={900} height={600} className="h-60 w-auto object-contain" />
           </div>
 
           {/* PETS SECTION */}

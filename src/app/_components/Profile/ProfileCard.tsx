@@ -138,7 +138,6 @@ export default function ProfileCard() {
             name: displayName,
             avatar: user.image,
             phone: user.phone ?? '',
-            fullAddress: '',
             notes: user.bio ?? '',
           }}
           open={showDetails}
@@ -150,26 +149,31 @@ export default function ProfileCard() {
         />
       )}
       <Dialog open={showEdit} onOpenChange={setShowEdit}>
-        <DialogContent className="w-120 bg-[#fefdfc] rounded-3xl border border-[#f1e6d9] p-8" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-semibold text-[#3b2f2f]">Профайл засах</DialogTitle>
-          </DialogHeader>
-          <ProfileDetails
-            initialName={initialName}
-            initialPhone={user?.phone ?? ''}
-            initialBio={user?.bio ?? ''}
-            onSave={async (data) => {
-              await handleSaveDetails(data);
-              setShowEdit(false);
-            }}
-          />
-          <DialogFooter>
+        <DialogContent className="max-w-xl overflow-hidden rounded-3xl border border-[#f1e6d9] bg-[#fefdfc] p-0" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+          <div className="border-b border-[#f1e6d9] bg-gradient-to-r from-[#fff7ef] to-[#fffdf9] px-6 py-5">
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-semibold text-[#3b2f2f]">Профайл засах</DialogTitle>
+            </DialogHeader>
+            <p className="mt-1 text-sm text-[#9b8b7b]">Өөрийн мэдээллээ шинэчилнэ үү.</p>
+          </div>
+          <div className="px-6 pb-6 pt-5">
+            <ProfileDetails
+              initialName={initialName}
+              initialPhone={user?.phone ?? ''}
+              initialBio={user?.bio ?? ''}
+              onSave={async (data) => {
+                await handleSaveDetails(data);
+                setShowEdit(false);
+              }}
+            />
+          </div>
+          <DialogFooter className="gap-3 px-6 pb-6 pt-0 sm:justify-end">
             <DialogClose asChild>
-              <Button variant="outline" className="rounded-xl px-8 py-2">
+              <Button variant="outline" className="rounded-xl px-7 py-2.5 border-[#e8dccd]">
                 Цуцлах
               </Button>
             </DialogClose>
-            <Button type="submit" form="profile-details-form" className="rounded-xl px-8 py-2 bg-linear-to-r from-[#ef9241] to-[#ef9241] text-white shadow-md hover:opacity-90">
+            <Button type="submit" form="profile-details-form" className="rounded-xl px-7 py-2.5 bg-[#ef9241] text-white shadow-md hover:bg-[#e6842f]">
               Өөрчлөлтийг хадгалах
             </Button>
           </DialogFooter>
