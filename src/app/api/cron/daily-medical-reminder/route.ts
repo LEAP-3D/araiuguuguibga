@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { getAdminMessaging } from '@/lib/firebase-admin';
-import { sendVaccineReminderEmail } from '@/lib/email';
+import { sendVaccineReminderEmailsBatch } from '@/lib/email';
 
 /**
  * GET /api/cron/daily-medical-reminder
@@ -81,14 +81,13 @@ export async function GET(req: Request) {
       }
     }
 
-    // 2. Email notifications (to user email – same content as push)
-    let emailsSent = 0;
-    for (const [_userId, { records, email }] of byUser) {
-      if (!email?.trim() || records.length === 0) continue;
-      const result = await sendVaccineReminderEmail(email, records);
-      if (result.ok) emailsSent++;
-      else console.warn('[daily-medical-reminder] Email send failed for', email, result.error);
-    }
+    // 2. Email notifications (batch – one API call to avoid 429)
+    const emailItems = Array.from(byUser.entries())
+      .filter(([, { records, email }]) => email?.trim() && records.length > 0)
+      .map(([, { records, email }]) => ({ to: email!, records }));
+    const emailResult = await sendVaccineReminderEmailsBatch(emailItems);
+    const emailsSent = emailResult.ok ? emailResult.sent : 0;
+    if (!emailResult.ok) console.warn('[daily-medical-reminder] Batch email failed:', emailResult.error);
 
     return NextResponse.json({ sent, emailsSent, totalDue: dueRecords.length });
   } catch (e) {
