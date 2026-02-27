@@ -1,6 +1,10 @@
+'use client';
+
+import { useState } from 'react';
 import { PetImage } from '@/app/_components/PetImage';
 import dynamic from 'next/dynamic';
-import { BadgeInfo, Clock3, MapPin, PawPrint, Phone, User } from 'lucide-react';
+import { BadgeInfo, Clock3, MapPin, PawPrint, Phone, User, X } from 'lucide-react';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 const PostMap = dynamic(() => import('./PostMap'), {
   ssr: false, // IMPORTANT for Next.js
@@ -30,6 +34,7 @@ type RescuePetDetailProps = {
 };
 
 export default function RescuePetDetail({ post }: RescuePetDetailProps) {
+  const [mapExpanded, setMapExpanded] = useState(false);
   // parse coords once and validate
   let coords: { lat: number; lng: number } | null = null;
   if (post.location) {
@@ -112,15 +117,45 @@ export default function RescuePetDetail({ post }: RescuePetDetailProps) {
 
         <div className="flex flex-col md:min-h-[430px]">
           <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-zinc-700">Газрын зураг</p>
-          <div className="flex-1 min-h-[320px] overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50 md:min-h-[430px]">
+          <button
+            type="button"
+            onClick={() => coords && setMapExpanded(true)}
+            className={`flex-1 min-h-[320px] overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50 md:min-h-[430px] transition-all ${coords ? 'cursor-pointer hover:border-amber-300 hover:ring-2 hover:ring-amber-200/50' : 'cursor-default'}`}
+          >
             {coords ? (
-              <PostMap lat={coords.lat} lng={coords.lng} />
+              <span className="block h-full w-full">
+                <PostMap lat={coords.lat} lng={coords.lng} />
+              </span>
             ) : (
               <div className="flex h-full items-center justify-center p-6 text-center text-sm text-zinc-500">
                 Байршлын координат бүртгэгдээгүй байна.
               </div>
             )}
-          </div>
+          </button>
+
+          <Dialog open={mapExpanded} onOpenChange={setMapExpanded}>
+            <DialogContent className="h-[85vh] w-[95vw] max-w-5xl overflow-hidden border-0 p-0 focus:ring-0 focus-visible:ring-0">
+              <div className="relative flex h-full w-full flex-col">
+                <div className="flex shrink-0 items-center justify-between border-b border-zinc-200 bg-white px-4 py-3">
+                  <p className="text-sm font-semibold text-zinc-800">Газрын зураг – {post.name}</p>
+                  <button
+                    type="button"
+                    onClick={() => setMapExpanded(false)}
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-zinc-100 text-zinc-600 transition-colors hover:bg-zinc-200"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
+                <div className="min-h-0 flex-1 overflow-hidden">
+                  {coords && (
+                    <div className="h-[70vh] w-full">
+                      <PostMap lat={coords.lat} lng={coords.lng} />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </div>
