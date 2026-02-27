@@ -5,7 +5,7 @@ import { Loader2 } from 'lucide-react';
 
 export type ChatMessage = { role: 'user' | 'assistant'; content: string };
 
-const WELCOME_MESSAGE = "👋 Hi! I'm here to help. What can I do for you today?";
+const WELCOME_MESSAGE = '👋 Сайн уу! Би танд туслахад бэлэн байна. Өнөөдөр юунд туслах вэ?';
 
 type Props = {
   messages: ChatMessage[];
@@ -49,7 +49,7 @@ export function ChatMessageList({ messages, loading, error }: Props) {
           </div>
           <div className="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm border border-gray-100 flex items-center gap-2 text-gray-500 text-sm">
             <Loader2 className="h-4 w-4 animate-spin" />
-            <span>Thinking...</span>
+            <span>Бодож байна…</span>
           </div>
         </div>
       )}

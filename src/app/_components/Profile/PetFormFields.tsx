@@ -9,7 +9,6 @@ export type PetForm = {
   weight: number;
   gender: 'Em' | 'Er' | '';
   note: string;
-  allergies: string;
 };
 
 type Props = {
@@ -95,17 +94,6 @@ export function PetFormFields({ form, setForm }: Props) {
           className="w-full px-4 py-3 rounded-xl bg-[#fffef387] border-2 focus:border-primary focus:outline-none transition-colors text-foreground placeholder:text-muted-foreground resize-none"
           placeholder="Тэмдэглэл..."
         />
-      </div>
-      <div className="flex justify-between">
-        <div className=" flex flex-col gap-1">
-          <label className="block text-sm font-medium ">Xаршил</label>
-          <input
-            value={form.allergies || ''}
-            onChange={(e) => setForm((f) => ({ ...f, allergies: e.target.value }))}
-            placeholder="Xаршил"
-            className="px-5 py-2 rounded-xl border bg-[#fffef387] outline-none "
-          />
-        </div>
       </div>
     </div>
   );

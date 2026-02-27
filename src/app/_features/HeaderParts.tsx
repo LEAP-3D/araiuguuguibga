@@ -10,16 +10,17 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import Logo from '../_components/Logo';
 
 const navLinkClass = `
-  relative bg-transparent border-0 font-bold text-lg text-gray-600 cursor-pointer
-  transition-colors duration-300 hover:text-black
+  group relative inline-flex items-center  bg-transparent px-4 py-2
+  text-[15px] font-medium leading-none text-[#43342D] cursor-pointer
+  transition-all duration-300  hover:text-[#2f241f]
   after:content-['']
-  after:absolute after:left-0 after:-bottom-1
+  after:absolute after:left-3 after:right-3 after:-bottom-[2px]
   after:h-[2px] after:w-full
-  after:bg-[#fd8c3e]
+  after:bg-[#f28a3f]
   after:scale-x-0
-  after:origin-left
+  after:origin-center
   after:transition-transform after:duration-500 after:ease-out
-  hover:after:scale-x-100
+  hover:after:scale-x-100 
   `;
 
 export function HeaderLogo() {
@@ -49,18 +50,24 @@ export function HeaderNavLinks({ isSignedIn = false }: { isSignedIn?: boolean })
   };
 
   return (
-    <div className="hidden md:flex items-center gap-8" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
-      <button type="button" style={{ color: '#43342D' }} onClick={() => scrollToSection('adopt')} className={navLinkClass}>
+    <div className="hidden md:flex items-center gap-2   backdrop-blur-sm" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+      {isSignedIn ? (
+        <>
+          <Link href="/profile" className={navLinkClass}>
+            Миний амьтан
+          </Link>
+          <Link href="/dashboard/add-post" className={navLinkClass}>
+            Post оруулах
+          </Link>
+        </>
+      ) : null}
+      <button type="button" onClick={() => scrollToSection('adopt')} className={navLinkClass}>
         Амьтны мэдээлэл
       </button>
-      <button type="button" style={{ color: '#43342D' }} onClick={() => scrollToSection('vets')} className={navLinkClass}>
+      <button type="button" onClick={() => scrollToSection('vets')} className={navLinkClass}>
         Эмнэлэг байршил
       </button>
-      {isSignedIn ? (
-        <Link style={{ color: '#43342D' }} href="/profile" className={navLinkClass}>
-          Миний амьтан
-        </Link>
-      ) : null}
+
       {/* <a style={{ color: '#43342D' }} className={navLinkClass}>Community</a> */}
       {/* <Link style={{ color: '#43342D' }} href={isSignedIn ? '/dashboard' : '/sign-in'} className={navLinkClass}>
         Dashboard
@@ -146,7 +153,6 @@ export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: He
   );
 }
 
-const navClassName = 'sticky top-0 relative w-full z-50 bg-white/75 backdrop-blur-md border-b border-white/70';
 const navMotion = {
   initial: { y: 0, opacity: 1 },
   animate: { y: 0, opacity: 1 },
@@ -154,6 +160,10 @@ const navMotion = {
 };
 
 export function HeaderShell({ children, isSignedIn = false }: { children: React.ReactNode; isSignedIn?: boolean }) {
+  const pathname = usePathname();
+  const isLandingPage = pathname === '/';
+  const navClassName = `${isLandingPage ? 'sticky top-0' : 'relative'} w-full z-50 bg-white/75 backdrop-blur-md border-b border-white/70`;
+
   return (
     <motion.nav className={navClassName} {...navMotion}>
       <div className="container mx-auto px-4">

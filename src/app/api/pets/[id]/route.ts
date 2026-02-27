@@ -48,7 +48,6 @@ export async function PATCH(req: Request, ctx: RouteContext) {
     const weight = typeof body.weight === 'string' ? body.weight.trim() || null : body.weight !== null && body.weight !== undefined ? String(body.weight) : null;
     const gender = typeof body.gender === 'string' ? body.gender.trim() || null : null;
     const note = typeof body.note === 'string' ? body.note.trim() || null : null;
-    const allergies = typeof body.allergies === 'string' ? body.allergies.trim() || null : null;
     const image = typeof body.image === 'string' ? body.image.trim() || null : null;
 
     if (!name || !type) {
@@ -65,7 +64,6 @@ export async function PATCH(req: Request, ctx: RouteContext) {
         weight,
         gender,
         note,
-        allergies,
         image,
       },
     });

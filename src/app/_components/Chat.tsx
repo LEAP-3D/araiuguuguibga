@@ -71,7 +71,7 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
     return <div className="fixed right-6 z-50 w-14 h-14 bottom-[calc(env(safe-area-inset-bottom)+96px)]" />;
   }
   return (
-    <div className="fixed right-6 z-50 bottom-[calc(env(safe-area-inset-bottom)+96px)]">
+    <div className="fixed right-6 z-50 bottom-[calc(env(safe-area-inset-bottom)+26px)]">
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <motion.div
@@ -84,6 +84,7 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
             transition={{
               boxShadow: { duration: 1.5, repeat: isOpen ? 0 : Infinity, repeatType: 'reverse' },
             }}
+            style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}
           >
             <Button className="group relative w-14 h-14 rounded-full bg-transparent hover:bg-transparent shadow-md hover:shadow-lg transition-shadow overflow-hidden p-0">
               <Image src="/caticon.png" alt="Chat" width={56} height={56} className="w-14 h-14 object-contain transition-transform duration-300 group-hover:scale-105" />
@@ -91,7 +92,12 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
             </Button>
           </motion.div>
         </PopoverTrigger>
-        <PopoverContent id={contentId} className="w-95 h-130 flex flex-col p-0 mr-4 shadow-2xl border-0 rounded-2xl overflow-hidden bg-white" sideOffset={12}>
+        <PopoverContent
+          id={contentId}
+          style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}
+          className="w-95 h-130 flex flex-col p-0 mr-4 shadow-2xl border-0 rounded-2xl overflow-hidden bg-white"
+          sideOffset={12}
+        >
           <div className="relative h-16 flex justify-between items-center px-5 bg-[#ff8037]">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 flex items-center justify-center overflow-hidden flex-shrink-0 rounded-full">
@@ -99,7 +105,7 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
               </div>
               <div>
                 <p className="font-semibold text-white text-base">Chat Assistant</p>
-                <p className="text-xs text-white/90">Always here to help</p>
+                <p className="text-xs text-white/90">Танд туслахад үргэлж бэлэн</p>
               </div>
             </div>
             <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="w-9 h-9 rounded-full text-white transition-colors hover:bg-[#f47d46]">
@@ -116,7 +122,7 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
                 <Input
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Type your message..."
+                  placeholder="Мессежээ бичнэ үү…"
                   className="pr-3 py-6 rounded-xl border-gray-200 focus:border-[#ff8037] focus:ring-[#ff8037] resize-none transition-all"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
@@ -136,7 +142,7 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
                 <Send className="w-5 h-5 text-white transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Button>
             </div>
-            <p className="text-xs text-gray-400 mt-2 text-center">Press Enter to send</p>
+            <p className="text-xs text-gray-400 mt-2 text-center">Илгээхийн тулд Enter дарна уу</p>
           </div>
         </PopoverContent>
       </Popover>

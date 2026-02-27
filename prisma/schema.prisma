@@ -67,7 +67,6 @@ model Pet {
   weight    String?
   gender    String?
   note      String?
-  allergies String?
   microchip String?
   image     String?
   createdAt DateTime @default(now())

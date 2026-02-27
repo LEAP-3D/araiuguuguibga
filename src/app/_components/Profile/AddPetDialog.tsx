@@ -24,7 +24,6 @@ export default function AddPetDialog() {
     weight: 0, // number instead of string
     gender: '',
     note: '',
-    allergies: '',
   });
 
   const clearImageState = () => {
@@ -100,7 +99,6 @@ export default function AddPetDialog() {
         weight: form.weight ? form.weight.toString() : '',
         gender: form.gender,
         note: form.note,
-        allergies: form.allergies,
         image: imageUrl,
       });
 
@@ -116,7 +114,6 @@ export default function AddPetDialog() {
         weight: 0,
         gender: '',
         note: '',
-        allergies: '',
       });
     } catch {
       toast.error('Амьтан нэмэхэд алдаа гарлаа.');

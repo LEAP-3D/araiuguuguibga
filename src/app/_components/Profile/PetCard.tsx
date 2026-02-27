@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import type { Pet } from '@/lib/petsContext';
 import { usePets } from '@/lib/petsContext';
-import { Heart, Weight, Eye, PawPrint, Pencil, Trash2, Cake, AlertTriangle, StickyNote } from 'lucide-react';
+import { Heart, Weight, Eye, PawPrint, Pencil, Trash2, Cake, StickyNote } from 'lucide-react';
 import { toast } from 'sonner';
 
 type PetCardProps = {
@@ -28,7 +28,6 @@ export function PetCard({ pet }: PetCardProps) {
     weight: pet.weight,
     gender: pet.gender,
     note: pet.note,
-    allergies: pet.allergies,
     image: pet.image,
   });
 
@@ -41,7 +40,6 @@ export function PetCard({ pet }: PetCardProps) {
       weight: pet.weight,
       gender: pet.gender,
       note: pet.note,
-      allergies: pet.allergies,
       image: pet.image,
     });
   }, [pet]);
@@ -183,12 +181,6 @@ export function PetCard({ pet }: PetCardProps) {
               value={form.note}
               onChange={(e) => setForm((p) => ({ ...p, note: e.target.value }))}
             />
-            <textarea
-              className="min-h-20 w-full resize-y rounded-xl border border-[#e8e0d8] bg-white px-3 py-2.5 text-sm text-[#2d1f14] outline-none focus:border-[#5e493a]"
-              placeholder="Харшил"
-              value={form.allergies ?? ''}
-              onChange={(e) => setForm((p) => ({ ...p, allergies: e.target.value }))}
-            />
             <div className="mt-2 flex gap-2.5">
               <button
                 type="button"
@@ -261,16 +253,6 @@ export function PetCard({ pet }: PetCardProps) {
                     Тэмдэглэл
                   </div>
                   <p className="text-sm leading-relaxed text-[#3d2c1e]">{pet.note}</p>
-                </div>
-              ) : null}
-
-              {pet.allergies ? (
-                <div className="mb-2.5 rounded-2xl border border-[#fdd5d0] bg-[#fff7f6] p-4">
-                  <div className="mb-1.5 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.07em] text-[#c0392b]">
-                    <AlertTriangle className="h-[13px] w-[13px]" />
-                    Харшил
-                  </div>
-                  <p className="text-sm leading-relaxed text-[#8b2020]">{pet.allergies}</p>
                 </div>
               ) : null}
 

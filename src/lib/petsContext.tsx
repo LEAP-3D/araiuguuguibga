@@ -12,7 +12,6 @@ export type Pet = {
   weight: string;
   gender: string;
   note: string;
-  allergies?: string;
   image?: string;
 };
 
@@ -36,7 +35,6 @@ function mapApiPetToPet(p: {
   weight?: string | null;
   gender?: string | null;
   note?: string | null;
-  allergies?: string | null;
   image?: string | null;
 }): Pet {
   return {
@@ -48,7 +46,6 @@ function mapApiPetToPet(p: {
     weight: p.weight ?? '',
     gender: p.gender ?? '',
     note: p.note ?? '',
-    allergies: p.allergies ?? undefined,
     image: p.image ?? undefined,
   };
 }
@@ -86,7 +83,6 @@ export function PetsProvider({ children }: { children: ReactNode }) {
         weight: pet.weight || null,
         gender: pet.gender || null,
         note: pet.note || null,
-        allergies: pet.allergies || null,
         image: pet.image || null,
       }),
     });
@@ -107,7 +103,6 @@ export function PetsProvider({ children }: { children: ReactNode }) {
         weight: pet.weight || null,
         gender: pet.gender || null,
         note: pet.note || null,
-        allergies: pet.allergies || null,
         image: pet.image || null,
       }),
     });

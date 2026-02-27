@@ -7,7 +7,6 @@ export type Pet = {
   type: 'dog' | 'cat' | 'bird' | 'other';
   gender?: 'Em' | 'Er'; // optional, from your form
   note?: string; // optional, from your form
-  allergies?: string; // optional
   description?: string; // if you use a description field
   location?: string; // optional
   image: string;
