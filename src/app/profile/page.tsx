@@ -13,7 +13,10 @@ import { getTodayStr, toDateOnlyStr } from './profileDateUtils';
 import { DueTodayBanner } from './DueTodayBanner';
 import { ProfileMedicalSection, type MedicalRecordItem } from './ProfileMedicalSection';
 import { useMedicalNotifications, triggerTestMedicalNotification } from './useMedicalNotifications';
-
+import Logo from '../_components/Logo';
+import { HeaderUserMenu } from '../_features/HeaderParts';
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 export type { MedicalRecordItem };
 
 export default function Profile() {
@@ -23,7 +26,7 @@ export default function Profile() {
   const [recordsLoading, setRecordsLoading] = useState(true);
   const [selectedPetFilter, setSelectedPetFilter] = useState<string>('all');
   const { pets, refetchPets } = usePets();
-
+  const { user } = useUser();
   useEffect(() => {
     if (!isLoaded) return;
     if (!isSignedIn) {
@@ -74,10 +77,6 @@ export default function Profile() {
     };
   }, [isSignedIn]);
 
-  const handleButtonClick = () => {
-    router.push('/');
-  };
-
   const handleAddRecord = async (record: PetMedicalForm) => {
     try {
       const res = await fetch('/api/medical-records', {
@@ -114,17 +113,22 @@ export default function Profile() {
   if (!isSignedIn) {
     return null;
   }
-
   return (
     <div className="w-screen relative flex justify-center-safe">
       <div className=" fixed inset-0 z-0 min-h-screen bg-[url('/pet-background.jpg')] bg-cover bg-center">
         <div className="absolute inset-0 bg-background/85 backdrop-blur-xs" />
       </div>
-      <main className="container w-7xl relative z-10 flex flex-col items-start py-8 backdrop-blur-sm">
-        <button className="mb-6 font-medium px-4 py-2 hover:text-orange-950 rounded-lg transition" onClick={handleButtonClick}>
-          ← Нүүр хуудас руу буцах
-        </button>
-
+      <main className="container w-7xl relative z-10 flex flex-col items-start pb-8 backdrop-blur-sm" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+        <div className="mb-4 w-full flex justify-between px-8 mt-4 bg-[#fafafa64]">
+          <Logo />
+          <HeaderUserMenu displayName={user?.fullName || 'User'} initial={user?.firstName?.charAt(0) || 'U'} imageUrl={user?.imageUrl} onSignOut={() => {}} />
+        </div>
+        <div className="hidden md:block  w-fit mb-3">
+          <Link href="/" className="flex text-orange-950 items-center gap-2 rounded-lg px-4 text-sm text-orange-950 transition-colors hover:bg-amber-50 hover:text-amber-700">
+            <ArrowLeft className="h-4 w-4" />
+            Нүүр лүү буцах
+          </Link>
+        </div>
         <DueTodayBanner records={dueTodayRecords} />
         <div className="mb-4 flex items-center gap-2 text-sm text-amber-800/90">
           <span>Мэдэгдэл: &quot;Дараагийн огноо&quot; өнөөдөр болсон бүртгэлд л гарна.</span>
@@ -134,16 +138,13 @@ export default function Profile() {
               triggerTestMedicalNotification();
               try {
                 await fetch('/api/send-test-medical-email', { method: 'POST' });
-              } catch {
-                // ignore
-              }
+              } catch {}
             }}
             className="rounded bg-amber-200 px-3 py-1.5 font-medium hover:bg-amber-300"
           >
             Мэдэгдэл + Имэйл турших
           </button>
         </div>
-
         <div className="flex flex-col gap-10 w-7xl items-center border-7 border-white rounded-3xl p-6 shadow-2xl py-14">
           <div className="w-6xl flex justify-start">
             <ProfileCard />

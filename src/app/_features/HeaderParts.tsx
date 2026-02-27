@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { User, LogOut, LayoutDashboard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
@@ -30,8 +31,16 @@ export function HeaderLogo() {
   );
 }
 
-export function HeaderNavLinks({ isSignedIn: _isSignedIn = false }: { isSignedIn?: boolean }) {
+export function HeaderNavLinks({ isSignedIn = false }: { isSignedIn?: boolean }) {
+  const pathname = usePathname();
+  const router = useRouter();
+
   const scrollToSection = (id: string) => {
+    if (pathname !== '/') {
+      router.push(`/#${id}`);
+      return;
+    }
+
     const el = document.getElementById(id);
     if (!el) return;
     const headerOffset = 96;
@@ -47,6 +56,11 @@ export function HeaderNavLinks({ isSignedIn: _isSignedIn = false }: { isSignedIn
       <button type="button" style={{ color: '#43342D' }} onClick={() => scrollToSection('vets')} className={navLinkClass}>
         Эмнэлэг байршил
       </button>
+      {isSignedIn ? (
+        <Link style={{ color: '#43342D' }} href="/profile" className={navLinkClass}>
+          Миний амьтан
+        </Link>
+      ) : null}
       {/* <a style={{ color: '#43342D' }} className={navLinkClass}>Community</a> */}
       {/* <Link style={{ color: '#43342D' }} href={isSignedIn ? '/dashboard' : '/sign-in'} className={navLinkClass}>
         Dashboard
@@ -57,10 +71,10 @@ export function HeaderNavLinks({ isSignedIn: _isSignedIn = false }: { isSignedIn
 
 export function HeaderAuthButtons() {
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-4" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
         <Link href="/sign-in">
-          <Button variant="ghost" className="relative text-gray-700 hover:bg-[#86D2D9] hover:text-gray-800 rounded-xl transition-all duration-300 overflow-hidden group">
+          <Button variant="ghost" className="relative text-gray-700 hover:bg-[#ffcea8] hover:text-gray-800 rounded-xl transition-all duration-300 overflow-hidden group">
             <span className="relative z-10">Нэвтрэх</span>
             <motion.span className="absolute inset-0 bg-[#86D2D9]/20" initial={{ x: '-100%' }} whileHover={{ x: 0 }} transition={{ duration: 0.3 }} />
           </Button>
@@ -96,11 +110,11 @@ export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: He
       <PopoverTrigger asChild>
         <motion.button
           type="button"
-          className="flex items-center gap-2 rounded-xl px-2 py-1.5 transition-all duration-300 cursor-pointer outline-none border-0"
+          className="flex items-center cursor-pointer gap-2 rounded-xl px-2 py-1.5 transition-all duration-300 cursor-pointer outline-none border-0"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
-          <Avatar className="size-9 rounded-full bg-[#fc8d0e] text-white border-2 border-white/80 shadow-md">
+          <Avatar className="size-10 rounded-full bg-[#fc8d0e] text-white border-2 border-white/80 shadow-md">
             <AvatarImage src={imageUrl} alt={displayName} />
             <AvatarFallback className="bg-[#fc8d0e] text-white text-sm font-semibold">{initial}</AvatarFallback>
           </Avatar>
@@ -111,20 +125,20 @@ export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: He
       </PopoverTrigger>
       <PopoverContent align="end" className="w-56 rounded-xl shadow-lg border-gray-200/80 p-0" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
         <div className="px-4 py-3 border-b border-gray-100">
-          <p className="font-semibold text-gray-900">My Account</p>
+          <p className="font-semibold text-gray-900">Миний аккаунт</p>
         </div>
         <div className="">
           <Link href="/dashboard" className="flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 cursor-pointer transition-colors items-center">
             <LayoutDashboard className="w-4 h-4 text-[#fc8d0e]" />
-            <span>Rescue</span>
+            <span>Аврах</span>
           </Link>
           <Link href="/profile" className="flex cursor-pointer gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 transition-colors items-center">
             <User className="w-4 h-4 text-[#fc8d0e]" />
-            <span>Profile</span>
+            <span>Профайл</span>
           </Link>
           <button type="button" onClick={onSignOut} className="w-full cursor-pointer flex gap-3 px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors text-left">
             <LogOut className="w-4 h-4" />
-            <span>Log out</span>
+            <span>Гарах</span>
           </button>
         </div>
       </PopoverContent>
