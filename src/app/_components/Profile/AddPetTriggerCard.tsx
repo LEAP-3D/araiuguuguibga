@@ -1,16 +1,26 @@
 'use client';
 
+import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 import { PlusIcon } from 'lucide-react';
 
-export function AddPetTriggerCard() {
+type AddPetTriggerCardProps = ComponentPropsWithoutRef<'button'>;
+
+export const AddPetTriggerCard = forwardRef<HTMLButtonElement, AddPetTriggerCardProps>(function AddPetTriggerCard(
+  { className = '', style, type = 'button', ...props },
+  ref,
+) {
   return (
     <button
-      className="relative h-80 w-60 cursor-pointer overflow-hidden rounded-3xl p-4 text-center transition-all duration-300 hover:scale-[1.03] hover:shadow-xl group"
+      ref={ref}
+      type={type}
+      className={`group relative h-80 w-60 cursor-pointer overflow-hidden rounded-3xl p-4 text-center transition-all duration-300 hover:scale-[1.03] hover:shadow-xl ${className}`}
       style={{
         background: 'linear-gradient(145deg, #fff8f0 0%, #fff3e8 100%)',
         border: '2px solid #ffd4a8',
         boxShadow: '0 4px 16px rgba(255, 140, 50, 0.1)',
+        ...style,
       }}
+      {...props}
     >
       <div
         style={{
@@ -62,4 +72,4 @@ export function AddPetTriggerCard() {
       </div>
     </button>
   );
-}
+});

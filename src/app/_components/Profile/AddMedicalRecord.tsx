@@ -71,7 +71,7 @@ export default function AddMedicalRecord({ pets = [], onAddRecord }: Props) {
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle className="flex gap-2 items-center text-xl font-semibold mb-2">
-              <Syringe className="text-orange-400 mb-2" />
+              <Syringe className="text-orange-800 mb-2" />
               Эрүүл мэндийн бүртгэл нэмэх
             </DialogTitle>
             <DialogDescription></DialogDescription>
