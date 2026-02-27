@@ -130,8 +130,19 @@ export default function Profile() {
         <DueTodayBanner records={dueTodayRecords} />
         <div className="mb-4 flex items-center gap-2 text-sm text-amber-800/90">
           <span>Мэдэгдэл: &quot;Дараагийн огноо&quot; өнөөдөр болсон бүртгэлд л гарна.</span>
-          <button type="button" onClick={triggerTestMedicalNotification} className="rounded bg-amber-200 px-3 py-1.5 font-medium hover:bg-amber-300">
-            Мэдэгдэл турших
+          <button
+            type="button"
+            onClick={async () => {
+              triggerTestMedicalNotification();
+              try {
+                await fetch('/api/send-test-medical-email', { method: 'POST' });
+              } catch {
+                // ignore
+              }
+            }}
+            className="rounded bg-amber-200 px-3 py-1.5 font-medium hover:bg-amber-300"
+          >
+            Мэдэгдэл + Имэйл турших
           </button>
         </div>
 

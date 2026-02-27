@@ -84,13 +84,14 @@ export function AddPostForm() {
       });
 
       if (success) {
-        await fetch('/api/send-notification', {
+        const postName = form.petName.trim() || 'Амьтан';
+        await fetch('/api/notify-new-post', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            title: 'New rescue post',
-            body: `${form.petName.trim() || 'Animal'} — Location: ${form.location.lat.toFixed(4)}, ${form.location.lng.toFixed(4)}`,
-            data: { url: '/dashboard/find-animals' },
+            title: 'Шинэ тусламж хэрэгтэй амьтан',
+            body: `${postName} — байршил: ${form.location.lat.toFixed(4)}, ${form.location.lng.toFixed(4)}`,
+            postName,
           }),
         }).catch(() => {});
         router.push('/dashboard/find-animals');
