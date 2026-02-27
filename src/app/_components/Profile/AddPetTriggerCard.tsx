@@ -5,18 +5,14 @@ import { PlusIcon } from 'lucide-react';
 
 type AddPetTriggerCardProps = ComponentPropsWithoutRef<'button'>;
 
-export const AddPetTriggerCard = forwardRef<HTMLButtonElement, AddPetTriggerCardProps>(function AddPetTriggerCard(
-  { className = '', style, type = 'button', ...props },
-  ref,
-) {
+export const AddPetTriggerCard = forwardRef<HTMLButtonElement, AddPetTriggerCardProps>(function AddPetTriggerCard({ className = '', style, type = 'button', ...props }, ref) {
   return (
     <button
       ref={ref}
       type={type}
       className={`group relative h-80 w-60 cursor-pointer overflow-hidden rounded-3xl p-4 text-center transition-all duration-300 hover:scale-[1.03] hover:shadow-xl ${className}`}
       style={{
-        background: 'linear-gradient(145deg, #fff8f0 0%, #fff3e8 100%)',
-        border: '2px solid #ffd4a8',
+        border: '2px dashed #ffd4a8',
         boxShadow: '0 4px 16px rgba(255, 140, 50, 0.1)',
         ...style,
       }}
@@ -56,11 +52,11 @@ export const AddPetTriggerCard = forwardRef<HTMLButtonElement, AddPetTriggerCard
             width: 56,
             height: 56,
             borderRadius: 18,
-            background: 'linear-gradient(135deg, #ff9a3c, #ff6b35)',
+            background: 'linear-gradient(135deg, #ffc9a4, #ffbe93)', // warm caramel/tan gradient
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 6px 20px rgba(255, 107, 53, 0.4)',
+            boxShadow: '0 6px 20px rgba(180, 140, 100, 0.35)', // warm shadow
           }}
         >
           <PlusIcon style={{ color: 'white', width: 28, height: 28, strokeWidth: 2.5 }} />

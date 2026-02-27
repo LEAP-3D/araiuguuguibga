@@ -8,7 +8,6 @@ import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { usePets } from '@/lib/petsContext';
 import ProfileDetailsDialog from './ProfileDetailsDialog';
-
 type UserProfile = {
   id: string;
   email: string;
@@ -24,7 +23,6 @@ export default function ProfileCard() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showDetails, setShowDetails] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-
   useEffect(() => {
     let cancelled = false;
     fetch('/api/user/me')
@@ -41,7 +39,6 @@ export default function ProfileCard() {
     };
   }, []);
   const handleAvatarClick = () => fileInputRef.current?.click();
-
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !user) return;
@@ -109,7 +106,7 @@ export default function ProfileCard() {
                 disabled={uploading}
                 className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center shadow-lg hover:bg-gray-300 disabled:opacity-50"
               >
-                <Camera className="w-4 h-4" />
+                <Camera className="w-4 h-4 cursor-pointer" />
               </button>
             </div>
             <div className="flex flex-col gap-0.5">
@@ -124,7 +121,7 @@ export default function ProfileCard() {
             <button
               type="button"
               onClick={() => setShowDetails(true)}
-              className="w-90 h-12 bg-[#f6f2e9] text-[#5e493a] font-semibold rounded-2xl p-3 border-2 border-[#eae4dc] flex justify-center gap-2 cursor-pointer"
+              className="w-90 h-12 flex justify-center gap-2 items-center rounded-2xl p-3 border-[#eae4dc] bg-[#f6f2e9] text-sm font-semibold text-[#5e493a] transition-all duration-200 cursor-pointer hover:bg-[#5e493a] hover:text-white"
             >
               <Eye />
               <p>Дэлгэрэнгүй харах</p>
