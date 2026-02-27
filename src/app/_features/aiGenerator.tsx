@@ -54,8 +54,8 @@ export default function AiGenerator() {
         <div className="flex justify-center">
           <div className="mb-8 w-full max-w-7xl px-4">
             <div className="flex flex-col gap-1 items-center">
-              <span className="text-3xl font-black text-black md:text-5xl">AI Assistant</span>
-              <span className="text-sm font-semibold text-[#fbb2a3] md:text-2xl">Тэжээвэр амьтныхаа нүүр болон бие нь тод гарсан зургийг оруулна уу.</span>
+              <span className="text-2xl font-black text-black md:text-4xl">AI Assistant</span>
+              <span className="text-sm font-semibold text-[#fbb2a3] md:text-base">Тэжээвэр амьтныхаа нүүр болон бие нь тод гарсан зургийг оруулна уу.</span>
               <span className="text-sm font-semibold text-[#fc5e3e] md:text-base">Энэхүү онош нь мэргэжлийн эмчийн онош биш болохыг анхаарна уу.</span>
             </div>
           </div>
@@ -65,11 +65,11 @@ export default function AiGenerator() {
           {/* Зураг оруулах */}
           <div className="flex w-full flex-col">
             <NeonGradientCard borderSize={1} borderRadius={24} neonColors={{ firstColor: '#ff9a56', secondColor: '#FFBE98' }} className="min-h-96">
-              <div className="relative min-h-96 w-full overflow-hidden bg-white/50">
+              <div className="relative flex min-h-137 w-full items-center justify-center overflow-hidden bg-white/50">
                 {image ? (
                   <>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={image} alt="Pet" className="block w-full max-h-[550px] object-contain" />
+                    <img src={image} alt="Pet" className="absolute inset-0 block h-full w-full object-cover" />
                     <button
                       type="button"
                       onClick={() => {
@@ -83,7 +83,7 @@ export default function AiGenerator() {
                   </>
                 ) : (
                   /* group класс нэмснээр доторх бүх элемент хулгана очиход зэрэг хариу үйлдэл үзүүлнэ */
-                  <label className="group flex min-h-96 cursor-pointer flex-col items-center justify-center gap-4 text-zinc-700 transition-all duration-300 active:scale-95">
+                  <label className="group flex min-h-full w-full cursor-pointer flex-col items-center justify-center gap-4 text-zinc-700 transition-all duration-300 active:scale-95">
                     {/* Камерын эможи бүхий бөөрөнхий хэсэг */}
                     <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#fc8d0e] shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-[#fc8d0e]/40">
                       <span className="text-3xl">📸</span>

@@ -15,18 +15,36 @@ type Props = {
 export default function SidebarList({ selectedType, filteredVets, filteredPosts }: Props) {
   const showVets = selectedType === 'all' || selectedType === 'vets';
   const showPosts = selectedType === 'all' || selectedType === 'lost';
-  const isEmpty = filteredVets.length === 0 && filteredPosts.length === 0;
+  const vetsToRender = showVets ? filteredVets : [];
+  const postsToRender = showPosts ? filteredPosts : [];
+  const isAllView = selectedType === 'all';
+  const isEmpty = vetsToRender.length === 0 && postsToRender.length === 0;
 
   return (
-    <div className="h-full flex flex-col border rounded-xl py-3 px-0.5 bg-[#f9cd98]">
+    <div className="h-full flex flex-col border rounded-xl py-3 px-0.5 bg-white">
       <div className="min-h-0 flex-1 overflow-y-auto p-3 space-y-3 custom-scrollbar">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-4">{showVets && filteredVets.map((vet) => <VetCard key={vet.id} vet={vet} />)}</div>
-          <div className="space-y-4">{showPosts && filteredPosts.map((post) => <PostCard key={post.id} post={post} />)}</div>
-        </div>
-        {isEmpty && <div className="text-center py-10 text-gray-400">No results in this area</div>}
+        {isEmpty ? (
+          <div className="py-10 text-center text-gray-400">No results in this area</div>
+        ) : (
+          <div className={isAllView ? 'grid grid-cols-1 gap-4 md:grid-cols-2' : 'grid grid-cols-1 gap-4'}>
+            {showVets && (
+              <div className="space-y-4">
+                {vetsToRender.map((vet) => (
+                  <VetCard key={vet.id} vet={vet} />
+                ))}
+              </div>
+            )}
+            {showPosts && (
+              <div className="space-y-4">
+                {postsToRender.map((post) => (
+                  <PostCard key={post.id} post={post} />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
-      <div className="border-t px-4 py-3 bg-orange-100 text-center text-xs text-gray-700">Нийт {filteredVets.length + filteredPosts.length} байршил олдлоо</div>
+      <div className="border-t bg-orange-100 px-4 py-3 text-center text-xs text-gray-700">Нийт {vetsToRender.length + postsToRender.length} байршил олдлоо</div>
     </div>
   );
 }

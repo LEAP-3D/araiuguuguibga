@@ -26,19 +26,19 @@ export function getRadius(selectedDistance: SelectedDistance) {
 export function useFilteredMarkers(userLocation: [number, number] | null, selectedDistance: SelectedDistance) {
   const { posts } = usePosts();
   const filteredVets = useMemo(() => {
-    if (!userLocation) return [];
+    if (!userLocation) return mockVets;
     const radius = getRadius(selectedDistance);
     return mockVets.filter((vet) => getDistance(userLocation, [vet.lat, vet.lng]) <= radius);
   }, [userLocation, selectedDistance]);
 
   const filteredPosts = useMemo(() => {
-    if (!userLocation) return [];
-    const radius = getRadius(selectedDistance);
+    const radius = userLocation ? getRadius(selectedDistance) : null;
 
     return posts.filter((post) => {
       if (!post.location) return false;
       const [lat, lng] = post.location.split(',').map(Number);
       if (!Number.isFinite(lat) || !Number.isFinite(lng)) return false;
+      if (!userLocation || radius === null) return true;
       return getDistance(userLocation, [lat, lng]) <= radius;
     });
   }, [userLocation, selectedDistance, posts]);

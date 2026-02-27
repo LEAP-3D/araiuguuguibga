@@ -2,7 +2,7 @@
 
 import 'leaflet/dist/leaflet.css';
 import type L from 'leaflet';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { MapContainer, TileLayer, Popup, Marker, Circle } from 'react-leaflet';
 import { mockVets } from '@/app/_components/HeroSection/mockVets';
 import { usePosts } from '@/lib/postsContext';
@@ -14,7 +14,7 @@ import MapController from './MapController';
 import FlyToUser from './FlyToUser';
 import FullscreenToggle from './FullscreenToggle';
 import SidebarList from './SidebarList';
-import MapResizeFix from '../HeroSection/MapResizeFix';
+import { SearchBar } from '../HeroSection/searchBar';
 
 type Props = {
   selectedType: 'all' | 'lost' | 'vets';
@@ -25,14 +25,23 @@ export default function LeafletMap({ selectedType, selectedDistance }: Props) {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const { posts } = usePosts();
   const userLocation = useUserLocation();
+  const [searchQuery, setSearchQuery] = useState('');
   const mapRef = useRef<L.Map | null>(null);
-  const { filteredVets, filteredPosts } = useFilteredMarkers(userLocation, selectedDistance);
+  const { filteredVets: distanceFilteredVets, filteredPosts: distanceFilteredPosts } = useFilteredMarkers(userLocation, selectedDistance);
 
   const handleMyLocation = () => {
     if (userLocation && mapRef.current) {
       mapRef.current.flyTo(userLocation, 15, { duration: 1.5 });
     }
   };
+
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+  const filteredVets = useMemo(() => {
+    if (!normalizedQuery) return distanceFilteredVets;
+    return distanceFilteredVets.filter((vet) => vet.name.toLowerCase().includes(normalizedQuery) || vet.address.toLowerCase().includes(normalizedQuery));
+  }, [distanceFilteredVets, normalizedQuery]);
+
+  const filteredPosts = distanceFilteredPosts;
 
   return (
     <div className={
@@ -98,12 +107,14 @@ export default function LeafletMap({ selectedType, selectedDistance }: Props) {
         </MapContainer>
       </div>
 
-      {/* Sidebar */}
-    {!isFullScreen && (
-      <div className="w-full md:w-[360px] lg:w-[420px] h-[35vh] md:h-[70vh] lg:h-[75vh] overflow-hidden rounded-2xl bg-amber-100/40">
+      {!isFullScreen && (
+        <div className="flex flex-col">
+          <div className="border-b border-gray-100 p-3">
+            <SearchBar query={searchQuery} onChange={setSearchQuery} />
+          </div>
           <SidebarList selectedType={selectedType} filteredVets={filteredVets} filteredPosts={filteredPosts} />
-      </div>
-  )}    
-  </div>
+        </div>
+      )}
+    </div>
   );
 }
