@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable max-lines */
 
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
@@ -7,18 +8,18 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import type { Veterinary } from '../types';
 import MapResizeFix from '../HeroSection/MapResizeFix';
+import { lostPetIcon } from '@/app/_components/Map/MapIcons';
+import type { usePosts } from '@/lib/postsContext';
 
 const userIcon = new L.Icon({
   iconUrl: '/map.png',
   iconSize: [32, 32],
   iconAnchor: [16, 32],
 });
-
-delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: () => string })._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+const hospitalIcon = new L.Icon({
+  iconUrl: '/hospitalPin.svg',
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
 });
 
 type Props = {
@@ -27,6 +28,8 @@ type Props = {
   onSelect: (vet: Veterinary) => void;
   temporaryVet: Veterinary | null;
   userLocation: { lat: number; lng: number } | null;
+  showLostPets?: boolean;
+  lostPosts?: ReturnType<typeof usePosts>['posts'];
   onMapClick: (lat: number, lng: number) => void;
   onTempChange?: (vet: Veterinary) => void;
   onCancelTemp: () => void;
@@ -62,6 +65,8 @@ export default function MapPlaceholder({
   onSelect,
   temporaryVet,
   userLocation,
+  showLostPets = false,
+  lostPosts = [],
 
   onTempChange,
   onCancelTemp,
@@ -86,7 +91,7 @@ export default function MapPlaceholder({
 
   return (
     <div className="h-100 w-full md:h-150 lg:h-200 relative group">
-      <MapContainer center={[47.9212, 106.9057]} scrollWheelZoom={true} zoom={12} whenReady={() => setMapReady(true)} style={{ height: '100%', width: '100%' }} className="rounded-xl z-0">
+      <MapContainer center={[47.9212, 106.9057]} scrollWheelZoom={false} zoom={12} whenReady={() => setMapReady(true)} style={{ height: '100%', width: '100%' }} className="rounded-xl z-0">
         {mapReady && (
           <>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' />
@@ -104,8 +109,8 @@ export default function MapPlaceholder({
               </>
             )}
 
-            {temporaryVet && (
-              <Marker position={[temporaryVet.lat, temporaryVet.lng]}>
+            {temporaryVet && hospitalIcon && (
+              <Marker position={[temporaryVet.lat, temporaryVet.lng]} icon={hospitalIcon}>
                 <Popup autoPan>
                   <div className="flex flex-col gap-2 p-1 text-black">
                     <strong className="text-xs">Шинэ байршил</strong>
@@ -136,6 +141,7 @@ export default function MapPlaceholder({
               <Marker
                 key={vet.id}
                 position={[vet.lat, vet.lng]}
+                icon={hospitalIcon}
                 eventHandlers={{
                   click: () => onSelect(vet),
                 }}
@@ -148,6 +154,23 @@ export default function MapPlaceholder({
                 </Popup>
               </Marker>
             ))}
+
+            {showLostPets &&
+              lostPosts.map((post) => {
+                if (!post.location) return null;
+                const [lat, lng] = post.location.split(',').map(Number);
+                if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+                return (
+                  <Marker key={post.id} position={[lat, lng]} icon={lostPetIcon}>
+                    <Popup>
+                      <div className="p-1 text-black">
+                        <strong className="block text-sm">{post.name}</strong>
+                        <span className="text-xs text-gray-600">{post.description}</span>
+                      </div>
+                    </Popup>
+                  </Marker>
+                );
+              })}
           </>
         )}
       </MapContainer>
