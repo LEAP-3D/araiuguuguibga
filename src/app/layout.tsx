@@ -7,6 +7,7 @@ import AppShell from './_components/AppShell';
 import './globals.css';
 import 'leaflet/dist/leaflet.css';
 import { PetsProvider } from '@/lib/petsContext';
+import { Toaster } from '@/components/ui/sonner';
 
 const greatVibes = Great_Vibes({
   variable: '--font-great-vibes',
@@ -67,6 +68,7 @@ export default function RootLayout({
           <ChatOpenProvider>
             <PetsProvider>
               <AppShell>{children}</AppShell>
+              <Toaster richColors position="top-right" />
             </PetsProvider>
           </ChatOpenProvider>
         </Providers>
