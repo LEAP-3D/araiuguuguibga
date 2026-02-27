@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Circle, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
 import { useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -62,7 +62,7 @@ export default function MapPlaceholder({
   onSelect,
   temporaryVet,
   userLocation,
-  onMapClick,
+
   onTempChange,
   onCancelTemp,
 

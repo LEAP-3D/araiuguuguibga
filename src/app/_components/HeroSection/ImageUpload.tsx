@@ -1,12 +1,12 @@
 'use client';
 
-interface ImageUploadProps {
+type ImageUploadProps = {
   image: string | null;
   loading: boolean;
   onImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onRemove: () => void;
   onAnalyze: () => void;
-}
+};
 
 export const ImageUpload = ({ image, loading, onImageChange, onRemove, onAnalyze }: ImageUploadProps) => (
   <div className="flex-1 w-full flex flex-col items-center" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>

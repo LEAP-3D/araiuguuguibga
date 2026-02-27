@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import type { PetAnalysisResult } from '../types';
 
-interface AnalysisResultProps {
+type AnalysisResultProps = {
   result: PetAnalysisResult | null;
-}
+};
 
 export const AnalysisResult = ({ result }: AnalysisResultProps) => {
   const [activeTab, setActiveTab] = useState<'general' | 'care' | 'tips'>('general');
