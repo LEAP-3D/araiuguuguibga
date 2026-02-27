@@ -2,10 +2,11 @@
 
 import 'leaflet/dist/leaflet.css';
 import type L from 'leaflet';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { MapContainer, TileLayer, Popup, Marker, Circle } from 'react-leaflet';
 import { mockVets } from '@/app/_components/HeroSection/mockVets';
 import { usePosts } from '@/lib/postsContext';
+import { CuteSleepingCatLoader } from '@/app/_components/loading/CuteSleepingCatLoader';
 
 import { hospitalIcon, lostPetIcon } from './MapIcons';
 import { useUserLocation } from './useUserLocation';
@@ -23,6 +24,7 @@ type Props = {
 
 export default function LeafletMap({ selectedType, selectedDistance }: Props) {
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [isResizingMap, setIsResizingMap] = useState(false);
   const { posts } = usePosts();
   const userLocation = useUserLocation();
   const [searchQuery, setSearchQuery] = useState('');
@@ -43,10 +45,41 @@ export default function LeafletMap({ selectedType, selectedDistance }: Props) {
 
   const filteredPosts = distanceFilteredPosts;
 
+  const handleFullScreenChange = (next: boolean) => {
+    setIsResizingMap(true);
+    setIsFullScreen(next);
+  };
+
+  useEffect(() => {
+    if (!mapRef.current) return;
+    const invalidate = () => mapRef.current?.invalidateSize();
+
+    invalidate();
+    const raf = requestAnimationFrame(invalidate);
+    const t1 = setTimeout(invalidate, 120);
+    const t2 = setTimeout(invalidate, 280);
+    const done = setTimeout(() => setIsResizingMap(false), 420);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(done);
+    };
+  }, [isFullScreen]);
+
   return (
     <div className={isFullScreen ? 'fixed inset-0 z-[2000] h-full w-full bg-white p-4' : 'flex h-230 w-full gap-4 justify-center'}>
       {/* Map panel */}
       <div className={isFullScreen ? 'relative h-full w-full' : 'relative h-full w-2/4'}>
+        {isResizingMap && (
+          <div className="absolute inset-0 z-[2050] flex items-center justify-center bg-white/70 backdrop-blur-[1px] pointer-events-none">
+            <div className="h-24 w-24">
+              <CuteSleepingCatLoader />
+            </div>
+          </div>
+        )}
+
         <button
           onClick={handleMyLocation}
           className="absolute bottom-4 right-4 z-[1000] bg-[#fe8c09] px-3.5 py-1 text-white font-semibold text-[15px] rounded-2xl shadow hover:bg-orange-50 transition"
@@ -54,7 +87,7 @@ export default function LeafletMap({ selectedType, selectedDistance }: Props) {
           Миний байршил
         </button>
 
-        <FullscreenToggle isFullScreen={isFullScreen} setIsFullScreen={setIsFullScreen} />
+        <FullscreenToggle isFullScreen={isFullScreen} setIsFullScreen={handleFullScreenChange} />
 
         <MapContainer center={[47.9212, 106.9057]} zoom={13} scrollWheelZoom={false} className="h-full w-full">
           <MapController mapRef={mapRef} />

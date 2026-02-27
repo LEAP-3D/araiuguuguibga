@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable max-lines */
 
 import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
@@ -19,6 +20,8 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 export type { MedicalRecordItem };
 import Image from 'next/image';
+import { CuteSleepingCatLoader } from '../_components/loading/CuteSleepingCatLoader';
+import { toast } from 'sonner';
 
 export default function Profile() {
   const { isSignedIn, isLoaded } = useUser();
@@ -85,11 +88,15 @@ export default function Profile() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(record),
       });
-      if (!res.ok) return;
+      if (!res.ok) {
+        toast.error('Эрүүл мэндийн бүртгэл нэмэх үед алдаа гарлаа.');
+        return;
+      }
       const saved = (await res.json()) as { id: string };
       setMedicalRecords((prev) => [{ ...record, id: saved.id }, ...prev]);
+      toast.success('Эрүүл мэндийн бүртгэл амжилттай нэмэгдлээ.');
     } catch {
-      // ignore
+      toast.error('Эрүүл мэндийн бүртгэл нэмэх үед алдаа гарлаа.');
     }
   };
   const filteredRecords = selectedPetFilter === 'all' ? medicalRecords : medicalRecords.filter((r) => r.pet === selectedPetFilter);
@@ -107,7 +114,9 @@ export default function Profile() {
   if (!isLoaded) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background/90">
-        <p className="text-gray-600">Aчааллаж байна...</p>
+        <div className="h-40 w-40">
+          <CuteSleepingCatLoader />
+        </div>
       </div>
     );
   }

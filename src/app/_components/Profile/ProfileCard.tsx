@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable max-lines */
 import { Camera, Eye } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -7,6 +8,7 @@ import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { usePets } from '@/lib/petsContext';
 import ProfileDetailsDialog from './ProfileDetailsDialog';
+import { toast } from 'sonner';
 type UserProfile = {
   id: string;
   email: string;
@@ -29,7 +31,9 @@ export default function ProfileCard() {
       .then((data) => {
         if (!cancelled && data) setUser(data);
       })
-      .catch(() => {})
+      .catch(() => {
+        if (!cancelled) toast.error('Профайлын мэдээлэл ачаалахад алдаа гарлаа.');
+      })
       .finally(() => {
         if (!cancelled) setLoading(false);
       });
@@ -56,8 +60,12 @@ export default function ProfileCard() {
       if (patchRes.ok) {
         const updated = await patchRes.json();
         setUser(updated);
+        toast.success('Профайл зураг шинэчлэгдлээ.');
+      } else {
+        toast.error('Зургийг хадгалах үед алдаа гарлаа.');
       }
     } catch {
+      toast.error('Зураг upload хийх үед алдаа гарлаа.');
     } finally {
       setUploading(false);
       e.target.value = '';
@@ -76,6 +84,9 @@ export default function ProfileCard() {
     if (res.ok) {
       const updated = await res.json();
       setUser(updated);
+      toast.success('Профайл амжилттай шинэчлэгдлээ.');
+    } else {
+      toast.error('Профайл шинэчлэх үед алдаа гарлаа.');
     }
   };
   const { pets } = usePets();
