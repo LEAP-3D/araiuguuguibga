@@ -151,8 +151,6 @@ export default function Profile() {
             <ProfileCard />
             <Image src="/harmony.png" alt="Harmony" width={900} height={600} className="h-60 w-auto object-contain" />
           </div>
-
-          {/* PETS SECTION */}
           <div className="rounded-2xl w-6xl  flex flex-col overflow-auto ">
             <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
               <PawPrint className="text-orange-400" /> Миний тэжээвэр амьтад
@@ -166,7 +164,6 @@ export default function Profile() {
               </div>
             </div>
           </div>
-
           <ProfileMedicalSection
             pets={pets}
             records={filteredRecords}
