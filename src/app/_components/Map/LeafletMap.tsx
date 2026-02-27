@@ -159,7 +159,7 @@ export default function LeafletMap({ selectedType, selectedDistance }: Props) {
       </div>
 
       {!isFullScreen && (
-        <div className="flex h-full w-[360px] flex-col">
+        <div className="flex h-full w-72.5 flex-col">
           <div className="border-b border-gray-100 pb-3">
             <SearchBar query={searchQuery} onChange={setSearchQuery} />
           </div>

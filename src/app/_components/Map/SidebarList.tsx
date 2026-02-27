@@ -24,20 +24,14 @@ export default function SidebarList({ selectedType, filteredVets, filteredPosts,
   const isEmpty = vetsToRender.length === 0 && postsToRender.length === 0;
 
   return (
-    <div className="h-full flex flex-col border rounded-xl py-3 px-0.5 bg-white">
+    <div className="h-full  flex flex-col border rounded-xl py-3 px-0.5 bg-white">
       <div className="min-h-0 flex-1 overflow-y-auto p-3 space-y-3 custom-scrollbar">
         {isEmpty ? (
           <div className="py-10 text-center text-gray-400">No results in this area</div>
         ) : (
           <div className="grid grid-cols-1 gap-4">
-            {showPosts &&
-              postsToRender.map((post) => (
-                <PostCard key={post.id} post={post} selected={selectedPostId === post.id} onClick={() => onSelectPost(post)} />
-              ))}
-            {showVets &&
-              vetsToRender.map((vet) => (
-                <VetCard key={vet.id} vet={vet} selected={selectedVetId === vet.id} onClick={() => onSelectVet(vet)} />
-              ))}
+            {showPosts && postsToRender.map((post) => <PostCard key={post.id} post={post} selected={selectedPostId === post.id} onClick={() => onSelectPost(post)} />)}
+            {showVets && vetsToRender.map((vet) => <VetCard key={vet.id} vet={vet} selected={selectedVetId === vet.id} onClick={() => onSelectVet(vet)} />)}
           </div>
         )}
       </div>
