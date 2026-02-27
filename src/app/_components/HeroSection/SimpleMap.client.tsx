@@ -1,6 +1,6 @@
 'use client';
 
-import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import React, { useState } from 'react';
 import L from 'leaflet';
@@ -57,13 +57,22 @@ function LocationMarker({ onSelect }: { onSelect?: (location: { lat: number; lng
 
   return position === null ? null : <Marker position={position} icon={lostPetIcon} />;
 }
+function FixMapResize() {
+  const map = useMap();
+  React.useEffect(() => {
+    const t = setTimeout(() => map.invalidateSize(), 80);
+    return () => clearTimeout(t);
+  }, [map]);
+  return null;
+}
 
-export default function SimpleMapClient({ center = [47.9112, 106.9157], zoom = 12, className = 'h-full w-full', onSelect }: Props) {
+export default function SimpleMapClient({ center = [47.9112, 106.9157], zoom = 12, className = 'w-full h-[260px] sm:h-[320px] md:h-[420px]', onSelect }: Props) {
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
 
   return (
     <div className={className}>
-      <MapContainer center={center} zoom={zoom} className="h-full w-full rounded-xl">
+      <MapContainer center={center} zoom={zoom} className="h-full w-full">
+        <FixMapResize/>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="&copy; OpenStreetMap contributors" />
 
         {/* Get user location */}

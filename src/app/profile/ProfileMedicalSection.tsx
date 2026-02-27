@@ -20,8 +20,8 @@ type Props = {
 
 export function ProfileMedicalSection({ pets, records, loading, selectedPetFilter, onFilterChange, onAddRecord }: Props) {
   return (
-    <div className="w-6xl h-fit rounded-2xl flex flex-col  gap-6" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
-      <div className="flex justify-between p-4">
+    <div className="w-full lg:w-6xl h-fit rounded-2xl flex flex-col gap-4 sm:gap-6" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+      <div className="flex flex-col gap-3 p-2 sm:flex-row sm:items-start sm:justify-between sm:p-4">
         <div className="flex gap-3 items-start">
           <div className="p-3 bg-[#ff6f001f] rounded-full">
             <Syringe className="text-orange-300" />
@@ -34,11 +34,11 @@ export function ProfileMedicalSection({ pets, records, loading, selectedPetFilte
         <AddMedicalRecord pets={pets} onAddRecord={onAddRecord} />
       </div>
       <div className="flex flex-col gap-4">
-        <div className="flex gap-2 text-[#988375] items-center h-5 mb-4">
+        <div className="mb-2 flex flex-wrap items-center gap-2 text-[#988375] sm:mb-4">
           <Filter className="w-4 h-4" />
           <p>Амьтнаар шүүх:</p>
           <Select value={selectedPetFilter} onValueChange={onFilterChange}>
-            <SelectTrigger className="px-5 py-2 pr-11 text-[#503f34] rounded-xl border bg-[#faf8f6] ">
+            <SelectTrigger className="h-9 min-w-[120px] px-3 pr-8 text-[#503f34] rounded-xl border bg-[#faf8f6] sm:px-5 sm:pr-11">
               <SelectValue placeholder="Select Pet" />
             </SelectTrigger>
             <SelectContent>
@@ -51,11 +51,11 @@ export function ProfileMedicalSection({ pets, records, loading, selectedPetFilte
             </SelectContent>
           </Select>
         </div>
-        <div className="flex flex-wrap gap-5">
+        <div className="flex flex-wrap gap-3 sm:gap-5">
           {loading ? (
-            <p className="text-gray-500 text-center w-full py-8">Бүртгэлүүдийг ачааллаж байна...</p>
+            <p className="w-full py-6 text-center text-sm text-gray-500 sm:py-8 sm:text-base">Бүртгэлүүдийг ачааллаж байна...</p>
           ) : records.length === 0 ? (
-            <p className="text-gray-500 text-center w-full py-8">Одоогоор эрүүл мэндийн бүртгэл байхгүй байна. Эхний бүртгэлээ нэмээрэй!</p>
+            <p className="w-full py-6 text-center text-sm text-gray-500 sm:py-8 sm:text-base">Одоогоор эрүүл мэндийн бүртгэл байхгүй байна. Эхний бүртгэлээ нэмээрэй!</p>
           ) : (
             records.map((record) => <MedicalCard key={record.id ?? record.medicine + record.date} record={record} />)
           )}
@@ -64,3 +64,4 @@ export function ProfileMedicalSection({ pets, records, loading, selectedPetFilte
     </div>
   );
 }
+

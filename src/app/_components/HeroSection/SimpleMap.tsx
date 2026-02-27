@@ -17,5 +17,9 @@ type Props = {
 };
 
 export default function SimpleMap(props: Props) {
-  return <SimpleMapClient {...props} />;
+  return <div className="w-full flex justify-center">
+  <div className="w-full max-w-[520px] md:max-w-full overflow-hidden rounded-xl border border-amber-100">
+<SimpleMapClient {...props} />
+</div>
+</div>;
 }

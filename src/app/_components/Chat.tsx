@@ -68,10 +68,10 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
     }
   };
   if (!mounted) {
-    return <div className="fixed right-6 z-50 w-14 h-14 bottom-[calc(env(safe-area-inset-bottom)+96px)]" />;
+    return <div className="fixed left-4 md:left-auto md:right-6 z-50 w-14 h-14 bottom-[calc(env(safe-area-inset-bottom)+96px)]" />;
   }
   return (
-    <div className="fixed right-6 z-50 bottom-[calc(env(safe-area-inset-bottom)+96px)]">
+    <div className="fixed left-4 md:left-auto md:right-6 z-50 bottom-[calc(env(safe-area-inset-bottom)+96px)]">
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <motion.div

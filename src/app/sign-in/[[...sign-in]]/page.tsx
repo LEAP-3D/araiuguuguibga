@@ -1,3 +1,5 @@
+'use client';
+
 import { SignIn } from "@clerk/nextjs";
 import Link from "next/link";
 import { SignInUpShell } from "@/app/_components/SignInUpShell";
@@ -32,7 +34,6 @@ export default function SignInPage() {
                 forceRedirectUrl={signInRedirectUrl}
                 appearance={signInAppearance}
               />
-           
             </>
           ) : (
             <div className="rounded-2xl bg-white/95 shadow-2xl p-8 text-center">

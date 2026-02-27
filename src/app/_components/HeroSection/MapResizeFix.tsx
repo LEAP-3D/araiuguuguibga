@@ -9,12 +9,25 @@ export default function MapResizeFix() {
   useEffect(() => {
     if (!map) return;
 
-    // Leaflet map fully render хийгдсэний дараа invalidateSize
-    const raf = requestAnimationFrame(() => {
+    const resize = () => {
       map.invalidateSize();
-    });
+    };
 
-    return () => cancelAnimationFrame(raf);
+    // run immediately
+    resize();
+
+    // run again after layout settles
+    const t1 = setTimeout(resize, 100);
+    const t2 = setTimeout(resize, 300);
+
+    // run on window resize
+    window.addEventListener('resize', resize);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      window.removeEventListener('resize', resize);
+    };
   }, [map]);
 
   return null;

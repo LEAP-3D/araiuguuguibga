@@ -14,6 +14,7 @@ import MapController from './MapController';
 import FlyToUser from './FlyToUser';
 import FullscreenToggle from './FullscreenToggle';
 import SidebarList from './SidebarList';
+import MapResizeFix from '../HeroSection/MapResizeFix';
 
 type Props = {
   selectedType: 'all' | 'lost' | 'vets';
@@ -34,10 +35,12 @@ export default function LeafletMap({ selectedType, selectedDistance }: Props) {
   };
 
   return (
-    <div className={isFullScreen ? 'fixed inset-0 z-[2000] h-full w-full bg-white p-4' : 'flex h-230 w-full gap-4 justify-center'}>
-      {/* Map panel */}
-      <div className={isFullScreen ? 'relative h-full w-full' : 'relative h-full w-2/4'}>
-        <button
+    <div className={
+        isFullScreen
+          ? 'fixed inset-0 z-[2000] h-full w-full bg-white p-4'
+          : 'w-full flex flex-col md:flex-row gap-3 md:gap-4'}
+    >      {/* Map panel */}
+      <div className={ isFullScreen ? 'relative h-full w-full' : 'relative w-full h-[55vh] md:h-[70vh] lg:h-[75vh] md:flex-1 overflow-hidden rounded-2xl'}>        <button
           onClick={handleMyLocation}
           className="absolute bottom-4 right-4 z-[1000] bg-[#fe8c09] px-3.5 py-1 text-white font-semibold text-[15px] rounded-2xl shadow hover:bg-orange-50 transition"
         >
@@ -46,7 +49,8 @@ export default function LeafletMap({ selectedType, selectedDistance }: Props) {
 
         <FullscreenToggle isFullScreen={isFullScreen} setIsFullScreen={setIsFullScreen} />
 
-        <MapContainer center={[47.9212, 106.9057]} zoom={13} scrollWheelZoom={false} className="h-full w-full">
+        <MapContainer key={`${selectedType}-${selectedDistance}`} center={[47.9212, 106.9057]} zoom={13} scrollWheelZoom={false} className="h-full w-full">
+          <MapResizeFix/>
           <MapController mapRef={mapRef} />
           <TileLayer attribution="&copy; OpenStreetMap contributors" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
@@ -95,7 +99,11 @@ export default function LeafletMap({ selectedType, selectedDistance }: Props) {
       </div>
 
       {/* Sidebar */}
-      {!isFullScreen && <SidebarList selectedType={selectedType} filteredVets={filteredVets} filteredPosts={filteredPosts} />}
-    </div>
+    {!isFullScreen && (
+      <div className="w-full md:w-[360px] lg:w-[420px] h-[35vh] md:h-[70vh] lg:h-[75vh] overflow-hidden rounded-2xl bg-amber-100/40">
+          <SidebarList selectedType={selectedType} filteredVets={filteredVets} filteredPosts={filteredPosts} />
+      </div>
+  )}    
+  </div>
   );
 }

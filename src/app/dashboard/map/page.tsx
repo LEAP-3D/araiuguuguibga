@@ -9,70 +9,63 @@ export default function Map() {
   const [selectedType, setSelectedType] = useState<'all' | 'lost' | 'vets'>('all');
 
   return (
-    <div className="h-screen w-screen flex flex-col items-center gap-4 ">
-      <div className="w-320 h-fit bg-white rounded-2xl flex flex-col gap-3 p-3 items-end">
-        <div className="flex justify-between w-320 pl-4">
-          <p className="text-[25px] font-bold ml-5">Надад ойр</p>
-          <div className="flex flex-col gap-2 items-end">
-            <div className="flex gap-1.5 w-fit py-1 rounded-2xl font-medium text-sm">
+    <div className="w-full flex flex-col items-center gap-3 px-3 pb-[calc(env(safe-area-inset-bottom)+96px)]">
+      {/* Controls */}
+      <div className="w-full max-w-[450px] md:max-w-none md:w-[calc(100%-48px)] lg:w-[calc(100%-80px)] h-fit bg-white rounded-2xl flex flex-col gap-3 p-3 md:p-4">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3 md:gap-6 w-full items-start md:items-center">
+          <p className="text-[22px] md:text-[25px] font-bold ml-0 md:ml-5">Надад ойр</p>
+
+          <div className="flex flex-col gap-2 items-start md:items-end w-full md:w-auto">
+            <div className="flex flex-wrap gap-1.5 w-full md:w-fit py-1 rounded-2xl font-medium text-sm">
               <div
                 onClick={() => setSelectedType('all')}
-                className={`px-4 py-1 rounded-xl cursor-pointer transition
-          ${selectedType === 'all' ? 'bg-orange-400 text-white' : 'bg-amber-50  border border-orange-200 text-orange-950'}`}
+                className={`px-4 py-1 rounded-xl cursor-pointer transition ${
+                  selectedType === 'all' ? 'bg-orange-400 text-white' : 'bg-amber-50 border border-orange-200 text-orange-950'
+                }`}
               >
                 All
               </div>
               <div
                 onClick={() => setSelectedType('lost')}
-                className={`px-4 py-1 rounded-xl cursor-pointer transition
-          ${selectedType === 'lost' ? 'bg-orange-400 text-white' : 'bg-amber-50 border border-orange-200 text-orange-950'}`}
+                className={`px-4 py-1 rounded-xl cursor-pointer transition ${
+                  selectedType === 'lost' ? 'bg-orange-400 text-white' : 'bg-amber-50 border border-orange-200 text-orange-950'
+                }`}
               >
                 Lost Pets
               </div>
               <div
                 onClick={() => setSelectedType('vets')}
-                className={`px-4 py-1 rounded-xl cursor-pointer transition
-          ${selectedType === 'vets' ? 'bg-orange-400 text-white' : 'bg-amber-50 border border-orange-200 text-orange-950'}`}
+                className={`px-4 py-1 rounded-xl cursor-pointer transition ${
+                  selectedType === 'vets' ? 'bg-orange-400 text-white' : 'bg-amber-50 border border-orange-200 text-orange-950'
+                }`}
               >
                 Vets
               </div>
             </div>
-            <div className="flex gap-4 font-medium text-sm">
+
+            <div className="flex flex-wrap gap-3 font-medium text-sm w-full md:w-auto">
               <div className="flex gap-0.5 bg-orange-200 w-fit px-1 py-1 rounded-2xl">
-                <div
-                  onClick={() => setSelected('1km')}
-                  className={`px-4 py-1 rounded-xl cursor-pointer transition
-          ${selected === '1km' ? 'bg-orange-400 text-white' : ' text-orange-950'}`}
-                >
-                  1km
-                </div>
-                <div
-                  onClick={() => setSelected('3km')}
-                  className={`px-4 py-1 rounded-xl cursor-pointer transition
-          ${selected === '3km' ? 'bg-orange-400 text-white' : ' text-orange-950'}`}
-                >
-                  3km
-                </div>
-                <div
-                  onClick={() => setSelected('5km')}
-                  className={`px-4 py-1 rounded-xl cursor-pointer transition
-          ${selected === '5km' ? 'bg-orange-400 text-white' : ' text-orange-950'}`}
-                >
-                  5km
-                </div>
+                {(['1km', '3km', '5km'] as const).map((d) => (
+                  <div
+                    key={d}
+                    onClick={() => setSelected(d)}
+                    className={`px-4 py-1 rounded-xl cursor-pointer transition ${selected === d ? 'bg-orange-400 text-white' : 'text-orange-950'}`}
+                  >
+                    {d}
+                  </div>
+                ))}
               </div>
+
               <div className="flex gap-0.5 bg-orange-200 w-fit px-1 py-1 rounded-2xl">
                 <div
                   onClick={() => setSelectedView('map')}
-                  className={`px-4 py-1 rounded-xl cursor-pointer transition
-          ${selectedView === 'map' ? 'bg-orange-400 text-white' : ' text-orange-950'}`}
+                  className={`px-4 py-1 rounded-xl cursor-pointer transition ${selectedView === 'map' ? 'bg-orange-400 text-white' : 'text-orange-950'}`}
                 >
                   Газрын зургаар
                 </div>
                 <div
                   onClick={() => setSelectedView('list')}
-                  className={`px-4 py-1 rounded-xl cursor-pointer transition
-          ${selectedView === 'list' ? 'bg-orange-400 text-white' : ' text-orange-950'}`}
+                  className={`px-4 py-1 rounded-xl cursor-pointer transition ${selectedView === 'list' ? 'bg-orange-400 text-white' : 'text-orange-950'}`}
                 >
                   Жагсаалтаар
                 </div>
@@ -81,7 +74,10 @@ export default function Map() {
           </div>
         </div>
       </div>
-      {selectedView === 'map' ? <LeafletMap selectedType={selectedType} selectedDistance={selected} /> : <ListView />}
+
+       <div className="w-full max-w-[450px] md:max-w-none md:w-[calc(100%-48px)] lg:w-[calc(100%-80px)] rounded-2xl bg-white overflow-hidden h-[72vh] md:h-auto md:flex-1">
+        {selectedView === 'map' ? <LeafletMap selectedType={selectedType} selectedDistance={selected} /> : <ListView />}
+      </div>
     </div>
   );
 }

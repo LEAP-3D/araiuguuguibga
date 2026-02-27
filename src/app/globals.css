@@ -243,3 +243,7 @@
   -webkit-backdrop-filter: blur(24px);
   border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
+.leaflet-container {
+  width: 100% !important;
+  max-width: 100% !important;
+} 

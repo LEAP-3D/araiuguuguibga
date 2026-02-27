@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable max-lines */
 
 import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
@@ -13,8 +14,20 @@ import { getTodayStr, toDateOnlyStr } from './profileDateUtils';
 import { DueTodayBanner } from './DueTodayBanner';
 import { ProfileMedicalSection, type MedicalRecordItem } from './ProfileMedicalSection';
 import { useMedicalNotifications, triggerTestMedicalNotification } from './useMedicalNotifications';
+import ProfileMobile from '../_mobile/profileMobile';
 
 export type { MedicalRecordItem };
+function useIsMobile(breakpointPx = 768) {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${breakpointPx}px)`);
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, [breakpointPx]);
+  return isMobile;
+}
 
 export default function Profile() {
   const { isSignedIn, isLoaded } = useUser();
@@ -23,12 +36,12 @@ export default function Profile() {
   const [recordsLoading, setRecordsLoading] = useState(true);
   const [selectedPetFilter, setSelectedPetFilter] = useState<string>('all');
   const { pets, refetchPets } = usePets();
+  const isMobile = useIsMobile(768);
 
   useEffect(() => {
     if (!isLoaded) return;
     if (!isSignedIn) {
       router.replace('/sign-in');
-      return;
     }
   }, [isLoaded, isSignedIn, router]);
 
@@ -40,10 +53,6 @@ export default function Profile() {
   useEffect(() => {
     if (!isSignedIn) return;
     let cancelled = false;
-    let tid = 0;
-    tid = requestAnimationFrame(() => {
-      if (!cancelled) setRecordsLoading(true);
-    });
     fetch('/api/medical-records')
       .then((res) => (res.ok ? res.json() : []))
       .then((data: MedicalRecordItem[]) => {
@@ -70,14 +79,10 @@ export default function Profile() {
       });
     return () => {
       cancelled = true;
-      cancelAnimationFrame(tid);
     };
   }, [isSignedIn]);
 
-  const handleButtonClick = () => {
-    router.push('/');
-  };
-
+  const handleButtonClick = () => router.push('/');
   const handleAddRecord = async (record: PetMedicalForm) => {
     try {
       const res = await fetch('/api/medical-records', {
@@ -87,14 +92,12 @@ export default function Profile() {
       });
       if (!res.ok) return;
       const saved = (await res.json()) as { id: string };
-      setMedicalRecords((prev) => [{ ...record, id: saved.id }, ...prev]);
-    } catch {
-      // ignore
-    }
+      const newRecord: MedicalRecordItem = { id: saved.id, ...record };
+      setMedicalRecords((prev) => [newRecord, ...prev]);
+    } catch {}
   };
 
-  const filteredRecords = selectedPetFilter === 'all' ? medicalRecords : medicalRecords.filter((record) => record.pet === selectedPetFilter);
-
+  const filteredRecords = selectedPetFilter === 'all' ? medicalRecords : medicalRecords.filter((r) => r.pet === selectedPetFilter);
   const dueTodayRecords = useMemo(() => {
     const today = getTodayStr();
     return medicalRecords.filter((r) => {
@@ -103,9 +106,7 @@ export default function Profile() {
       return d === today || (next && next === today);
     });
   }, [medicalRecords]);
-
   useMedicalNotifications(dueTodayRecords);
-
   if (!isLoaded) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background/90">
@@ -113,10 +114,23 @@ export default function Profile() {
       </div>
     );
   }
-  if (!isSignedIn) {
-    return null;
+  if (!isSignedIn) return null;
+  if (isMobile) {
+    return (
+      <ProfileMobile
+        pets={pets}
+        dueTodayRecords={dueTodayRecords}
+        records={filteredRecords}
+        loading={recordsLoading}
+        selectedPetFilter={selectedPetFilter}
+        onFilterChange={setSelectedPetFilter}
+        onAddRecord={handleAddRecord}
+        onBack={handleButtonClick}
+        onTestNotification={triggerTestMedicalNotification}
+      />
+    );
   }
-
+  // ✅ DESKTOP LAYOUT 
   return (
     <div className="w-screen relative flex justify-center-safe">
       <div className=" fixed inset-0 z-0 min-h-screen bg-[url('/pet-background.jpg')] bg-cover bg-center">
@@ -139,7 +153,6 @@ export default function Profile() {
           <div className="w-6xl flex justify-start">
             <ProfileCard />
           </div>
-
           {/* PETS SECTION */}
           <div className="rounded-2xl w-6xl  flex flex-col overflow-auto ">
             <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
@@ -154,7 +167,6 @@ export default function Profile() {
               </div>
             </div>
           </div>
-
           <ProfileMedicalSection
             pets={pets}
             records={filteredRecords}

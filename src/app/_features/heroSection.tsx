@@ -43,13 +43,11 @@ export function HeroSection({ onOpenChat }: { onOpenChat?: () => void }) {
               <span className="w-2 h-2 rounded-full bg-[#21da00] animate-pulse inline-block" />
               24/7 AI Туслах
             </motion.div>
-            <h1
-              className="w-full max-w-[36rem] text-4xl sm:text-5xl md:text-7xl font-extrabold text-[#2D2D2D] leading-[1.08] break-words"
-              style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}
-            >
+            <h1 className="w-full max-w-[36rem] text-[28px] sm:text-5xl md:text-7xl font-extrabold text-[#2D2D2D] leading-[1.08] break-words"              
+            style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
               Бид Таны <br />{' '}
-              <div style={{ fontFamily: 'var(--font-great-vibes)' }} className="text-[#fd9f9f] text-[90px] mt-5 ">
-                Хайртай
+              <div style={{ fontFamily: 'var(--font-great-vibes)' }}className="text-[#fd9f9f] mt-3 text-[clamp(40px,12vw,90px)] leading-none">
+                  Хайртай
               </div>
               Амьтдын <br />
               <span className="relative inline-block" style={{ color: '#FFBE98', fontStyle: 'italic', fontFamily: "'Instrument Serif', Georgia, serif", letterSpacing: '-0.01em' }}>

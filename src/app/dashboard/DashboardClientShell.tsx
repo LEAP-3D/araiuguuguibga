@@ -101,7 +101,7 @@ export function DashboardClientShell({ children }: { children: React.ReactNode }
       </div>
 
       {/* Main content — extra bottom padding on mobile for bottom nav */}
-      <main className="flex-1 p-4 md:p-6 flex flex-col items-center pb-24 md:pb-6">
+      <main className="flex-1 min-h-0 p-4 md:p-6 flex flex-col items-center pb-[calc(env(safe-area-inset-bottom)+96px)] md:pb-6">
         {/* Mobile: мэдэгдэл идэвхжүүлэх санал — dashboard руу ормогц харагдана */}
         {notificationError ? (
           <div className="w-full max-w-[450px] mb-3 rounded-xl bg-red-50 border border-red-200 px-4 py-3">
@@ -135,7 +135,7 @@ export function DashboardClientShell({ children }: { children: React.ReactNode }
 
       {/* Mobile bottom nav — апп шиг доод цэс */}
       <nav
-        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-t border-amber-400/50 flex items-center justify-around py-2 safe-area-inset-bottom"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-t border-amber-400/50 flex items-center justify-around pt-2 pb-[calc(env(safe-area-inset-bottom)+8px)]"
         aria-label="Үндсэн цэс"
       >
         {sidebarItems.map((item) => {

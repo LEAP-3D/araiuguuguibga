@@ -101,12 +101,12 @@ export function AddPostForm() {
   };
   const canPost = form.location !== null;
   return (
-    <div className="mx-auto max-w-2xl" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+    <div className="mx-auto w-full max-w-[450px] md:max-w-2xl lg:max-w-4xl" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
       <div className="flex flex-col gap-6 ">
         <div className="flex flex-col items-start text-center" style={{ fontFamily: 'Tahoma, Veerdana, Segoe, sans-serif' }}>
           <div className="flex items-center gap-3">
-            <CatShelter className="w-14 h-14" />
-            <p className="text-3xl font-bold leading-none">Амьтан постлох</p>
+            <CatShelter className="w-10 h-10 sm:w-14 sm:h-14" />
+            <p className="text-xl sm:text-3xl font-bold leading-none">Амьтан постлох</p>
           </div>
           <p className="mt-2 text-muted-foreground">Энэ амьтныг дахин нэгтгэхэд туслахын тулд дэлгэрэнгүй мэдээллийг бөглөнө үү</p>
         </div>
@@ -120,11 +120,11 @@ export function AddPostForm() {
                 {step === 3 && 'Contact'}
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4 w-150">
+            <CardContent className="space-y-4">
               {step === 0 && (
                 <div>
-                  <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 p-10 text-center transition-colors hover:bg-gray-50">
-                    <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageChange} />
+                    <label className="flex cursor-pointer flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed border-gray-300 p-6 sm:p-10 md:p-16 text-center transition-colors hover:bg-gray-50">                    
+                      <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageChange} />
                     <Upload className="h-10 w-10 text-[#f18912]" />
                     <p className="font-medium">Upload Photos</p>
                     <p className="text-sm text-gray-500">Дарна уу</p>
@@ -142,7 +142,7 @@ export function AddPostForm() {
                             <X className="h-4 w-4" />
                           </button>
                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={img} alt="Preview" className="max-h-60 w-full rounded-lg object-contain" />
+                          <img src={img} alt="Preview" className="max-h-60 md:max-h-96 w-full rounded-lg object-contain" />
                         </div>
                       ))}
                     </div>
@@ -156,18 +156,18 @@ export function AddPostForm() {
           </Card>
           <div className="flex justify-end gap-2">
             {step > 0 && (
-              <Button type="button" variant="outline" onClick={() => setStep(step - 1)} className="my-10">
+              <Button type="button" variant="outline" onClick={() => setStep(step - 1)} className="mt-6 mb-2 sm:mt-10 sm:mb-0">
                 Буцах
               </Button>
             )}
             {step < 3 && (
-              <Button type="button" onClick={() => setStep(step + 1)} className="bg-amber-500 my-10">
+              <Button type="button" onClick={() => setStep(step + 1)} className="bg-amber-500 mt-6 mb-2 sm:mt-10 sm:mb-0">
                 Дараах
               </Button>
             )}
             {step === 3 && (
               <div>
-                <Button type="submit" disabled={isSubmitting || !canPost} className=" bg-amber-500  hover:bg-[#f1a210] disabled:opacity-50 my-10 px-7">
+                <Button type="submit" disabled={isSubmitting || !canPost} className="bg-amber-500 hover:bg-[#f1a210] disabled:opacity-50 mt-6 mb-2 sm:mt-10 sm:mb-0 px-7">
                   {isSubmitting ? 'Боловсруулж байна...' : 'Пост'}
                 </Button>
               </div>
