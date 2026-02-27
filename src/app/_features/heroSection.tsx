@@ -85,17 +85,11 @@ export function HeroSection({ onOpenChat }: { onOpenChat?: () => void }) {
             transition={{ delay: 0.55, duration: 0.55 }}
             className="flex flex-col md:flex-row md:items-end md:justify-between gap-3"
           >
-            <ShinyButton
-              onClick={onOpenChat}
-              className="font-[Outfit,sans-serif]"
-            >
+            <ShinyButton onClick={onOpenChat} className="font-[Outfit,sans-serif]">
               <MessageCircle className="h-5 w-5 shrink-0" />
               AI туслах
             </ShinyButton>
-            <ShinyButton
-              href={servicesHref}
-              className="font-[Outfit,sans-serif]"
-            >
+            <ShinyButton href={servicesHref} className="font-[Outfit,sans-serif]">
               <Heart className="h-5 w-5 shrink-0" />
               Манай үйлчилгээ
             </ShinyButton>
@@ -128,12 +122,6 @@ export function HeroSection({ onOpenChat }: { onOpenChat?: () => void }) {
           </div>
         </motion.div>
         <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="relative flex justify-center md:justify-end items-center">
-          <motion.div
-            className="absolute rounded-full border-2 border-dashed border-[#FFD98A]/35 pointer-events-none"
-            style={{ width: '70%', aspectRatio: '1', top: '50%', left: '55%', transform: 'translate(-50%,-50%)' }}
-            animate={{ rotate: 360 }}
-            transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
-          />
           <div className="relative z-10 w-full max-w-137.5 md:ml-auto">
             <Image src="/cat.png" alt="Beloved Cat" width={800} height={900} className="object-contain ml-auto md:scale-150" priority />
           </div>
