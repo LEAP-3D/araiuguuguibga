@@ -39,8 +39,10 @@ export const NeonGradientCard: React.FC<NeonGradientCardProps> = ({
       style={{
         padding: `${borderSize}px`,
         borderRadius: `${borderRadius}px`,
-        background: `linear-gradient(135deg, ${neonColors.firstColor}, ${neonColors.secondColor}, ${neonColors.firstColor})`,
+        backgroundImage: `linear-gradient(135deg, ${neonColors.firstColor}, ${neonColors.secondColor}, ${neonColors.firstColor})`,
+        backgroundRepeat: "no-repeat",
         backgroundSize: "200% 200%",
+        backgroundPosition: "0% 50%",
         animation: "neon-gradient-shift 4s ease infinite",
         boxShadow: `0 0 20px ${neonColors.firstColor}40, 0 0 40px ${neonColors.secondColor}30`,
       }}

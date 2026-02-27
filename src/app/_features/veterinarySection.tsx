@@ -84,7 +84,7 @@ export function VeterinarySection() {
 
         <div className="mx-auto flex h-150 max-w-7xl flex-col gap-4 lg:flex-row lg:gap-6">
           {/* Map Хэсэг */}
-          <NeonGradientCard borderSize={1} borderRadius={16} neonColors={{ firstColor: '#4f9669', secondColor: '#7ab88a' }} innerClassName="bg-transparent" className="min-h-0 flex-1">
+          <NeonGradientCard borderSize={1} borderRadius={16} neonColors={{ firstColor: '#FFDAB9', secondColor: '#FFCCA4' }} innerClassName="bg-transparent" className="min-h-0 flex-1">
             <div className="min-h-0 flex-1 overflow-hidden relative">
               <MapPlaceholder
                 vets={filteredVets}
@@ -104,7 +104,7 @@ export function VeterinarySection() {
           </NeonGradientCard>
 
           {/* Sidebar Хэсэг */}
-          <NeonGradientCard borderSize={1} borderRadius={16} neonColors={{ firstColor: '#4f9669', secondColor: '#7ab88a' }} className="flex flex-col lg:w-[350px] h-[600px]">
+          <NeonGradientCard borderSize={1} borderRadius={16} neonColors={{ firstColor: '#FFDAB9', secondColor: '#FFCCA4' }} className="flex flex-col lg:w-[350px] h-[600px]">
             <div className="flex flex-col bg-white h-full overflow-hidden" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
               {/* Search */}
               <div className="border-b border-gray-100 p-3">

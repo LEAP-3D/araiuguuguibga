@@ -61,6 +61,7 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          status: post.status,
           name: post.name,
           breed: post.breed || null,
           age: post.age || null,

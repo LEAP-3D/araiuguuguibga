@@ -14,6 +14,7 @@ const typeLabels: Record<string, string> = {
 
 type Post = {
   id: string;
+  status?: 'lost' | 'found' | 'rescued';
   name: string;
   breed: string;
   age: string;
@@ -31,6 +32,8 @@ type RescuePetCardProps = {
 };
 
 export function RescuePetCard({ post, isFavorite, onToggleFavorite, noBorder }: RescuePetCardProps) {
+  const isFound = post.status === 'found';
+  const isRescued = post.status === 'rescued';
   return (
     <Dialog>
       <form>
@@ -42,9 +45,13 @@ export function RescuePetCard({ post, isFavorite, onToggleFavorite, noBorder }: 
             <div className="relative h-[290px] w-full overflow-hidden">
               <PetImage image={post.image} />
               <div className="absolute inset-0 bg-linear-to-t from-black/50 via-black/10 to-transparent" />
-              <span className="absolute bottom-3 left-3 inline-flex items-center gap-1 rounded-full bg-white/95 px-3 py-1 text-[11px] font-extrabold text-[#8a4d25] shadow-sm">
+              <span
+                className={`absolute bottom-3 left-3 inline-flex items-center gap-1 rounded-full px-3 py-1 text-[11px] font-extrabold shadow-sm ${
+                  isRescued ? 'bg-sky-100 text-sky-800' : isFound ? 'bg-emerald-100 text-emerald-800' : 'bg-white/95 text-[#8a4d25]'
+                }`}
+              >
                 <PawPrint className="h-3.5 w-3.5" />
-                {typeLabels[post.type] ?? 'Бусад'}
+                {isRescued ? 'Аврагдсан' : isFound ? 'Олдсон' : 'Алдагдсан'} · {typeLabels[post.type] ?? 'Бусад'}
               </span>
 
               <button

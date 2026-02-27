@@ -1,5 +1,5 @@
 import type { usePosts } from '@/lib/postsContext';
-import { MapPin, PawPrint, Phone } from 'lucide-react';
+import { PawPrint, Phone } from 'lucide-react';
 
 type Post = ReturnType<typeof usePosts>['posts'][number];
 
@@ -51,7 +51,13 @@ export default function PostCard({ post, onClick, selected = false }: Props) {
         <div className="min-w-0 flex-1">
           <div className="mb-1 flex items-start justify-between gap-2">
             <h3 className="line-clamp-1 text-sm font-bold text-[#3b2b1f]">{post.name || 'Нэргүй пост'}</h3>
-            <span className="shrink-0 rounded-full bg-[#ffe7d4] px-2 py-0.5 text-[10px] font-semibold text-[#a5562b]">{typeLabels[post.type] ?? 'Амьтан'}</span>
+            <span
+              className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                post.status === 'rescued' ? 'bg-sky-100 text-sky-800' : post.status === 'found' ? 'bg-emerald-100 text-emerald-800' : 'bg-[#ffe7d4] text-[#a5562b]'
+              }`}
+            >
+              {post.status === 'rescued' ? 'Аврагдсан' : post.status === 'found' ? 'Олдсон' : 'Алдагдсан'} · {typeLabels[post.type] ?? 'Амьтан'}
+            </span>
           </div>
 
           <p className="line-clamp-2 text-xs leading-relaxed text-[#6e5747]">{post.description || 'Тайлбар оруулаагүй байна.'}</p>

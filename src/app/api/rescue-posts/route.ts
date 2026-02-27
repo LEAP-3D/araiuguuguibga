@@ -4,6 +4,10 @@ import { currentUser } from '@clerk/nextjs/server';
 import prisma from '@/lib/prisma';
 
 const VALID_TYPES = ['dog', 'cat', 'other'] as const;
+const VALID_STATUSES = ['lost', 'found', 'rescued'] as const;
+const FOUND_MARKER = '[FOUND]';
+const META_START = '[META]';
+const META_END = '[/META]';
 
 function readString(value: unknown, fallback = ''): string {
   return typeof value === 'string' ? value : fallback;
@@ -18,6 +22,58 @@ function normalizeType(value: unknown): 'dog' | 'cat' | 'other' {
   const raw = typeof value === 'string' ? value.trim().toLowerCase() : '';
   if (VALID_TYPES.includes(raw as (typeof VALID_TYPES)[number])) return raw as 'dog' | 'cat' | 'other';
   return 'other';
+}
+
+function normalizeStatus(value: unknown): 'lost' | 'found' | 'rescued' {
+  const raw = typeof value === 'string' ? value.trim().toLowerCase() : '';
+  if (VALID_STATUSES.includes(raw as (typeof VALID_STATUSES)[number])) return raw as 'lost' | 'found' | 'rescued';
+  return 'lost';
+}
+
+function detectStatusFromText(text: string): 'lost' | 'found' | 'rescued' {
+  return text.trim().toUpperCase().startsWith(FOUND_MARKER) ? 'found' : 'lost';
+}
+
+function stripStatusMarker(text: string) {
+  if (detectStatusFromText(text) === 'found') {
+    return text.replace(/^\s*\[FOUND\]\s*/i, '').trim();
+  }
+  return text;
+}
+
+type PostMeta = {
+  status?: 'lost' | 'found' | 'rescued';
+  breed?: string;
+  age?: string;
+  type?: 'dog' | 'cat' | 'other';
+  contactName?: string;
+  contactPhone?: string;
+  contactNotes?: string;
+};
+
+function encodeMeta(meta: PostMeta, description: string) {
+  const compact = JSON.stringify(meta);
+  return `${META_START}${compact}${META_END}\n${description}`.trim();
+}
+
+function parseMetaFromText(rawText: string) {
+  const text = rawText ?? '';
+  const start = text.indexOf(META_START);
+  const end = text.indexOf(META_END);
+  if (start === -1 || end === -1 || end < start) {
+    return { meta: {} as PostMeta, description: stripStatusMarker(text).trim() };
+  }
+  const json = text.slice(start + META_START.length, end).trim();
+  const remainder = text.slice(end + META_END.length).trim();
+  try {
+    const parsed = JSON.parse(json) as PostMeta;
+    return {
+      meta: parsed ?? {},
+      description: stripStatusMarker(remainder).trim(),
+    };
+  } catch {
+    return { meta: {} as PostMeta, description: stripStatusMarker(text).trim() };
+  }
 }
 
 function isMissingColumnError(err: unknown) {
@@ -65,19 +121,23 @@ export async function GET(req: Request) {
 
       return NextResponse.json(
         posts.map((p) => ({
+          // New schema currently has no dedicated status column; infer from embedded meta or marker.
+          status: normalizeStatus(parseMetaFromText(p.note ?? '').meta.status ?? detectStatusFromText(p.note ?? '')),
           id: p.id,
           name: p.name,
+          breed: parseMetaFromText(p.note ?? '').meta.breed ?? '',
+          age: parseMetaFromText(p.note ?? '').meta.age ?? '',
           color: p.color ?? '',
           size: p.size ?? 'medium',
-          note: p.note ?? '',
+          note: parseMetaFromText(p.note ?? '').description,
           images: p.images ?? [],
-          type: 'other',
-          description: p.note ?? '',
+          type: normalizeType(parseMetaFromText(p.note ?? '').meta.type ?? 'other'),
+          description: parseMetaFromText(p.note ?? '').description,
           location: p.location ?? '',
           image: (p.images ?? [])[0] ?? '',
-          contactName: '',
-          contactPhone: '',
-          contactNotes: '',
+          contactName: parseMetaFromText(p.note ?? '').meta.contactName ?? '',
+          contactPhone: parseMetaFromText(p.note ?? '').meta.contactPhone ?? '',
+          contactNotes: parseMetaFromText(p.note ?? '').meta.contactNotes ?? '',
           createdAt: p.createdAt.getTime(),
         }))
       );
@@ -91,24 +151,29 @@ export async function GET(req: Request) {
         const fallbackImage = readString(row.image);
         const normalizedImages = images.length > 0 ? images : fallbackImage ? [fallbackImage] : [];
         const note = readString(row.note) || readString(row.description);
-        const type = normalizeType(row.type);
+        const parsed = parseMetaFromText(note);
+        const type = normalizeType(row.type || parsed.meta.type);
+        const status = normalizeStatus(row.status || parsed.meta.status) === 'lost' ? detectStatusFromText(note) : normalizeStatus(row.status || parsed.meta.status);
         const createdAtRaw = row.createdAt;
         const createdAt = createdAtRaw instanceof Date ? createdAtRaw.getTime() : Number(new Date(String(createdAtRaw)));
 
         return {
           id: readString(row.id),
+          status,
           name: readString(row.name, 'Нэргүй'),
+          breed: readString(row.breed, parsed.meta.breed ?? ''),
+          age: readString(row.age, parsed.meta.age ?? ''),
           color: readString(row.color),
           size: readString(row.size, 'medium'),
-          note,
+          note: parsed.description,
           images: normalizedImages,
           type,
-          description: note,
+          description: parsed.description,
           location: readString(row.location),
           image: normalizedImages[0] ?? '',
-          contactName: readString(row.contactName),
-          contactPhone: readString(row.contactPhone),
-          contactNotes: readString(row.contactNotes),
+          contactName: readString(row.contactName, parsed.meta.contactName ?? ''),
+          contactPhone: readString(row.contactPhone, parsed.meta.contactPhone ?? ''),
+          contactNotes: readString(row.contactNotes, parsed.meta.contactNotes ?? ''),
           createdAt: Number.isFinite(createdAt) ? createdAt : Date.now(),
         };
       });
@@ -131,13 +196,37 @@ export async function POST(req: Request) {
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const body = await req.json();
+    const status = normalizeStatus(body.status);
     const name = typeof body.name === 'string' ? body.name.trim() : '';
     const color = typeof body.color === 'string' ? body.color.trim() || null : null;
     const sizeRaw = typeof body.size === 'string' ? body.size.trim().toLowerCase() : 'medium';
     const size = sizeRaw === 'small' || sizeRaw === 'medium' || sizeRaw === 'large' ? sizeRaw : 'medium';
     const note = typeof body.note === 'string' ? body.note.trim() || null : null;
+    const description = typeof body.description === 'string' ? body.description.trim() : '';
+    const breed = typeof body.breed === 'string' ? body.breed.trim() : '';
+    const age = typeof body.age === 'string' ? body.age.trim() : '';
+    const type = normalizeType(body.type);
+    const contactName = typeof body.contactName === 'string' ? body.contactName.trim() : '';
+    const contactPhone = typeof body.contactPhone === 'string' ? body.contactPhone.trim() : '';
+    const contactNotes = typeof body.contactNotes === 'string' ? body.contactNotes.trim() : '';
     const location = typeof body.location === 'string' ? body.location.trim() || null : null;
-    const images = Array.isArray(body.images) ? body.images.filter((img): img is string => typeof img === 'string' && img.trim().length > 0).slice(0, 10) : [];
+    const imagesFromArray = Array.isArray(body.images) ? body.images.filter((img): img is string => typeof img === 'string' && img.trim().length > 0) : [];
+    const singleImage = typeof body.image === 'string' && body.image.trim().length > 0 ? body.image.trim() : '';
+    const images = (imagesFromArray.length > 0 ? imagesFromArray : singleImage ? [singleImage] : []).slice(0, 10);
+    const baseDescription = description || (note ?? '');
+    const taggedDescription = status === 'found' ? `${FOUND_MARKER} ${baseDescription}`.trim() : baseDescription;
+    const persistedNote = encodeMeta(
+      {
+        status,
+        breed,
+        age,
+        type,
+        contactName,
+        contactPhone,
+        contactNotes,
+      },
+      taggedDescription
+    );
 
     try {
       const post = await prisma.rescuePost.create({
@@ -146,7 +235,7 @@ export async function POST(req: Request) {
           name: name || 'Нэргүй',
           color,
           size,
-          note,
+          note: persistedNote,
           location,
           images,
         },
@@ -154,18 +243,21 @@ export async function POST(req: Request) {
 
       return NextResponse.json({
         id: post.id,
+        status,
         name: post.name,
+        breed,
+        age,
         color: post.color ?? '',
         size: post.size ?? 'medium',
-        note: post.note ?? '',
+        note: stripStatusMarker(baseDescription),
         images: post.images ?? [],
-        type: 'other',
-        description: post.note ?? '',
+        type,
+        description: stripStatusMarker(baseDescription),
         location: post.location ?? '',
         image: (post.images ?? [])[0] ?? '',
-        contactName: '',
-        contactPhone: '',
-        contactNotes: '',
+        contactName,
+        contactPhone,
+        contactNotes,
         createdAt: post.createdAt.getTime(),
       });
     } catch (err) {
@@ -174,14 +266,26 @@ export async function POST(req: Request) {
       // Old DB schema fallback (type/location required, image/description legacy).
       const fallbackId = generateFallbackId();
       const fallbackType = normalizeType(body.type);
+      const fallbackStatus = normalizeStatus(body.status);
       const fallbackLocation = location ?? '';
-      const fallbackDescription = (typeof body.description === 'string' ? body.description : note ?? '') || '';
+      const fallbackDescription = encodeMeta(
+        {
+          status,
+          breed,
+          age,
+          type: fallbackType,
+          contactName,
+          contactPhone,
+          contactNotes,
+        },
+        status === 'found' ? `${FOUND_MARKER} ${baseDescription}`.trim() : baseDescription
+      );
       const fallbackImage = (typeof body.image === 'string' ? body.image : images[0] ?? '') || '';
 
       const fallbackRows = await prisma.$queryRaw<Array<Record<string, unknown>>>`
         INSERT INTO "RescuePost" ("id", "userId", "name", "type", "location", "description", "image", "createdAt")
         VALUES (${fallbackId}, ${userId}, ${name || 'Нэргүй'}, ${fallbackType}, ${fallbackLocation}, ${fallbackDescription}, ${fallbackImage}, NOW())
-        RETURNING "id", "name", "location", "description", "image", "createdAt"
+        RETURNING "id", "name", "location", "description", "image", "createdAt", ${fallbackStatus} as "status"
       `;
 
       const row = fallbackRows[0] ?? {};
@@ -190,18 +294,21 @@ export async function POST(req: Request) {
 
       return NextResponse.json({
         id: readString(row.id, fallbackId),
+        status: normalizeStatus(row.status || fallbackStatus),
         name: readString(row.name, name || 'Нэргүй'),
+        breed,
+        age,
         color: '',
         size: 'medium',
-        note: readString(row.description),
+        note: stripStatusMarker(readString(row.description)),
         images: readString(row.image) ? [readString(row.image)] : [],
         type: fallbackType,
-        description: readString(row.description),
+        description: stripStatusMarker(readString(row.description)),
         location: readString(row.location, fallbackLocation),
         image: readString(row.image),
-        contactName: '',
-        contactPhone: '',
-        contactNotes: '',
+        contactName,
+        contactPhone,
+        contactNotes,
         createdAt: Number.isFinite(createdAt) ? createdAt : Date.now(),
       });
     }

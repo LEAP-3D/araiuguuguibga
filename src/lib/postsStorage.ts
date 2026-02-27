@@ -1,5 +1,6 @@
 export type Post = {
   id: string;
+  status: "lost" | "found" | "rescued";
   name: string;
   breed: string;
   age: string;
@@ -80,6 +81,7 @@ export function clearPostsStorage() {
 
 export function mapApiPostToPost(p: {
   id: string;
+  status?: string | null;
   name: string;
   breed: string | null;
   age: string | null;
@@ -94,6 +96,7 @@ export function mapApiPostToPost(p: {
 }): Post {
   return {
     id: p.id,
+    status: p.status === "found" ? "found" : p.status === "rescued" ? "rescued" : "lost",
     name: p.name,
     breed: p.breed ?? "",
     age: p.age ?? "",
@@ -109,4 +112,3 @@ export function mapApiPostToPost(p: {
     contactNotes: p.contactNotes ?? "",
   };
 }
-

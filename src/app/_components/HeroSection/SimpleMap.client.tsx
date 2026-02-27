@@ -14,6 +14,13 @@ const lostPetIcon = L.icon({
   shadowSize: [41, 41],
 });
 
+const userLocationIcon = L.icon({
+  iconUrl: '/map.png',
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -28],
+});
+
 type Props = {
   center?: [number, number];
   zoom?: number;
@@ -70,7 +77,7 @@ export default function SimpleMapClient({ center = [47.9112, 106.9157], zoom = 1
         <UserLocation setUserLocation={setUserLocation} />
 
         {/* Show user's location */}
-        {userLocation && <Marker position={userLocation}>{/* optional popup */}</Marker>}
+        {userLocation && <Marker position={userLocation} icon={userLocationIcon} />}
 
         {/* Your clickable marker */}
         <LocationMarker onSelect={onSelect} />

@@ -9,9 +9,9 @@ import { CuteSleepingCatLoader } from '../_components/loading/CuteSleepingCatLoa
 
 const FILTERS = [
   { id: 'all', label: 'Бүгд' },
-  { id: 'dog', label: 'Нохой' },
-  { id: 'cat', label: 'Муур' },
-  { id: 'Бусад', label: 'Бусад' },
+  { id: 'lost', label: 'Алдагдсан' },
+  { id: 'found', label: 'Олсон' },
+  { id: 'rescued', label: 'Аврагдсан' },
 ] as const;
 
 const FEED_POST_LIMIT = 6;
@@ -23,9 +23,9 @@ export function RescuePetsSection() {
 
   const filteredPosts = posts.filter((post) => {
     if (activeFilter === 'all') return true;
-    if (activeFilter === 'dog' && post.type === 'dog') return true;
-    if (activeFilter === 'cat' && post.type === 'cat') return true;
-    if ((activeFilter === 'Бусад' || activeFilter === 'hamster') && post.type === 'other') return true;
+    if (activeFilter === 'lost' && post.status === 'lost') return true;
+    if (activeFilter === 'found' && post.status === 'found') return true;
+    if (activeFilter === 'rescued' && post.status === 'rescued') return true;
     return false;
   });
 
