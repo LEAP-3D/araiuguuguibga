@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   try {
     const poster = await currentUser();
     const primaryEmail = poster?.emailAddresses?.find((e) => e.id === poster.primaryEmailAddressId) ?? poster?.emailAddresses?.[0];
-    const posterEmail = primaryEmail?.emailAddress?.trim()?.toLowerCase() ?? null;
+    const _posterEmail = primaryEmail?.emailAddress?.trim()?.toLowerCase() ?? null;
     const posterName = poster?.firstName ?? poster?.fullName ?? (typeof poster?.username === 'string' ? poster.username : undefined);
 
     const body = await req.json().catch(() => ({}));

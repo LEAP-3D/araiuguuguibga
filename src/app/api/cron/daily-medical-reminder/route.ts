@@ -83,7 +83,7 @@ export async function GET(req: Request) {
 
     // 2. Email notifications (to user email – same content as push)
     let emailsSent = 0;
-    for (const [userId, { records, email }] of byUser) {
+    for (const [_userId, { records, email }] of byUser) {
       if (!email?.trim() || records.length === 0) continue;
       const result = await sendVaccineReminderEmail(email, records);
       if (result.ok) emailsSent++;

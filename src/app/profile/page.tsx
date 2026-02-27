@@ -92,9 +92,7 @@ export default function Profile() {
       // ignore
     }
   };
-
-  const filteredRecords = selectedPetFilter === 'all' ? medicalRecords : medicalRecords.filter((record) => record.pet === selectedPetFilter);
-
+  const filteredRecords = selectedPetFilter === 'all' ? medicalRecords : medicalRecords.filter((r) => r.pet === selectedPetFilter);
   const dueTodayRecords = useMemo(() => {
     const today = getTodayStr();
     return medicalRecords.filter((r) => {

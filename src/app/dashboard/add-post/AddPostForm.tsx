@@ -174,8 +174,7 @@ export function AddPostForm() {
               </div>
             )}
           </div>
-        </form>
-      </div>
+        </form></div>
     </div>
   );
 }
