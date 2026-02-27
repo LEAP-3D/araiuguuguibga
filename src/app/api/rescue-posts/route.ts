@@ -76,9 +76,16 @@ function parseMetaFromText(rawText: string) {
   }
 }
 
-function isMissingColumnError(err: unknown) {
+function isSchemaMismatchError(err: unknown) {
   const msg = err instanceof Error ? err.message.toLowerCase() : '';
-  return msg.includes('does not exist in the current database') || (msg.includes('column') && msg.includes('does not exist'));
+  return (
+    msg.includes('does not exist in the current database') ||
+    (msg.includes('column') && msg.includes('does not exist')) ||
+    msg.includes('unknown arg') ||
+    msg.includes('unknown argument') ||
+    msg.includes('argument `type` is missing') ||
+    msg.includes('argument type is missing')
+  );
 }
 
 function generateFallbackId() {
@@ -100,49 +107,50 @@ export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const typeParam = searchParams.get('type');
+    const shouldFilterByType = Boolean(typeParam && VALID_TYPES.includes(typeParam as (typeof VALID_TYPES)[number]));
     const filterType = normalizeType(typeParam ?? '');
 
     try {
-      const where = typeParam && VALID_TYPES.includes(typeParam as (typeof VALID_TYPES)[number]) ? { type: typeParam } : {};
-      const posts = await prisma.rescuePost.findMany({
-        where,
+      // Use untyped access to stay compatible with whichever Prisma client/schema is currently generated.
+      const posts = await (prisma as unknown as { rescuePost: { findMany: (args: unknown) => Promise<Array<Record<string, unknown>>> } }).rescuePost.findMany({
         orderBy: { createdAt: 'desc' },
-        select: {
-          id: true,
-          name: true,
-          color: true,
-          size: true,
-          note: true,
-          images: true,
-          location: true,
-          createdAt: true,
-        },
       });
 
-      return NextResponse.json(
-        posts.map((p) => ({
-          // New schema currently has no dedicated status column; infer from embedded meta or marker.
-          status: normalizeStatus(parseMetaFromText(p.note ?? '').meta.status ?? detectStatusFromText(p.note ?? '')),
-          id: p.id,
-          name: p.name,
-          breed: parseMetaFromText(p.note ?? '').meta.breed ?? '',
-          age: parseMetaFromText(p.note ?? '').meta.age ?? '',
-          color: p.color ?? '',
-          size: p.size ?? 'medium',
-          note: parseMetaFromText(p.note ?? '').description,
-          images: p.images ?? [],
-          type: normalizeType(parseMetaFromText(p.note ?? '').meta.type ?? 'other'),
-          description: parseMetaFromText(p.note ?? '').description,
-          location: p.location ?? '',
-          image: (p.images ?? [])[0] ?? '',
-          contactName: parseMetaFromText(p.note ?? '').meta.contactName ?? '',
-          contactPhone: parseMetaFromText(p.note ?? '').meta.contactPhone ?? '',
-          contactNotes: parseMetaFromText(p.note ?? '').meta.contactNotes ?? '',
-          createdAt: p.createdAt.getTime(),
-        }))
-      );
+      const mapped = posts.map((p) => {
+        const noteText = readString(p.note) || readString(p.description);
+        const parsed = parseMetaFromText(noteText);
+        const status = normalizeStatus(parsed.meta.status ?? p.status ?? detectStatusFromText(noteText));
+        const type = normalizeType(parsed.meta.type ?? p.type ?? 'other');
+        const images = readStringArray(p.images);
+        const fallbackImage = readString(p.image);
+        const normalizedImages = images.length > 0 ? images : fallbackImage ? [fallbackImage] : [];
+        const createdAtRaw = p.createdAt;
+        const createdAt = createdAtRaw instanceof Date ? createdAtRaw.getTime() : Number(new Date(String(createdAtRaw)));
+
+        return {
+          status,
+          id: readString(p.id),
+          name: readString(p.name, 'Нэргүй'),
+          breed: readString(p.breed, parsed.meta.breed ?? ''),
+          age: readString(p.age, parsed.meta.age ?? ''),
+          color: readString(p.color),
+          size: readString(p.size, 'medium'),
+          note: parsed.description,
+          images: normalizedImages,
+          type,
+          description: parsed.description,
+          location: readString(p.location),
+          image: normalizedImages[0] ?? '',
+          contactName: readString(p.contactName, parsed.meta.contactName ?? ''),
+          contactPhone: readString(p.contactPhone, parsed.meta.contactPhone ?? ''),
+          contactNotes: readString(p.contactNotes, parsed.meta.contactNotes ?? ''),
+          createdAt: Number.isFinite(createdAt) ? createdAt : Date.now(),
+        };
+      });
+
+      return NextResponse.json(shouldFilterByType ? mapped.filter((p) => p.type === filterType) : mapped);
     } catch (err) {
-      if (!isMissingColumnError(err)) throw err;
+      if (!isSchemaMismatchError(err)) throw err;
 
       // Old DB schema fallback: read raw rows and map to the app shape.
       const rows = await prisma.$queryRawUnsafe<Array<Record<string, unknown>>>('SELECT * FROM "RescuePost" ORDER BY "createdAt" DESC');
@@ -261,7 +269,7 @@ export async function POST(req: Request) {
         createdAt: post.createdAt.getTime(),
       });
     } catch (err) {
-      if (!isMissingColumnError(err)) throw err;
+      if (!isSchemaMismatchError(err)) throw err;
 
       // Old DB schema fallback (type/location required, image/description legacy).
       const fallbackId = generateFallbackId();
