@@ -1,0 +1,16 @@
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer pin -->
+  <path d="M18.364 17.364 12 23.728l-6.364-6.364a9 9 0 1 1 12.728 0z" fill="#DC2626"></path>
+
+  <!-- Paw -->
+  <g fill="white">
+    <!-- main pad -->
+    <ellipse cx="12" cy="13" rx="2.5" ry="2"></ellipse>
+
+    <!-- toes -->
+    <circle cx="9" cy="10.8" r="0.9"></circle>
+    <circle cx="10.8" cy="9" r="1"></circle>
+    <circle cx="13.2" cy="9" r="1"></circle>
+    <circle cx="15" cy="10.8" r="0.9"></circle>
+  </g>
+</svg>

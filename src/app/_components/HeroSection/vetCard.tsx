@@ -32,7 +32,6 @@ export function VetCard({ vet, selected, onSelect }: VetCardProps) {
           </div>
         </div>
       </div>
-
       <div className="space-y-1.5 text-xs text-gray-600">
         <p className="flex items-center gap-1.5">
           <MapPin className="h-3.5 w-3.5 shrink-0 text-gray-400" />
