@@ -1,87 +1,72 @@
 'use client';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { MapPin } from 'lucide-react';
 import LeafletMap from '@/app/_components/Map';
-import ListView from '@/app/_components/Map/ListView';
+import { NeonGradientCard } from '@/components/ui/neon-gradient-card';
+
+const FILTERS = [
+  { id: '', label: 'Бүгд' },
+  { id: 'emneleg', label: 'Эмнэлэг' },
+  { id: 'lostpets', label: 'Амьтан' },
+] as const;
+
+const RADIUS_OPTIONS = ['1km', '3km', '5km'] as const;
 
 export default function Map() {
-  const [selected, setSelected] = useState<'1km' | '3km' | '5km'>('1km');
-  const [selectedView, setSelectedView] = useState<'map' | 'list'>('map');
-  const [selectedType, setSelectedType] = useState<'all' | 'lost' | 'vets'>('all');
+  const [selectedDistance, setSelectedDistance] = useState<'1km' | '3km' | '5km'>('1km');
+  const [activeFilter, setActiveFilter] = useState<(typeof FILTERS)[number]['id']>(FILTERS[0].id);
+
+  const selectedType = useMemo<'all' | 'lost' | 'vets'>(() => {
+    if (activeFilter === 'emneleg') return 'vets';
+    if (activeFilter === 'lostpets') return 'lost';
+    return 'all';
+  }, [activeFilter]);
 
   return (
-    <div className="h-screen w-screen flex flex-col items-center gap-4 ">
-      <div className="w-320 h-fit bg-white rounded-2xl flex flex-col gap-3 p-3 items-end">
-        <div className="flex justify-between w-320 pl-4">
-          <p className="text-[25px] font-bold ml-5">Надад ойр</p>
-          <div className="flex flex-col gap-2 items-end">
-            <div className="flex gap-1.5 w-fit py-1 rounded-2xl font-medium text-sm">
-              <div
-                onClick={() => setSelectedType('all')}
-                className={`px-4 py-1 rounded-xl cursor-pointer transition
-          ${selectedType === 'all' ? 'bg-orange-400 text-white' : 'bg-amber-50  border border-orange-200 text-orange-950'}`}
-              >
-                All
-              </div>
-              <div
-                onClick={() => setSelectedType('lost')}
-                className={`px-4 py-1 rounded-xl cursor-pointer transition
-          ${selectedType === 'lost' ? 'bg-orange-400 text-white' : 'bg-amber-50 border border-orange-200 text-orange-950'}`}
-              >
-                Lost Pets
-              </div>
-              <div
-                onClick={() => setSelectedType('vets')}
-                className={`px-4 py-1 rounded-xl cursor-pointer transition
-          ${selectedType === 'vets' ? 'bg-orange-400 text-white' : 'bg-amber-50 border border-orange-200 text-orange-950'}`}
-              >
-                Vets
-              </div>
+    <section className="w-full px-4 py-6 md:px-6">
+      <div className="mx-auto max-w-7xl">
+        <div className="pt-6 px-5 flex flex-col gap-2 bg-white rounded-2xl">
+          <div className="flex gap-1 items-center">
+            <MapPin className="h-8 w-8 text-[#f28a50]" />
+            <h1 className="text-2xl font-black text-[#43342D] md:text-3xl" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+              Танд хамгийн ойр байгаа эмнэлэгүүд
+            </h1>
+          </div>
+          <p className="text-sm font-medium text-[#9c6d4d] mb-1">Radius-д багтсан эмнэлэг болон lost pets нь map-ийн хажуугийн жагсаалтад харагдана.</p>
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex w-fit gap-1.5 rounded-2xl  p-1 text-sm font-medium mb-4">
+              {FILTERS.map((f) => (
+                <button
+                  key={f.id}
+                  type="button"
+                  onClick={() => setActiveFilter(f.id)}
+                  className={`rounded-xl px-4 py-1.5 cursor-pointer transition ${activeFilter === f.id ? 'bg-[#f28a50] text-white shadow-sm' : 'border border-[#fdb074] bg-[#ffe2cc] text-[#754f37] hover:bg-[#ffc192]'}`}
+                >
+                  {f.label}
+                </button>
+              ))}
             </div>
-            <div className="flex gap-4 font-medium text-sm">
-              <div className="flex gap-0.5 bg-orange-200 w-fit px-1 py-1 rounded-2xl">
-                <div
-                  onClick={() => setSelected('1km')}
-                  className={`px-4 py-1 rounded-xl cursor-pointer transition
-          ${selected === '1km' ? 'bg-orange-400 text-white' : ' text-orange-950'}`}
+
+            <div className="flex w-fit gap-1 rounded-2xl bg-[#ffe2cc] p-1 text-sm font-semibold mb-4">
+              {RADIUS_OPTIONS.map((distance) => (
+                <button
+                  key={distance}
+                  type="button"
+                  onClick={() => setSelectedDistance(distance)}
+                  className={`rounded-xl cursor-pointer px-4 py-1.5 transition ${selectedDistance === distance ? 'bg-[#f28a50] text-white' : 'text-[#8b5f43] hover:bg-orange/50'}`}
                 >
-                  1km
-                </div>
-                <div
-                  onClick={() => setSelected('3km')}
-                  className={`px-4 py-1 rounded-xl cursor-pointer transition
-          ${selected === '3km' ? 'bg-orange-400 text-white' : ' text-orange-950'}`}
-                >
-                  3km
-                </div>
-                <div
-                  onClick={() => setSelected('5km')}
-                  className={`px-4 py-1 rounded-xl cursor-pointer transition
-          ${selected === '5km' ? 'bg-orange-400 text-white' : ' text-orange-950'}`}
-                >
-                  5km
-                </div>
-              </div>
-              <div className="flex gap-0.5 bg-orange-200 w-fit px-1 py-1 rounded-2xl">
-                <div
-                  onClick={() => setSelectedView('map')}
-                  className={`px-4 py-1 rounded-xl cursor-pointer transition
-          ${selectedView === 'map' ? 'bg-orange-400 text-white' : ' text-orange-950'}`}
-                >
-                  Газрын зургаар
-                </div>
-                <div
-                  onClick={() => setSelectedView('list')}
-                  className={`px-4 py-1 rounded-xl cursor-pointer transition
-          ${selectedView === 'list' ? 'bg-orange-400 text-white' : ' text-orange-950'}`}
-                >
-                  Жагсаалтаар
-                </div>
-              </div>
+                  {distance}
+                </button>
+              ))}
             </div>
           </div>
+          <NeonGradientCard borderSize={1} borderRadius={16} neonColors={{ firstColor: '#f29f67', secondColor: '#ffd1a9' }} innerClassName="bg-white" className="w-full">
+            <div className="h-[72vh] p-3">
+              <LeafletMap selectedType={selectedType} selectedDistance={selectedDistance} />
+            </div>
+          </NeonGradientCard>
         </div>
       </div>
-      {selectedView === 'map' ? <LeafletMap selectedType={selectedType} selectedDistance={selected} /> : <ListView />}
-    </div>
+    </section>
   );
 }

@@ -21,7 +21,7 @@ const FullscreenToggle: React.FC<Props> = ({ isFullScreen, setIsFullScreen, clas
   return (
     <button
       onClick={() => setIsFullScreen(!isFullScreen)}
-      className={`absolute right-4 top-4 z-[2100] h-11 w-11 flex justify-center items-center rounded-full bg-white p-2 shadow transition hover:bg-gray-100 ${className}`}
+      className={`absolute right-4 top-4 z-[2100] cursor-pointer h-11 w-11 flex justify-center items-center rounded-full bg-white p-2 shadow transition hover:bg-gray-100 ${className}`}
       style={style}
       title={isFullScreen ? 'Exit Fullscreen' : 'Fullscreen'}
     >

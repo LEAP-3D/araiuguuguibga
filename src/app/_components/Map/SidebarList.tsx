@@ -10,14 +10,17 @@ type Props = {
   selectedType: 'all' | 'lost' | 'vets';
   filteredVets: Vet[];
   filteredPosts: Post[];
+  selectedVetId: string | null;
+  selectedPostId: string | null;
+  onSelectVet: (vet: Vet) => void;
+  onSelectPost: (post: Post) => void;
 };
 
-export default function SidebarList({ selectedType, filteredVets, filteredPosts }: Props) {
+export default function SidebarList({ selectedType, filteredVets, filteredPosts, selectedVetId, selectedPostId, onSelectVet, onSelectPost }: Props) {
   const showVets = selectedType === 'all' || selectedType === 'vets';
   const showPosts = selectedType === 'all' || selectedType === 'lost';
   const vetsToRender = showVets ? filteredVets : [];
   const postsToRender = showPosts ? filteredPosts : [];
-  const isAllView = selectedType === 'all';
   const isEmpty = vetsToRender.length === 0 && postsToRender.length === 0;
 
   return (
@@ -26,21 +29,15 @@ export default function SidebarList({ selectedType, filteredVets, filteredPosts 
         {isEmpty ? (
           <div className="py-10 text-center text-gray-400">No results in this area</div>
         ) : (
-          <div className={isAllView ? 'grid grid-cols-1 gap-4 md:grid-cols-2' : 'grid grid-cols-1 gap-4'}>
-            {showVets && (
-              <div className="space-y-4">
-                {vetsToRender.map((vet) => (
-                  <VetCard key={vet.id} vet={vet} />
-                ))}
-              </div>
-            )}
-            {showPosts && (
-              <div className="space-y-4">
-                {postsToRender.map((post) => (
-                  <PostCard key={post.id} post={post} />
-                ))}
-              </div>
-            )}
+          <div className="grid grid-cols-1 gap-4">
+            {showPosts &&
+              postsToRender.map((post) => (
+                <PostCard key={post.id} post={post} selected={selectedPostId === post.id} onClick={() => onSelectPost(post)} />
+              ))}
+            {showVets &&
+              vetsToRender.map((vet) => (
+                <VetCard key={vet.id} vet={vet} selected={selectedVetId === vet.id} onClick={() => onSelectVet(vet)} />
+              ))}
           </div>
         )}
       </div>

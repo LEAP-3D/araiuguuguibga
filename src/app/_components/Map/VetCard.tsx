@@ -3,9 +3,21 @@ import type { mockVets } from '@/app/_components/HeroSection/mockVets';
 
 type Vet = (typeof mockVets)[number];
 
-export default function VetCard({ vet }: { vet: Vet }) {
+type Props = {
+  vet: Vet;
+  onClick?: () => void;
+  selected?: boolean;
+};
+
+export default function VetCard({ vet, onClick, selected = false }: Props) {
   return (
-    <div className="p-3 border rounded-xl shadow-sm bg-white w-65">
+    <button
+      type="button"
+      onClick={onClick}
+      className={`w-65 rounded-xl border p-3 text-left shadow-sm transition ${
+        selected ? 'border-orange-400 bg-orange-50 ring-1 ring-orange-300' : 'bg-white hover:border-orange-200 hover:bg-orange-50/40'
+      }`}
+    >
       <div className="mb-3 flex items-start justify-between gap-2">
         <div className="flex min-w-0 flex-1 items-start gap-2">
           <Building2 className="mt-0.5 h-4 w-4 shrink-0 text-gray-500" />
@@ -33,6 +45,6 @@ export default function VetCard({ vet }: { vet: Vet }) {
           <span className="font-medium text-gray-900">{vet.rating}</span>
         </p>
       </div>
-    </div>
+    </button>
   );
 }
