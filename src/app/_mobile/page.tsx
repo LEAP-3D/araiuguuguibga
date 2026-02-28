@@ -1,23 +1,35 @@
 'use client';
 
 import { useState } from 'react';
-import { HeroSection } from '../_features/heroSection';
+import PhoneHeader from '../_components/pwa/header';
 import { RescuePetsSection } from '../_features/rescueSection';
 import { VeterinarySection } from '../_features/veterinarySection';
-import { Home, PawPrintIcon, Map as MapIcon } from 'lucide-react';
+import { Home, PawPrintIcon, Map as MapIcon, User, MessageSquareHeart } from 'lucide-react';
+import ProfileCard from '../_components/Profile/ProfileCard';
+import AiGenerator from '../_features/aiGenerator';
+import { CuteSleepingCatLoader } from '../_components/loading/CuteSleepingCatLoader';
 
-type Tab = 'home' | 'rescue' | 'map';
+type Tab = 'home' | 'rescue' | 'map' | 'profile' | 'ai';
 
 export default function HomeMobile() {
+  const handleMenuClick = () => {
+    console.log('Sidebar menu clicked!');
+    // You can open a sidebar or drawer here
+  };
+
   const [active, setActive] = useState<Tab>('home');
 
   return (
-    <div className="min-h-screen bg-[#FFFEF9] pb-20">
-
+    <div className="min-h-screen bg-[#FFFEF9] pb-20 flex flex-col ">
+      <div className="fixed top-0 left-0 right-0 mb-2">
+        <PhoneHeader logoSrc="/caticon.png" onMenuClick={handleMenuClick} />
+      </div>
       <main>
-        {active === 'home' && <HeroSection />}
+        {active === 'home' && <CuteSleepingCatLoader />}
         {active === 'rescue' && <RescuePetsSection />}
         {active === 'map' && <VeterinarySection />}
+        {active === 'profile' && <ProfileCard />}
+        {active === 'ai' && <AiGenerator />}
       </main>
 
       {/* Bottom Nav */}
@@ -30,6 +42,12 @@ export default function HomeMobile() {
         </button>
         <button onClick={() => setActive('map')}>
           <MapIcon size={22} />
+        </button>
+        <button onClick={() => setActive('ai')}>
+          <MessageSquareHeart size={22} />
+        </button>
+        <button onClick={() => setActive('profile')}>
+          <User size={22} />
         </button>
       </nav>
     </div>
