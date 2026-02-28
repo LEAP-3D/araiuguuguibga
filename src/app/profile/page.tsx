@@ -158,7 +158,7 @@ export default function Profile() {
         <div className="flex flex-col gap-10 w-7xl items-center border-7 border-white rounded-3xl p-6 shadow-2xl py-14">
           <div className="flex w-full items-center justify-between pr-20 pl-8">
             <ProfileCard />
-            <Image src="/harmony.png" alt="Harmony" width={900} height={600} className="h-60 w-auto object-contain" />
+            <Image src="/Harmony.png" alt="Harmony" width={900} height={600} className="h-60 w-auto object-contain" />
           </div>
           <div className="rounded-2xl w-6xl  flex flex-col overflow-auto ">
             <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
