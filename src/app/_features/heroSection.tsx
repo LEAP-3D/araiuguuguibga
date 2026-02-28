@@ -73,17 +73,17 @@ export function HeroSection({ onOpenChat }: { onOpenChat?: () => void }) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="hidden md:block text-[#7A6A58] text-lg md:text-xl max-w-lg leading-relaxed mt-4"
+              className="hidden md:block text-[#685a4a] text-lg md:text-xl max-w-lg leading-relaxed mt-4"
               style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 400 }}
             >
-              Таны бяцхан савруудад зориулсан 24/7 AI туслах
+              Вакцин сануулах, ойролцоох мал эмнэлэг олох, AI зөвлөгөө авах — бүгд нэг дор.
             </motion.p>
           </div>
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.55, duration: 0.55 }}
-            className="flex flex-col md:flex-row md:items-end md:justify-between gap-3"
+            className="flex flex-col md:flex-row md:items-end md:justify-between gap-5"
           >
             <ShinyButton onClick={onOpenChat} className="font-[Outfit,sans-serif]">
               <MessageCircle className="h-5 w-5 shrink-0" />
