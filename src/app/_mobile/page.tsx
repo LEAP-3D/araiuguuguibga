@@ -21,11 +21,8 @@ export default function HomeMobile() {
 
   return (
     <div className="min-h-screen bg-[#FFFEF9] pb-20 flex flex-col ">
-      <div className="fixed top-0 left-0 right-0 mb-2">
-        <PhoneHeader logoSrc="/caticon.png" onMenuClick={handleMenuClick} />
-      </div>
       <main>
-        {active === 'home' && <CuteSleepingCatLoader />}
+        {active === 'home' && <PhoneHeader logoSrc="/caticon.png" onMenuClick={handleMenuClick} />}
         {active === 'rescue' && <RescuePetsSection />}
         {active === 'map' && <VeterinarySection />}
         {active === 'profile' && <ProfileCard />}
