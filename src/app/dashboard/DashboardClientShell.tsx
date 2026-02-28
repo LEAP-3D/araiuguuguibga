@@ -94,7 +94,7 @@ export function DashboardClientShell({ children }: { children: React.ReactNode }
         {/* Desktop only: back to home link */}
       </header>
       <div className="hidden md:block px-10 w-fit pb-2 mt-4">
-        <Link href="/" className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-amber-50 hover:text-amber-700">
+        <Link href="/" className="flex text-orange-950 items-center gap-2 rounded-lg px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-amber-50 hover:text-amber-700">
           <ArrowLeft className="h-4 w-4" />
           Нүүр лүү буцах
         </Link>

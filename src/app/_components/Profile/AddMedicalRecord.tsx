@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Plus, Syringe } from 'lucide-react';
 import { useState } from 'react';
 import type { Pet } from '@/lib/petsContext';
+import { toast } from 'sonner';
 
 export type PetMedicalForm = {
   pet: string;
@@ -20,7 +21,7 @@ export type PetMedicalForm = {
 
 type Props = {
   pets?: Pet[];
-  onAddRecord: (record: PetMedicalForm) => void;
+  onAddRecord: (record: PetMedicalForm) => Promise<void> | void;
 };
 
 export default function AddMedicalRecord({ pets = [], onAddRecord }: Props) {
@@ -35,16 +36,22 @@ export default function AddMedicalRecord({ pets = [], onAddRecord }: Props) {
     nextDueDate: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Validate required fields
     if (!form.pet || !form.type || !form.medicine || !form.date) {
-      alert('Please fill in all required fields');
+      toast.error('Заавал бөглөх талбаруудаа бөглөнө үү.');
       return;
     }
 
-    onAddRecord(form);
+    try {
+      await Promise.resolve(onAddRecord(form));
+      toast.success('Эрүүл мэндийн бүртгэл амжилттай нэмэгдлээ.');
+    } catch {
+      toast.error('Бүртгэл нэмэх үед алдаа гарлаа.');
+      return;
+    }
 
     // Reset form and close dialog
     setForm({
@@ -71,7 +78,7 @@ export default function AddMedicalRecord({ pets = [], onAddRecord }: Props) {
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle className="flex gap-2 items-center text-xl font-semibold mb-2">
-              <Syringe className="text-orange-400 mb-2" />
+              <Syringe className="text-orange-800 mb-2" />
               Эрүүл мэндийн бүртгэл нэмэх
             </DialogTitle>
             <DialogDescription></DialogDescription>

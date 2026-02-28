@@ -35,33 +35,33 @@ export default function ProfileDetails({ initialName = '', initialPhone = '', in
   };
 
   return (
-    <form id="profile-details-form" onSubmit={handleSubmit} className="flex flex-col gap-2" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+    <form id="profile-details-form" onSubmit={handleSubmit} className="flex flex-col gap-4" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
       <div>
-        <label className="block text-sm font-semibold text-foreground mb-2">Нэр</label>
+        <label className="mb-1.5 block text-sm font-semibold text-[#5e493a]">Нэр</label>
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="px-4 py-1.5 rounded-xl bg-secondary border-2 border-transparent focus:border-primary focus:outline-none transition-colors text-foreground placeholder:text-muted-foreground"
+          className="w-full rounded-xl border border-[#eadfce] bg-[#fffdf9] px-4 py-2.5 text-sm text-[#3d2c1e] outline-none transition-colors placeholder:text-[#b8a79a] focus:border-[#ef9241]"
           placeholder="Таны нэр"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-foreground mb-2">Утас</label>
+        <label className="mb-1.5 block text-sm font-semibold text-[#5e493a]">Утас</label>
         <input
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
-          className="w-full px-4 py-1.5 rounded-xl bg-secondary border-2 border-transparent focus:border-primary focus:outline-none transition-colors text-foreground placeholder:text-muted-foreground"
+          className="w-full rounded-xl border border-[#eadfce] bg-[#fffdf9] px-4 py-2.5 text-sm text-[#3d2c1e] outline-none transition-colors placeholder:text-[#b8a79a] focus:border-[#ef9241]"
           placeholder="Таны утасны дугаар"
         />
       </div>
       <div>
-        <label className="block text-sm font-semibold text-foreground mb-2">Танилцуулга</label>
+        <label className="mb-1.5 block text-sm font-semibold text-[#5e493a]">Танилцуулга</label>
         <textarea
-          rows={3}
+          rows={4}
           value={bio}
           onChange={(e) => setBio(e.target.value)}
-          className="w-full px-4 py-3 rounded-xl bg-secondary border-2 border-transparent focus:border-primary focus:outline-none transition-colors text-foreground placeholder:text-muted-foreground resize-none"
+          className="w-full resize-none rounded-xl border border-[#eadfce] bg-[#fffdf9] px-4 py-3 text-sm text-[#3d2c1e] outline-none transition-colors placeholder:text-[#b8a79a] focus:border-[#ef9241]"
           placeholder="Өөрийнхөө тухай бичнэ үү..."
         />
       </div>

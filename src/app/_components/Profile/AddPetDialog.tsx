@@ -1,16 +1,20 @@
 'use client';
-import { PlusIcon, Upload, X } from 'lucide-react';
+import { Upload, X } from 'lucide-react';
 import { PetFormFields } from './PetFormFields';
 import type { PetForm } from './PetFormFields';
+import { AddPetTriggerCard } from './AddPetTriggerCard';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { compressImage } from '@/lib/compressImage';
 import { useState } from 'react';
 import { usePets } from '@/lib/petsContext';
+import { toast } from 'sonner';
 
 export default function AddPetDialog() {
   const { addPet } = usePets();
   const [open, setOpen] = useState(false);
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
+  const [objectPreviewUrl, setObjectPreviewUrl] = useState<string | null>(null);
   const [form, setForm] = useState<PetForm>({
     imagePreview: null,
     name: '',
@@ -20,76 +24,105 @@ export default function AddPetDialog() {
     weight: 0, // number instead of string
     gender: '',
     note: '',
-    allergies: '',
   });
+
+  const clearImageState = () => {
+    if (objectPreviewUrl) {
+      URL.revokeObjectURL(objectPreviewUrl);
+      setObjectPreviewUrl(null);
+    }
+    setSelectedImageFile(null);
+    setForm((f) => ({ ...f, imagePreview: null }));
+  };
+
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setSelectedImageFile(file);
       const compressed = await compressImage(file, 400);
-      setForm((f) => ({ ...f, imagePreview: compressed || null }));
+      if (compressed) {
+        if (objectPreviewUrl) {
+          URL.revokeObjectURL(objectPreviewUrl);
+          setObjectPreviewUrl(null);
+        }
+        setForm((f) => ({ ...f, imagePreview: compressed }));
+      } else {
+        const objectUrl = URL.createObjectURL(file);
+        if (objectPreviewUrl) URL.revokeObjectURL(objectPreviewUrl);
+        setObjectPreviewUrl(objectUrl);
+        setForm((f) => ({ ...f, imagePreview: objectUrl }));
+        toast.info('HEIC/HEIF зураг сонгогдлоо. Preview харагдахгүй байж болно, гэхдээ upload хийгдэнэ.');
+      }
     }
     e.target.value = '';
   };
-  const removeImage = () => setForm((f) => ({ ...f, imagePreview: null }));
+  const removeImage = () => clearImageState();
 
   const handleAddPet = async () => {
-    if (!form.name || !form.type) return;
+    if (!form.name || !form.type) {
+      toast.error('Нэр болон төрлөө бөглөнө үү.');
+      return;
+    }
 
-    let imageUrl = form.imagePreview || '';
-    if (imageUrl.startsWith('data:')) {
+    let imageUrl = '';
+    if (selectedImageFile) {
       try {
-        const res = await fetch(imageUrl);
-        const blob = await res.blob();
-        const file = new File([blob], 'pet.jpg', { type: blob.type || 'image/jpeg' });
+        let fileToUpload = selectedImageFile;
+        if (form.imagePreview?.startsWith('data:')) {
+          const res = await fetch(form.imagePreview);
+          const blob = await res.blob();
+          fileToUpload = new File([blob], 'pet.jpg', { type: blob.type || 'image/jpeg' });
+        }
         const fd = new FormData();
-        fd.append('file', file);
+        fd.append('file', fileToUpload);
         const uploadRes = await fetch('/api/upload/cloudinary', { method: 'POST', body: fd });
         if (uploadRes.ok) {
           const { url } = await uploadRes.json();
           imageUrl = url;
+        } else {
+          const err = (await uploadRes.json().catch(() => null)) as { error?: string } | null;
+          toast.error(err?.error ? `Зураг байршуулахад алдаа: ${err.error}` : 'Зураг байршуулахад алдаа гарлаа.');
+          return;
         }
       } catch {
-        imageUrl = '';
+        toast.error('Зураг боловсруулах үед алдаа гарлаа.');
+        return;
       }
     }
 
-    await addPet({
-      name: form.name,
-      type: form.type,
-      breed: form.breed,
-      age: form.age ? form.age.toString() : '',
-      weight: form.weight ? form.weight.toString() : '',
-      gender: form.gender,
-      note: form.note,
-      allergies: form.allergies,
-      image: imageUrl,
-    });
+    try {
+      await addPet({
+        name: form.name,
+        type: form.type,
+        breed: form.breed,
+        age: form.age ? form.age.toString() : '',
+        weight: form.weight ? form.weight.toString() : '',
+        gender: form.gender,
+        note: form.note,
+        image: imageUrl,
+      });
 
-    setOpen(false);
-    setForm({
-      imagePreview: null,
-      name: '',
-      type: '',
-      breed: '',
-      age: 0,
-      weight: 0,
-      gender: '',
-      note: '',
-      allergies: '',
-    });
+      toast.success('Амжилттай амьтнаа нэмлээ.');
+      setOpen(false);
+      clearImageState();
+      setForm({
+        imagePreview: null,
+        name: '',
+        type: '',
+        breed: '',
+        age: 0,
+        weight: 0,
+        gender: '',
+        note: '',
+      });
+    } catch {
+      toast.error('Амьтан нэмэхэд алдаа гарлаа.');
+    }
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <button className="p-4 h-80 rounded-xl border w-60 border-dashed border-[#5e493a] text-center hover:border-[#5e493a] hover:bg-[#8e7f7236] ">
-          <div className="flex justify-center mb-3">
-            <div className="text-5xl font-bold w-13 h-13 rounded-2xl bg-[#5e493a32] flex items-center justify-center ">
-              <PlusIcon className="text-[#5e493a]" />
-            </div>
-          </div>
-          <div className="font-semibold text-gray-700">Тэжээвэр амьтан нэмэх</div>
-          <div className="text-xs text-gray-500">Шинэ тэжээвэр амьтан бүртгэх</div>
-        </button>
+        <AddPetTriggerCard />
       </DialogTrigger>
       <DialogContent className=" bg-[#fefdfc] rounded-3xl border border-[#f1e6d9] px-6 pb-6 pt-1" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
         <DialogHeader>
@@ -97,7 +130,6 @@ export default function AddPetDialog() {
           <DialogDescription className="text-sm text-gray-500 ">доорх мэдээллийг бөглөнө үү.</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col items-center">
-          {/* Image Upload */}
           {form.imagePreview ? (
             <div className="relative rounded-lg  border border-gray-200 bg-gray-50 ">
               <button
@@ -113,7 +145,7 @@ export default function AddPetDialog() {
           ) : (
             <div className="w-25 h-25 pt-3 rounded-xl border-2 border-dashed border-[#ff9900] hover:border-[#fc9a07] hover:bg-[#ffc1051f] outline-none ">
               <label className="flex flex-col cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-500 transition-colors ">
-                <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+                <input type="file" accept="image/*,.heic,.heif,image/heic,image/heif" className="hidden" onChange={handleImageChange} />
                 <Upload className="h-8 w-8 text-[#ffa303]" />
                 <p className="text-[9px]">Зураг оруулах</p>
               </label>
@@ -121,7 +153,6 @@ export default function AddPetDialog() {
           )}
         </div>
         <PetFormFields form={form} setForm={setForm} />
-
         <DialogFooter>
           <DialogClose asChild>
             <Button variant="outline" className="rounded-xl px-8 py-2">
@@ -129,11 +160,9 @@ export default function AddPetDialog() {
             </Button>
           </DialogClose>
 
-          <DialogClose asChild>
-            <Button onClick={handleAddPet} className="rounded-xl px-8 py-2 bg-linear-to-r from-[#ff9203] to-[#ffaa00] text-white shadow-md hover:opacity-90">
-              Нэмэх
-            </Button>
-          </DialogClose>
+          <Button onClick={handleAddPet} className="rounded-xl px-8 py-2 bg-linear-to-r from-[#ff9203] to-[#ffaa00] text-white shadow-md hover:opacity-90">
+            Нэмэх
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

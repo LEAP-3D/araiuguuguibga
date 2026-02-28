@@ -44,9 +44,6 @@ export function PetDetails({ pet, onClose }: Props) {
             <strong>Тэмдэглэл:</strong> {pet.note}
           </p>
 
-          <p>
-            <strong>Allergies:</strong> {pet.allergies}
-          </p>
         </div>
 
         <div className="mt-4 flex justify-end">

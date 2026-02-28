@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { PlusCircle } from 'lucide-react';
+import { ArrowRight, PlusCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export function RescueEmptyState() {
@@ -60,7 +60,7 @@ export function RescueHeader() {
           {/* Right action */}
           <Link
             href="/dashboard/find-animals"
-            className="font-medium
+            className="font-black
     relative inline-block px-3 py-2
     text-black text-base
     rounded-md
@@ -69,7 +69,7 @@ export function RescueHeader() {
     hover:bg-[#ff944c] hover:text-white
   "
           >
-            Бүгдийг харах →
+            <ArrowRight />
           </Link>
         </motion.div>
       </div>

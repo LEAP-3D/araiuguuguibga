@@ -6,6 +6,7 @@ import MedicalCard from '../_components/Profile/MedicalCard';
 import AddMedicalRecord from '../_components/Profile/AddMedicalRecord';
 import type { PetMedicalForm } from '../_components/Profile/AddMedicalRecord';
 import type { Pet } from '@/lib/petsContext';
+import { CuteSleepingCatLoader } from '../_components/loading/CuteSleepingCatLoader';
 
 export type MedicalRecordItem = PetMedicalForm & { id?: string };
 
@@ -24,7 +25,7 @@ export function ProfileMedicalSection({ pets, records, loading, selectedPetFilte
       <div className="flex justify-between p-4">
         <div className="flex gap-3 items-start">
           <div className="p-3 bg-[#ff6f001f] rounded-full">
-            <Syringe className="text-orange-300" />
+            <Syringe className="text-orange-800" />
           </div>
           <div className="flex flex-col">
             <p className="text-xl font-bold">Эрүүл мэндийн бүртгэл</p>
@@ -53,7 +54,7 @@ export function ProfileMedicalSection({ pets, records, loading, selectedPetFilte
         </div>
         <div className="flex flex-wrap gap-5">
           {loading ? (
-            <p className="text-gray-500 text-center w-full py-8">Бүртгэлүүдийг ачааллаж байна...</p>
+            <CuteSleepingCatLoader />
           ) : records.length === 0 ? (
             <p className="text-gray-500 text-center w-full py-8">Одоогоор эрүүл мэндийн бүртгэл байхгүй байна. Эхний бүртгэлээ нэмээрэй!</p>
           ) : (

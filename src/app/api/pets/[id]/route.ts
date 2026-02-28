@@ -15,30 +15,29 @@ async function getDbUserId(): Promise<string | null> {
   return dbUser?.id ?? null;
 }
 
-export async function GET() {
-  try {
-    const userId = await getDbUserId();
-    if (!userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+type RouteContext = {
+  params: { id: string } | Promise<{ id: string }>;
+};
 
-    const pets = await prisma.pet.findMany({
-      where: { userId },
-      orderBy: { createdAt: 'desc' },
-    });
-
-    return NextResponse.json(pets);
-  } catch (err) {
-    console.error('[pets GET]', err);
-    return NextResponse.json({ error: err instanceof Error ? err.message : 'Server error' }, { status: 500 });
-  }
+async function getPetId(ctx: RouteContext): Promise<string> {
+  const params = await Promise.resolve(ctx.params);
+  return params.id;
 }
 
-export async function POST(req: Request) {
+export async function PATCH(req: Request, ctx: RouteContext) {
   try {
     const userId = await getDbUserId();
-    if (!userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const id = await getPetId(ctx);
+    if (!id) return NextResponse.json({ error: 'Pet id is required' }, { status: 400 });
+
+    const existing = await prisma.pet.findUnique({
+      where: { id },
+      select: { id: true, userId: true },
+    });
+    if (!existing || existing.userId !== userId) {
+      return NextResponse.json({ error: 'Pet not found' }, { status: 404 });
     }
 
     const body = await req.json();
@@ -55,9 +54,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'name and type required' }, { status: 400 });
     }
 
-    const pet = await prisma.pet.create({
+    const updated = await prisma.pet.update({
+      where: { id },
       data: {
-        userId,
         name,
         type,
         breed,
@@ -69,9 +68,33 @@ export async function POST(req: Request) {
       },
     });
 
-    return NextResponse.json(pet);
+    return NextResponse.json(updated);
   } catch (err) {
-    console.error('[pets POST]', err);
+    console.error('[pets PATCH]', err);
+    return NextResponse.json({ error: err instanceof Error ? err.message : 'Server error' }, { status: 500 });
+  }
+}
+
+export async function DELETE(_req: Request, ctx: RouteContext) {
+  try {
+    const userId = await getDbUserId();
+    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const id = await getPetId(ctx);
+    if (!id) return NextResponse.json({ error: 'Pet id is required' }, { status: 400 });
+
+    const existing = await prisma.pet.findUnique({
+      where: { id },
+      select: { id: true, userId: true },
+    });
+    if (!existing || existing.userId !== userId) {
+      return NextResponse.json({ error: 'Pet not found' }, { status: 404 });
+    }
+
+    await prisma.pet.delete({ where: { id } });
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    console.error('[pets DELETE]', err);
     return NextResponse.json({ error: err instanceof Error ? err.message : 'Server error' }, { status: 500 });
   }
 }

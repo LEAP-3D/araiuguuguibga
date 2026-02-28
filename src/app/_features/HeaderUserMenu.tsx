@@ -40,25 +40,23 @@ export function HeaderUserMenu({ displayName, initial, imageUrl, onSignOut }: He
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        {trigger}
-      </PopoverTrigger>
+      <PopoverTrigger asChild>{trigger}</PopoverTrigger>
       <PopoverContent align="end" className="w-56 rounded-xl shadow-lg border-gray-200/80 p-0" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
         <div className="px-4 py-3 border-b border-gray-100">
-          <p className="font-semibold text-gray-900">My Account</p>
+          <p className="font-semibold text-gray-900">Миний аккаунт</p>
         </div>
         <div className="py-2">
           <Link href="/dashboard" className="flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 transition-colors">
             <LayoutDashboard className="w-4 h-4 text-[#fc8d0e]" />
-            <span>Dashboard</span>
+            <span>Аврах</span>
           </Link>
           <Link href="/profile" className="flex gap-3 px-4 py-2.5 text-gray-700 hover:bg-orange-50 transition-colors">
             <User className="w-4 h-4 text-[#fc8d0e]" />
-            <span>Profile</span>
+            <span>Профайл</span>
           </Link>
           <button type="button" onClick={onSignOut} className="w-full flex gap-3 px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors text-left">
             <LogOut className="w-4 h-4" />
-            <span>Log out</span>
+            <span>Гарах</span>
           </button>
         </div>
       </PopoverContent>

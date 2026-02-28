@@ -62,7 +62,13 @@ export function FeedPostCard({ post, displayName, userImageUrl, isFavorite, onTo
             {post.location && ` · ${post.location}`}
           </p>
         </div>
-        <span className="rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-medium text-orange-800">{typeLabels[post.type] ?? 'Бусад'}</span>
+        <span
+          className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
+            post.status === 'rescued' ? 'bg-sky-100 text-sky-800' : post.status === 'found' ? 'bg-emerald-100 text-emerald-800' : 'bg-orange-100 text-orange-800'
+          }`}
+        >
+          {post.status === 'rescued' ? 'Аврагдсан' : post.status === 'found' ? 'Олдсон' : 'Алдагдсан'} · {typeLabels[post.type] ?? 'Бусад'}
+        </span>
       </div>
       <div className="px-4 pb-3">
         {(post.name || post.description) && (

@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable max-lines */
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { X, Upload } from 'lucide-react';
@@ -11,7 +12,9 @@ import Details from './Details';
 import Location from './Location';
 import Contact from './Contact';
 import { CatShelter } from '@/app/_icons/CatShelter';
+import { toast } from 'sonner';
 export type FormState = {
+  status: 'lost' | 'found';
   petName: string;
   breed: string;
   age: string;
@@ -31,6 +34,7 @@ export function AddPostForm() {
   const { addPost } = usePosts();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({
+    status: 'lost' as 'lost' | 'found',
     petName: '',
     breed: '',
     age: '',
@@ -49,11 +53,15 @@ export function AddPostForm() {
     if (!files) return;
 
     const compressedImages = await Promise.all(Array.from(files).map((file) => compressImage(file, 400)));
+    const validImages = compressedImages.filter(Boolean) as string[];
 
     setForm((prev) => ({
       ...prev,
-      imagePreviews: [...prev.imagePreviews, ...(compressedImages.filter(Boolean) as string[])],
+      imagePreviews: [...prev.imagePreviews, ...validImages],
     }));
+    if (validImages.length > 0) {
+      toast.success(`${validImages.length} зураг амжилттай нэмэгдлээ.`);
+    }
 
     e.target.value = '';
   };
@@ -66,10 +74,15 @@ export function AddPostForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.location) return;
+    if (form.status === 'lost' && !form.petName.trim()) {
+      toast.error('Алдагдсан амьтны нэрийг оруулна уу.');
+      return;
+    }
     setIsSubmitting(true);
     try {
       const success = await addPost({
-        name: form.petName.trim(),
+        status: form.status,
+        name: form.petName.trim() || (form.status === 'found' ? 'Олдсон амьтан' : 'Нэргүй'),
         breed: form.breed.trim(),
         age: form.age.trim(),
         type: form.type,
@@ -84,23 +97,26 @@ export function AddPostForm() {
       });
 
       if (success) {
-        const postName = form.petName.trim() || 'Амьтан';
+        toast.success('Пост амжилттай нэмэгдлээ.');
+        const postName = form.petName.trim() || (form.status === 'found' ? 'Олдсон амьтан' : 'Амьтан');
         await fetch('/api/notify-new-post', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            title: 'Шинэ тусламж хэрэгтэй амьтан',
+            title: form.status === 'lost' ? 'Алдагдсан амьтны шинэ пост' : 'Олдсон амьтны шинэ пост',
             body: `${postName} — байршил: ${form.location.lat.toFixed(4)}, ${form.location.lng.toFixed(4)}`,
             postName,
           }),
         }).catch(() => {});
         router.push('/dashboard/find-animals');
+      } else {
+        toast.error('Пост нэмэх үед алдаа гарлаа.');
       }
     } finally {
       setIsSubmitting(false);
     }
   };
-  const canPost = form.location !== null;
+  const canPost = form.location !== null && (form.status === 'found' || form.petName.trim().length > 0);
   return (
     <div className="mx-auto max-w-2xl" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
       <div className="flex flex-col gap-6 ">
@@ -109,17 +125,33 @@ export function AddPostForm() {
             <CatShelter className="w-14 h-14" />
             <p className="text-3xl font-bold leading-none">Амьтан постлох</p>
           </div>
-          <p className="mt-2 text-muted-foreground">Энэ амьтныг дахин нэгтгэхэд туслахын тулд дэлгэрэнгүй мэдээллийг бөглөнө үү</p>
+          <p className="mt-2 text-muted-foreground">Алдагдсан эсвэл олдсон амьтны мэдээллийг зөв төрлөөр нь оруулна уу</p>
         </div>
         <form onSubmit={handleSubmit}>
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl font-bold">
-                {step === 0 && 'Photos'}
-                {step === 1 && 'Details'}
-                {step === 2 && 'Location'}
-                {step === 3 && 'Contact'}
+                {step === 0 && 'Зураг'}
+                {step === 1 && 'Дэлгэрэнгүй'}
+                {step === 2 && 'Байршил'}
+                {step === 3 && 'Холбоо барих'}
               </CardTitle>
+              <div className="mt-3 inline-flex w-full rounded-xl border border-[#f2d6c0] bg-[#fff8f3] p-1">
+                <button
+                  type="button"
+                  onClick={() => setForm((prev) => ({ ...prev, status: 'lost' }))}
+                  className={`flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition ${form.status === 'lost' ? 'bg-[#f18912] text-white shadow-sm' : 'text-[#7a5a45] hover:bg-[#ffe8d6]'}`}
+                >
+                  Алдсан
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setForm((prev) => ({ ...prev, status: 'found' }))}
+                  className={`flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition ${form.status === 'found' ? 'bg-[#f18912] text-white shadow-sm' : 'text-[#7a5a45] hover:bg-[#ffe8d6]'}`}
+                >
+                  Олсон
+                </button>
+              </div>
             </CardHeader>
             <CardContent className="space-y-4 w-150">
               {step === 0 && (
@@ -127,7 +159,7 @@ export function AddPostForm() {
                   <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 p-10 text-center transition-colors hover:bg-gray-50">
                     <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageChange} />
                     <Upload className="h-10 w-10 text-[#f18912]" />
-                    <p className="font-medium">Upload Photos</p>
+                    <p className="font-medium">Зураг оруулах</p>
                     <p className="text-sm text-gray-500">Дарна уу</p>
                     <span className="mt-2 rounded-md border px-4 py-1.5 text-sm font-medium">Файлуудыг сонгох</span>
                   </label>
@@ -174,7 +206,8 @@ export function AddPostForm() {
               </div>
             )}
           </div>
-        </form></div>
+        </form>
+      </div>
     </div>
   );
 }

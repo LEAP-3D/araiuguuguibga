@@ -2,19 +2,20 @@
 
 import 'leaflet/dist/leaflet.css';
 import type L from 'leaflet';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { MapContainer, TileLayer, Popup, Marker, Circle } from 'react-leaflet';
 import { mockVets } from '@/app/_components/HeroSection/mockVets';
 import { usePosts } from '@/lib/postsContext';
+import { CuteSleepingCatLoader } from '@/app/_components/loading/CuteSleepingCatLoader';
 
 import { hospitalIcon, lostPetIcon } from './MapIcons';
 import { useUserLocation } from './useUserLocation';
 import { useFilteredMarkers, getRadius } from './useFilteredMarkers';
 import MapController from './MapController';
-import FlyToUser from './FlyToUser';
 import FullscreenToggle from './FullscreenToggle';
 import SidebarList from './SidebarList';
 import { SearchBar } from '../HeroSection/searchBar';
+import { MapPin } from 'lucide-react';
 
 type Props = {
   selectedType: 'all' | 'lost' | 'vets';
@@ -23,6 +24,9 @@ type Props = {
 
 export default function LeafletMap({ selectedType, selectedDistance }: Props) {
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [isResizingMap, setIsResizingMap] = useState(false);
+  const [selectedVetId, setSelectedVetId] = useState<string | null>(null);
+  const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
   const { posts } = usePosts();
   const userLocation = useUserLocation();
   const [searchQuery, setSearchQuery] = useState('');
@@ -35,6 +39,25 @@ export default function LeafletMap({ selectedType, selectedDistance }: Props) {
     }
   };
 
+  const flyToPoint = (lat: number, lng: number, zoom = 15) => {
+    mapRef.current?.flyTo([lat, lng], zoom, { duration: 1.1 });
+  };
+
+  const handleSelectVet = (vet: (typeof mockVets)[number]) => {
+    setSelectedVetId(vet.id);
+    setSelectedPostId(null);
+    flyToPoint(vet.lat, vet.lng);
+  };
+
+  const handleSelectPost = (post: (typeof posts)[number]) => {
+    if (!post.location) return;
+    const [lat, lng] = post.location.split(',').map(Number);
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+    setSelectedPostId(post.id);
+    setSelectedVetId(null);
+    flyToPoint(lat, lng);
+  };
+
   const normalizedQuery = searchQuery.trim().toLowerCase();
   const filteredVets = useMemo(() => {
     if (!normalizedQuery) return distanceFilteredVets;
@@ -43,20 +66,52 @@ export default function LeafletMap({ selectedType, selectedDistance }: Props) {
 
   const filteredPosts = distanceFilteredPosts;
 
+  const handleFullScreenChange = (next: boolean) => {
+    setIsResizingMap(true);
+    setIsFullScreen(next);
+  };
+
+  useEffect(() => {
+    if (!mapRef.current) return;
+    const invalidate = () => mapRef.current?.invalidateSize();
+
+    invalidate();
+    const raf = requestAnimationFrame(invalidate);
+    const t1 = setTimeout(invalidate, 120);
+    const t2 = setTimeout(invalidate, 280);
+    const done = setTimeout(() => setIsResizingMap(false), 420);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(done);
+    };
+  }, [isFullScreen]);
+
   return (
-    <div className={isFullScreen ? 'fixed inset-0 z-[2000] h-full w-full bg-white p-4' : 'flex h-230 w-full gap-4 justify-center'}>
+    <div className={isFullScreen ? 'fixed inset-0 z-[2000] h-full w-full bg-white p-4' : 'flex h-full w-full justify-center gap-4'}>
       {/* Map panel */}
-      <div className={isFullScreen ? 'relative h-full w-full' : 'relative h-full w-2/4'}>
+      <div className={isFullScreen ? 'relative h-full w-full' : 'relative h-full flex-1'}>
+        {isResizingMap && (
+          <div className="absolute inset-0 z-[2050] flex items-center justify-center bg-white/70 backdrop-blur-[1px] pointer-events-none">
+            <div className="h-24 w-24">
+              <CuteSleepingCatLoader />
+            </div>
+          </div>
+        )}
+
         <button
           onClick={handleMyLocation}
-          className="absolute bottom-4 right-4 z-[1000] bg-[#fe8c09] px-3.5 py-1 text-white font-semibold text-[15px] rounded-2xl shadow hover:bg-orange-50 transition"
+          className="absolute cursor-pointer flex items-center gap-1 bottom-4 left-4 z-[1000] bg-[#fe8c09] px-3.5 py-1 text-white font-semibold text-[15px] rounded-2xl shadow hover:bg-orange-50 transition"
         >
+          <MapPin className="w-4 h-4" />
           Миний байршил
         </button>
 
-        <FullscreenToggle isFullScreen={isFullScreen} setIsFullScreen={setIsFullScreen} />
+        <FullscreenToggle isFullScreen={isFullScreen} setIsFullScreen={handleFullScreenChange} />
 
-        <MapContainer center={[47.9212, 106.9057]} zoom={13} scrollWheelZoom={false} className="h-full w-full">
+        <MapContainer center={[47.917245, 106.917727]} zoom={13} scrollWheelZoom={false} className="h-full w-full">
           <MapController mapRef={mapRef} />
           <TileLayer attribution="&copy; OpenStreetMap contributors" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
@@ -65,13 +120,30 @@ export default function LeafletMap({ selectedType, selectedDistance }: Props) {
               <Circle center={userLocation} radius={12} pathOptions={{ color: '#3b82f6', fillColor: '#3b82f6', fillOpacity: 1, weight: 2 }} />
               <Circle center={userLocation} radius={40} pathOptions={{ color: '#3b82f6', fillColor: '#93c5fd', fillOpacity: 0.3, weight: 1 }} />
               <Circle center={userLocation} radius={getRadius(selectedDistance)} pathOptions={{ color: 'orange', fillColor: 'orange', fillOpacity: 0.18, weight: 2.5 }} />
-              <FlyToUser location={userLocation} />
             </>
           )}
 
+          {(selectedType === 'all' || selectedType === 'lost') &&
+            posts.map((post) => {
+              if (!post.location) return null;
+              const [lat, lng] = post.location.split(',').map(Number);
+              if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+              return (
+                <Marker key={post.id} position={[lat, lng]} icon={lostPetIcon} eventHandlers={{ click: () => handleSelectPost(post) }}>
+                  <Popup>
+                    <div className="text-black">
+                      <h2 className="font-bold">{post.name}</h2>
+                      <p>{post.description}</p>
+                      <p>📞 {post.contactPhone}</p>
+                    </div>
+                  </Popup>
+                </Marker>
+              );
+            })}
+
           {(selectedType === 'all' || selectedType === 'vets') &&
             mockVets.map((vet) => (
-              <Marker key={vet.id} position={[vet.lat, vet.lng]} icon={hospitalIcon}>
+              <Marker key={vet.id} position={[vet.lat, vet.lng]} icon={hospitalIcon} eventHandlers={{ click: () => handleSelectVet(vet) }}>
                 <Popup>
                   <div>
                     <h2>{vet.name}</h2>
@@ -83,33 +155,23 @@ export default function LeafletMap({ selectedType, selectedDistance }: Props) {
                 </Popup>
               </Marker>
             ))}
-
-          {(selectedType === 'all' || selectedType === 'lost') &&
-            posts.map((post) => {
-              if (!post.location) return null;
-              const [lat, lng] = post.location.split(',').map(Number);
-              if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
-              return (
-                <Marker key={post.id} position={[lat, lng]} icon={lostPetIcon}>
-                  <Popup>
-                    <div className="text-black">
-                      <h2 className="font-bold">{post.name}</h2>
-                      <p>{post.description}</p>
-                      <p>📞 {post.contactPhone}</p>
-                    </div>
-                  </Popup>
-                </Marker>
-              );
-            })}
         </MapContainer>
       </div>
 
       {!isFullScreen && (
-        <div className="flex flex-col">
-          <div className="border-b border-gray-100 p-3">
+        <div className="flex h-full w-72.5 flex-col">
+          <div className="border-b border-gray-100 pb-3">
             <SearchBar query={searchQuery} onChange={setSearchQuery} />
           </div>
-          <SidebarList selectedType={selectedType} filteredVets={filteredVets} filteredPosts={filteredPosts} />
+          <SidebarList
+            selectedType={selectedType}
+            filteredVets={filteredVets}
+            filteredPosts={filteredPosts}
+            selectedVetId={selectedVetId}
+            selectedPostId={selectedPostId}
+            onSelectVet={handleSelectVet}
+            onSelectPost={handleSelectPost}
+          />
         </div>
       )}
     </div>

@@ -12,13 +12,14 @@ export type Pet = {
   weight: string;
   gender: string;
   note: string;
-  allergies?: string;
   image?: string;
 };
 
 type PetsContextType = {
   pets: Pet[];
   addPet: (pet: Omit<Pet, 'id'>) => Promise<void>;
+  updatePet: (petId: string, pet: Omit<Pet, 'id'>) => Promise<boolean>;
+  deletePet: (petId: string) => Promise<boolean>;
   refetchPets: () => Promise<void>;
   petsLoading: boolean;
 };
@@ -34,7 +35,6 @@ function mapApiPetToPet(p: {
   weight?: string | null;
   gender?: string | null;
   note?: string | null;
-  allergies?: string | null;
   image?: string | null;
 }): Pet {
   return {
@@ -46,7 +46,6 @@ function mapApiPetToPet(p: {
     weight: p.weight ?? '',
     gender: p.gender ?? '',
     note: p.note ?? '',
-    allergies: p.allergies ?? undefined,
     image: p.image ?? undefined,
   };
 }
@@ -84,7 +83,6 @@ export function PetsProvider({ children }: { children: ReactNode }) {
         weight: pet.weight || null,
         gender: pet.gender || null,
         note: pet.note || null,
-        allergies: pet.allergies || null,
         image: pet.image || null,
       }),
     });
@@ -93,7 +91,37 @@ export function PetsProvider({ children }: { children: ReactNode }) {
     setPets((prev) => [mapApiPetToPet(saved), ...prev]);
   }, []);
 
-  return <PetsContext.Provider value={{ pets, addPet, refetchPets, petsLoading }}>{children}</PetsContext.Provider>;
+  const updatePet = useCallback(async (petId: string, pet: Omit<Pet, 'id'>) => {
+    const res = await fetch(`/api/pets/${petId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: pet.name,
+        type: pet.type,
+        breed: pet.breed || null,
+        age: pet.age || null,
+        weight: pet.weight || null,
+        gender: pet.gender || null,
+        note: pet.note || null,
+        image: pet.image || null,
+      }),
+    });
+    if (!res.ok) return false;
+    const saved = mapApiPetToPet(await res.json());
+    setPets((prev) => prev.map((p) => (p.id === petId ? saved : p)));
+    return true;
+  }, []);
+
+  const deletePet = useCallback(async (petId: string) => {
+    const res = await fetch(`/api/pets/${petId}`, {
+      method: 'DELETE',
+    });
+    if (!res.ok) return false;
+    setPets((prev) => prev.filter((p) => p.id !== petId));
+    return true;
+  }, []);
+
+  return <PetsContext.Provider value={{ pets, addPet, updatePet, deletePet, refetchPets, petsLoading }}>{children}</PetsContext.Provider>;
 }
 
 export const usePets = () => {

@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { PetImage } from '@/app/_components/PetImage';
 import dynamic from 'next/dynamic';
-import { BadgeInfo, Clock3, MapPin, PawPrint, Phone, User, X } from 'lucide-react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { BadgeInfo, Clock3, MapPin, PawPrint, Phone, User } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 const PostMap = dynamic(() => import('./PostMap'), {
   ssr: false, // IMPORTANT for Next.js
@@ -60,9 +60,7 @@ export default function RescuePetDetail({ post }: RescuePetDetailProps) {
             <h3 className="text-2xl font-black leading-tight text-white">{post.name || 'Нэр тодорхойгүй'}</h3>
             <p className="mt-1 text-sm text-white/90">{post.description || 'Тайлбар оруулаагүй байна.'}</p>
           </div>
-          <span className="shrink-0 rounded-full border border-white/40 bg-white/20 px-3 py-1 text-xs font-bold text-white backdrop-blur-sm">
-            {typeLabels[post.type] ?? 'Бусад'}
-          </span>
+          <span className="shrink-0 rounded-full border border-white/40 bg-white/20 px-3 py-1 text-xs font-bold text-white backdrop-blur-sm">{typeLabels[post.type] ?? 'Бусад'}</span>
         </div>
       </div>
 
@@ -115,45 +113,27 @@ export default function RescuePetDetail({ post }: RescuePetDetailProps) {
           </div>
         </div>
 
-        <div className="flex flex-col md:min-h-[430px]">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-zinc-700">Газрын зураг</p>
+        <div className="flex flex-col">
           <button
             type="button"
             onClick={() => coords && setMapExpanded(true)}
-            className={`flex-1 min-h-[320px] overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50 md:min-h-[430px] transition-all ${coords ? 'cursor-pointer hover:border-amber-300 hover:ring-2 hover:ring-amber-200/50' : 'cursor-default'}`}
+            className={`w-full overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50 transition-all ${coords ? 'cursor-pointer hover:border-amber-300 hover:ring-2 hover:ring-amber-200/50' : 'cursor-default'}`}
           >
             {coords ? (
-              <span className="block h-full w-full">
+              <span className="block aspect-[16/9] w-full">
                 <PostMap lat={coords.lat} lng={coords.lng} />
               </span>
             ) : (
-              <div className="flex h-full items-center justify-center p-6 text-center text-sm text-zinc-500">
-                Байршлын координат бүртгэгдээгүй байна.
-              </div>
+              <div className="flex aspect-[16/9] w-full items-center justify-center p-6 text-center text-sm text-zinc-500">Байршлын координат бүртгэгдээгүй байна.</div>
             )}
           </button>
 
           <Dialog open={mapExpanded} onOpenChange={setMapExpanded}>
-            <DialogContent className="h-[85vh] w-[95vw] max-w-5xl overflow-hidden border-0 p-0 focus:ring-0 focus-visible:ring-0">
-              <div className="relative flex h-full w-full flex-col">
-                <div className="flex shrink-0 items-center justify-between border-b border-zinc-200 bg-white px-4 py-3">
-                  <p className="text-sm font-semibold text-zinc-800">Газрын зураг – {post.name}</p>
-                  <button
-                    type="button"
-                    onClick={() => setMapExpanded(false)}
-                    className="flex h-9 w-9 items-center justify-center rounded-full bg-zinc-100 text-zinc-600 transition-colors hover:bg-zinc-200"
-                  >
-                    <X className="h-5 w-5" />
-                  </button>
-                </div>
-                <div className="min-h-0 flex-1 overflow-hidden">
-                  {coords && (
-                    <div className="h-[70vh] w-full">
-                      <PostMap lat={coords.lat} lng={coords.lng} />
-                    </div>
-                  )}
-                </div>
-              </div>
+            <DialogContent className="w-[96vw] max-w-6xl overflow-hidden border-0 p-0 focus:ring-0 focus-visible:ring-0">
+              <DialogHeader className="sr-only">
+                <DialogTitle>{post.name} газрын зураг</DialogTitle>
+              </DialogHeader>
+              <div className="aspect-[16/9] w-full overflow-hidden">{coords && <PostMap lat={coords.lat} lng={coords.lng} />}</div>
             </DialogContent>
           </Dialog>
         </div>

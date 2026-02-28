@@ -14,6 +14,7 @@ const typeLabels: Record<string, string> = {
 
 type Post = {
   id: string;
+  status?: 'lost' | 'found' | 'rescued';
   name: string;
   breed: string;
   age: string;
@@ -31,25 +32,35 @@ type RescuePetCardProps = {
 };
 
 export function RescuePetCard({ post, isFavorite, onToggleFavorite, noBorder }: RescuePetCardProps) {
+  const isFound = post.status === 'found';
+  const isRescued = post.status === 'rescued';
   return (
     <Dialog>
       <form>
         <DialogTrigger asChild>
           <div
-            className={`group flex h-[520px] cursor-pointer flex-col overflow-hidden rounded-[22px] bg-white shadow-[0_4px_24px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] ${noBorder ? '' : 'border border-amber-200/70'}`}
+            className={`group flex h-[500px] cursor-pointer flex-col overflow-hidden rounded-3xl bg-gradient-to-b from-white to-[#fff8f2] shadow-[0_10px_28px_rgba(84,45,16,0.1)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_18px_42px_rgba(84,45,16,0.16)] ${noBorder ? '' : 'border border-[#f6d9bf]'}`}
             style={{ fontFamily: 'ui-rounded, system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}
           >
-            <div className="relative h-[380px] w-full overflow-hidden">
+            <div className="relative h-[290px] w-full overflow-hidden">
               <PetImage image={post.image} />
               <div className="absolute inset-0 bg-linear-to-t from-black/50 via-black/10 to-transparent" />
-              <span className="absolute bottom-3 left-3 inline-flex items-center gap-1 rounded-full bg-white/95 px-3 py-1 text-xs font-bold text-amber-900 shadow-sm">
+              <span
+                className={`absolute bottom-3 left-3 inline-flex items-center gap-1 rounded-full px-3 py-1 text-[11px] font-extrabold shadow-sm ${
+                  isRescued ? 'bg-sky-100 text-sky-800' : isFound ? 'bg-emerald-100 text-emerald-800' : 'bg-white/95 text-[#8a4d25]'
+                }`}
+              >
                 <PawPrint className="h-3.5 w-3.5" />
-                {typeLabels[post.type] ?? 'Бусад'}
+                {isRescued ? 'Аврагдсан' : isFound ? 'Олдсон' : 'Алдагдсан'} · {typeLabels[post.type] ?? 'Бусад'}
               </span>
 
               <button
                 type="button"
-                onClick={() => onToggleFavorite(post.id)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onToggleFavorite(post.id);
+                }}
                 className={`absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full border-2 backdrop-blur-sm transition-all ${
                   isFavorite ? 'border-transparent bg-white/95 text-red-500 shadow-md' : 'border-white/80 bg-white/65 text-gray-700 hover:bg-white/90'
                 }`}
@@ -58,28 +69,28 @@ export function RescuePetCard({ post, isFavorite, onToggleFavorite, noBorder }: 
               </button>
             </div>
 
-            <div className="flex flex-1 flex-col px-4 pb-4 pt-4">
+            <div className="flex flex-1 flex-col px-4 pb-4 pt-3">
               <div className="mb-2 flex items-start justify-between gap-2">
-                <h3 className="text-base font-extrabold leading-tight text-black">{post.name || 'Нэр тодорхойгүй'}</h3>
-                <span className="shrink-0 rounded-full border border-amber-300 bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-amber-800">#{post.id.slice(0, 6)}</span>
+                <h3 className="line-clamp-1 text-lg font-black leading-tight text-[#2f241b]">{post.name || 'Нэр тодорхойгүй'}</h3>
+                <span className="shrink-0 rounded-full border border-[#f2c9a4] bg-[#fff2e4] px-2 py-0.5 text-[10px] font-bold text-[#bc6e37]">#{post.id.slice(0, 6)}</span>
               </div>
 
-              <p className="mb-3 min-h-[48px] line-clamp-3 text-xs leading-relaxed text-zinc-700">{post.description || 'Тайлбар оруулаагүй байна.'}</p>
+              <p className="mb-3 min-h-[56px] line-clamp-3 text-sm leading-relaxed text-[#675449]">{post.description || 'Тайлбар оруулаагүй байна.'}</p>
 
-              <div className="mb-3 grid grid-cols-2 gap-1.5 text-[11px]">
-                <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 font-medium text-amber-900">
+              <div className="mb-4 grid grid-cols-2 gap-2 text-[11px]">
+                <span className="inline-flex items-center gap-1 rounded-full bg-[#fff0e3] px-2.5 py-1 font-semibold text-[#a25a2f] ring-1 ring-[#f4d2b6]">
                   <PawPrint className="h-3 w-3" />
                   {post.breed || 'Үүлдэргүй'}
                 </span>
-                <span className="inline-flex items-center justify-center rounded-full bg-zinc-100 px-2.5 py-1 font-medium text-zinc-700">Нас: {post.age || '—'}</span>
-                <span className="col-span-2 inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 font-medium text-emerald-800">
+                <span className="inline-flex items-center justify-center rounded-full bg-[#f8f2eb] px-2.5 py-1 font-semibold text-[#7d634f] ring-1 ring-[#efe2d7]">Нас: {post.age || '—'}</span>
+                <span className="col-span-2 inline-flex items-center gap-1 rounded-full bg-[#fff7ec] px-2.5 py-1 font-semibold text-[#8a5a36] ring-1 ring-[#f4dfcb]">
                   <MapPin className="h-3 w-3" />
-                  {post.location || 'Байршилгүй'}
+                  <span className="line-clamp-1">{post.location || 'Байршилгүй'}</span>
                 </span>
               </div>
 
               <div className="mt-auto">
-                <span className="inline-block rounded-full bg-[#FFBE98] px-5 py-2 text-center text-xs font-bold text-zinc-900 transition-all duration-300 group-hover:opacity-95 group-hover:scale-105">
+                <span className="inline-block w-full rounded-2xl bg-[#ffbe98] px-5 py-2.5 text-center text-sm font-bold text-zinc-900 transition-all duration-300 group-hover:brightness-95">
                   Дэлгэрэнгүй харах
                 </span>
               </div>

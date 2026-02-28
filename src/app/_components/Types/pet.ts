@@ -20,7 +20,6 @@ export type Pet = {
   gender: 'Male' | 'Female';
   photo: string;
   medicalNotes: string;
-  allergies: string;
   microchipId: string;
 };
 

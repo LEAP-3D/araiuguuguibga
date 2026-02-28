@@ -1,5 +1,5 @@
 'use client';
-
+/* eslint-disable max-lines */
 import { Camera, Eye } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -8,7 +8,7 @@ import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { usePets } from '@/lib/petsContext';
 import ProfileDetailsDialog from './ProfileDetailsDialog';
-
+import { toast } from 'sonner';
 type UserProfile = {
   id: string;
   email: string;
@@ -24,7 +24,6 @@ export default function ProfileCard() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showDetails, setShowDetails] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-
   useEffect(() => {
     let cancelled = false;
     fetch('/api/user/me')
@@ -32,7 +31,9 @@ export default function ProfileCard() {
       .then((data) => {
         if (!cancelled && data) setUser(data);
       })
-      .catch(() => {})
+      .catch(() => {
+        if (!cancelled) toast.error('Профайлын мэдээлэл ачаалахад алдаа гарлаа.');
+      })
       .finally(() => {
         if (!cancelled) setLoading(false);
       });
@@ -41,7 +42,6 @@ export default function ProfileCard() {
     };
   }, []);
   const handleAvatarClick = () => fileInputRef.current?.click();
-
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !user) return;
@@ -60,8 +60,12 @@ export default function ProfileCard() {
       if (patchRes.ok) {
         const updated = await patchRes.json();
         setUser(updated);
+        toast.success('Профайл зураг шинэчлэгдлээ.');
+      } else {
+        toast.error('Зургийг хадгалах үед алдаа гарлаа.');
       }
     } catch {
+      toast.error('Зураг upload хийх үед алдаа гарлаа.');
     } finally {
       setUploading(false);
       e.target.value = '';
@@ -80,6 +84,9 @@ export default function ProfileCard() {
     if (res.ok) {
       const updated = await res.json();
       setUser(updated);
+      toast.success('Профайл амжилттай шинэчлэгдлээ.');
+    } else {
+      toast.error('Профайл шинэчлэх үед алдаа гарлаа.');
     }
   };
   const { pets } = usePets();
@@ -109,7 +116,7 @@ export default function ProfileCard() {
                 disabled={uploading}
                 className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center shadow-lg hover:bg-gray-300 disabled:opacity-50"
               >
-                <Camera className="w-4 h-4" />
+                <Camera className="w-4 h-4 cursor-pointer" />
               </button>
             </div>
             <div className="flex flex-col gap-0.5">
@@ -124,7 +131,7 @@ export default function ProfileCard() {
             <button
               type="button"
               onClick={() => setShowDetails(true)}
-              className="w-90 h-12 bg-[#f6f2e9] text-[#5e493a] font-semibold rounded-2xl p-3 border-2 border-[#eae4dc] flex justify-center gap-2 cursor-pointer"
+              className="w-90 h-12 flex justify-center gap-2 items-center rounded-2xl p-3 border-[#eae4dc] bg-[#f6f2e9] text-sm font-semibold text-[#5e493a] transition-all duration-200 cursor-pointer hover:bg-[#5e493a] hover:text-white"
             >
               <Eye />
               <p>Дэлгэрэнгүй харах</p>
@@ -138,7 +145,6 @@ export default function ProfileCard() {
             name: displayName,
             avatar: user.image,
             phone: user.phone ?? '',
-            fullAddress: '',
             notes: user.bio ?? '',
           }}
           open={showDetails}
@@ -150,26 +156,31 @@ export default function ProfileCard() {
         />
       )}
       <Dialog open={showEdit} onOpenChange={setShowEdit}>
-        <DialogContent className="w-120 bg-[#fefdfc] rounded-3xl border border-[#f1e6d9] p-8" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-semibold text-[#3b2f2f]">Профайл засах</DialogTitle>
-          </DialogHeader>
-          <ProfileDetails
-            initialName={initialName}
-            initialPhone={user?.phone ?? ''}
-            initialBio={user?.bio ?? ''}
-            onSave={async (data) => {
-              await handleSaveDetails(data);
-              setShowEdit(false);
-            }}
-          />
-          <DialogFooter>
+        <DialogContent className="max-w-xl overflow-hidden rounded-3xl border border-[#f1e6d9] bg-[#fefdfc] p-0" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+          <div className="border-b border-[#f1e6d9] bg-gradient-to-r from-[#fff7ef] to-[#fffdf9] px-6 py-5">
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-semibold text-[#3b2f2f]">Профайл засах</DialogTitle>
+            </DialogHeader>
+            <p className="mt-1 text-sm text-[#9b8b7b]">Өөрийн мэдээллээ шинэчилнэ үү.</p>
+          </div>
+          <div className="px-6 pb-6 pt-5">
+            <ProfileDetails
+              initialName={initialName}
+              initialPhone={user?.phone ?? ''}
+              initialBio={user?.bio ?? ''}
+              onSave={async (data) => {
+                await handleSaveDetails(data);
+                setShowEdit(false);
+              }}
+            />
+          </div>
+          <DialogFooter className="gap-3 px-6 pb-6 pt-0 sm:justify-end">
             <DialogClose asChild>
-              <Button variant="outline" className="rounded-xl px-8 py-2">
+              <Button variant="outline" className="rounded-xl px-7 py-2.5 border-[#e8dccd]">
                 Цуцлах
               </Button>
             </DialogClose>
-            <Button type="submit" form="profile-details-form" className="rounded-xl px-8 py-2 bg-linear-to-r from-[#ef9241] to-[#ef9241] text-white shadow-md hover:opacity-90">
+            <Button type="submit" form="profile-details-form" className="rounded-xl px-7 py-2.5 bg-[#ef9241] text-white shadow-md hover:bg-[#e6842f]">
               Өөрчлөлтийг хадгалах
             </Button>
           </DialogFooter>

@@ -10,6 +10,8 @@ import { mockVets } from '../_components/HeroSection/mockVets';
 import { motion } from 'framer-motion';
 import { VetCard } from '../_components/HeroSection/vetCard';
 import { NeonGradientCard } from '@/components/ui/neon-gradient-card';
+import { useUser } from '@clerk/nextjs';
+import { usePosts } from '@/lib/postsContext';
 
 const FILTERS = [
   { id: '', label: 'Бүгд' },
@@ -24,6 +26,8 @@ const RADIUS_OPTIONS = [2000, 3000, 4000, 5000] as const;
 const MapPlaceholder = dynamic(() => import('../_components/HeroSection/mapPlaceHolder'), { ssr: false });
 
 export function VeterinarySection() {
+  const { isSignedIn } = useUser();
+  const { posts } = usePosts();
   const [selectedVet, setSelectedVet] = useState<Veterinary | null>(null);
   const [temporaryVet, setTemporaryVet] = useState<Veterinary | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -80,7 +84,7 @@ export function VeterinarySection() {
 
         <div className="mx-auto flex h-150 max-w-7xl flex-col gap-4 lg:flex-row lg:gap-6">
           {/* Map Хэсэг */}
-          <NeonGradientCard borderSize={1} borderRadius={16} neonColors={{ firstColor: '#4f9669', secondColor: '#7ab88a' }} innerClassName="bg-transparent" className="min-h-0 flex-1">
+          <NeonGradientCard borderSize={1} borderRadius={16} neonColors={{ firstColor: '#FFDAB9', secondColor: '#FFCCA4' }} innerClassName="bg-transparent" className="min-h-0 flex-1">
             <div className="min-h-0 flex-1 overflow-hidden relative">
               <MapPlaceholder
                 vets={filteredVets}
@@ -90,6 +94,8 @@ export function VeterinarySection() {
                 userLocation={userLocation}
                 setUserLocation={setUserLocation}
                 radius={radius}
+                showLostPets={Boolean(isSignedIn)}
+                lostPosts={posts}
                 onMapClick={(lat, lng) => setTemporaryVet({ id: Date.now().toString(), name: '', lat, lng, rating: 0, services: [], isOpen: false, phone: [''], address: '', category: ['emneleg'] })}
                 onSaveTemp={handleSaveTemp}
                 onCancelTemp={() => setTemporaryVet(null)}
@@ -98,7 +104,7 @@ export function VeterinarySection() {
           </NeonGradientCard>
 
           {/* Sidebar Хэсэг */}
-          <NeonGradientCard borderSize={1} borderRadius={16} neonColors={{ firstColor: '#4f9669', secondColor: '#7ab88a' }} className="flex flex-col lg:w-[350px] h-[600px]">
+          <NeonGradientCard borderSize={1} borderRadius={16} neonColors={{ firstColor: '#FFDAB9', secondColor: '#FFCCA4' }} className="flex flex-col lg:w-[350px] h-[600px]">
             <div className="flex flex-col bg-white h-full overflow-hidden" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
               {/* Search */}
               <div className="border-b border-gray-100 p-3">
