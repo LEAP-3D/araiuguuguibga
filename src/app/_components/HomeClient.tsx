@@ -7,7 +7,7 @@ import { HeroSection } from '../_features/heroSection';
 import { RescuePetsSection } from '../_features/rescueSection';
 import { VeterinarySection } from '../_features/veterinarySection';
 import Chat from './Chat';
-import { PawBackground } from './paw-trail/PawBackground';
+
 import HomeMobile from '../_mobile/page';
 import AiGenerator from '../_features/aiGenerator';
 
@@ -29,7 +29,7 @@ export default function HomeClient() {
   }
 
   return (
-    <PawBackground>
+    <div>
       <div className="relative min-h-screen w-full overflow-hidden bg-[radial-gradient(circle_at_8%_12%,#ffc891_0%,transparent_30%),radial-gradient(circle_at_92%_10%,#ffe2be_0%,transparent_28%),radial-gradient(circle_at_54%_88%,#ffd9b3_0%,transparent_36%),linear-gradient(160deg,#fff6ec_0%,#fff2e4_48%,#fffaf3_100%)]">
         <div className="pointer-events-none absolute inset-0 opacity-45 [background-image:repeating-linear-gradient(125deg,rgba(251,146,60,0.08)_0px,rgba(251,146,60,0.08)_1px,transparent_1px,transparent_16px)]" />
         <div className="pointer-events-none absolute -left-28 -top-28 h-96 w-96 rounded-full bg-orange-300/25 blur-3xl" />
@@ -44,13 +44,13 @@ export default function HomeClient() {
             <div
               id="home-theme"
               className="
-                relative
-                overflow-hidden
-                rounded-[52px]
-                border border-white/70
-                bg-white/74
-                backdrop-blur-[22px]
-              "
+              relative
+              overflow-hidden
+              rounded-[52px]
+              border border-white/70
+              bg-white/74
+              backdrop-blur-[22px]
+            "
             >
               <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-linear-to-b from-white/60 to-transparent" />
               <div className="pointer-events-none absolute -left-10 top-20 h-40 w-40 rounded-full bg-orange-100/40 blur-2xl" />
@@ -100,6 +100,6 @@ export default function HomeClient() {
           border-color: #ffbe98 !important;
         }
       `}</style>
-    </PawBackground>
+    </div>
   );
 }
