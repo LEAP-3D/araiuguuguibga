@@ -9,13 +9,6 @@ import { CuteSleepingCatLoader } from '../_components/loading/CuteSleepingCatLoa
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
-const FILTERS = [
-  { id: 'all', label: 'Бүгд' },
-  { id: 'lost', label: 'Алдагдсан' },
-  { id: 'found', label: 'Олсон' },
-  { id: 'rescued', label: 'Аврагдсан' },
-] as const;
-
 const FEED_POST_LIMIT = 6;
 
 export function RescuePetsSection() {
@@ -61,33 +54,6 @@ export function RescuePetsSection() {
     <section id="adopt" className="scroll-mt-28 min-h-[70vh] px-4 py-12">
       <RescueHeader />
       <div className="mx-auto max-w-7xl flex flex-col gap-5">
-        <div className="flex shrink-0 flex-wrap justify-center gap-3">
-          {FILTERS.map((f) => (
-            <motion.button
-              key={f.id}
-              type="button"
-              onClick={() => setActiveFilter(f.id)}
-              // Хулгана очиход: Зөөлөн томорч, бага зэрэг хөөрнө
-              whileHover={{
-                scale: 1.05,
-                y: -2,
-                transition: { type: 'spring', stiffness: 400, damping: 10 },
-              }}
-              // Дарах үед: Доошоо "сууж" өгөх бодит мэдрэмж
-              whileTap={{
-                scale: 0.94,
-                y: 0,
-                transition: { type: 'spring', stiffness: 500, damping: 15 },
-              }}
-              className={cn(
-                'rounded-full px-6 py-2 text-sm font-bold transition-all duration-300 ease-out',
-                activeFilter === f.id ? 'bg-[#fc8d0e] text-white shadow-md' : 'border-2 border-[#fc8d0e] bg-white text-[#fc8d0e]'
-              )}
-            >
-              {f.label}
-            </motion.button>
-          ))}
-        </div>
         <div className="overflow-visible">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 overflow-visible">
             {displayPosts.map((post) => (

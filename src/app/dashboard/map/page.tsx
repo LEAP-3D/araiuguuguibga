@@ -29,10 +29,10 @@ export default function Map() {
           <div className="flex gap-1 items-center">
             <MapPin className="h-8 w-8 text-[#f28a50]" />
             <h1 className="text-2xl font-black text-[#43342D] md:text-3xl" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
-              Танд хамгийн ойр байгаа эмнэлэгүүд
+              Танд ойр байгаа
             </h1>
           </div>
-          <p className="text-sm font-medium text-[#9c6d4d] mb-1">Radius-д багтсан эмнэлэг болон lost pets нь map-ийн хажуугийн жагсаалтад харагдана.</p>
+          <p className="text-sm font-medium text-[#9c6d4d] mb-1">Радиуст багтсан эмнэлэг болон амьтад нь газрын зургийн хажуугийн жагсаалтад харагдана.</p>
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex w-fit gap-1.5 rounded-2xl  p-1 text-sm font-medium mb-4">
               {FILTERS.map((f) => (

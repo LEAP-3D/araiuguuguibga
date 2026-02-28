@@ -30,9 +30,9 @@ export function HeroSection({ onOpenChat }: { onOpenChat?: () => void }) {
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
-          className="flex flex-col items-center md:items-start space-y-8 text-center md:text-left relative z-20 md:-mt-16"
+          className="flex flex-col items-center ml-15 md:items-start space-y-8 text-center md:text-left relative z-20 md:-mt-16"
         >
-          <div className="space-y-3">
+          <div className="space-y-3 ">
             <motion.div
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
@@ -44,10 +44,10 @@ export function HeroSection({ onOpenChat }: { onOpenChat?: () => void }) {
               24/7 AI Туслах
             </motion.div>
             <h1
-              className="w-full max-w-[36rem] text-4xl sm:text-5xl md:text-7xl font-extrabold text-[#2D2D2D] leading-[1.08] break-words"
+              className="w-full max-w-[36rem] text-4xl sm:text-5xl md:text-6xl font-extrabold text-[#2D2D2D] leading-[1.08] break-words"
               style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}
             >
-              Бид Таны <br />{' '}
+              Бид Таны <br />
               <div style={{ fontFamily: 'var(--font-great-vibes)' }} className="text-[#fd9f9f] text-[90px] mt-5 ">
                 Хайртай
               </div>
@@ -73,8 +73,8 @@ export function HeroSection({ onOpenChat }: { onOpenChat?: () => void }) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="hidden md:block text-[#685a4a] text-lg md:text-xl max-w-lg leading-relaxed mt-4"
-              style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 400 }}
+              className="hidden md:block text-[#685a4a] text-lg md:text-xl max-w-lg leading-relaxed mt-6"
+              style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 600, fontSize: 18 }}
             >
               Вакцин сануулах, ойролцоох мал эмнэлэг олох, AI зөвлөгөө авах — бүгд нэг дор.
             </motion.p>
@@ -123,7 +123,7 @@ export function HeroSection({ onOpenChat }: { onOpenChat?: () => void }) {
         </motion.div>
         <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="relative flex justify-center md:justify-end items-center">
           <div className="relative z-10 w-full max-w-137.5 md:ml-auto">
-            <Image src="/cat.png" alt="Beloved Cat" width={800} height={900} className="object-contain ml-auto md:scale-150" priority />
+            <Image src="/cat.png" alt="Beloved Cat" width={800} height={900} className="object-contain ml-auto md:scale-150 -translate-x-[45px]" priority />
           </div>
         </motion.div>
         <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6, duration: 0.8 }} className="absolute top-[-9%] right-[27%] z-10 hidden md:block">

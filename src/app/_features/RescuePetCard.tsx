@@ -121,7 +121,10 @@ export function RescueFooterActions({ postCount }: { postCount: number }) {
           Бүгдийг харах ({postCount})
         </Link>
       )}
-      <Link href="/dashboard/add-post" className="inline-flex items-center gap-2 rounded-full bg-[#FFBE98] px-6 py-2.5 text-sm font-medium text-zinc-900 shadow-sm transition-colors hover:brightness-95">
+      <Link
+        href="/dashboard/add-post"
+        className="inline-flex items-center gap-2 rounded-full bg-[#fff0e3] px-6 py-2.5 text-sm font-medium text-[#a25a2f] border-2 border-[#f99c66] shadow-sm transition-colors hover:bg-[#FFBE98]"
+      >
         <PlusCircle className="h-5 w-5" />
         Пост оруулах
       </Link>
