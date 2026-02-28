@@ -19,7 +19,7 @@ export default function Location({ form, setForm }: Props) {
 
         <SimpleMap
           zoom={13}
-          className="w-130 h-70 rounded-xl"
+          className="w-full h-70 rounded-xl"
           onSelect={(latlng) => {
             setForm((prev) => ({
               ...prev,
