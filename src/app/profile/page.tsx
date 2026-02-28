@@ -128,8 +128,11 @@ export default function Profile() {
       <div className=" fixed inset-0 z-0 min-h-screen bg-[url('/pet-background.jpg')] bg-cover bg-center">
         <div className="absolute inset-0 bg-background/85 backdrop-blur-xs" />
       </div>
-      <main className="container w-7xl relative z-10 flex flex-col items-start pb-8 backdrop-blur-sm" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
-        <div className="mb-4 w-full flex justify-between px-8 mt-4 bg-[#fafafa64]">
+      <main
+        className="relative z-10 flex flex-col items-center md:items-start pb-[calc(env(safe-area-inset-bottom)+96px)] md:pb-8 backdrop-blur-sm w-full max-w-full px-4 md:container md:w-7xl md:px-0"
+        style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}
+      >
+        <div className="mb-4 w-full flex justify-between px-4 md:px-8 mt-4 bg-[#fafafa64]">
           <Logo />
           <HeaderUserMenu displayName={user?.fullName || 'User'} initial={user?.firstName?.charAt(0) || 'U'} imageUrl={user?.imageUrl} onSignOut={() => {}} />
         </div>
@@ -155,32 +158,34 @@ export default function Profile() {
             Мэдэгдэл + Имэйл турших
           </button>
         </div>
-        <div className="flex flex-col gap-10 w-7xl items-center border-7 border-white rounded-3xl p-6 shadow-2xl py-14">
-          <div className="flex w-full items-center justify-between pr-20 pl-8">
+        <div className="flex flex-col gap-6 md:gap-10 w-full md:w-7xl items-center border-7 border-white rounded-3xl p-4 md:p-6 shadow-2xl py-6 md:py-14">
+          <div className="flex flex-col md:flex-row w-full items-center justify-between px-0 md:pr-20 md:pl-8 gap-4 md:gap-0">
             <ProfileCard />
-            <Image src="/Harmony.png" alt="Harmony" width={900} height={600} className="h-60 w-auto object-contain" />
+            <Image src="/Harmony.png" alt="Harmony" width={900} height={600} className="h-36 md:h-60 w-auto object-contain" />
           </div>
-          <div className="rounded-2xl w-6xl  flex flex-col overflow-auto ">
+          <div className="rounded-2xl w-full md:w-6xl flex flex-col overflow-auto ">
             <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
               <PawPrint className="text-orange-400" /> Миний тэжээвэр амьтад
             </h3>
-            <div className="gap-3 flex  overflow-auto ">
+            <div className="gap-3 flex overflow-x-auto overflow-y-hidden w-full pb-2 ">
               <AddPetDialog />
-              <div className="flex flex-wrap gap-4">
+              <div className="flex gap-4">
                 {pets.map((pet) => (
                   <PetCard key={pet.id} pet={pet} />
                 ))}
               </div>
             </div>
           </div>
-          <ProfileMedicalSection
-            pets={pets}
-            records={filteredRecords}
-            loading={recordsLoading}
-            selectedPetFilter={selectedPetFilter}
-            onFilterChange={setSelectedPetFilter}
-            onAddRecord={handleAddRecord}
-          />
+          <div className="w-full md:w-6xl px-2 md:px-0 overflow-hidden">
+            <ProfileMedicalSection
+              pets={pets}
+              records={filteredRecords}
+              loading={recordsLoading}
+              selectedPetFilter={selectedPetFilter}
+              onFilterChange={setSelectedPetFilter}
+              onAddRecord={handleAddRecord}
+            />
+          </div>
         </div>
       </main>
     </div>
