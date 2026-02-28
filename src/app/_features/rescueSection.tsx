@@ -6,25 +6,14 @@ import { RescueEmptyState, RescueHeader } from './RescueSectionParts';
 import { RescuePetCard, RescueFooterActions } from './RescuePetCard';
 import { NeonGradientCard } from '@/components/ui/neon-gradient-card';
 import { CuteSleepingCatLoader } from '../_components/loading/CuteSleepingCatLoader';
-import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
 
 const FEED_POST_LIMIT = 6;
 
 export function RescuePetsSection() {
   const { posts, postsLoading } = usePosts();
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
-  const [activeFilter, setActiveFilter] = useState<string>('all');
 
-  const filteredPosts = posts.filter((post) => {
-    if (activeFilter === 'all') return true;
-    if (activeFilter === 'lost' && post.status === 'lost') return true;
-    if (activeFilter === 'found' && post.status === 'found') return true;
-    if (activeFilter === 'rescued' && post.status === 'rescued') return true;
-    return false;
-  });
-
-  const displayPosts = filteredPosts.slice(0, FEED_POST_LIMIT);
+  const displayPosts = posts.slice(0, FEED_POST_LIMIT);
 
   const toggleFavorite = (id: string) => {
     setFavorites((prev) => {
