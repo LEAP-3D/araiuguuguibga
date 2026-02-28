@@ -104,7 +104,7 @@ export default function Chat({ open: controlledOpen, onOpenChange }: ChatProps =
                 <Image src="/caticon.png" alt="" width={36} height={36} className="w-9 h-9 object-contain" />
               </div>
               <div>
-                <p className="font-semibold text-white text-base">Chat Assistant</p>
+                <p className="font-semibold text-white text-base">Чат туслах</p>
                 <p className="text-xs text-white/90">Танд туслахад үргэлж бэлэн</p>
               </div>
             </div>
