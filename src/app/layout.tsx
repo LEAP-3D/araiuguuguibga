@@ -25,7 +25,7 @@ const geistMono = Geist_Mono({
 });
 
 export const viewport: Viewport = {
-  themeColor: '#ffffff',
+  themeColor: '#F28A50',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   },
   appleWebApp: {
     capable: true,
-    statusBarStyle: 'default',
+    statusBarStyle: 'black-translucent',
     title: 'Pet World',
   },
   formatDetection: {

@@ -61,7 +61,7 @@ export default function Map() {
             </div>
           </div>
           <NeonGradientCard borderSize={1} borderRadius={16} neonColors={{ firstColor: '#f29f67', secondColor: '#ffd1a9' }} innerClassName="bg-white" className="w-full">
-            <div className="h-[72vh] p-3">
+            <div className="p-3 md:h-[72vh]">
               <LeafletMap selectedType={selectedType} selectedDistance={selectedDistance} />
             </div>
           </NeonGradientCard>

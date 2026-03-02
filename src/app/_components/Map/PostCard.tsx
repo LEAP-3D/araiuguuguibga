@@ -32,7 +32,7 @@ export default function PostCard({ post, onClick, selected = false }: Props) {
     <button
       type="button"
       onClick={onClick}
-      className={`w-65 overflow-hidden rounded-2xl border text-left shadow-sm transition ${
+      className={`w-full overflow-hidden rounded-2xl border text-left shadow-sm transition md:w-65 ${
         selected ? 'border-[#f28a50] bg-[#fff3eb] ring-2 ring-[#ffd2b8]' : 'border-[#f2e2d5] bg-white hover:border-[#f2b286] hover:bg-[#fff8f3]'
       }`}
     >
