@@ -70,7 +70,7 @@ export default function AddMedicalRecord({ pets = [], onAddRecord }: Props) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <div className="w-fit h-fit bg-[#ef9241] rounded-2xl py-3 px-5 flex items-center gap-2 justify-center text-white font-medium hover:bg-orange-400 cursor-pointer transition">
-          <Plus />
+          <Plus className="w-full md:w-auto" />
           нэмэх
         </div>
       </DialogTrigger>
