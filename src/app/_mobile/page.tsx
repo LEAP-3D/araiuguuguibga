@@ -1,10 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { HeroSection } from '../_features/heroSection';
-import { RescuePetsSection } from '../_features/rescueSection';
-import { VeterinarySection } from '../_features/veterinarySection';
-import { Home, PawPrintIcon, Map as MapIcon, User, SquarePlus, Bot } from 'lucide-react';
+import { Home, Map as MapIcon, User, SquarePlus, Bot } from 'lucide-react';
 import Header from './_components/header';
 import Map from '../dashboard/map/page';
 import { AddPostForm } from '../dashboard/add-post/AddPostForm';
