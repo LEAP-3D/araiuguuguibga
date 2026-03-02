@@ -17,9 +17,11 @@ type Props = {
   selectedPetFilter: string;
   onFilterChange: (value: string) => void;
   onAddRecord: (record: PetMedicalForm) => Promise<void>;
+  deletingRecordId?: string | null;
+  onDeleteRecord: (id: string) => Promise<void>;
 };
 
-export function ProfileMedicalSection({ pets, records, loading, selectedPetFilter, onFilterChange, onAddRecord }: Props) {
+export function ProfileMedicalSection({ pets, records, loading, selectedPetFilter, onFilterChange, onAddRecord, deletingRecordId = null, onDeleteRecord }: Props) {
   return (
     <div className="w-full md:w-6xl h-fit rounded-2xl flex flex-col  gap-6" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-0">
@@ -45,8 +47,8 @@ export function ProfileMedicalSection({ pets, records, loading, selectedPetFilte
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Бүгд</SelectItem>
-              {pets.map((pet) => (
-                <SelectItem key={pet.id} value={pet.name}>
+              {pets.map((pet, index) => (
+                <SelectItem key={`${pet.id}-${index}`} value={pet.name}>
                   {pet.name}
                 </SelectItem>
               ))}
@@ -59,7 +61,14 @@ export function ProfileMedicalSection({ pets, records, loading, selectedPetFilte
           ) : records.length === 0 ? (
             <p className="text-gray-500 text-center w-full py-8">Одоогоор эрүүл мэндийн бүртгэл байхгүй байна. Эхний бүртгэлээ нэмээрэй!</p>
           ) : (
-            records.map((record) => <MedicalCard key={record.id ?? record.medicine + record.date} record={record} />)
+            records.map((record) => (
+              <MedicalCard
+                key={record.id ?? record.medicine + record.date}
+                record={record}
+                deleting={Boolean(record.id && deletingRecordId === record.id)}
+                onDelete={onDeleteRecord}
+              />
+            ))
           )}
         </div>
       </div>

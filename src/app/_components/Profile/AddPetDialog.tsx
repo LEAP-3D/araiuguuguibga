@@ -1,5 +1,5 @@
 'use client';
-import { Upload, X } from 'lucide-react';
+import { Loader2, Upload, X } from 'lucide-react';
 import { PetFormFields } from './PetFormFields';
 import type { PetForm } from './PetFormFields';
 import { AddPetTriggerCard } from './AddPetTriggerCard';
@@ -13,6 +13,7 @@ import { toast } from 'sonner';
 export default function AddPetDialog() {
   const { addPet } = usePets();
   const [open, setOpen] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
   const [objectPreviewUrl, setObjectPreviewUrl] = useState<string | null>(null);
   const [form, setForm] = useState<PetForm>({
@@ -59,11 +60,12 @@ export default function AddPetDialog() {
   const removeImage = () => clearImageState();
 
   const handleAddPet = async () => {
+    if (saving) return;
     if (!form.name || !form.type) {
       toast.error('Нэр болон төрлөө бөглөнө үү.');
       return;
     }
-
+    setSaving(true);
     let imageUrl = '';
     if (selectedImageFile) {
       try {
@@ -82,14 +84,15 @@ export default function AddPetDialog() {
         } else {
           const err = (await uploadRes.json().catch(() => null)) as { error?: string } | null;
           toast.error(err?.error ? `Зураг байршуулахад алдаа: ${err.error}` : 'Зураг байршуулахад алдаа гарлаа.');
+          setSaving(false);
           return;
         }
       } catch {
         toast.error('Зураг боловсруулах үед алдаа гарлаа.');
+        setSaving(false);
         return;
       }
     }
-
     try {
       await addPet({
         name: form.name,
@@ -117,6 +120,8 @@ export default function AddPetDialog() {
       });
     } catch {
       toast.error('Амьтан нэмэхэд алдаа гарлаа.');
+    } finally {
+      setSaving(false);
     }
   };
   return (
@@ -155,13 +160,13 @@ export default function AddPetDialog() {
         <PetFormFields form={form} setForm={setForm} />
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline" className="rounded-xl px-8 py-2">
+            <Button variant="outline" className="rounded-xl px-8 py-2" disabled={saving}>
               Болих
             </Button>
           </DialogClose>
 
-          <Button onClick={handleAddPet} className="rounded-xl px-8 py-2 bg-linear-to-r from-[#ff9203] to-[#ffaa00] text-white shadow-md hover:opacity-90">
-            Нэмэх
+          <Button onClick={handleAddPet} disabled={saving} className="rounded-xl px-8 py-2 bg-linear-to-r from-[#ff9203] to-[#ffaa00] text-white shadow-md hover:opacity-90 disabled:opacity-60">
+            {saving ? <span className="inline-flex items-center gap-2"><Loader2 className="h-4 w-4 animate-spin" />Нэмж байна...</span> : 'Нэмэх'}
           </Button>
         </DialogFooter>
       </DialogContent>

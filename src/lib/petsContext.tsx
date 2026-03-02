@@ -26,6 +26,17 @@ type PetsContextType = {
 
 const PetsContext = createContext<PetsContextType | null>(null);
 
+function dedupePetsById(items: Pet[]): Pet[] {
+  const seen = new Set<string>();
+  const out: Pet[] = [];
+  for (const pet of items) {
+    if (seen.has(pet.id)) continue;
+    seen.add(pet.id);
+    out.push(pet);
+  }
+  return out;
+}
+
 function mapApiPetToPet(p: {
   id: string;
   name: string;
@@ -59,7 +70,7 @@ export function PetsProvider({ children }: { children: ReactNode }) {
     try {
       const res = await fetch('/api/pets');
       const data = res.ok ? await res.json() : [];
-      setPets(Array.isArray(data) ? data.map(mapApiPetToPet) : []);
+      setPets(Array.isArray(data) ? dedupePetsById(data.map(mapApiPetToPet)) : []);
     } catch {
       setPets([]);
     } finally {
@@ -86,9 +97,9 @@ export function PetsProvider({ children }: { children: ReactNode }) {
         image: pet.image || null,
       }),
     });
-    if (!res.ok) return;
+    if (!res.ok) throw new Error('Failed to create pet');
     const saved = await res.json();
-    setPets((prev) => [mapApiPetToPet(saved), ...prev]);
+    setPets((prev) => dedupePetsById([mapApiPetToPet(saved), ...prev]));
   }, []);
 
   const updatePet = useCallback(async (petId: string, pet: Omit<Pet, 'id'>) => {

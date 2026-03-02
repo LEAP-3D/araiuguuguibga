@@ -55,6 +55,26 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'name and type required' }, { status: 400 });
     }
 
+    const tenSecondsAgo = new Date(Date.now() - 10_000);
+    const recentDuplicate = await prisma.pet.findFirst({
+      where: {
+        userId,
+        name,
+        type,
+        breed,
+        age,
+        weight,
+        gender,
+        note,
+        image,
+        createdAt: { gte: tenSecondsAgo },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+    if (recentDuplicate) {
+      return NextResponse.json(recentDuplicate);
+    }
+
     const pet = await prisma.pet.create({
       data: {
         userId,

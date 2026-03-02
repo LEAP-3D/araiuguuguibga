@@ -92,8 +92,8 @@ export default function AddMedicalRecord({ pets = [], onAddRecord }: Props) {
                     <SelectValue placeholder="Тэжээвэр амьтан сонгох" />
                   </SelectTrigger>
                   <SelectContent>
-                    {pets.map((pet) => (
-                      <SelectItem key={pet.id} value={pet.name}>
+                    {pets.map((pet, index) => (
+                      <SelectItem key={`${pet.id}-${index}`} value={pet.name}>
                         {pet.name}
                       </SelectItem>
                     ))}
