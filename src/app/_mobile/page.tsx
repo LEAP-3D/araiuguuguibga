@@ -4,20 +4,26 @@ import { useState } from 'react';
 import { HeroSection } from '../_features/heroSection';
 import { RescuePetsSection } from '../_features/rescueSection';
 import { VeterinarySection } from '../_features/veterinarySection';
-import { Home, PawPrintIcon, Map as MapIcon } from 'lucide-react';
+import { Home, PawPrintIcon, Map as MapIcon, User, SquarePlus, Bot } from 'lucide-react';
+import Header from './_components/header';
+import Map from '../dashboard/map/page';
+import { AddPostForm } from '../dashboard/add-post/AddPostForm';
+import Profile from '../profile/page';
+import ProfileMobile from './profileMobile';
 
-type Tab = 'home' | 'rescue' | 'map';
+type Tab = 'home' | 'ai' | 'map' | 'post' | 'user';
 
 export default function HomeMobile() {
   const [active, setActive] = useState<Tab>('home');
 
   return (
     <div className="min-h-screen bg-[#FFFEF9] pb-20">
-
       <main>
-        {active === 'home' && <HeroSection />}
-        {active === 'rescue' && <RescuePetsSection />}
-        {active === 'map' && <VeterinarySection />}
+        {active === 'home' && <Header />}
+        {active === 'ai' && <RescuePetsSection />}
+        {active === 'post' && <AddPostForm />}
+        {active === 'map' && <Map />}
+        {active === 'user' && <Profile />}
       </main>
 
       {/* Bottom Nav */}
@@ -25,11 +31,17 @@ export default function HomeMobile() {
         <button onClick={() => setActive('home')}>
           <Home size={22} />
         </button>
-        <button onClick={() => setActive('rescue')}>
-          <PawPrintIcon size={22} />
+        <button onClick={() => setActive('ai')}>
+          <Bot size={22} />
+        </button>
+        <button onClick={() => setActive('post')}>
+          <SquarePlus size={22} />
         </button>
         <button onClick={() => setActive('map')}>
           <MapIcon size={22} />
+        </button>{' '}
+        <button onClick={() => setActive('user')}>
+          <User size={22} />
         </button>
       </nav>
     </div>
