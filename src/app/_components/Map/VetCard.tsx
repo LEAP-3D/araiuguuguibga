@@ -14,7 +14,7 @@ export default function VetCard({ vet, onClick, selected = false }: Props) {
     <button
       type="button"
       onClick={onClick}
-      className={`w-65 rounded-xl border p-3 text-left shadow-sm transition ${
+      className={`w-full rounded-xl border p-3 text-left shadow-sm transition md:w-65 ${
         selected ? 'border-orange-400 bg-orange-50 ring-1 ring-orange-300' : 'bg-white hover:border-orange-200 hover:bg-orange-50/40'
       }`}
     >

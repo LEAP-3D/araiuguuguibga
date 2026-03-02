@@ -1,5 +1,4 @@
 'use client';
-
 import 'leaflet/dist/leaflet.css';
 import type L from 'leaflet';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -7,7 +6,6 @@ import { MapContainer, TileLayer, Popup, Marker, Circle } from 'react-leaflet';
 import { mockVets } from '@/app/_components/HeroSection/mockVets';
 import { usePosts } from '@/lib/postsContext';
 import { CuteSleepingCatLoader } from '@/app/_components/loading/CuteSleepingCatLoader';
-
 import { hospitalIcon, lostPetIcon } from './MapIcons';
 import { useUserLocation } from './useUserLocation';
 import { useFilteredMarkers, getRadius } from './useFilteredMarkers';
@@ -16,12 +14,10 @@ import FullscreenToggle from './FullscreenToggle';
 import SidebarList from './SidebarList';
 import { SearchBar } from '../HeroSection/searchBar';
 import { MapPin } from 'lucide-react';
-
 type Props = {
   selectedType: 'all' | 'lost' | 'vets';
   selectedDistance: '1km' | '3km' | '5km';
 };
-
 export default function LeafletMap({ selectedType, selectedDistance }: Props) {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [isResizingMap, setIsResizingMap] = useState(false);
@@ -64,7 +60,12 @@ export default function LeafletMap({ selectedType, selectedDistance }: Props) {
     return distanceFilteredVets.filter((vet) => vet.name.toLowerCase().includes(normalizedQuery) || vet.address.toLowerCase().includes(normalizedQuery));
   }, [distanceFilteredVets, normalizedQuery]);
 
-  const filteredPosts = distanceFilteredPosts;
+  const filteredPosts = useMemo(() => {
+    if (!normalizedQuery) return distanceFilteredPosts;
+    return distanceFilteredPosts.filter((post) =>
+      [post.name, post.description, post.location, post.contactPhone].some((value) => value?.toLowerCase().includes(normalizedQuery))
+    );
+  }, [distanceFilteredPosts, normalizedQuery]);
 
   const handleFullScreenChange = (next: boolean) => {
     setIsResizingMap(true);
@@ -90,9 +91,9 @@ export default function LeafletMap({ selectedType, selectedDistance }: Props) {
   }, [isFullScreen]);
 
   return (
-    <div className={isFullScreen ? 'fixed inset-0 z-[2000] h-full w-full bg-white p-4' : 'flex h-full w-full justify-center gap-4'}>
+    <div className={isFullScreen ? 'fixed inset-0 z-[2000] h-full w-full bg-white p-4' : 'flex w-full flex-col gap-4 md:h-full md:flex-row md:justify-center'}>
       {/* Map panel */}
-      <div className={isFullScreen ? 'relative h-full w-full' : 'relative h-full flex-1'}>
+      <div className={isFullScreen ? 'relative h-full w-full' : 'relative h-[52vh] w-full md:h-full md:flex-1'}>
         {isResizingMap && (
           <div className="absolute inset-0 z-[2050] flex items-center justify-center bg-white/70 backdrop-blur-[1px] pointer-events-none">
             <div className="h-24 w-24">
@@ -159,7 +160,7 @@ export default function LeafletMap({ selectedType, selectedDistance }: Props) {
       </div>
 
       {!isFullScreen && (
-        <div className="flex h-full w-72.5 flex-col">
+        <div className="flex w-full flex-col md:h-full md:w-72.5">
           <div className="border-b border-gray-100 pb-3">
             <SearchBar query={searchQuery} onChange={setSearchQuery} />
           </div>

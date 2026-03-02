@@ -13,7 +13,9 @@ export function HeroSection({ onOpenChat }: { onOpenChat?: () => void }) {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
+
   const servicesHref = mounted && isSignedIn ? '/dashboard' : '/sign-up';
+
   return (
     <section
       id="hero"
@@ -94,6 +96,7 @@ export function HeroSection({ onOpenChat }: { onOpenChat?: () => void }) {
               Манай үйлчилгээ
             </ShinyButton>
           </motion.div>
+
           <div className="flex flex-row gap-6 pt-4">
             {[
               { src: '/clinic.png', delay: 1.0, label: 'Клиник' },
