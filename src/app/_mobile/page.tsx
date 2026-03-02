@@ -6,7 +6,6 @@ import Header from './_components/header';
 import Map from '../dashboard/map/page';
 import { AddPostForm } from '../dashboard/add-post/AddPostForm';
 import Profile from '../profile/page';
-import ProfileMobile from './profileMobile';
 import AiGenerator from '../_features/aiGenerator';
 
 type Tab = 'home' | 'ai' | 'map' | 'post' | 'user';
