@@ -1,69 +1,108 @@
-import { Calendar, CalendarClock, FileText, Hospital, Pill, Trash2 } from 'lucide-react';
+import { AlertTriangle, Calendar, CalendarClock, CheckCircle2, Clock3, FileText, Hospital, Pill, Trash2 } from 'lucide-react';
 import type { PetMedicalForm } from './AddMedicalRecord';
+
 type RecordProps = {
   record: PetMedicalForm & { id?: string };
   onDelete?: (id: string) => void | Promise<void>;
   deleting?: boolean;
 };
+
+const typeLabel: Record<string, string> = {
+  vaccine: 'Вакцин',
+  medicine: 'Эм',
+  treatment: 'Эмчилгээ',
+  surgery: 'Мэс засал',
+};
+
+function getDueStatus(nextDueDate: string | undefined) {
+  const raw = nextDueDate?.trim();
+  if (!raw) return { text: 'Товлоогүй', tone: 'muted' as const };
+
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  const todayStr = `${yyyy}-${mm}-${dd}`;
+
+  if (raw < todayStr) return { text: `Хоцорсон • ${raw}`, tone: 'late' as const };
+  if (raw === todayStr) return { text: `Өнөөдөр • ${raw}`, tone: 'today' as const };
+  return { text: `Хуваарьтай • ${raw}`, tone: 'upcoming' as const };
+}
+
 export default function MedicalCard({ record, onDelete, deleting = false }: RecordProps) {
   const canDelete = Boolean(record.id && onDelete);
+  const normalizedType = (record.type || '').toLowerCase();
+  const typeText = typeLabel[normalizedType] ?? record.type;
+  const clinicText = record.vet?.trim() ? record.vet : 'Бүртгэгдээгүй';
+  const noteText = record.note?.trim() ? record.note : 'Тэмдэглэл байхгүй';
+  const due = getDueStatus(record.nextDueDate);
+  const dueToneClass =
+    due.tone === 'late'
+      ? 'bg-red-50 text-red-700 border-red-200'
+      : due.tone === 'today'
+        ? 'bg-amber-50 text-amber-700 border-amber-200'
+        : due.tone === 'upcoming'
+          ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+          : 'bg-slate-50 text-slate-500 border-slate-200';
+  const DueIcon = due.tone === 'late' ? AlertTriangle : due.tone === 'today' ? Clock3 : due.tone === 'upcoming' ? CheckCircle2 : CalendarClock;
 
   return (
-    <div className="w-140 h-60 bg-white rounded-2xl shadow-md pl-6 py-5 flex gap-4">
-      <div className="flex ">
-        <div className="flex items-center justify-center w-11 h-11 rounded-full shadow-2xl">
-          <Pill className="w-6 h-6 text-orange-600" />
+    <article className="group relative w-full overflow-hidden rounded-2xl border border-[#efe5d9] bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_28px_rgba(92,66,45,0.12)]">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#f59e0b] via-[#f97316] to-[#ef4444] opacity-85" />
+
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex min-w-0 items-start gap-3">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 ring-1 ring-orange-100">
+            <Pill className="h-5 w-5 text-orange-600" />
+          </div>
+          <div className="min-w-0">
+            <p className="truncate text-lg font-semibold text-[#1b1b1f]">{record.medicine}</p>
+            <p className="mt-1 text-sm text-[#6b7280]">Эмийн нэр</p>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2 sm:justify-end">
+          <span className="rounded-full bg-[#f8efc2] px-3.5 py-1.5 text-sm font-semibold text-[#4c2d12]">{record.pet}</span>
+          <span className="rounded-full bg-[#f8dfe4] px-3.5 py-1.5 text-sm font-semibold text-[#521b2a]">{typeText}</span>
+          {canDelete ? (
+            <button
+              type="button"
+              onClick={() => {
+                if (!record.id) return;
+                void onDelete?.(record.id);
+              }}
+              disabled={deleting}
+              className="inline-flex h-10 items-center gap-1.5 rounded-full border border-[#f5c8c2] bg-[#fff3f1] px-4 text-sm font-semibold text-[#c0392b] transition-colors hover:bg-[#ffe8e5] disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <Trash2 className="h-4 w-4" />
+              {deleting ? 'Устгаж байна...' : 'Устгах'}
+            </button>
+          ) : null}
         </div>
       </div>
-      <div className="flex flex-col gap-1">
-        <div className="flex items-center ">
-          <div className="flex justify-between w-113">
-            <div className="text-lg font-semibold">{record.medicine}</div>
-            <div className="flex gap-2 font-semibold text-[17px]">
-              <div className="w-fit px-4 bg-yellow-100 rounded-full py-2 h-9">
-                <p className="text-sm text-orange-950">{record.pet}</p>
-              </div>
-              <div className="w-fit  px-4 bg-red-100 rounded-full py-2 h-9">
-                <p className="text-sm text-red-950">{record.type}</p>
-              </div>
-              {canDelete ? (
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (!record.id) return;
-                    void onDelete?.(record.id);
-                  }}
-                  disabled={deleting}
-                  className="h-9 rounded-full border border-[#fdd5d0] bg-[#fff0ee] px-3 text-sm text-[#c0392b] transition-colors hover:bg-[#ffe0dc] disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  <span className="inline-flex items-center gap-1.5">
-                    <Trash2 className="h-4 w-4" />
-                    {deleting ? 'Устгаж байна...' : 'Устгах'}
-                  </span>
-                </button>
-              ) : null}
-            </div>
-          </div>
+
+      <div className="mt-4 grid gap-3 text-sm text-[#4b5563]">
+        <div className="flex items-center gap-2">
+          <Calendar className="h-4 w-4 text-[#6b7280]" />
+          <span className="font-medium text-[#6b7280]">Хийгдсэн огноо:</span>
+          <span>{record.date}</span>
         </div>
-        <div className="flex gap-2 flex-col">
-          <div className="flex items-center">
-            <Calendar className="w-4 h-4 mr-2 mt-1 text-gray-500" />
-            <span className="text-m text-gray-500">{record.date}</span>
-          </div>
-          <div className="flex">
-            <CalendarClock className="w-4 h-4 mr-2 mt-1 text-gray-500" />
-            <p className="text-red-600">Next Due: {record.nextDueDate}</p>
-          </div>
-          <div className="flex">
-            <Hospital className="w-4 h-4 mr-2 mt-1 text-gray-500" />
-            <p className=" text-gray-500">{record.vet}</p>
-          </div>
-          <div className="flex pl-6">
-            <FileText className="w-4 h-4 mr-2 mt-1 text-gray-500" />
-            <p className=" text-gray-500">{record.note}</p>
-          </div>
+        <div className="flex items-center gap-2">
+          <DueIcon className="h-4 w-4 text-[#6b7280]" />
+          <span className="font-medium text-[#6b7280]">Дараагийн огноо:</span>
+          <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${dueToneClass}`}>{due.text}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <Hospital className="h-4 w-4 text-[#6b7280]" />
+          <span className="font-medium text-[#6b7280]">Клиник:</span>
+          <span>{clinicText}</span>
+        </div>
+        <div className="flex items-start gap-2">
+          <FileText className="mt-0.5 h-4 w-4 text-[#6b7280]" />
+          <span className="font-medium text-[#6b7280]">Тэмдэглэл:</span>
+          <p className="break-words">{noteText}</p>
         </div>
       </div>
-    </div>
+    </article>
   );
 }
