@@ -10,6 +10,7 @@ import Map from '../dashboard/map/page';
 import { AddPostForm } from '../dashboard/add-post/AddPostForm';
 import Profile from '../profile/page';
 import ProfileMobile from './profileMobile';
+import AiGenerator from '../_features/aiGenerator';
 
 type Tab = 'home' | 'ai' | 'map' | 'post' | 'user';
 
@@ -20,7 +21,7 @@ export default function HomeMobile() {
     <div className="min-h-screen bg-[#FFFEF9] pb-20">
       <main>
         {active === 'home' && <Header />}
-        {active === 'ai' && <RescuePetsSection />}
+        {active === 'ai' && <AiGenerator />}
         {active === 'post' && <AddPostForm />}
         {active === 'map' && <Map />}
         {active === 'user' && <Profile />}
