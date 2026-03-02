@@ -1,9 +1,13 @@
-import { Calendar, CalendarClock, FileText, Hospital, Pill } from 'lucide-react';
+import { Calendar, CalendarClock, FileText, Hospital, Pill, Trash2 } from 'lucide-react';
 import type { PetMedicalForm } from './AddMedicalRecord';
 type RecordProps = {
-  record: PetMedicalForm;
+  record: PetMedicalForm & { id?: string };
+  onDelete?: (id: string) => void | Promise<void>;
+  deleting?: boolean;
 };
-export default function MedicalCard({ record }: RecordProps) {
+export default function MedicalCard({ record, onDelete, deleting = false }: RecordProps) {
+  const canDelete = Boolean(record.id && onDelete);
+
   return (
     <div className="w-140 h-60 bg-white rounded-2xl shadow-md pl-6 py-5 flex gap-4">
       <div className="flex ">
@@ -22,6 +26,22 @@ export default function MedicalCard({ record }: RecordProps) {
               <div className="w-fit  px-4 bg-red-100 rounded-full py-2 h-9">
                 <p className="text-sm text-red-950">{record.type}</p>
               </div>
+              {canDelete ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (!record.id) return;
+                    void onDelete?.(record.id);
+                  }}
+                  disabled={deleting}
+                  className="h-9 rounded-full border border-[#fdd5d0] bg-[#fff0ee] px-3 text-sm text-[#c0392b] transition-colors hover:bg-[#ffe0dc] disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  <span className="inline-flex items-center gap-1.5">
+                    <Trash2 className="h-4 w-4" />
+                    {deleting ? 'Устгаж байна...' : 'Устгах'}
+                  </span>
+                </button>
+              ) : null}
             </div>
           </div>
         </div>

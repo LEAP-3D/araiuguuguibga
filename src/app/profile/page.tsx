@@ -28,8 +28,9 @@ export default function Profile() {
   const router = useRouter();
   const [medicalRecords, setMedicalRecords] = useState<MedicalRecordItem[]>([]);
   const [recordsLoading, setRecordsLoading] = useState(true);
+  const [deletingRecordId, setDeletingRecordId] = useState<string | null>(null);
   const [selectedPetFilter, setSelectedPetFilter] = useState<string>('all');
-  const { pets, refetchPets } = usePets();
+  const { pets, refetchPets, petsLoading } = usePets();
   const { user } = useUser();
   useEffect(() => {
     if (!isLoaded) return;
@@ -97,6 +98,24 @@ export default function Profile() {
       toast.success('Эрүүл мэндийн бүртгэл амжилттай нэмэгдлээ.');
     } catch {
       toast.error('Эрүүл мэндийн бүртгэл нэмэх үед алдаа гарлаа.');
+    }
+  };
+
+  const handleDeleteRecord = async (id: string) => {
+    if (!id || deletingRecordId) return;
+    setDeletingRecordId(id);
+    try {
+      const res = await fetch(`/api/medical-records/${id}`, { method: 'DELETE' });
+      if (!res.ok) {
+        toast.error('Эрүүл мэндийн бүртгэл устгах үед алдаа гарлаа.');
+        return;
+      }
+      setMedicalRecords((prev) => prev.filter((record) => record.id !== id));
+      toast.success('Эрүүл мэндийн бүртгэл устгагдлаа.');
+    } catch {
+      toast.error('Эрүүл мэндийн бүртгэл устгах үед алдаа гарлаа.');
+    } finally {
+      setDeletingRecordId(null);
     }
   };
   const filteredRecords = selectedPetFilter === 'all' ? medicalRecords : medicalRecords.filter((r) => r.pet === selectedPetFilter);
@@ -169,11 +188,19 @@ export default function Profile() {
             </h3>
             <div className="gap-3 flex overflow-x-auto overflow-y-hidden w-full pb-2 ">
               <AddPetDialog />
-              <div className="flex gap-4">
-                {pets.map((pet) => (
-                  <PetCard key={pet.id} pet={pet} />
-                ))}
-              </div>
+              {petsLoading ? (
+                <div className="flex min-h-[240px] items-center px-4">
+                  <div className="h-24 w-24">
+                    <CuteSleepingCatLoader />
+                  </div>
+                </div>
+              ) : (
+                <div className="flex gap-4">
+                  {pets.map((pet) => (
+                    <PetCard key={pet.id} pet={pet} />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
           <div className="w-full md:w-6xl px-2 md:px-0 overflow-hidden">
@@ -184,6 +211,8 @@ export default function Profile() {
               selectedPetFilter={selectedPetFilter}
               onFilterChange={setSelectedPetFilter}
               onAddRecord={handleAddRecord}
+              deletingRecordId={deletingRecordId}
+              onDeleteRecord={handleDeleteRecord}
             />
           </div>
         </div>

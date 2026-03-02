@@ -14,9 +14,11 @@ type Props = {
   dueTodayRecords: MedicalRecordItem[];
   records: MedicalRecordItem[];
   loading: boolean;
+  deletingRecordId?: string | null;
   selectedPetFilter: string;
   onFilterChange: (v: string) => void;
   onAddRecord: (record: PetMedicalForm) => Promise<void>;
+  onDeleteRecord: (id: string) => Promise<void>;
   onBack: () => void;
   onTestNotification: () => void;
 };
@@ -26,9 +28,11 @@ export default function ProfileMobile({
   dueTodayRecords,
   records,
   loading,
+  deletingRecordId,
   selectedPetFilter,
   onFilterChange,
   onAddRecord,
+  onDeleteRecord,
   onBack,
   onTestNotification,
 }: Props) {
@@ -82,9 +86,11 @@ export default function ProfileMobile({
             pets={pets}
             records={records}
             loading={loading}
+            deletingRecordId={deletingRecordId}
             selectedPetFilter={selectedPetFilter}
             onFilterChange={onFilterChange}
             onAddRecord={onAddRecord}
+            onDeleteRecord={onDeleteRecord}
           />
         </section>
       </main>

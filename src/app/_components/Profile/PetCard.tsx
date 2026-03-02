@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import type { Pet } from '@/lib/petsContext';
 import { usePets } from '@/lib/petsContext';
-import { Heart, Weight, Eye, PawPrint, Pencil, Trash2, Cake, StickyNote } from 'lucide-react';
+import { Heart, Weight, Eye, PawPrint, Pencil, Trash2, Cake, StickyNote, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 type PetCardProps = {
@@ -19,7 +19,7 @@ export function PetCard({ pet }: PetCardProps) {
   const { updatePet, deletePet } = usePets();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState(false);
-  const [saving, setSaving] = useState(false);
+  const [action, setAction] = useState<'idle' | 'saving' | 'deleting'>('idle');
   const [form, setForm] = useState<EditForm>({
     name: pet.name,
     type: pet.type,
@@ -45,11 +45,12 @@ export function PetCard({ pet }: PetCardProps) {
   }, [pet]);
 
   const handleSave = async () => {
+    if (action !== 'idle') return;
     if (!form.name.trim() || !form.type.trim()) {
       toast.error('Нэр болон төрлөө бөглөнө үү.');
       return;
     }
-    setSaving(true);
+    setAction('saving');
     try {
       const ok = await updatePet(pet.id, {
         ...form,
@@ -63,14 +64,15 @@ export function PetCard({ pet }: PetCardProps) {
       toast.success('Амьтны мэдээлэл шинэчлэгдлээ.');
       setEditing(false);
     } finally {
-      setSaving(false);
+      setAction('idle');
     }
   };
 
   const handleDelete = async () => {
+    if (action !== 'idle') return;
     const confirmed = window.confirm(`"${pet.name}"-г устгах уу?`);
     if (!confirmed) return;
-    setSaving(true);
+    setAction('deleting');
     try {
       const ok = await deletePet(pet.id);
       if (!ok) {
@@ -80,7 +82,7 @@ export function PetCard({ pet }: PetCardProps) {
       toast.success('Амьтан устгагдлаа.');
       setOpen(false);
     } finally {
-      setSaving(false);
+      setAction('idle');
     }
   };
 
@@ -184,7 +186,7 @@ export function PetCard({ pet }: PetCardProps) {
             <div className="mt-2 flex gap-2.5">
               <button
                 type="button"
-                disabled={saving}
+                disabled={action !== 'idle'}
                 onClick={() => setEditing(false)}
                 className="flex-1 rounded-[14px] border border-[#e8e0d8] bg-white px-3 py-3 text-sm font-semibold text-[#5e493a]"
               >
@@ -192,11 +194,18 @@ export function PetCard({ pet }: PetCardProps) {
               </button>
               <button
                 type="button"
-                disabled={saving}
+                disabled={action !== 'idle'}
                 onClick={handleSave}
                 className="flex-1 rounded-[14px] bg-[#5e493a] px-3 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#4a3829] disabled:cursor-not-allowed disabled:opacity-55"
               >
-                {saving ? 'Хадгалж байна...' : '✓ Хадгалах'}
+                {action === 'saving' ? (
+                  <span className="inline-flex items-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Хадгалж байна...
+                  </span>
+                ) : (
+                  '✓ Хадгалах'
+                )}
               </button>
             </div>
           </div>
@@ -259,7 +268,8 @@ export function PetCard({ pet }: PetCardProps) {
               <div className="mt-4 flex gap-2.5">
                 <button
                   type="button"
-                  className="flex flex-1 items-center justify-center gap-2 rounded-[14px] bg-[#5e493a] px-3 py-[13px] text-sm font-semibold text-white transition-colors hover:bg-[#4a3829]"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-[14px] bg-[#5e493a] px-3 py-[13px] text-sm font-semibold text-white transition-colors hover:bg-[#4a3829] disabled:cursor-not-allowed disabled:opacity-55"
+                  disabled={action !== 'idle'}
                   onClick={() => setEditing(true)}
                 >
                   <Pencil className="h-4 w-4" />
@@ -268,11 +278,20 @@ export function PetCard({ pet }: PetCardProps) {
                 <button
                   type="button"
                   className="flex items-center justify-center gap-1.5 rounded-[14px] border border-[#fdd5d0] bg-[#fff0ee] px-[18px] py-[13px] text-sm font-semibold text-[#c0392b] transition-colors hover:bg-[#ffe0dc] disabled:cursor-not-allowed disabled:opacity-55"
-                  disabled={saving}
+                  disabled={action !== 'idle'}
                   onClick={handleDelete}
                 >
-                  <Trash2 className="h-[15px] w-[15px]" />
-                  Устгах
+                  {action === 'deleting' ? (
+                    <>
+                      <Loader2 className="h-[15px] w-[15px] animate-spin" />
+                      Устгаж байна...
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 className="h-[15px] w-[15px]" />
+                      Устгах
+                    </>
+                  )}
                 </button>
               </div>
             </div>
