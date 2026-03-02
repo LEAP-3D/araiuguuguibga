@@ -55,7 +55,7 @@ export function ProfileMedicalSection({ pets, records, loading, selectedPetFilte
             </SelectContent>
           </Select>
         </div>
-        <div className="grid w-full gap-4">
+        <div className="grid w-full grid-cols-1 md:grid-cols-2 gap-4">
           {loading ? (
             <CuteSleepingCatLoader />
           ) : records.length === 0 ? (

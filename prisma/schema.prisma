@@ -43,6 +43,7 @@ model RescuePost {
   id           String   @id @default(nanoid())
   userId       String
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status       String   @default("lost") // lost | found | rescued
   name         String
   breed        String?
   age          String?
