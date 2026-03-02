@@ -130,14 +130,23 @@ export function AddPostForm() {
 
   return (
     <div
-      className="w-full px-4 sm:px-6 md:mx-auto md:max-w-2xl md:px-0 pb-[calc(env(safe-area-inset-bottom)+120px)] md:pb-0"
+      //  DESKTOP
+      className="mx-auto max-w-2xl
+                 // ✅ MOBILE ONLY
+                 max-md:w-full max-md:px-4 max-md:pb-[calc(env(safe-area-inset-bottom)+120px)]"
       style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}
     >
-      <div className="flex flex-col gap-4 md:gap-6">
-        <div className="flex flex-col items-center text-center md:items-start md:text-left" style={{ fontFamily: 'Tahoma, Veerdana, Segoe, sans-serif' }}>
+      <div className="flex flex-col gap-6 max-md:gap-4">
+        <div
+          //  DESKTOP ORIGINAL
+          className="flex flex-col items-start text-center
+                     // ✅ MOBILE ONLY tweaks
+                     max-md:items-center max-md:text-center"
+          style={{ fontFamily: 'Tahoma, Veerdana, Segoe, sans-serif' }}
+        >
           <div className="flex items-center gap-3">
             <CatShelter className="w-14 h-14" />
-            <p className="text-2xl md:text-3xl font-bold leading-none">Амьтан постлох</p>
+            <p className="text-3xl font-bold leading-none max-md:text-2xl">Амьтан постлох</p>
           </div>
           <p className="mt-2 text-muted-foreground">Алдагдсан эсвэл олдсон амьтны мэдээллийг зөв төрлөөр нь оруулна уу</p>
         </div>
@@ -171,10 +180,15 @@ export function AddPostForm() {
               </div>
             </CardHeader>
 
-            <CardContent className="w-full max-w-full space-y-4 md:w-150 px-4 md:px-6">
+            <CardContent
+              //   DESKTOP
+              className="space-y-4 w-150
+                         // ✅ MOBILE ONLY fit
+                         max-md:w-full max-md:px-4"
+            >
               {step === 0 && (
                 <div>
-                  <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 p-6 md:p-10 text-center transition-colors hover:bg-gray-50">
+                  <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 p-10 text-center transition-colors hover:bg-gray-50 max-md:p-6">
                     <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageChange} />
                     <Upload className="h-10 w-10 text-[#f18912]" />
                     <p className="font-medium">Зураг оруулах</p>
@@ -183,7 +197,7 @@ export function AddPostForm() {
                   </label>
 
                   {form.imagePreviews.length > 0 && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                    <div className="grid grid-cols-2 gap-4 mt-4 max-md:grid-cols-1">
                       {form.imagePreviews.map((img, index) => (
                         <div key={index} className="relative rounded-lg">
                           <button
@@ -209,21 +223,26 @@ export function AddPostForm() {
             </CardContent>
           </Card>
 
-          <div className="flex flex-col sm:flex-row sm:justify-end gap-2">
+          <div
+            //  DESKTOP ORIGINAL (right aligned row)
+            className="flex justify-end gap-2
+                       // ✅ MOBILE ONLY stacked full-width
+                       max-md:flex-col max-md:items-stretch"
+          >
             {step > 0 && (
-              <Button type="button" variant="outline" onClick={() => setStep(step - 1)} className="my-4 md:my-10 w-full sm:w-auto">
+              <Button type="button" variant="outline" onClick={() => setStep(step - 1)} className="my-10 max-md:my-4 max-md:w-full">
                 Буцах
               </Button>
             )}
 
             {step < 3 && (
-              <Button type="button" onClick={() => setStep(step + 1)} className="bg-amber-500 my-4 md:my-10 w-full sm:w-auto">
+              <Button type="button" onClick={() => setStep(step + 1)} className="bg-amber-500 my-10 max-md:my-4 max-md:w-full">
                 Дараах
               </Button>
             )}
 
             {step === 3 && (
-              <Button type="submit" disabled={isSubmitting || !canPost} className="bg-amber-500 hover:bg-[#f1a210] disabled:opacity-50 my-4 md:my-10 w-full sm:w-auto px-7">
+              <Button type="submit" disabled={isSubmitting || !canPost} className="bg-amber-500 hover:bg-[#f1a210] disabled:opacity-50 my-10 px-7 max-md:my-4 max-md:w-full">
                 {isSubmitting ? 'Боловсруулж байна...' : 'Пост'}
               </Button>
             )}

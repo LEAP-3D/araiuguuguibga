@@ -22,14 +22,15 @@ type Props = {
 export function ProfileMedicalSection({ pets, records, loading, selectedPetFilter, onFilterChange, onAddRecord }: Props) {
   return (
     <div className="w-full md:w-6xl h-fit rounded-2xl flex flex-col  gap-6" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
-      <div className="flex justify-between p-4">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-0">
         <div className="flex gap-3 items-start">
           <div className="p-3 bg-[#ff6f001f] rounded-full">
             <Syringe className="text-orange-800" />
           </div>
-          <div className="flex flex-col">
-            <p className="text-xl font-bold">Эрүүл мэндийн бүртгэл</p>
-            <p className="text-sm text-[#988375]">Вакцин, эмчилгээ, эмийн хэрэглээг хянах</p>
+          <div className="min-w-0">
+            <h2 className="text-lg md:text-xl font-bold whitespace-nowrap">Эрүүл мэндийн бүртгэл</h2>
+
+            <p className="text-sm md:text-base text-muted-foreground whitespace-nowrap">Вакцин, эмчилгээ, эмийн хэрэглээг хянах</p>
           </div>
         </div>
         <AddMedicalRecord pets={pets} onAddRecord={onAddRecord} />
