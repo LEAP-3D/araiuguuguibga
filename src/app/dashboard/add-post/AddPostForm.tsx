@@ -186,24 +186,22 @@ export function AddPostForm({ mobileMode = false }: { mobileMode?: boolean } = {
 
           <Card className={mobileMode ? 'overflow-hidden rounded-3xl border-[#f2d7c1] bg-[#fffdfb] shadow-[0_10px_30px_rgba(125,72,23,0.12)]' : ''}>
             <CardHeader>
-              {mobileMode && (
-                <div className="mb-4 rounded-xl bg-[#fff4e9] p-2.5">
-                  <div className="flex gap-2">
-                    {STEP_ITEMS.map((_, idx) => {
-                      const done = idx < step;
-                      const active = idx === step;
-                      return <button key={idx} type="button" onClick={() => canJumpTo(idx) && setStep(idx)} className={`h-1.5 flex-1 rounded-full transition ${active ? 'bg-[#f18912]' : done ? 'bg-[#f6ab65]' : 'bg-[#ecd5c3]'}`} />;
-                    })}
-                  </div>
-                  <div className="mt-2 flex items-center justify-between text-[11px] font-semibold text-[#8b6a52]">
-                    {STEP_ITEMS.map((label, idx) => (
-                      <button key={label} type="button" onClick={() => canJumpTo(idx) && setStep(idx)} disabled={!canJumpTo(idx)} className={`${idx === step ? 'text-[#d77616]' : ''} ${!canJumpTo(idx) ? 'opacity-55' : ''}`}>
-                        {label}
-                      </button>
-                    ))}
-                  </div>
+              <div className={`mb-4 rounded-xl p-2.5 ${mobileMode ? 'bg-[#fff4e9]' : 'bg-[#fff7f0] border border-[#f2ddcc]'}`}>
+                <div className="flex gap-2">
+                  {STEP_ITEMS.map((_, idx) => {
+                    const done = idx < step;
+                    const active = idx === step;
+                    return <button key={idx} type="button" onClick={() => canJumpTo(idx) && setStep(idx)} className={`h-1.5 flex-1 rounded-full transition ${active ? 'bg-[#f18912]' : done ? 'bg-[#f6ab65]' : 'bg-[#ecd5c3]'}`} />;
+                  })}
                 </div>
-              )}
+                <div className={`mt-2 flex items-center justify-between font-semibold text-[#8b6a52] ${mobileMode ? 'text-[11px]' : 'text-xs'}`}>
+                  {STEP_ITEMS.map((label, idx) => (
+                    <button key={label} type="button" onClick={() => canJumpTo(idx) && setStep(idx)} disabled={!canJumpTo(idx)} className={`${idx === step ? 'text-[#d77616]' : ''} ${!canJumpTo(idx) ? 'opacity-55' : ''}`}>
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </div>
               <CardTitle className={`font-bold ${mobileMode ? 'text-xl text-[#3c2a1f]' : 'text-2xl'}`}>
                 {step === 0 && 'Зураг'}
                 {step === 1 && 'Дэлгэрэнгүй'}
@@ -228,18 +226,20 @@ export function AddPostForm({ mobileMode = false }: { mobileMode?: boolean } = {
                   Олсон
                 </button>
               </div>
-              <div className="mt-3">
-                <button
-                  type="button"
-                  onClick={() => void handleTestNotification()}
-                  disabled={sendingTestNotification}
-                  className={`w-full rounded-lg border px-3 py-2 text-sm font-semibold transition ${
-                    sendingTestNotification ? 'cursor-not-allowed border-[#e8d8c9] bg-[#f7f1eb] text-[#9a8572]' : 'border-[#f2d6c0] bg-white text-[#8a5a2e] hover:bg-[#fff4e8]'
-                  }`}
-                >
-                  {sendingTestNotification ? 'Тест мэдэгдэл илгээж байна…' : 'Тест мэдэгдэл илгээх'}
-                </button>
-              </div>
+              {mobileMode && (
+                <div className="mt-3">
+                  <button
+                    type="button"
+                    onClick={() => void handleTestNotification()}
+                    disabled={sendingTestNotification}
+                    className={`w-full rounded-lg border px-3 py-2 text-sm font-semibold transition ${
+                      sendingTestNotification ? 'cursor-not-allowed border-[#e8d8c9] bg-[#f7f1eb] text-[#9a8572]' : 'border-[#f2d6c0] bg-white text-[#8a5a2e] hover:bg-[#fff4e8]'
+                    }`}
+                  >
+                    {sendingTestNotification ? 'Тест мэдэгдэл илгээж байна…' : 'Тест мэдэгдэл илгээх'}
+                  </button>
+                </div>
+              )}
             </CardHeader>
 
             <CardContent className={`space-y-4 ${mobileMode ? 'w-full px-4 pb-5' : 'w-150 max-md:w-full max-md:px-4'}`}>
