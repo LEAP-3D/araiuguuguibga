@@ -183,25 +183,25 @@ export function AddPostForm({ mobileMode = false }: { mobileMode?: boolean } = {
               <p className="mt-0.5 text-xs text-[#916f57]">Алдагдсан эсвэл олдсон амьтны мэдээллийг 4 алхмаар оруулна.</p>
             </div>
           )}
+          <div className={`mb-4 rounded-xl p-2.5 ${mobileMode ? '' : ']'}`}>
+            <div className="flex gap-2">
+              {STEP_ITEMS.map((_, idx) => {
+                const done = idx < step;
+                const active = idx === step;
+                return (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => canJumpTo(idx) && setStep(idx)}
+                    className={`h-1.5 flex-1 rounded-full transition ${active ? 'bg-[#f18912]' : done ? 'bg-[#f6ab65]' : 'bg-[#ecd5c3]'}`}
+                  />
+                );
+              })}
+            </div>
+          </div>
 
           <Card className={mobileMode ? 'overflow-hidden rounded-3xl border-[#f2d7c1] bg-[#fffdfb] shadow-[0_10px_30px_rgba(125,72,23,0.12)]' : ''}>
             <CardHeader>
-              <div className={`mb-4 rounded-xl p-2.5 ${mobileMode ? 'bg-[#fff4e9]' : 'bg-[#fff7f0] border border-[#f2ddcc]'}`}>
-                <div className="flex gap-2">
-                  {STEP_ITEMS.map((_, idx) => {
-                    const done = idx < step;
-                    const active = idx === step;
-                    return <button key={idx} type="button" onClick={() => canJumpTo(idx) && setStep(idx)} className={`h-1.5 flex-1 rounded-full transition ${active ? 'bg-[#f18912]' : done ? 'bg-[#f6ab65]' : 'bg-[#ecd5c3]'}`} />;
-                  })}
-                </div>
-                <div className={`mt-2 flex items-center justify-between font-semibold text-[#8b6a52] ${mobileMode ? 'text-[11px]' : 'text-xs'}`}>
-                  {STEP_ITEMS.map((label, idx) => (
-                    <button key={label} type="button" onClick={() => canJumpTo(idx) && setStep(idx)} disabled={!canJumpTo(idx)} className={`${idx === step ? 'text-[#d77616]' : ''} ${!canJumpTo(idx) ? 'opacity-55' : ''}`}>
-                      {label}
-                    </button>
-                  ))}
-                </div>
-              </div>
               <CardTitle className={`font-bold ${mobileMode ? 'text-xl text-[#3c2a1f]' : 'text-2xl'}`}>
                 {step === 0 && 'Зураг'}
                 {step === 1 && 'Дэлгэрэнгүй'}
@@ -295,7 +295,11 @@ export function AddPostForm({ mobileMode = false }: { mobileMode?: boolean } = {
             )}
 
             {step < 3 && (
-              <Button type="button" onClick={() => setStep(step + 1)} className={`max-md:w-full ${mobileMode ? 'my-2 rounded-xl bg-[#f18912] py-5 text-white hover:bg-[#e47f0f]' : 'bg-amber-500 my-10 max-md:my-4'}`}>
+              <Button
+                type="button"
+                onClick={() => setStep(step + 1)}
+                className={`max-md:w-full ${mobileMode ? 'my-2 rounded-xl bg-[#f18912] py-5 text-white hover:bg-[#e47f0f]' : 'bg-amber-500 my-10 max-md:my-4'}`}
+              >
                 Дараах
               </Button>
             )}
