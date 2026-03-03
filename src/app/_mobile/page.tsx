@@ -4,12 +4,12 @@ import { useEffect, useState } from 'react';
 import { Home, Map as MapIcon, User, SquarePlus, Bot } from 'lucide-react';
 import Link from 'next/link';
 import Header from './_components/header';
-import Map from '../dashboard/map/page';
 import { AddPostForm } from '../dashboard/add-post/AddPostForm';
 import AiGenerator from '../_features/aiGenerator';
 import { usePosts } from '@/lib/postsContext';
 import HospitalsMap from './_components/hospitalsMap';
 import UserTab from './userTab';
+import MobileMapTab from './mapTab';
 
 type Tab = 'home' | 'ai' | 'map' | 'post' | 'user';
 
@@ -116,7 +116,7 @@ export default function HomeMobile() {
           )}
           {active === 'ai' && <AiGenerator />}
           {active === 'post' && <AddPostForm />}
-          {active === 'map' && <Map />}
+          {active === 'map' && <MobileMapTab />}
           {active === 'user' && <UserTab onBackHome={() => setActive('home')} />}
         </main>
 
