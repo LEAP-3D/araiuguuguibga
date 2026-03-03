@@ -40,6 +40,7 @@ export function AddPostForm({ mobileMode = false }: { mobileMode?: boolean } = {
   const router = useRouter();
   const { addPost } = usePosts();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [sendingTestNotification, setSendingTestNotification] = useState(false);
 
   const [form, setForm] = useState<FormState>({
     status: 'lost',
@@ -128,6 +129,31 @@ export function AddPostForm({ mobileMode = false }: { mobileMode?: boolean } = {
     }
   };
 
+  const handleTestNotification = async () => {
+    if (sendingTestNotification) return;
+    setSendingTestNotification(true);
+    try {
+      const res = await fetch('/api/notify-new-post', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: 'Туршилт: шинэ постын мэдэгдэл',
+          body: 'Энэ бол постын туршилтын мэдэгдэл.',
+          postName: 'Туршилт',
+        }),
+      });
+      if (!res.ok) {
+        toast.error('Тест мэдэгдэл илгээх үед алдаа гарлаа.');
+        return;
+      }
+      toast.success('Тест мэдэгдэл илгээгдлээ.');
+    } catch {
+      toast.error('Тест мэдэгдэл илгээх үед алдаа гарлаа.');
+    } finally {
+      setSendingTestNotification(false);
+    }
+  };
+
   const canPost = form.location !== null && (form.status === 'found' || form.petName.trim().length > 0);
   const canJumpTo = (targetStep: number) => targetStep <= step + 1;
 
@@ -200,6 +226,18 @@ export function AddPostForm({ mobileMode = false }: { mobileMode?: boolean } = {
                   className={`flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition ${form.status === 'found' ? 'bg-[#f18912] text-white shadow-sm' : 'text-[#7a5a45] hover:bg-[#ffe8d6]'}`}
                 >
                   Олсон
+                </button>
+              </div>
+              <div className="mt-3">
+                <button
+                  type="button"
+                  onClick={() => void handleTestNotification()}
+                  disabled={sendingTestNotification}
+                  className={`w-full rounded-lg border px-3 py-2 text-sm font-semibold transition ${
+                    sendingTestNotification ? 'cursor-not-allowed border-[#e8d8c9] bg-[#f7f1eb] text-[#9a8572]' : 'border-[#f2d6c0] bg-white text-[#8a5a2e] hover:bg-[#fff4e8]'
+                  }`}
+                >
+                  {sendingTestNotification ? 'Тест мэдэгдэл илгээж байна…' : 'Тест мэдэгдэл илгээх'}
                 </button>
               </div>
             </CardHeader>
