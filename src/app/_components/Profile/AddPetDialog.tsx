@@ -10,7 +10,7 @@ import { useState } from 'react';
 import { usePets } from '@/lib/petsContext';
 import { toast } from 'sonner';
 
-export default function AddPetDialog() {
+export default function AddPetDialog({ compact = false }: { compact?: boolean }) {
   const { addPet } = usePets();
   const [open, setOpen] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -127,9 +127,12 @@ export default function AddPetDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <AddPetTriggerCard />
+        <AddPetTriggerCard compact={compact} />
       </DialogTrigger>
-      <DialogContent className=" bg-[#fefdfc] rounded-3xl border border-[#f1e6d9] px-6 pb-6 pt-1" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+      <DialogContent
+        className={`bg-[#fefdfc] rounded-3xl border border-[#f1e6d9] px-6 pb-6 pt-1 ${compact ? 'max-w-[94vw]' : ''}`}
+        style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}
+      >
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold text-[#3b2f2f] mt-3 ">🐾 Тэжээвэр амьтан нэмэх</DialogTitle>
           <DialogDescription className="text-sm text-gray-500 ">доорх мэдээллийг бөглөнө үү.</DialogDescription>

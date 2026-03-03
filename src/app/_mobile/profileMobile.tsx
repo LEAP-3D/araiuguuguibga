@@ -37,20 +37,20 @@ export default function ProfileMobile({
   onTestNotification,
 }: Props) {
   return (
-    <div className="relative w-full min-h-[100dvh]">
+    <div className="relative w-full min-h-[100dvh]" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
       <div className="fixed inset-0 z-0 bg-[url('/pet-background.jpg')] bg-cover bg-center">
         <div className="absolute inset-0 bg-background/85 backdrop-blur-xs" />
       </div>
 
-      <main className="relative z-10 mx-auto w-full max-w-[450px] px-4 pt-4 pb-[calc(env(safe-area-inset-bottom)+96px)]">
+      <main className="relative z-10 mx-auto w-full max-w-[430px] px-3.5 pt-3.5 pb-[calc(env(safe-area-inset-bottom)+96px)]">
         <button className="mb-3 rounded-lg px-3 py-2 font-medium transition hover:text-orange-950" onClick={onBack}>
           ← Нүүр хуудас
         </button>
 
         <DueTodayBanner records={dueTodayRecords} />
 
-        <div className="mt-3 rounded-2xl">
-          <ProfileCard />
+        <div className="mt-2 rounded-2xl">
+          <ProfileCard compact />
         </div>
 
         <section className="mt-4">
@@ -61,14 +61,14 @@ export default function ProfileMobile({
             <span className="rounded-full bg-white/70 px-2.5 py-1 text-xs text-[#6d5d50]">{pets.length}</span>
           </div>
 
-          <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-2">
+          <div className="-mx-1 flex snap-x snap-mandatory gap-2.5 overflow-x-auto px-1 pb-2">
             <div className="shrink-0 snap-start rounded-2xl bg-white/70 p-1 backdrop-blur-sm">
-              <AddPetDialog />
+              <AddPetDialog compact />
             </div>
 
             {pets.map((pet) => (
               <div key={pet.id} className="shrink-0 snap-start">
-                <PetCard pet={pet} />
+                <PetCard pet={pet} compact />
               </div>
             ))}
           </div>
@@ -91,6 +91,7 @@ export default function ProfileMobile({
             onFilterChange={onFilterChange}
             onAddRecord={onAddRecord}
             onDeleteRecord={onDeleteRecord}
+            compact
           />
         </section>
       </main>

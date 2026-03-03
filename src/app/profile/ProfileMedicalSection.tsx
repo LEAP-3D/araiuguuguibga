@@ -19,9 +19,10 @@ type Props = {
   onAddRecord: (record: PetMedicalForm) => Promise<void>;
   deletingRecordId?: string | null;
   onDeleteRecord: (id: string) => Promise<void>;
+  compact?: boolean;
 };
 
-export function ProfileMedicalSection({ pets, records, loading, selectedPetFilter, onFilterChange, onAddRecord, deletingRecordId = null, onDeleteRecord }: Props) {
+export function ProfileMedicalSection({ pets, records, loading, selectedPetFilter, onFilterChange, onAddRecord, deletingRecordId = null, onDeleteRecord, compact = false }: Props) {
   return (
     <div className="w-full md:w-6xl h-fit rounded-2xl flex flex-col  gap-6" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-0">
@@ -35,7 +36,7 @@ export function ProfileMedicalSection({ pets, records, loading, selectedPetFilte
             <p className="text-sm md:text-base text-muted-foreground whitespace-nowrap">Вакцин, эмчилгээ, эмийн хэрэглээг хянах</p>
           </div>
         </div>
-        <AddMedicalRecord pets={pets} onAddRecord={onAddRecord} />
+        <AddMedicalRecord pets={pets} onAddRecord={onAddRecord} compact={compact} />
       </div>
       <div className="flex flex-col gap-4">
         <div className="flex gap-2 text-[#988375] items-center h-5 mb-4">
@@ -67,6 +68,7 @@ export function ProfileMedicalSection({ pets, records, loading, selectedPetFilte
                 record={record}
                 deleting={Boolean(record.id && deletingRecordId === record.id)}
                 onDelete={onDeleteRecord}
+                compact={compact}
               />
             ))
           )}

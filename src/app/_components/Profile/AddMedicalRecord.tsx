@@ -22,9 +22,10 @@ export type PetMedicalForm = {
 type Props = {
   pets?: Pet[];
   onAddRecord: (record: PetMedicalForm) => Promise<void> | void;
+  compact?: boolean;
 };
 
-export default function AddMedicalRecord({ pets = [], onAddRecord }: Props) {
+export default function AddMedicalRecord({ pets = [], onAddRecord, compact = false }: Props) {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<PetMedicalForm>({
     pet: '',
@@ -69,12 +70,16 @@ export default function AddMedicalRecord({ pets = [], onAddRecord }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <div className="w-fit h-fit bg-[#ef9241] rounded-2xl py-3 px-5 flex items-center gap-2 justify-center text-white font-medium hover:bg-orange-400 cursor-pointer transition">
+        <div
+          className={`h-fit w-fit rounded-2xl bg-[#ef9241] flex items-center justify-center gap-2 text-white font-medium hover:bg-orange-400 cursor-pointer transition ${
+            compact ? 'px-3 py-2 text-sm' : 'px-5 py-3'
+          }`}
+        >
           <Plus className="w-full md:w-auto" />
           нэмэх
         </div>
       </DialogTrigger>
-      <DialogContent className="w-120 gap-5 p-6 " style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+      <DialogContent className={`${compact ? 'max-w-[94vw]' : 'w-120'} gap-5 p-6`} style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle className="flex gap-2 items-center text-xl font-semibold mb-2">
@@ -84,7 +89,7 @@ export default function AddMedicalRecord({ pets = [], onAddRecord }: Props) {
             <DialogDescription></DialogDescription>
           </DialogHeader>
           <div className="flex flex-col gap-2">
-            <div className="flex justify-between">
+            <div className={`flex ${compact ? 'flex-col gap-3' : 'justify-between'}`}>
               <div>
                 <label className="block text-sm font-semibold text-foreground mb-2">Тэжээвэр амьтан *</label>
                 <Select value={form.pet || ''} onValueChange={(v) => setForm((f) => ({ ...f, pet: v }))}>
@@ -124,7 +129,7 @@ export default function AddMedicalRecord({ pets = [], onAddRecord }: Props) {
                 placeholder="Medicine Name"
               />
             </div>
-            <div className="flex gap-4">
+            <div className={`flex ${compact ? 'flex-col gap-3' : 'gap-4'}`}>
               <div className="flex gap-1 flex-col">
                 <label className="block text-sm font-semibold text-foreground mb-2">Огноо *</label>
                 <VaccineDate value={form.date} onChange={(date) => setForm((f) => ({ ...f, date }))} />
