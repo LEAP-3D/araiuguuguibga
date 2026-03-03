@@ -103,6 +103,8 @@ export default function Profile() {
 
   const handleDeleteRecord = async (id: string) => {
     if (!id || deletingRecordId) return;
+    const confirmed = window.confirm('Та энэ эрүүл мэндийн бүртгэлийг устгахдаа итгэлтэй байна уу?');
+    if (!confirmed) return;
     setDeletingRecordId(id);
     try {
       const res = await fetch(`/api/medical-records/${id}`, { method: 'DELETE' });

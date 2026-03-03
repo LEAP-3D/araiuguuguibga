@@ -12,10 +12,12 @@ import { ChatMessageList, type ChatMessage } from './ChatMessageList';
 type ChatProps = {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
-  variant?: 'floating' | 'embedded';
+  variant?: 'floating' | 'embedded' | 'mobile-full';
 };
 export default function Chat({ open: controlledOpen, onOpenChange, variant = 'floating' }: ChatProps = {}) {
   const isEmbedded = variant === 'embedded';
+  const isMobileFull = variant === 'mobile-full';
+  const isInlineVariant = isEmbedded || isMobileFull;
   const contentId = useId();
   const [mounted, setMounted] = useState(false);
   const [internalOpen, setInternalOpen] = useState(false);
@@ -69,7 +71,7 @@ export default function Chat({ open: controlledOpen, onOpenChange, variant = 'fl
       setLoading(false);
     }
   };
-  if (!mounted && !isEmbedded) {
+  if (!mounted && variant === 'floating') {
     return <div className="fixed right-6 z-50 w-14 h-14 bottom-[calc(env(safe-area-inset-bottom)+96px)]" />;
   }
 
@@ -78,30 +80,34 @@ export default function Chat({ open: controlledOpen, onOpenChange, variant = 'fl
       id={contentId}
       style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}
       className={`flex flex-col overflow-hidden border-0 bg-white ${
-        isEmbedded ? 'h-[min(68dvh,620px)] min-h-[420px] w-full rounded-2xl shadow-xl' : 'h-130 w-95 rounded-2xl shadow-2xl'
+        isMobileFull
+          ? 'h-full min-h-0 w-full rounded-3xl border border-[#f7d4b8] bg-[#fff4ea] shadow-[0_14px_36px_rgba(242,138,80,0.2)]'
+          : isEmbedded
+            ? 'h-[min(68dvh,620px)] min-h-[420px] w-full rounded-2xl shadow-xl'
+            : 'h-130 w-95 rounded-2xl shadow-2xl'
       }`}
     >
-      <div className="relative h-16 flex justify-between items-center px-5 bg-[#ff8037]">
+      <div className={`relative flex justify-between items-center px-5 ${isMobileFull ? 'h-15 bg-linear-to-r from-[#f28a50] to-[#f97316]' : 'h-16 bg-[#ff8037]'}`}>
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 flex items-center justify-center overflow-hidden flex-shrink-0 rounded-full">
             <Image src="/caticon.png" alt="" width={36} height={36} className="w-9 h-9 object-contain" />
           </div>
           <div>
             <p className="font-semibold text-white text-base">Chat Assistant</p>
-            <p className="text-xs text-white/90">Танд туслахад үргэлж бэлэн</p>
+            <p className="text-xs text-white/90">{isMobileFull ? 'Online now' : 'Танд туслахад үргэлж бэлэн'}</p>
           </div>
         </div>
-        {!isEmbedded && (
+        {!isInlineVariant && (
           <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="w-9 h-9 rounded-full text-white transition-colors hover:bg-[#f47d46]">
             <X className="w-5 h-5 text-white" />
           </Button>
         )}
       </div>
 
-      <div ref={scrollRef} className="flex-1 overflow-y-auto px-5 py-4 bg-gradient-to-b from-gray-50 to-white min-h-0">
-        <ChatMessageList messages={messages} loading={loading} error={error} />
+      <div ref={scrollRef} className={`flex-1 overflow-y-auto px-4 py-4 min-h-0 ${isMobileFull ? 'bg-[#fff1e6]' : 'bg-gradient-to-b from-gray-50 to-white'}`}>
+        <ChatMessageList messages={messages} loading={loading} error={error} variant={isMobileFull ? 'messenger' : 'default'} />
       </div>
-      <div className="px-4 py-4 bg-white border-t border-gray-100">
+      <div className={`bg-white ${isMobileFull ? 'px-3 py-3 border-t border-[#f7d8bf]' : 'px-4 py-4 border-t border-gray-100'}`}>
         <div className="flex gap-2 items-end">
           <div className="flex-1 relative">
             <Input
@@ -121,19 +127,21 @@ export default function Chat({ open: controlledOpen, onOpenChange, variant = 'fl
           <Button
             size="icon"
             disabled={!message.trim() || loading}
-            className="w-12 h-12 bg-[#ff8037] hover:bg-[#f47d46] rounded-xl shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group"
+            className={`w-12 h-12 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group ${
+              isMobileFull ? 'bg-[#f28a50] hover:bg-[#e9783b]' : 'bg-[#ff8037] hover:bg-[#f47d46]'
+            }`}
             onClick={() => void sendMessage()}
           >
             <Send className="w-5 h-5 text-white transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Button>
         </div>
-        <p className="text-xs text-gray-400 mt-2 text-center">Илгээхийн тулд Enter дарна уу</p>
+        <p className="text-xs text-gray-400 mt-2 text-center">{isMobileFull ? 'Messenger style chat' : 'Илгээхийн тулд Enter дарна уу'}</p>
       </div>
     </div>
   );
 
-  if (isEmbedded) {
-    return <div className="w-full">{chatPanel}</div>;
+  if (isInlineVariant) {
+    return <div className={`w-full ${isMobileFull ? 'h-full min-h-0' : ''}`}>{chatPanel}</div>;
   }
 
   return (
