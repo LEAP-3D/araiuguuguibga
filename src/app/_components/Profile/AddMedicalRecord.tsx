@@ -77,15 +77,18 @@ export default function AddMedicalRecord({ pets = [], onAddRecord, compact = fal
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <div
-          className={`h-fit w-fit rounded-2xl bg-[#ef9241] flex items-center justify-center gap-2 text-white font-medium hover:bg-orange-400 cursor-pointer transition ${
-            compact ? 'px-3 py-2 text-sm' : 'px-5 py-3'
+          className={`h-fit rounded-2xl bg-[#ef9241] flex items-center justify-center gap-2 text-white font-medium hover:bg-orange-400 cursor-pointer transition ${
+            compact ? 'w-full px-3 py-1.5 text-sm' : 'w-fit px-5 py-3'
           }`}
         >
           <Plus className="w-full md:w-auto" />
           нэмэх
         </div>
       </DialogTrigger>
-      <DialogContent className={`${compact ? 'max-w-[94vw]' : 'w-120'} gap-5 p-6`} style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+      <DialogContent
+        className={`${compact ? 'max-h-[80dvh] max-w-[94vw] overflow-y-auto p-4' : 'w-120 p-6'} gap-4`}
+        style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}
+      >
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle className="flex gap-2 items-center text-xl font-semibold mb-2">
