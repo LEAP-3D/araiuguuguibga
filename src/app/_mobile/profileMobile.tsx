@@ -5,8 +5,9 @@ import MedicalCard from '@/app/_components/Profile/MedicalCard';
 import AddMedicalRecord from '@/app/_components/Profile/AddMedicalRecord';
 import type { PetMedicalForm } from '../_components/Profile/AddMedicalRecord';
 import type { Pet } from '@/lib/petsContext';
-import { Download, LogOut, UserCircle2 } from 'lucide-react';
-import { useUser } from '@clerk/nextjs';
+import { LogOut } from 'lucide-react';
+import { CuteSleepingCatLoader } from '../_components/loading/CuteSleepingCatLoader';
+import UserProfileCardMobile from './_components/UserProfileCardMobile';
 
 type Props = {
   pets: Pet[];
@@ -18,7 +19,7 @@ type Props = {
   onFilterChange: (v: string) => void;
   onAddRecord: (record: PetMedicalForm) => Promise<void>;
   onDeleteRecord: (id: string) => Promise<void>;
-  onBack: () => void;
+  onLogout: () => void;
   onTestNotification: () => void;
 };
 
@@ -32,15 +33,12 @@ export default function ProfileMobile({
   onFilterChange,
   onAddRecord,
   onDeleteRecord,
-  onBack,
+  onLogout,
   onTestNotification,
 }: Props) {
   void dueTodayRecords;
   void selectedPetFilter;
   void onFilterChange;
-  const { user } = useUser();
-  const displayName = user?.username || user?.fullName || 'user';
-  const uniquePetTypes = Array.from(new Set(pets.map((pet) => pet.type))).slice(0, 3);
 
   return (
     <div className="relative w-full min-h-[100dvh]" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
@@ -49,43 +47,20 @@ export default function ProfileMobile({
       </div>
 
       <main className="relative z-10 mx-auto w-full max-w-[430px] px-3.5 pt-3.5 pb-[calc(env(safe-area-inset-bottom)+96px)] text-[#121212]">
-        <section className="rounded-3xl border border-[#e5e7eb] bg-white p-3 shadow-sm">
-          <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-[30px] font-black leading-none">Миний Профайл</h2>
-            <div className="flex items-center gap-2">
-              <button type="button" className="rounded-2xl border border-[#cde9da] bg-[#ecfbf3] p-2.5 text-[#67c297]">
-                <Download className="h-5 w-5" />
-              </button>
-              <button type="button" className="rounded-2xl border border-[#c5e2f7] bg-[#eaf6ff] p-2.5 text-[#2d8fd5]" onClick={onBack}>
-                <LogOut className="h-5 w-5" />
-              </button>
-            </div>
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-[25px] font-semibold leading-none">Миний Профайл</h2>
+          <div className="flex items-center gap-2">
+            <button type="button" onClick={onTestNotification} className="rounded-full border border-[#53aaf0] px-3 py-2.5 text-sm font-bold text-[#2393ea]">
+              Мэдэгдэл
+            </button>
+            <button type="button" className="rounded-2xl border border-[#f7c5c5] bg-[#ffeaea] p-2.5 text-[#d52d2d]" onClick={onLogout}>
+              <LogOut className="h-5 w-5" />
+            </button>
           </div>
-
-          <div className="mb-3 flex items-start gap-3">
-            <div className="h-20 w-20 shrink-0 overflow-hidden rounded-full bg-[#d6d7da] p-0.5">
-              {user?.imageUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element -- external Clerk image URL
-                <img src={user.imageUrl} alt="profile" className="h-full w-full rounded-full object-cover" />
-              ) : (
-                <UserCircle2 className="h-full w-full text-[#f3f4f6]" />
-              )}
-            </div>
-            <div className="min-w-0">
-              <p className="truncate text-xl font-extrabold leading-none">{displayName}</p>
-              <p className="mt-1 text-sm font-semibold text-[#4b5563]">{user?.firstName || 'user'}</p>
-              <p className="mt-2 text-lg font-black">Тэжээвэр амьтны эзэн</p>
-              <div className="mt-1.5 flex items-center gap-2">
-                {uniquePetTypes.length === 0 && <span className="rounded-full border border-gray-200 bg-white px-2 py-1 text-sm">🐾</span>}
-                {uniquePetTypes.map((type) => (
-                  <span key={type} className="rounded-full border border-gray-200 bg-white px-2 py-1 text-lg">
-                    {type === 'dog' ? '🐶' : type === 'cat' ? '🐱' : '🐾'}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-
+        </div>
+        <UserProfileCardMobile pets={pets} />
+        <section className="py-4">
+          {' '}
           {pets.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-[#dbe5f0] bg-[#f8fbff] p-3 text-center text-sm text-[#667085]">Одоогоор нэмсэн pet байхгүй байна.</div>
           ) : (
@@ -108,21 +83,13 @@ export default function ProfileMobile({
             </div>
           )}
         </section>
-
-        <section className="mt-3 px-0.5">
-          <AddPetDialog compact trigger="button" buttonLabel="AddPetcard" />
+        <section className="px-0.5">
+          <AddPetDialog compact trigger="button" buttonLabel="Амьтан нэмэх" />
         </section>
 
         <section className="mt-4 rounded-2xl border border-white/60 bg-white/75 p-3 shadow-xl backdrop-blur-md">
-          <div className="mb-2 flex items-center justify-between">
-            <h3 className="text-lg font-black">Хадгалсан мэдээлэл</h3>
-            <span className="text-lg font-black">Бүгд</span>
-          </div>
           <div className="mb-3 flex items-center justify-between">
-            <p className="text-xl font-semibold">Medical record</p>
-            <button type="button" onClick={onTestNotification} className="rounded-full border border-[#53aaf0] px-3 py-1 text-sm font-bold text-[#2393ea]">
-              Шинэ
-            </button>
+            <p className="text-xl font-semibold">Эмчилгээний бүртгэл</p>
           </div>
 
           <div className="mb-3">
@@ -130,9 +97,9 @@ export default function ProfileMobile({
           </div>
 
           {loading ? (
-            <p className="py-6 text-center text-sm text-gray-500">Loading...</p>
+            <CuteSleepingCatLoader />
           ) : records.length === 0 ? (
-            <p className="py-6 text-center text-sm text-gray-500">No medical record yet.</p>
+            <p className="py-6 text-center text-sm text-gray-500">доогоор эмчилгээний бүртгэл байхгүй.</p>
           ) : (
             <div className="space-y-3">
               {records.map((record) => (

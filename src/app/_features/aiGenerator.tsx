@@ -15,7 +15,7 @@ const TABS: { id: TabType; label: string }[] = [
   { id: 'tips', label: 'Зөвлөмж' },
 ];
 
-export default function AiGenerator() {
+export default function AiGenerator({ compact = false }: { compact?: boolean }) {
   const [image, setImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<PetAnalysisResult | null>(null);
@@ -49,24 +49,24 @@ export default function AiGenerator() {
   };
 
   return (
-    <section id="ai-assistant" className="scroll-mt-28 min-h-[70vh] px-4 py-12" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+    <section id="ai-assistant" className={`scroll-mt-28 px-4 ${compact ? 'min-h-0 py-4' : 'min-h-[70vh] py-12'}`} style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
       <div className="mx-auto max-w-7xl">
         {/* Header — RescueHeader-тэй ижилхэн */}
         <div className="flex justify-center">
-          <div className="mb-8 w-full max-w-7xl px-4">
+          <div className={`w-full max-w-7xl px-4 ${compact ? 'mb-4' : 'mb-8'}`}>
             <div className="flex flex-col gap-1 items-center">
-              <span className="text-2xl font-black text-black md:text-4xl">AI Assistant</span>
-              <span className="text-sm font-semibold text-[#fbb2a3] md:text-base">Тэжээвэр амьтныхаа нүүр болон бие нь тод гарсан зургийг оруулна уу.</span>
-              <span className="text-sm font-semibold text-[#fc5e3e] md:text-base">Энэхүү онош нь мэргэжлийн эмчийн онош биш болохыг анхаарна уу.</span>
+              <span className={`font-black text-black ${compact ? 'text-xl md:text-2xl' : 'text-2xl md:text-4xl'}`}>AI Assistant</span>
+              <span className={`font-semibold text-[#fbb2a3] ${compact ? 'text-xs md:text-sm' : 'text-sm md:text-base'}`}>Тэжээвэр амьтныхаа нүүр болон бие нь тод гарсан зургийг оруулна уу.</span>
+              <span className={`font-semibold text-[#fc5e3e] ${compact ? 'text-xs md:text-sm' : 'text-sm md:text-base'}`}>Энэхүү онош нь мэргэжлийн эмчийн онош биш болохыг анхаарна уу.</span>
             </div>
           </div>
         </div>
 
-        <div className="grid items-start gap-8 lg:grid-cols-[1fr_480px]">
+        <div className={`grid items-start ${compact ? 'gap-4 lg:grid-cols-[1fr_420px]' : 'gap-8 lg:grid-cols-[1fr_480px]'}`}>
           {/* Зураг оруулах */}
           <div className="flex w-full flex-col">
-            <NeonGradientCard borderSize={1} borderRadius={24} neonColors={{ firstColor: '#ff9a56', secondColor: '#FFBE98' }} className="min-h-96">
-              <div className="relative flex min-h-137 w-full items-center justify-center overflow-hidden bg-white/50">
+            <NeonGradientCard borderSize={1} borderRadius={24} neonColors={{ firstColor: '#ff9a56', secondColor: '#FFBE98' }} className={compact ? 'min-h-[240px]' : 'min-h-96'}>
+              <div className={`relative flex w-full items-center justify-center overflow-hidden bg-white/50 ${compact ? 'min-h-[240px]' : 'min-h-137'}`}>
                 {image ? (
                   <>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -105,8 +105,9 @@ export default function AiGenerator() {
               type="button"
               onClick={analyzePet}
               disabled={!image || loading}
-              className={`mt-6 w-full rounded-full px-8 py-3.5 text-sm font-bold md:w-auto md:px-12 
+              className={`w-full rounded-full px-8 py-3.5 text-sm font-bold md:w-auto md:px-12 
       transition-all duration-200 ease-in-out
+      ${compact ? 'mt-3' : 'mt-6'}
       ${
         !image || loading
           ? 'cursor-not-allowed bg-zinc-100 text-zinc-400'
@@ -118,8 +119,13 @@ export default function AiGenerator() {
           </div>
 
           {/* Үр дүн */}
-          <NeonGradientCard borderSize={1} borderRadius={24} neonColors={{ firstColor: '#ff9a56', secondColor: '#FFBE98' }} className="h-[620px] min-h-[480px]">
-            <div className="flex h-[620px] min-h-[480px] w-full flex-col overflow-hidden bg-white">
+          <NeonGradientCard
+            borderSize={1}
+            borderRadius={24}
+            neonColors={{ firstColor: '#ff9a56', secondColor: '#FFBE98' }}
+            className={compact ? 'h-[440px] min-h-[360px]' : 'h-[620px] min-h-[480px]'}
+          >
+            <div className={`flex w-full flex-col overflow-hidden bg-white ${compact ? 'h-[440px] min-h-[360px]' : 'h-[620px] min-h-[480px]'}`}>
               <div className="border-b border-zinc-100 px-6 py-4">
                 <h3 className="flex items-center gap-2 text-xl font-black text-[#43342D]">
                   <span className="h-6 w-1.5 rounded-full bg-[#fc8d0e]" />
