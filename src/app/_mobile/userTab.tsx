@@ -1,8 +1,6 @@
 'use client';
-
 import { useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useUser } from '@clerk/nextjs';
+import { SignIn, SignUp, useClerk, useUser } from '@clerk/nextjs';
 import type { PetMedicalForm } from '@/app/_components/Profile/AddMedicalRecord';
 import { usePets } from '@/lib/petsContext';
 import { toast } from 'sonner';
@@ -11,23 +9,18 @@ import { getTodayStr, toDateOnlyStr } from '@/app/profile/profileDateUtils';
 import { triggerTestMedicalNotification, useMedicalNotifications } from '@/app/profile/useMedicalNotifications';
 import type { MedicalRecordItem } from '@/app/profile/ProfileMedicalSection';
 import { CuteSleepingCatLoader } from '@/app/_components/loading/CuteSleepingCatLoader';
+import { signInAppearance, signUpAppearance } from '@/app/_components/clerkAppearance';
 
-export default function UserTab({ onBackHome }: { onBackHome: () => void }) {
-  const router = useRouter();
+export default function UserTab() {
+  const { signOut } = useClerk();
   const { isSignedIn, isLoaded } = useUser();
   const { pets, refetchPets, petsLoading } = usePets();
+  const [authView, setAuthView] = useState<'sign-in' | 'sign-up'>('sign-in');
 
   const [medicalRecords, setMedicalRecords] = useState<MedicalRecordItem[]>([]);
   const [recordsLoading, setRecordsLoading] = useState(true);
   const [deletingRecordId, setDeletingRecordId] = useState<string | null>(null);
   const [selectedPetFilter, setSelectedPetFilter] = useState<string>('all');
-
-  useEffect(() => {
-    if (!isLoaded) return;
-    if (!isSignedIn) {
-      router.replace('/sign-in');
-    }
-  }, [isLoaded, isSignedIn, router]);
 
   useEffect(() => {
     if (!isSignedIn) return;
@@ -116,6 +109,15 @@ export default function UserTab({ onBackHome }: { onBackHome: () => void }) {
     } catch {}
   };
 
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      toast.success('Та системээс гарлаа.');
+    } catch {
+      toast.error('Гарах үед алдаа гарлаа.');
+    }
+  };
+
   if (!isLoaded || (petsLoading && recordsLoading)) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
@@ -126,7 +128,34 @@ export default function UserTab({ onBackHome }: { onBackHome: () => void }) {
     );
   }
 
-  if (!isSignedIn) return null;
+  if (!isSignedIn) {
+    return (
+      <section className=" pb-5 pt-4 flex justify-center">
+        <div className="rounded-3xl border border-[#f1d5be] bg-[#fff7ef] shadow-sm flex flex-col items-center py-6">
+          <p className="mt-1 text-center text-sm text-[#7a5b43]">Нэвтэрч орсноор та өөрийн амьтнаа нэмэх, эмчилгээний мэдээллээ оруулах, AI туслах ашиглах боломжтой.</p>
+          <div className="mt-4 grid grid-cols-2 gap-2 rounded-2xl bg-white p-1 shadow-inner ">
+            <button
+              type="button"
+              onClick={() => setAuthView('sign-in')}
+              className={`rounded-xl px-3 py-2 text-sm font-semibold transition ${authView === 'sign-in' ? 'bg-[#f28a50] text-white' : 'text-[#6d5644]'}`}
+            >
+              Нэвтрэх
+            </button>
+            <button
+              type="button"
+              onClick={() => setAuthView('sign-up')}
+              className={`rounded-xl px-3 py-2 text-sm font-semibold transition ${authView === 'sign-up' ? 'bg-[#f28a50] text-white' : 'text-[#6d5644]'}`}
+            >
+              Бүртгүүлэх
+            </button>
+          </div>
+          <div className="mt-4 ">
+            {authView === 'sign-in' ? <SignIn routing="hash" signUpUrl="#sign-up" appearance={signInAppearance} /> : <SignUp routing="hash" signInUrl="#sign-in" appearance={signUpAppearance} />}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <ProfileMobile
@@ -139,7 +168,7 @@ export default function UserTab({ onBackHome }: { onBackHome: () => void }) {
       onFilterChange={setSelectedPetFilter}
       onAddRecord={handleAddRecord}
       onDeleteRecord={handleDeleteRecord}
-      onBack={onBackHome}
+      onLogout={handleLogout}
       onTestNotification={handleTestNotification}
     />
   );

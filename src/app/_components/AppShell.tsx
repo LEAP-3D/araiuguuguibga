@@ -4,12 +4,22 @@ import { usePathname } from 'next/navigation';
 import BottomNav from './BottomNav';
 import Chat from './Chat';
 import { useChatOpen } from '../_contexts/ChatContext';
+import { useEffect, useState } from 'react';
 
 const HIDE_BOTTOM_NAV_PREFIXES = ['/dashboard', '/sign-in', '/sign-up'];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { open: chatOpen, setOpen: setChatOpen } = useChatOpen();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 768px)');
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
 
   const hide =
     HIDE_BOTTOM_NAV_PREFIXES.some((p) => pathname.startsWith(p)) || pathname === '/';
@@ -39,7 +49,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <div className={useSharedBackground ? 'relative z-10' : ''}>{children}</div>
       </div>
       {showBottomNav && <BottomNav />}
-      <Chat open={chatOpen} onOpenChange={setChatOpen} />
+      {!isMobile && <Chat open={chatOpen} onOpenChange={setChatOpen} />}
     </>
   );
 }
