@@ -10,8 +10,6 @@ import { mockVets } from '../_components/HeroSection/mockVets';
 import { motion } from 'framer-motion';
 import { VetCard } from '../_components/HeroSection/vetCard';
 import { NeonGradientCard } from '@/components/ui/neon-gradient-card';
-import { useUser } from '@clerk/nextjs';
-import { usePosts } from '@/lib/postsContext';
 
 const FILTERS = [
   { id: '', label: 'Бүгд' },
@@ -26,8 +24,6 @@ const RADIUS_OPTIONS = [2000, 3000, 4000, 5000] as const;
 const MapPlaceholder = dynamic(() => import('../_components/HeroSection/mapPlaceHolder'), { ssr: false });
 
 export function VeterinarySection() {
-  const { isSignedIn } = useUser();
-  const { posts } = usePosts();
   const [selectedVet, setSelectedVet] = useState<Veterinary | null>(null);
   const [temporaryVet, setTemporaryVet] = useState<Veterinary | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -94,8 +90,6 @@ export function VeterinarySection() {
                 userLocation={userLocation}
                 setUserLocation={setUserLocation}
                 radius={radius}
-                showLostPets={Boolean(isSignedIn)}
-                lostPosts={posts}
                 onMapClick={(lat, lng) => setTemporaryVet({ id: Date.now().toString(), name: '', lat, lng, rating: 0, services: [], isOpen: false, phone: [''], address: '', category: ['emneleg'] })}
                 onSaveTemp={handleSaveTemp}
                 onCancelTemp={() => setTemporaryVet(null)}

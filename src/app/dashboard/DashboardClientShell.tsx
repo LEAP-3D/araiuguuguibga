@@ -13,9 +13,9 @@ import { useNotification } from '@/hooks/useNotification';
 import { HeaderUserMenu } from '../_features/HeaderUserMenu';
 
 const sidebarItems = [
-  { href: '/dashboard/find-animals', label: 'Find Animals', shortLabel: 'Feed', icon: Home },
-  { href: '/dashboard/add-post', label: 'Post Animals', shortLabel: 'Post', icon: PlusSquare },
-  { href: '/dashboard/map', label: 'Map', shortLabel: 'Map', icon: PawPrint },
+  { href: '/dashboard/find-animals', label: 'Амьтны пост', shortLabel: 'Feed', icon: Home },
+  { href: '/dashboard/add-post', label: 'Пост оруулах', shortLabel: 'Post', icon: PlusSquare },
+  { href: '/dashboard/map', label: 'Газрын зураг', shortLabel: 'Map', icon: PawPrint },
 ];
 
 export function DashboardClientShell({ children }: { children: React.ReactNode }) {
