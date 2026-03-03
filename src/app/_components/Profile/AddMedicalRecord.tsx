@@ -1,10 +1,11 @@
+/* eslint-disable max-lines */
 'use client';
 
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { VaccineDate } from './VaccineDate';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Plus, Syringe } from 'lucide-react';
+import { Loader2, Plus, Syringe } from 'lucide-react';
 import { useState } from 'react';
 import type { Pet } from '@/lib/petsContext';
 import { toast } from 'sonner';
@@ -27,6 +28,7 @@ type Props = {
 
 export default function AddMedicalRecord({ pets = [], onAddRecord, compact = false }: Props) {
   const [open, setOpen] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState<PetMedicalForm>({
     pet: '',
     type: '',
@@ -46,12 +48,16 @@ export default function AddMedicalRecord({ pets = [], onAddRecord, compact = fal
       return;
     }
 
+    setSubmitting(true);
     try {
       await Promise.resolve(onAddRecord(form));
       toast.success('Эрүүл мэндийн бүртгэл амжилттай нэмэгдлээ.');
     } catch {
       toast.error('Бүртгэл нэмэх үед алдаа гарлаа.');
+      setSubmitting(false);
       return;
+    } finally {
+      setSubmitting(false);
     }
 
     // Reset form and close dialog
@@ -165,8 +171,19 @@ export default function AddMedicalRecord({ pets = [], onAddRecord, compact = fal
                 Цуцлах
               </Button>
             </DialogClose>
-            <Button type="submit" className="rounded-xl px-8 py-2 bg-linear-to-r from-[#ff9100] to-[#ffae00] text-white shadow-md hover:opacity-90">
-              Бүртгэл нэмэх
+            <Button
+              type="submit"
+              disabled={submitting}
+              className="rounded-xl px-8 py-2 bg-linear-to-r from-[#ff9100] to-[#ffae00] text-white shadow-md hover:opacity-90 disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              {submitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Илгээж байна...
+                </>
+              ) : (
+                'Бүртгэл нэмэх'
+              )}
             </Button>
           </DialogFooter>
         </form>

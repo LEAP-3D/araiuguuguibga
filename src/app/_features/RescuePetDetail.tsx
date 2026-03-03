@@ -1,10 +1,13 @@
+/* eslint-disable max-lines */
 'use client';
 
 import { useState } from 'react';
 import { PetImage } from '@/app/_components/PetImage';
 import dynamic from 'next/dynamic';
-import { BadgeInfo, Clock3, MapPin, PawPrint, Phone, User } from 'lucide-react';
+import { BadgeInfo, CheckCircle2, Clock3, MapPin, PawPrint, Phone, RotateCcw, User } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { usePosts } from '@/lib/postsContext';
+import { toast } from 'sonner';
 
 const PostMap = dynamic(() => import('./PostMap'), {
   ssr: false, // IMPORTANT for Next.js
@@ -17,6 +20,8 @@ const typeLabels: Record<string, string> = {
 };
 type Post = {
   id: string;
+  status?: 'lost' | 'found' | 'rescued';
+  isOwner?: boolean;
   name: string;
   breed: string;
   age: string;
@@ -31,10 +36,13 @@ type Post = {
 
 type RescuePetDetailProps = {
   post: Post;
+  onClose?: () => void;
 };
 
-export default function RescuePetDetail({ post }: RescuePetDetailProps) {
+export default function RescuePetDetail({ post, onClose }: RescuePetDetailProps) {
   const [mapExpanded, setMapExpanded] = useState(false);
+  const [updating, setUpdating] = useState(false);
+  const { updatePostStatus } = usePosts();
   // parse coords once and validate
   let coords: { lat: number; lng: number } | null = null;
   if (post.location) {
@@ -127,6 +135,68 @@ export default function RescuePetDetail({ post }: RescuePetDetailProps) {
               <div className="flex aspect-[16/9] w-full items-center justify-center p-6 text-center text-sm text-zinc-500">Байршлын координат бүртгэгдээгүй байна.</div>
             )}
           </button>
+
+          {post.isOwner && (
+            <div className="mt-4 flex flex-wrap gap-3">
+              <button
+                type="button"
+                disabled={updating}
+                onClick={async () => {
+                  setUpdating(true);
+                  const ok = await updatePostStatus(post.id, 'found');
+                  setUpdating(false);
+                  if (ok) {
+                    toast.success('Олдсон болгон тэмдэглэлээ.');
+                    onClose?.();
+                  } else toast.error('Өөрчлөлт хадгалахад алдаа гарлаа.');
+                }}
+                className={`flex flex-1 min-w-[100px] items-center justify-center gap-2 rounded-xl border-2 px-4 py-3 text-sm font-semibold transition-colors disabled:opacity-60 disabled:cursor-not-allowed ${
+                  post.status === 'found' ? 'border-emerald-300 bg-emerald-100 text-emerald-800' : 'border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100'
+                }`}
+              >
+                <CheckCircle2 className="h-5 w-5" />
+                Олдсон
+              </button>
+              <button
+                type="button"
+                disabled={updating}
+                onClick={async () => {
+                  setUpdating(true);
+                  const ok = await updatePostStatus(post.id, 'rescued');
+                  setUpdating(false);
+                  if (ok) {
+                    toast.success('Аварсан болгон тэмдэглэлээ.');
+                    onClose?.();
+                  } else toast.error('Өөрчлөлт хадгалахад алдаа гарлаа.');
+                }}
+                className={`flex flex-1 min-w-[100px] items-center justify-center gap-2 rounded-xl border-2 px-4 py-3 text-sm font-semibold transition-colors disabled:opacity-60 disabled:cursor-not-allowed ${
+                  post.status === 'rescued' ? 'border-sky-300 bg-sky-100 text-sky-800' : 'border-sky-200 bg-sky-50 text-sky-800 hover:bg-sky-100'
+                }`}
+              >
+                <PawPrint className="h-5 w-5" />
+                Аварсан
+              </button>
+              {(post.status === 'found' || post.status === 'rescued') && (
+                <button
+                  type="button"
+                  disabled={updating}
+                  onClick={async () => {
+                    setUpdating(true);
+                    const ok = await updatePostStatus(post.id, 'lost');
+                    setUpdating(false);
+                    if (ok) {
+                      toast.success('Алдсан болгон буцаалаа.');
+                      onClose?.();
+                    } else toast.error('Өөрчлөлт хадгалахад алдаа гарлаа.');
+                  }}
+                  className="flex items-center justify-center gap-2 rounded-xl border-2 border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-800 transition-colors hover:bg-amber-100 disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  <RotateCcw className="h-5 w-5" />
+                  Буцаах
+                </button>
+              )}
+            </div>
+          )}
 
           <Dialog open={mapExpanded} onOpenChange={setMapExpanded}>
             <DialogContent className="w-[96vw] max-w-6xl overflow-hidden border-0 p-0 focus:ring-0 focus-visible:ring-0">

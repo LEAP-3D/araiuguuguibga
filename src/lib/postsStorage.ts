@@ -1,6 +1,7 @@
 export type Post = {
   id: string;
   status: "lost" | "found" | "rescued";
+  isOwner?: boolean;
   name: string;
   breed: string;
   age: string;
@@ -82,6 +83,7 @@ export function clearPostsStorage() {
 export function mapApiPostToPost(p: {
   id: string;
   status?: string | null;
+  isOwner?: boolean;
   name: string;
   breed: string | null;
   age: string | null;
@@ -97,6 +99,7 @@ export function mapApiPostToPost(p: {
   return {
     id: p.id,
     status: p.status === "found" ? "found" : p.status === "rescued" ? "rescued" : "lost",
+    isOwner: p.isOwner ?? false,
     name: p.name,
     breed: p.breed ?? "",
     age: p.age ?? "",

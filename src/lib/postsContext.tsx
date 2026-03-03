@@ -13,6 +13,7 @@ type PostsContextType = {
   postsLoading: boolean;
   refetchPosts: () => Promise<void>;
   addPost: (post: Omit<Post, 'id' | 'createdAt'>) => Promise<boolean>;
+  updatePostStatus: (postId: string, status: 'lost' | 'found' | 'rescued') => Promise<boolean>;
   clearPosts: () => void;
   myPets: MyPet[];
   addMyPet: (pet: Omit<MyPet, 'id' | 'vaccines' | 'history' | 'createdAt'>) => void;
@@ -83,6 +84,24 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  const updatePostStatus = useCallback(async (postId: string, status: 'lost' | 'found' | 'rescued'): Promise<boolean> => {
+    try {
+      const res = await fetch(`/api/rescue-posts/${postId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      });
+      if (!res.ok) return false;
+      const updated = await res.json();
+      setPosts((prev) =>
+        prev.map((p) => (p.id === postId ? { ...mapApiPostToPost(updated), isOwner: p.isOwner } : p))
+      );
+      return true;
+    } catch {
+      return false;
+    }
+  }, []);
+
   const clearPosts = useCallback(() => {
     setPosts([]);
     clearPostsStorage();
@@ -126,6 +145,7 @@ export function PostsProvider({ children }: { children: React.ReactNode }) {
         postsLoading,
         refetchPosts,
         addPost,
+        updatePostStatus,
         clearPosts,
         myPets,
         addMyPet,

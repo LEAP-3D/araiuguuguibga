@@ -30,11 +30,14 @@ export async function GET(req: Request) {
         ? { type: typeParam }
         : {};
 
+    const currentUserId = await getDbUserId();
     const posts = await prisma.rescuePost.findMany({
       where,
       orderBy: { createdAt: "desc" },
       select: {
         id: true,
+        userId: true,
+        status: true,
         name: true,
         breed: true,
         age: true,
@@ -52,6 +55,8 @@ export async function GET(req: Request) {
     return NextResponse.json(
       posts.map((p) => ({
         id: p.id,
+        status: p.status ?? "lost",
+        isOwner: !!currentUserId && p.userId === currentUserId,
         name: p.name,
         breed: p.breed ?? "",
         age: p.age ?? "",
@@ -83,6 +88,8 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
+    const statusRaw = typeof body.status === "string" ? body.status.trim().toLowerCase() : "";
+    const status = statusRaw === "found" || statusRaw === "rescued" ? statusRaw : "lost";
     const name = typeof body.name === "string" ? body.name.trim() : "";
     const breed = typeof body.breed === "string" ? body.breed.trim() || null : null;
     const age = typeof body.age === "string" ? body.age.trim() || null : null;
@@ -105,6 +112,7 @@ export async function POST(req: Request) {
     const post = await prisma.rescuePost.create({
       data: {
         userId,
+        status,
         name: name || "Нэргүй",
         breed,
         age,

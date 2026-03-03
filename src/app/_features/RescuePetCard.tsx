@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { Heart, MapPin, PawPrint, PlusCircle } from 'lucide-react';
 import { PetImage } from '@/app/_components/PetImage';
@@ -32,10 +33,11 @@ type RescuePetCardProps = {
 };
 
 export function RescuePetCard({ post, isFavorite, onToggleFavorite, noBorder }: RescuePetCardProps) {
+  const [dialogOpen, setDialogOpen] = useState(false);
   const isFound = post.status === 'found';
   const isRescued = post.status === 'rescued';
   return (
-    <Dialog>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <form>
         <DialogTrigger asChild>
           <div
@@ -102,7 +104,7 @@ export function RescuePetCard({ post, isFavorite, onToggleFavorite, noBorder }: 
             <DialogTitle>Edit profile</DialogTitle>
             <DialogDescription>Make changes to your profile here. Click save when you&apos;re done.</DialogDescription>
           </DialogHeader>
-          <RescuePetDetail post={post} />
+          <RescuePetDetail post={post} onClose={() => setDialogOpen(false)} />
         </DialogContent>
       </form>
     </Dialog>
