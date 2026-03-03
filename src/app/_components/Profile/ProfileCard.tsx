@@ -17,7 +17,7 @@ type UserProfile = {
   phone: string | null;
   bio: string | null;
 };
-export default function ProfileCard() {
+export default function ProfileCard({ compact = false }: { compact?: boolean }) {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -96,12 +96,21 @@ export default function ProfileCard() {
   const petCount = pets.length;
   return (
     <>
-      <div className="bg-[#fefdfc] w-100 h-60 rounded-2xl shadow-lg flex justify-between pr-6 items-center" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+      <div
+        className={`bg-[#fefdfc] rounded-2xl shadow-lg flex justify-between items-center ${
+          compact ? 'h-auto w-full max-w-[390px] p-3 pr-3' : 'h-30 w-80 pr-6 md:h-60 md:w-100'
+        }`}
+        style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}
+      >
         <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} disabled={uploading} />
-        <div className="flex flex-col gap-3 items-center">
-          <div className="p-6 flex gap-4 ">
+        <div className={`flex flex-col items-start ${compact ? 'gap-2' : 'gap-3 md:items-center'}`}>
+          <div className={`${compact ? 'p-1' : 'p-6'} flex gap-3 md:gap-4 `}>
             <div className="relative inline-block">
-              <div className="w-24 h-24 rounded-full overflow-hidden bg-[#51986a] text-white text-3xl flex items-center justify-center ring-4 ring-white">
+              <div
+                className={`rounded-full overflow-hidden bg-[#51986a] text-white flex items-start justify-start md:items-center md:justify-center ring-4 ring-white ${
+                  compact ? 'h-14 w-14 text-2xl' : 'h-15 w-15 text-3xl md:h-24 md:w-24'
+                }`}
+              >
                 {loading ? (
                   <span className="animate-pulse">...</span>
                 ) : initialImage ? (
@@ -114,24 +123,26 @@ export default function ProfileCard() {
                 type="button"
                 onClick={handleAvatarClick}
                 disabled={uploading}
-                className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center shadow-lg hover:bg-gray-300 disabled:opacity-50"
+                className={`absolute bottom-0 right-0 rounded-full bg-gray-200 flex items-center justify-center shadow-lg hover:bg-gray-300 disabled:opacity-50 ${compact ? 'h-7 w-7' : 'h-8 w-8'}`}
               >
                 <Camera className="w-4 h-4 cursor-pointer" />
               </button>
             </div>
             <div className="flex flex-col gap-0.5">
-              <h2 className="text-xl font-bold mt-4">{loading ? '...' : displayName}</h2>
-              <div className="flex gap-1 text-sm text-gray-600">
+              <h2 className={`font-bold ${compact ? 'mt-1 text-base' : 'mt-4 text-xl'}`}>{loading ? '...' : displayName}</h2>
+              <div className={`flex gap-1 text-gray-600 ${compact ? 'text-xs' : 'text-sm'}`}>
                 <p>Тэжээвэр амьтны эзэн</p>.<p>{petCount} pets</p>
               </div>
-              {user?.email && <div className="text-sm text-gray-600">{user.email}</div>}
+              {user?.email && <div className={`${compact ? 'text-xs' : 'text-sm'} text-gray-600`}>{user.email}</div>}
             </div>
           </div>
-          <div className="px-5">
+          <div className={compact ? 'w-full px-1' : 'px-5'}>
             <button
               type="button"
               onClick={() => setShowDetails(true)}
-              className="w-90 h-12 flex justify-center gap-2 items-center rounded-2xl p-3 border-[#eae4dc] bg-[#f6f2e9] text-sm font-semibold text-[#5e493a] transition-all duration-200 cursor-pointer hover:bg-[#5e493a] hover:text-white"
+              className={`flex justify-center gap-1 md:gap-2 items-center rounded-2xl border-[#eae4dc] bg-[#f6f2e9] font-semibold text-[#5e493a] transition-all duration-200 cursor-pointer hover:bg-[#5e493a] hover:text-white ${
+                compact ? 'h-9 w-full text-xs' : 'h-6 w-45 text-[13px] md:h-12 md:w-90 md:p-3 md:text-sm'
+              }`}
             >
               <Eye />
               <p>Дэлгэрэнгүй харах</p>

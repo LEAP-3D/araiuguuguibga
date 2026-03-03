@@ -11,11 +11,12 @@ import { toast } from 'sonner';
 
 type PetCardProps = {
   pet: Pet;
+  compact?: boolean;
 };
 
 type EditForm = Omit<Pet, 'id'>;
 
-export function PetCard({ pet }: PetCardProps) {
+export function PetCard({ pet, compact = false }: PetCardProps) {
   const { updatePet, deletePet } = usePets();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -97,19 +98,21 @@ export function PetCard({ pet }: PetCardProps) {
       <DialogTrigger asChild>
         <div
           style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}
-          className="group w-60 cursor-pointer rounded-2xl border border-[#f1e6d9] bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(94,73,58,0.15)]"
+          className={`group cursor-pointer rounded-2xl border border-[#f1e6d9] bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(94,73,58,0.15)] ${
+            compact ? 'w-44' : 'w-60'
+          }`}
         >
-          <div className="relative flex h-40 items-center justify-center overflow-hidden rounded-t-2xl bg-gray-100">
-            {pet.image ? <Image src={pet.image} alt={pet.name} fill className="object-cover" sizes="240px" /> : <PawPrint className="h-12 w-12 text-gray-300" />}
+          <div className={`relative flex items-center justify-center overflow-hidden rounded-t-2xl bg-gray-100 ${compact ? 'h-28' : 'h-40'}`}>
+            {pet.image ? <Image src={pet.image} alt={pet.name} fill className="object-cover" sizes={compact ? '176px' : '240px'} /> : <PawPrint className="h-12 w-12 text-gray-300" />}
           </div>
 
-          <div className="p-4">
+          <div className={compact ? 'p-3' : 'p-4'}>
             <div className="flex items-center justify-between">
-              <h3 className="truncate text-lg font-bold text-[#463327]">{pet.name}</h3>
-              <span className="rounded-full bg-orange-100 px-2 py-1 text-xs capitalize text-orange-700">{pet.type}</span>
+              <h3 className={`truncate font-bold text-[#463327] ${compact ? 'text-base' : 'text-lg'}`}>{pet.name}</h3>
+              <span className={`rounded-full bg-orange-100 capitalize text-orange-700 ${compact ? 'px-1.5 py-0.5 text-[10px]' : 'px-2 py-1 text-xs'}`}>{pet.type}</span>
             </div>
-            <p className="text-sm font-medium text-[#958071]">{pet.breed}</p>
-            <div className="flex flex-wrap gap-3 pt-1 text-xs text-[#463327]">
+            <p className={`${compact ? 'text-xs' : 'text-sm'} font-medium text-[#958071]`}>{pet.breed}</p>
+            <div className={`flex flex-wrap pt-1 text-xs text-[#463327] ${compact ? 'gap-2' : 'gap-3'}`}>
               <div className="flex items-center gap-1 font-medium text-[#61ae7d]">{pet.age} years</div>
               <div className="flex items-center gap-1">
                 <Weight className="h-3 w-3" />
@@ -122,8 +125,12 @@ export function PetCard({ pet }: PetCardProps) {
             </div>
           </div>
 
-          <div className="flex justify-center pb-4">
-            <div className="flex h-10 w-50 items-center justify-center gap-2 rounded-2xl border-2 border-[#eae4dc] bg-[#f6f2e9] text-sm font-semibold text-[#5e493a] transition-all duration-200 group-hover:bg-[#5e493a] group-hover:text-white">
+          <div className={`flex justify-center ${compact ? 'pb-3' : 'pb-4'}`}>
+            <div
+              className={`flex items-center justify-center gap-2 rounded-2xl border-2 border-[#eae4dc] bg-[#f6f2e9] font-semibold text-[#5e493a] transition-all duration-200 group-hover:bg-[#5e493a] group-hover:text-white ${
+                compact ? 'h-8 w-[160px] text-xs' : 'h-10 w-50 text-sm'
+              }`}
+            >
               <Eye className="h-4 w-4" />
               <p>Дэлгэрэнгүй харах</p>
             </div>
