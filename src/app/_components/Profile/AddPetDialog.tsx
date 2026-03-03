@@ -9,8 +9,13 @@ import { compressImage } from '@/lib/compressImage';
 import { useState } from 'react';
 import { usePets } from '@/lib/petsContext';
 import { toast } from 'sonner';
-
-export default function AddPetDialog({ compact = false }: { compact?: boolean }) {
+type AddPetDialogProps = {
+  compact?: boolean;
+  trigger?: 'card' | 'button';
+  buttonLabel?: string;
+  buttonClassName?: string;
+};
+export default function AddPetDialog({ compact = false, trigger = 'card', buttonLabel = 'Add Petcard', buttonClassName = '' }: AddPetDialogProps) {
   const { addPet } = usePets();
   const [open, setOpen] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -21,12 +26,11 @@ export default function AddPetDialog({ compact = false }: { compact?: boolean })
     name: '',
     type: '',
     breed: '',
-    age: 0, // number instead of string
-    weight: 0, // number instead of string
+    age: 0,
+    weight: 0,
     gender: '',
     note: '',
   });
-
   const clearImageState = () => {
     if (objectPreviewUrl) {
       URL.revokeObjectURL(objectPreviewUrl);
@@ -35,7 +39,6 @@ export default function AddPetDialog({ compact = false }: { compact?: boolean })
     setSelectedImageFile(null);
     setForm((f) => ({ ...f, imagePreview: null }));
   };
-
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -58,7 +61,6 @@ export default function AddPetDialog({ compact = false }: { compact?: boolean })
     e.target.value = '';
   };
   const removeImage = () => clearImageState();
-
   const handleAddPet = async () => {
     if (saving) return;
     if (!form.name || !form.type) {
@@ -104,7 +106,6 @@ export default function AddPetDialog({ compact = false }: { compact?: boolean })
         note: form.note,
         image: imageUrl,
       });
-
       toast.success('Амжилттай амьтнаа нэмлээ.');
       setOpen(false);
       clearImageState();
@@ -127,10 +128,14 @@ export default function AddPetDialog({ compact = false }: { compact?: boolean })
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <AddPetTriggerCard compact={compact} />
+        {trigger === 'button' ? <button type="button" className={`block w-full rounded-2xl border-2 border-[#5cb4ff] bg-white px-3 py-2.5 text-center text-base font-semibold leading-tight text-[#10263e] shadow-sm transition hover:bg-[#f3faff] sm:text-lg ${buttonClassName}`}>{buttonLabel}</button> : (
+          <AddPetTriggerCard compact={compact} />
+        )}
       </DialogTrigger>
       <DialogContent
-        className={`bg-[#fefdfc] rounded-3xl border border-[#f1e6d9] px-6 pb-6 pt-1 ${compact ? 'max-w-[94vw]' : ''}`}
+        className={`bg-[#fefdfc] rounded-3xl border border-[#f1e6d9] ${
+          compact ? 'max-h-[82dvh] max-w-[94vw] overflow-y-auto px-4 pb-4 pt-1' : 'px-6 pb-6 pt-1'
+        }`}
         style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}
       >
         <DialogHeader>
@@ -147,7 +152,7 @@ export default function AddPetDialog({ compact = false }: { compact?: boolean })
               >
                 <X className="h-4 w-4" />
               </button>
-              {/* eslint-disable-next-line @next/next/no-img-element -- dynamic data URL preview */}
+              {/* eslint-disable-next-line @next/next/no-img-element -- preview supports dynamic data/object URLs */}
               <img src={form.imagePreview || ''} alt="Preview" className=" object-contain h-50 w-auto" />
             </div>
           ) : (
@@ -167,10 +172,7 @@ export default function AddPetDialog({ compact = false }: { compact?: boolean })
               Болих
             </Button>
           </DialogClose>
-
-          <Button onClick={handleAddPet} disabled={saving} className="rounded-xl px-8 py-2 bg-linear-to-r from-[#ff9203] to-[#ffaa00] text-white shadow-md hover:opacity-90 disabled:opacity-60">
-            {saving ? <span className="inline-flex items-center gap-2"><Loader2 className="h-4 w-4 animate-spin" />Нэмж байна...</span> : 'Нэмэх'}
-          </Button>
+          <Button onClick={handleAddPet} disabled={saving} className="rounded-xl px-8 py-2 bg-linear-to-r from-[#ff9203] to-[#ffaa00] text-white shadow-md hover:opacity-90 disabled:opacity-60">{saving ? <span className="inline-flex items-center gap-2"><Loader2 className="h-4 w-4 animate-spin" />Нэмж байна...</span> : 'Нэмэх'}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
