@@ -1,5 +1,4 @@
 'use client';
-/* eslint-disable max-lines */
 
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
@@ -8,8 +7,6 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import type { Veterinary } from '../types';
 import MapResizeFix from '../HeroSection/MapResizeFix';
-import { lostPetIcon } from '@/app/_components/Map/MapIcons';
-import type { usePosts } from '@/lib/postsContext';
 
 const userIcon = new L.Icon({
   iconUrl: '/map.png',
@@ -28,8 +25,6 @@ type Props = {
   onSelect: (vet: Veterinary) => void;
   temporaryVet: Veterinary | null;
   userLocation: { lat: number; lng: number } | null;
-  showLostPets?: boolean;
-  lostPosts?: ReturnType<typeof usePosts>['posts'];
   onMapClick: (lat: number, lng: number) => void;
   onTempChange?: (vet: Veterinary) => void;
   onCancelTemp: () => void;
@@ -65,8 +60,6 @@ export default function MapPlaceholder({
   onSelect,
   temporaryVet,
   userLocation,
-  showLostPets = false,
-  lostPosts = [],
 
   onTempChange,
   onCancelTemp,
@@ -154,23 +147,6 @@ export default function MapPlaceholder({
                 </Popup>
               </Marker>
             ))}
-
-            {showLostPets &&
-              lostPosts.map((post) => {
-                if (!post.location) return null;
-                const [lat, lng] = post.location.split(',').map(Number);
-                if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
-                return (
-                  <Marker key={post.id} position={[lat, lng]} icon={lostPetIcon}>
-                    <Popup>
-                      <div className="p-1 text-black">
-                        <strong className="block text-sm">{post.name}</strong>
-                        <span className="text-xs text-gray-600">{post.description}</span>
-                      </div>
-                    </Popup>
-                  </Marker>
-                );
-              })}
           </>
         )}
       </MapContainer>
