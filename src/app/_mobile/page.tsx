@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Header from './_components/header';
 import { AddPostForm } from '../dashboard/add-post/AddPostForm';
 import { usePosts } from '@/lib/postsContext';
+import { TestNotificationButton } from '@/components/TestNotificationButton';
 import HospitalsMap from './_components/hospitalsMap';
 import UserTab from './userTab';
 import MobileMapTab from './mapTab';
@@ -52,8 +53,11 @@ export default function HomeMobile() {
               <Header />
 
               <section className="px-3 pb-4">
-                <div className="mb-3 flex items-center justify-between">
+                <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                   <h2 className="text-base font-bold text-[#2f241b]">Mini Rescue</h2>
+                  <div className="flex items-center gap-2">
+                    <TestNotificationButton />
+                  </div>
                 </div>
 
                 {postsLoading ? (
