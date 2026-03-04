@@ -5,7 +5,6 @@ import { Home, Map as MapIcon, User, SquarePlus, Bot } from 'lucide-react';
 import Header from './_components/header';
 import { AddPostForm } from '../dashboard/add-post/AddPostForm';
 import { usePosts } from '@/lib/postsContext';
-import { TestNotificationButton } from '@/components/TestNotificationButton';
 import HospitalsMap from './_components/hospitalsMap';
 import UserTab from './userTab';
 import MobileMapTab from './mapTab';
