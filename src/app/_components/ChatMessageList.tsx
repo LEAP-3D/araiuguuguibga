@@ -11,23 +11,28 @@ type Props = {
   messages: ChatMessage[];
   loading: boolean;
   error: string | null;
+  variant?: 'default' | 'messenger';
 };
 
-export function ChatMessageList({ messages, loading, error }: Props) {
+export function ChatMessageList({ messages, loading, error, variant = 'default' }: Props) {
+  const isMessenger = variant === 'messenger';
+  const userBubbleClass = isMessenger ? 'bg-[#f28a50] text-white' : 'bg-[#ff8037] text-white';
+  const assistantBubbleClass = isMessenger ? 'bg-[#fffaf4] border border-[#f3dbc7] text-[#3f2e23]' : 'bg-white border border-gray-100 text-gray-800';
+
   return (
     <div className="space-y-4">
       <div className="flex gap-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div className="w-8 h-8 rounded-full overflow-hidden shrink-0">
           <Image src="/caticon.png" alt="" width={32} height={32} className="w-8 h-8 object-contain" />
         </div>
-        <div className="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm border border-gray-100 max-w-[260px]">
-          <p className="text-sm text-gray-800">{WELCOME_MESSAGE}</p>
+        <div className={`rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm max-w-[82%] ${assistantBubbleClass}`}>
+          <p className="text-sm">{WELCOME_MESSAGE}</p>
         </div>
       </div>
       {messages.map((msg, i) =>
         msg.role === 'user' ? (
           <div key={i} className="flex justify-end">
-            <div className="bg-[#ff8037] text-white rounded-2xl rounded-tr-sm px-4 py-3 shadow-sm max-w-[260px]">
+            <div className={`rounded-2xl rounded-tr-sm px-4 py-3 shadow-sm max-w-[82%] ${userBubbleClass}`}>
               <p className="text-sm">{msg.content}</p>
             </div>
           </div>
@@ -36,8 +41,8 @@ export function ChatMessageList({ messages, loading, error }: Props) {
             <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
               <Image src="/caticon.png" alt="" width={32} height={32} className="w-8 h-8 object-contain" />
             </div>
-            <div className="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm border border-gray-100 max-w-[260px]">
-              <p className="text-sm text-gray-800 whitespace-pre-wrap">{msg.content}</p>
+            <div className={`rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm max-w-[82%] ${assistantBubbleClass}`}>
+              <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
             </div>
           </div>
         )
