@@ -10,12 +10,11 @@ import { mockVets } from '../_components/HeroSection/mockVets';
 import { motion } from 'framer-motion';
 import { VetCard } from '../_components/HeroSection/vetCard';
 import { NeonGradientCard } from '@/components/ui/neon-gradient-card';
+import { MyLocationButton } from '../_components/HeroSection/myLocationButton';
 
 const FILTERS = [
   { id: '', label: 'Бүгд' },
-  { id: 'emneleg', label: 'Эмнэлэг' },
   { id: 'duudlagaar_uzdeg', label: 'Дуудлагаар үздэг' },
-  { id: 'emiin_san', label: 'Эмийн сан' },
 ] as const;
 
 // Радиусын сонголтууд
@@ -30,9 +29,10 @@ export function VeterinarySection() {
   const [activeFilter, setActiveFilter] = useState<(typeof FILTERS)[number]['id']>(FILTERS[0].id);
   const [clinics, setClinics] = useState<Veterinary[]>(mockVets);
   const [radius, setRadius] = useState<number>(1000); // Default 1km
-
-  // Байршлын default утга (UB)
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const handleLocationFound = (lat: number, lng: number) => {
+    setUserLocation({ lat, lng });
+  };
 
   useEffect(() => {
     if (!navigator.geolocation) return;
@@ -79,9 +79,8 @@ export function VeterinarySection() {
         </div>
 
         <div className="mx-auto flex h-150 max-w-7xl flex-col gap-4 lg:flex-row lg:gap-6">
-          {/* Map Хэсэг */}
           <NeonGradientCard borderSize={1} borderRadius={16} neonColors={{ firstColor: '#FFDAB9', secondColor: '#FFCCA4' }} innerClassName="bg-transparent" className="min-h-0 flex-1">
-            <div className="min-h-0 flex-1 overflow-hidden relative">
+            <div className="min-h-0 flex-1 overflow-hidden relative h-full">
               <MapPlaceholder
                 vets={filteredVets}
                 selectedVet={selectedVet}
@@ -90,22 +89,35 @@ export function VeterinarySection() {
                 userLocation={userLocation}
                 setUserLocation={setUserLocation}
                 radius={radius}
-                onMapClick={(lat, lng) => setTemporaryVet({ id: Date.now().toString(), name: '', lat, lng, rating: 0, services: [], isOpen: false, phone: [''], address: '', category: ['emneleg'] })}
+                onMapClick={(lat, lng) =>
+                  setTemporaryVet({ id: Date.now().toString(), name: '', lat, lng, rating: 0, services: [], isOpen: false, phone: [''], address: '', category: ['duudlagaar_uzdeg'] })
+                }
                 onSaveTemp={handleSaveTemp}
                 onCancelTemp={() => setTemporaryVet(null)}
               />
+
+              <div className="absolute bottom-6 right-6 z-[9999]">
+                {userLocation ? (
+                  <MyLocationButton onLocationFound={handleLocationFound} />
+                ) : (
+                  <div className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-100 rounded-xl shadow-lg">
+                    <div className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                    </div>
+                    <p className="text-[11px] font-bold text-black leading-tight" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+                      Байршлаа асаана уу.
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </NeonGradientCard>
-
-          {/* Sidebar Хэсэг */}
           <NeonGradientCard borderSize={1} borderRadius={16} neonColors={{ firstColor: '#FFDAB9', secondColor: '#FFCCA4' }} className="flex flex-col lg:w-[350px] h-[600px]">
             <div className="flex flex-col bg-white h-full overflow-hidden" style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
-              {/* Search */}
               <div className="border-b border-gray-100 p-3">
                 <SearchBar query={searchQuery} onChange={setSearchQuery} />
               </div>
-
-              {/* Radius Selector (Шинээр нэмэгдсэн) */}
               <div className="border-b border-gray-100 p-3 bg-gray-50/50">
                 <p className="text-[11px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Хайх радиус</p>
                 <div className="flex gap-1.5">
@@ -123,8 +135,6 @@ export function VeterinarySection() {
                   ))}
                 </div>
               </div>
-
-              {/* Filters */}
               <div className="flex items-center gap-1 border-b border-gray-100 p-3 overflow-x-auto">
                 <button type="button" className="rounded p-1 text-gray-400 hover:bg-gray-100 shrink-0">
                   <ChevronLeft className="h-4 w-4" />
