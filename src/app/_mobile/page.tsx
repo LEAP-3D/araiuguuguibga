@@ -5,6 +5,7 @@ import { Home, Map as MapIcon, User, SquarePlus, Bot } from 'lucide-react';
 import Header from './_components/header';
 import { AddPostForm } from '../dashboard/add-post/AddPostForm';
 import { usePosts } from '@/lib/postsContext';
+import { TestNotificationButton } from '@/components/TestNotificationButton';
 import UserTab from './userTab';
 import MobileMapTab from './mapTab';
 import MobileAiTab from './aiTab';
@@ -50,6 +51,9 @@ export default function HomeMobile() {
           {active === 'home' && (
             <div>
               <Header />
+              <div className="px-3 pb-3">
+                <TestNotificationButton />
+              </div>
               <section className="px-3 pb-4">
                 {postsLoading ? (
                   <CuteSleepingCatLoader />
