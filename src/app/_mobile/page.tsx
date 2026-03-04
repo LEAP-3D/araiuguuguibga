@@ -5,7 +5,6 @@ import { Home, Map as MapIcon, User, SquarePlus, Bot } from 'lucide-react';
 import Header from './_components/header';
 import { AddPostForm } from '../dashboard/add-post/AddPostForm';
 import { usePosts } from '@/lib/postsContext';
-import HospitalsMap from './_components/hospitalsMap';
 import UserTab from './userTab';
 import MobileMapTab from './mapTab';
 import MobileAiTab from './aiTab';
@@ -99,9 +98,6 @@ export default function HomeMobile() {
                   <button type="button" onClick={() => setActive('map')} className="text-[14px] cursor-pointer font-semibold text-[#fa8500]">
                     Дэлгэрэнгүй
                   </button>
-                </div>
-                <div className="h-56 overflow-hidden rounded-2xl border border-[#f6d9bf] bg-white shadow-sm">
-                  <HospitalsMap className="h-full w-full" />
                 </div>
                 <div className="mt-3 space-y-3">
                   {postsLoading ? (
