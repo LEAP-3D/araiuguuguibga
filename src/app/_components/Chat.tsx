@@ -78,7 +78,7 @@ export default function Chat({ open: controlledOpen, onOpenChange, variant = 'fl
       id={contentId}
       style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}
       className={`flex flex-col overflow-hidden border-0 bg-white ${
-        isEmbedded ? 'h-[min(68dvh,620px)] min-h-[420px] w-full rounded-2xl shadow-xl' : 'h-130 w-95 rounded-2xl shadow-2xl'
+        isEmbedded ? 'h-[min(68dvh,620px)] min-h-[420px] w-full rounded-2xl shadow-xl' : 'h-130 w-95 max-w-[min(24rem,calc(100vw-3rem))] rounded-2xl shadow-2xl'
       }`}
     >
       <div className="relative h-16 flex justify-between items-center px-5 bg-[#ff8037]">
@@ -98,7 +98,7 @@ export default function Chat({ open: controlledOpen, onOpenChange, variant = 'fl
         )}
       </div>
 
-      <div ref={scrollRef} className="flex-1 overflow-y-auto px-5 py-4 bg-gradient-to-b from-gray-50 to-white min-h-0">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto overflow-x-hidden px-5 py-4 pr-6 bg-gradient-to-b from-gray-50 to-white min-h-0">
         <ChatMessageList messages={messages} loading={loading} error={error} />
       </div>
       <div className="px-4 py-4 bg-white border-t border-gray-100">
@@ -137,7 +137,7 @@ export default function Chat({ open: controlledOpen, onOpenChange, variant = 'fl
   }
 
   return (
-    <div className="fixed right-6 z-50 bottom-[calc(env(safe-area-inset-bottom)+26px)]">
+    <div className="fixed right-4 z-50 bottom-[calc(env(safe-area-inset-bottom)+26px)]">
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <motion.div
@@ -158,7 +158,7 @@ export default function Chat({ open: controlledOpen, onOpenChange, variant = 'fl
             </Button>
           </motion.div>
         </PopoverTrigger>
-        <PopoverContent className="mr-4 border-0 bg-transparent p-0 shadow-none" sideOffset={12}>
+        <PopoverContent className="mr-25 border-0 bg-transparent p-0 shadow-none" sideOffset={12} align="end" collisionPadding={16}>
           {chatPanel}
         </PopoverContent>
       </Popover>
