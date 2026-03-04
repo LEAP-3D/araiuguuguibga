@@ -15,7 +15,6 @@ import RescuePetDetail from '../_features/RescuePetDetail';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 type Tab = 'home' | 'ai' | 'map' | 'post' | 'user';
-
 const MINI_RESCUE_LIMIT = 4;
 const STATUS_LABELS = {
   lost: 'Алдагдсан',
