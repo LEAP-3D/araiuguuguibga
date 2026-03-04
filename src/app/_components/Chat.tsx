@@ -145,7 +145,7 @@ export default function Chat({ open: controlledOpen, onOpenChange, variant = 'fl
   }
 
   return (
-    <div className="fixed right-6 z-50 bottom-[calc(env(safe-area-inset-bottom)+26px)]">
+    <div className="fixed right-4 z-50 bottom-[calc(env(safe-area-inset-bottom)+26px)]">
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <motion.div
@@ -166,7 +166,7 @@ export default function Chat({ open: controlledOpen, onOpenChange, variant = 'fl
             </Button>
           </motion.div>
         </PopoverTrigger>
-        <PopoverContent className="mr-4 border-0 bg-transparent p-0 shadow-none" sideOffset={12}>
+        <PopoverContent className="mr-25 border-0 bg-transparent p-0 shadow-none" sideOffset={12} align="end" collisionPadding={16}>
           {chatPanel}
         </PopoverContent>
       </Popover>
