@@ -9,12 +9,6 @@ type VetCardProps = {
   onSelect: (vet: Veterinary) => void;
 };
 
-const categoryLabels: Record<string, string> = {
-  emneleg: 'Эмнэлэг',
-  duudlagaar_uzdeg: 'Дуудлагаар үздэг',
-  emiin_san: 'Эмийн сан',
-};
-
 export function VetCard({ vet, selected, onSelect }: VetCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -27,8 +21,7 @@ export function VetCard({ vet, selected, onSelect }: VetCardProps) {
     }
   }, [selected]);
 
-  const categoryKey = vet.category?.[0] ?? 'emneleg';
-  const category = categoryLabels[categoryKey] ?? 'Эмнэлэг';
+  const isDuudlaga = vet.category?.includes('duudlagaar_uzdeg');
 
   return (
     <div
@@ -43,7 +36,7 @@ export function VetCard({ vet, selected, onSelect }: VetCardProps) {
           <Building2 className="mt-0.5 h-4 w-4 shrink-0 text-gray-500" />
           <div className="min-w-0 flex-1">
             <h3 className="truncate text-sm font-semibold text-gray-900">{vet.name}</h3>
-            <p className="text-xs text-gray-500">{category}</p>
+            <p className={`text-[11px] font-bold uppercase tracking-wider ${isDuudlaga ? 'text-[#4f9669]' : 'text-gray-400'}`}>{isDuudlaga ? 'Дуудлагаар үздэг' : 'Мал эмнэлэг'}</p>
           </div>
         </div>
       </div>

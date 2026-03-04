@@ -49,7 +49,7 @@ export type Veterinary = {
   isOpen: boolean;
   emergency?: boolean;
   phone: string[];
-  category?: ('emneleg' | 'duudlagaar_uzdeg' | 'emiin_san')[];
+  category?: string[];
   lat: number;
   lng: number;
 };
