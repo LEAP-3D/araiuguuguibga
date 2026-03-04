@@ -60,8 +60,9 @@ export default function UserTab() {
 
   const filteredRecords = useMemo(() => {
     if (selectedPetFilter === 'all') return medicalRecords;
-    return medicalRecords.filter((record) => record.pet === selectedPetFilter);
-  }, [medicalRecords, selectedPetFilter]);
+    const selectedPet = pets.find((p) => p.id === selectedPetFilter);
+    return selectedPet ? medicalRecords.filter((record) => record.pet === selectedPet.name) : medicalRecords;
+  }, [medicalRecords, selectedPetFilter, pets]);
 
   useMedicalNotifications(dueTodayRecords);
 
