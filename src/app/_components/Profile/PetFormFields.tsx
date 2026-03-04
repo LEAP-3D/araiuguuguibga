@@ -7,7 +7,7 @@ export type PetForm = {
   breed: string;
   age: number;
   weight: number;
-  gender: 'Em' | 'Er' | '';
+  gender: 'Эм' | 'Эр' | '';
   note: string;
 };
 
@@ -60,7 +60,7 @@ export function PetFormFields({ form, setForm }: Props) {
             value={form.age || ''}
             onChange={(e) => setForm((f) => ({ ...f, age: Number(e.target.value) }))}
             placeholder="Нас"
-            className="px-5 py-2 rounded-xl border bg-[#fffef387] outline-none w-30"
+            className="px-5 py-2 rounded-xl border bg-[#fffef387] outline-none w-20"
           />
         </div>
         <div className=" flex flex-col gap-1">
@@ -69,18 +69,18 @@ export function PetFormFields({ form, setForm }: Props) {
             value={form.weight || ''}
             onChange={(e) => setForm((f) => ({ ...f, weight: Number(e.target.value) }))}
             placeholder="Жин (кг)"
-            className="px-5 py-2 rounded-xl border bg-[#fffef387] outline-none w-40"
+            className="px-5 py-2 rounded-xl border bg-[#fffef387] outline-none w-28"
           />
         </div>
         <div className=" flex flex-col gap-1">
-          <label className="block text-sm font-medium ">huis *</label>
-          <Select value={form.gender || ''} onValueChange={(v) => setForm((f) => ({ ...f, gender: v as 'Em' | 'Er' }))}>
+          <label className="block text-sm font-medium ">хүйс *</label>
+          <Select value={form.gender || ''} onValueChange={(v) => setForm((f) => ({ ...f, gender: v as 'Эм' | 'Эр' }))}>
             <SelectTrigger className="px-5 py-5 rounded-xl border bg-[#fffef387]">
-              <SelectValue placeholder="Huis" />
+              <SelectValue placeholder="Хүйс" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Em">Em</SelectItem>
-              <SelectItem value="Er">Er</SelectItem>
+              <SelectItem value="Эм">Эм</SelectItem>
+              <SelectItem value="Эр">Эр</SelectItem>
             </SelectContent>
           </Select>
         </div>
