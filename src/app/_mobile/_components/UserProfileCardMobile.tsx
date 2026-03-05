@@ -113,7 +113,7 @@ export default function UserProfileCardMobile({ pets }: { pets: Pet[] }) {
                   <span key={`${type}-${idx}`} className="rounded-full border border-gray-200 bg-white px-2 py-1 text-lg">
                     {getTypeEmoji(type)}
                   </span>
-                )),
+                ))
               )}
             </div>
           </div>
@@ -123,7 +123,7 @@ export default function UserProfileCardMobile({ pets }: { pets: Pet[] }) {
             Дэлгэрэнгүй
           </button>
           <button type="button" onClick={() => setShowEdit(true)} className="rounded-xl border border-[#f7cfa9] bg-[#fff2e5] px-3 py-2 text-sm font-semibold text-[#cc6f1d]">
-            Профайл засах
+            Профайл өөрчлөх
           </button>
         </div>
       </section>
@@ -144,10 +144,10 @@ export default function UserProfileCardMobile({ pets }: { pets: Pet[] }) {
       />
 
       <Dialog open={showEdit} onOpenChange={setShowEdit}>
-        <DialogContent className="max-w-xl overflow-hidden rounded-3xl border border-[#f1e6d9] bg-[#fefdfc] p-0">
+        <DialogContent className="mobile-system-font max-w-xl overflow-hidden rounded-3xl border border-[#f1e6d9] bg-[#fefdfc] p-0">
           <div className="border-b border-[#f1e6d9] bg-gradient-to-r from-[#fff7ef] to-[#fffdf9] px-6 py-5">
             <DialogHeader>
-              <DialogTitle className="text-2xl font-semibold text-[#3b2f2f]">Профайл засах</DialogTitle>
+              <DialogTitle className="text-2xl font-semibold text-[#3b2f2f]">Хувийн мэдээлэл</DialogTitle>
             </DialogHeader>
             <p className="mt-1 text-sm text-[#9b8b7b]">Өөрийн мэдээллээ шинэчилнэ үү.</p>
           </div>

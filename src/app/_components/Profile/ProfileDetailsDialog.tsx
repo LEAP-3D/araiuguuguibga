@@ -21,7 +21,7 @@ type Props = {
 export default function ProfileDetailsDialog({ owner, open, onOpenChange, onEdit }: Props) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="rounded-3xl border-0 p-0 shadow-2xl sm:max-w-lg">
+      <DialogContent className="mobile-system-font rounded-3xl border-0 p-0 shadow-2xl sm:max-w-lg">
         <div className="relative rounded-t-3xl bg-gradient-to-br from-[#fff5e8] via-[#fff9f2] to-[#fefdfc] p-6 pb-8">
           <DialogHeader>
             <DialogTitle style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }} className="text-2xl font-bold text-[#3b2f2f]">

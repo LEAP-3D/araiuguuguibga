@@ -128,14 +128,19 @@ export default function AddPetDialog({ compact = false, trigger = 'card', button
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        {trigger === 'button' ? <button type="button" className={`block w-full rounded-2xl border-2 border-[#5cb4ff] bg-white px-3 py-2.5 text-center text-base font-semibold leading-tight text-[#10263e] shadow-sm transition hover:bg-[#f3faff] sm:text-lg ${buttonClassName}`}>{buttonLabel}</button> : (
+        {trigger === 'button' ? (
+          <button
+            type="button"
+            className={`block w-full rounded-2xl border-2 border-[#ef9241] bg-white px-3 py-2.5 text-center text-base font-semibold leading-tight text-[#10263e] shadow-sm transition hover:bg-[#f3faff] sm:text-lg ${buttonClassName}`}
+          >
+            {buttonLabel}
+          </button>
+        ) : (
           <AddPetTriggerCard compact={compact} />
         )}
       </DialogTrigger>
       <DialogContent
-        className={`bg-[#fefdfc] rounded-3xl border border-[#f1e6d9] ${
-          compact ? 'max-h-[82dvh] max-w-[94vw] overflow-y-auto px-4 pb-4 pt-1' : 'px-6 pb-6 pt-1'
-        }`}
+        className={`bg-[#fefdfc] rounded-3xl border border-[#f1e6d9] ${compact ? 'max-h-[82dvh] max-w-[94vw] overflow-y-auto px-4 pb-4 pt-1' : 'px-6 pb-6 pt-1'}`}
         style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}
       >
         <DialogHeader>
@@ -172,7 +177,16 @@ export default function AddPetDialog({ compact = false, trigger = 'card', button
               Болих
             </Button>
           </DialogClose>
-          <Button onClick={handleAddPet} disabled={saving} className="rounded-xl px-8 py-2 bg-linear-to-r from-[#ff9203] to-[#ffaa00] text-white shadow-md hover:opacity-90 disabled:opacity-60">{saving ? <span className="inline-flex items-center gap-2"><Loader2 className="h-4 w-4 animate-spin" />Нэмж байна...</span> : 'Нэмэх'}</Button>
+          <Button onClick={handleAddPet} disabled={saving} className="rounded-xl px-8 py-2 bg-linear-to-r from-[#ff9203] to-[#ffaa00] text-white shadow-md hover:opacity-90 disabled:opacity-60">
+            {saving ? (
+              <span className="inline-flex items-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Нэмж байна...
+              </span>
+            ) : (
+              'Нэмэх'
+            )}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
