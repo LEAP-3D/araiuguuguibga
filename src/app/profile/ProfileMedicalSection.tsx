@@ -48,8 +48,8 @@ export function ProfileMedicalSection({ pets, records, loading, selectedPetFilte
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Бүгд</SelectItem>
-              {pets.map((pet, index) => (
-                <SelectItem key={`${pet.id}-${index}`} value={pet.name}>
+              {pets.map((pet) => (
+                <SelectItem key={pet.id} value={pet.id}>
                   {pet.name}
                 </SelectItem>
               ))}

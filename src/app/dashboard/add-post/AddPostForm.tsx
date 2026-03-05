@@ -90,6 +90,16 @@ export function AddPostForm({ mobileMode = false }: { mobileMode?: boolean } = {
       return;
     }
 
+    if (!form.contactName.trim()) {
+      toast.error('Таны нэрийг оруулна уу.');
+      return;
+    }
+    const digitsOnly = form.contactPhone.replace(/\D/g, '');
+    if (digitsOnly.length !== 8) {
+      toast.error('Утасны дугаар 8 оронтой байх ёстой.');
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       const success = await addPost({
@@ -154,7 +164,13 @@ export function AddPostForm({ mobileMode = false }: { mobileMode?: boolean } = {
     }
   };
 
-  const canPost = form.location !== null && (form.status === 'found' || form.petName.trim().length > 0);
+  const phoneDigitsOnly = form.contactPhone.replace(/\D/g, '');
+  const isPhoneValid = phoneDigitsOnly.length === 8;
+  const canPost =
+    form.location !== null &&
+    (form.status === 'found' || form.petName.trim().length > 0) &&
+    form.contactName.trim().length > 0 &&
+    isPhoneValid;
   const canJumpTo = (targetStep: number) => targetStep <= step + 1;
 
   return (
@@ -244,21 +260,20 @@ export function AddPostForm({ mobileMode = false }: { mobileMode?: boolean } = {
 
             <CardContent className={`space-y-4 ${mobileMode ? 'w-full px-4 pb-5' : 'w-150 max-md:w-full max-md:px-4'}`}>
               {step === 0 && (
-                <div>
-                  <label
-                    className={`flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed text-center transition-colors ${mobileMode ? 'border-[#f3c89f] bg-[#fff7ef] p-6 hover:bg-[#ffefd8]' : 'border-gray-300 p-10 hover:bg-gray-50 max-md:p-6'}`}
-                  >
-                    <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageChange} />
-                    <Upload className="h-10 w-10 text-[#f18912]" />
-                    <p className="font-medium">Зураг оруулах</p>
-                    <p className="text-sm text-gray-500">Дарна уу</p>
-                    <span className="mt-2 rounded-md border px-4 py-1.5 text-sm font-medium">Файлуудыг сонгох</span>
-                  </label>
-
+                <div className="space-y-4">
                   {form.imagePreviews.length > 0 && (
-                    <div className="grid grid-cols-2 gap-4 mt-4 max-md:grid-cols-1">
+                    <div
+                      className={
+                        form.imagePreviews.length === 1
+                          ? 'flex justify-center'
+                          : 'grid grid-cols-2 gap-4 max-md:grid-cols-1'
+                      }
+                    >
                       {form.imagePreviews.map((img, index) => (
-                        <div key={index} className="relative rounded-lg">
+                        <div
+                          key={index}
+                          className={`relative rounded-lg ${form.imagePreviews.length === 1 ? 'max-w-sm w-full' : ''}`}
+                        >
                           <button
                             type="button"
                             onClick={() => removeImage(index)}
@@ -273,6 +288,28 @@ export function AddPostForm({ mobileMode = false }: { mobileMode?: boolean } = {
                       ))}
                     </div>
                   )}
+
+                  <label
+                    className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-dashed text-center transition-colors ${
+                      form.imagePreviews.length > 0
+                        ? 'border-[#f3c89f] bg-[#fff7ef] py-3 px-4 hover:bg-[#ffefd8]'
+                        : mobileMode
+                          ? 'border-[#f3c89f] bg-[#fff7ef] p-6 hover:bg-[#ffefd8]'
+                          : 'border-gray-300 p-10 hover:bg-gray-50 max-md:p-6'
+                    } ${form.imagePreviews.length > 0 ? 'flex-row' : 'flex-col'}`}
+                  >
+                    <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageChange} />
+                    <Upload className={`text-[#f18912] ${form.imagePreviews.length > 0 ? 'h-5 w-5' : 'h-10 w-10'}`} />
+                    {form.imagePreviews.length > 0 ? (
+                      <span className="text-sm font-medium text-[#7a5a45]">Нэмэлт зураг нэмэх</span>
+                    ) : (
+                      <>
+                        <p className="font-medium">Зураг оруулах</p>
+                        <p className="text-sm text-gray-500">Дарна уу</p>
+                        <span className="mt-2 rounded-md border px-4 py-1.5 text-sm font-medium">Файлуудыг сонгох</span>
+                      </>
+                    )}
+                  </label>
                 </div>
               )}
 
@@ -297,8 +334,9 @@ export function AddPostForm({ mobileMode = false }: { mobileMode?: boolean } = {
             {step < 3 && (
               <Button
                 type="button"
+                disabled={step === 2 && !form.location}
                 onClick={() => setStep(step + 1)}
-                className={`max-md:w-full ${mobileMode ? 'my-2 rounded-xl bg-[#f18912] py-5 text-white hover:bg-[#e47f0f]' : 'bg-amber-500 my-10 max-md:my-4'}`}
+                className={`disabled:opacity-50 disabled:pointer-events-none max-md:w-full ${mobileMode ? 'my-2 rounded-xl bg-[#f18912] py-5 text-white hover:bg-[#e47f0f]' : 'bg-amber-500 my-10 max-md:my-4'}`}
               >
                 Дараах
               </Button>

@@ -13,8 +13,8 @@ export default function Contact({ form, setForm }: Props) {
         <Input placeholder="нэр" className="h-10" value={form.contactName} onChange={(e) => setForm((prev) => ({ ...prev, contactName: e.target.value }))} />
       </div>
       <div>
-        <label className="block text-sm font-semibold text-foreground mb-2"> Утасны дугаар</label>
-        <Input placeholder="+976 9999 9999" className="h-10" value={form.contactPhone} onChange={(e) => setForm((prev) => ({ ...prev, contactPhone: e.target.value }))} />
+        <label className="block text-sm font-semibold text-foreground mb-2"> Утасны дугаар (8 орон)</label>
+        <Input placeholder="9999 9999" className="h-10" value={form.contactPhone} onChange={(e) => setForm((prev) => ({ ...prev, contactPhone: e.target.value }))} inputMode="numeric" />
       </div>
       <div>
         <label className="block text-sm font-semibold text-foreground mb-2"> Нэмэлт мэдээлэл (заавал биш)</label>

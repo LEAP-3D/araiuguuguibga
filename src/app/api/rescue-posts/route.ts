@@ -128,6 +128,8 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       id: post.id,
+      status: post.status,
+      isOwner: true,
       name: post.name,
       breed: post.breed ?? "",
       age: post.age ?? "",

@@ -50,7 +50,8 @@ export default function AddMedicalRecord({ pets = [], onAddRecord, compact = fal
 
     setSubmitting(true);
     try {
-      await Promise.resolve(onAddRecord(form));
+      const petName = pets.find((p) => p.id === form.pet)?.name ?? form.pet;
+      await Promise.resolve(onAddRecord({ ...form, pet: petName }));
       toast.success('Эрүүл мэндийн бүртгэл амжилттай нэмэгдлээ.');
     } catch {
       toast.error('Бүртгэл нэмэх үед алдаа гарлаа.');
@@ -105,8 +106,8 @@ export default function AddMedicalRecord({ pets = [], onAddRecord, compact = fal
                     <SelectValue placeholder="Тэжээвэр амьтан сонгох" />
                   </SelectTrigger>
                   <SelectContent>
-                    {pets.map((pet, index) => (
-                      <SelectItem key={`${pet.id}-${index}`} value={pet.name}>
+                    {pets.map((pet) => (
+                      <SelectItem key={pet.id} value={pet.id}>
                         {pet.name}
                       </SelectItem>
                     ))}

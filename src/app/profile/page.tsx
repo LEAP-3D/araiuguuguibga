@@ -120,7 +120,9 @@ export default function Profile() {
       setDeletingRecordId(null);
     }
   };
-  const filteredRecords = selectedPetFilter === 'all' ? medicalRecords : medicalRecords.filter((r) => r.pet === selectedPetFilter);
+  const selectedPet = pets.find((p) => p.id === selectedPetFilter);
+  const filteredRecords =
+    selectedPetFilter === 'all' ? medicalRecords : selectedPet ? medicalRecords.filter((r) => r.pet === selectedPet.name) : medicalRecords;
   const dueTodayRecords = useMemo(() => {
     const today = getTodayStr();
     return medicalRecords.filter((r) => {
