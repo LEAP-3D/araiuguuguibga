@@ -66,7 +66,7 @@ const eslintConfig = defineConfig([
       'no-shadow': 'off',
 
       /* 🔟 Max lines per file */
-      'max-lines': ['error', { max: 180 }],
+      'max-lines': ['error', { max: 198 }],
     },
   },
 

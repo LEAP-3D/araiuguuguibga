@@ -99,7 +99,7 @@ export default function ProfileMobile({
           {loading ? (
             <CuteSleepingCatLoader />
           ) : records.length === 0 ? (
-            <p className="py-6 text-center text-sm text-gray-500">доогоор эмчилгээний бүртгэл байхгүй.</p>
+            <p className="py-6 text-center text-sm text-gray-500">Одоогоор эмчилгээний бүртгэл байхгүй.</p>
           ) : (
             <div className="space-y-3">
               {records.map((record) => (
